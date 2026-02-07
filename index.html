@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="ro">
+<head>
+    <meta charset="UTF-8">
+    <title>Isometric Island</title>
+    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
+    
+    <style>
+        body {
+            margin: 0;
+            background: #aad6ff;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            overflow: hidden;
+            font-family: 'Press Start 2P', cursive;
+            cursor: crosshair;
+        }
+
+        .game-title {
+            position: absolute;
+            top: 40px;
+            left: 50%;
+            transform: translateX(-50%);
+            margin: 0;
+            z-index: 1000;
+
+            color: #523519;
+            font-size: 20px;
+            font-weight: bold;
+            
+            text-shadow: 2px 2px 0px rgba(255, 255, 255, 0.5);
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+        
+        #stage {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center; 
+            margin-bottom: 200px; 
+            perspective: 1000px;
+        }
+
+        #map {
+            position: relative;
+            transform: scale(4.0);
+            image-rendering: pixelated;
+            z-index: 10;
+            transform-origin: center center;
+            backface-visibility: hidden;
+        }
+
+        .tile {
+            position: absolute;
+            width: 24px;
+            height: 24px;
+            outline: 0.5px solid transparent; 
+            -webkit-user-drag: none;
+        }
+
+        .tile:hover {
+            filter: brightness(1.2);
+        }
+
+        #dock-container {
+            position: fixed;
+            bottom: 20px; 
+            width: 100%; 
+            height: 60px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 100;
+            pointer-events: none;
+        }
+
+        #dock {
+            pointer-events: auto;
+            width: 1200px;
+            height: 100%;
+            background: url('./Assets/hotbar.png') no-repeat center;
+            background-size: contain;
+            image-rendering: pixelated;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .slot {
+            width: 60px;
+            height: 60px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+        }
+
+        .slot.active {
+            background: url('./Assets/selector.png') no-repeat center;
+            background-size: contain;
+            transform: scale(1.2);
+            image-rendering: pixelated;
+        }
+
+        .slot img { width: 35px; height: 35px; image-rendering: pixelated; }
+
+        #zoom-ui {
+            position: fixed;
+            bottom: 20px;
+            right: 40px;
+            height: 60px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            z-index: 101;
+        }
+
+        .zoom-btn { width: 25px; height: 25px; image-rendering: pixelated; }
+
+        #zoom-track {
+            position: relative;
+            width: 200px;
+            height: 20px;
+            background: url('./Assets/zoombar.png') no-repeat center;
+            background-size: 100% 100%;
+            image-rendering: pixelated;
+            cursor: pointer;
+        }
+
+        #zoom-dot {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 25px;
+            height: 25px;
+            background: url('./Assets/zoomdot.png') no-repeat center;
+            background-size: contain;
+            image-rendering: pixelated;
+            pointer-events: none;
+        }
+    </style>
+</head>
+<body>
+
+<h1 class="game-title">Isometric Island</h1>
+
+<div id="stage">
+    <div id="map"></div>
+</div>
+
+<div id="dock-container">
+    <div id="dock">
+        <div class="slot active" onclick="selectBlock('dirt', this)"><img src="./Assets/dirt.png"></div>
+        <div class="slot" onclick="selectBlock('dirt2', this)"><img src="./Assets/dirt2.png"></div>
+        <div class="slot" onclick="selectBlock('crops', this)"><img src="./Assets/crops.png"></div>
+        <div class="slot" onclick="selectBlock('stone', this)"><img src="./Assets/stone.png"></div>
+        <div class="slot" onclick="selectBlock('water', this)"><img src="./Assets/water.png"></div>
+    </div>
+</div>
+
+<div id="zoom-ui">
+    <img src="./Assets/zoom-.png" class="zoom-btn">
+    <div id="zoom-track">
+        <div id="zoom-dot"></div>
+    </div>
+    <img src="./Assets/zoom+.png" class="zoom-btn">
+</div>
+
+<script>
+    const TILE_W = 24; 
+    const TILE_H = 12; 
+    let selectedBlockType = 'dirt';
+    const placeSound = new Audio('./Assets/place.wav');
+    const mapContainer = document.getElementById("map");
+
+    function selectBlock(type, el) {
+        selectedBlockType = type;
+        document.querySelectorAll('.slot').forEach(s => s.classList.remove('active'));
+        el.classList.add('active');
+    }
+
+    for(let y=0; y<8; y++) {
+        for(let x=0; x<8; x++) {
+            const img = document.createElement("img");
+            img.src = `./Assets/dirt.png`;
+            img.className = "tile";
+            img.style.left = (x - y) * (TILE_W / 2) + "px";
+            img.style.top  = (x + y) * (TILE_H / 2) + "px";
+            img.style.zIndex = x + y;
+            img.onmousedown = function(e) {
+                e.preventDefault();
+                this.src = `./Assets/${selectedBlockType}.png`;
+                placeSound.currentTime = 0; 
+                placeSound.play();
+            };
+            mapContainer.appendChild(img);
+        }
+    }
+
+    const zoomTrack = document.getElementById('zoom-track');
+    const zoomDot = document.getElementById('zoom-dot');
+    const map = document.getElementById('map');
+
+    function updateZoom(e) {
+        const rect = zoomTrack.getBoundingClientRect();
+        let percentage = (e.clientX - rect.left) / rect.width;
+        percentage = Math.max(0, Math.min(1, percentage));
+        zoomDot.style.left = (percentage * 100) + "%";
+        const scale = 1.0 + (percentage * 7.0);
+        const yMove = percentage * -50; 
+        map.style.transform = `translateZ(0) scale(${scale.toFixed(2)}) translateY(${yMove.toFixed(2)}px)`;
+    }
+
+    zoomTrack.addEventListener('mousedown', (e) => {
+        updateZoom(e);
+        const onMove = (mE) => updateZoom(mE);
+        const onUp = () => {
+            window.removeEventListener('mousemove', onMove);
+            window.removeEventListener('mouseup', onUp);
+        };
+        window.addEventListener('mousemove', onMove);
+        window.addEventListener('mouseup', onUp);
+    });
+</script>
+</body>
+</html>
