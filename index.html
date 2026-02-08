@@ -1,10 +1,25 @@
+<!--                                                    ___                                                             ___                           ___    
+     .-.                                               (   )                  .-.                     .-.              (   )                         (   )   
+    ( __)     .--.      .--.    ___ .-. .-.     .--.    | |_      ___ .-.    ( __)   .--.            ( __)     .--.     | |    .---.   ___ .-.     .-.| |    
+    (''")   /  _  \    /    \  (   )   '   \   /    \  (   __)   (   )   \   (''")  /    \           (''")   /  _  \    | |   / .-, \ (   )   \   /   \ |    
+     | |   . .' `. ;  |  .-. ;  |  .-.  .-. ; |  .-. ;  | |       | ' .-. ;   | |  |  .-. ;           | |   . .' `. ;   | |  (__) ; |  |  .-. .  |  .-. |    
+     | |   | '   | |  | |  | |  | |  | |  | | |  | | |  | | ___   |  / (___)  | |  |  |(___)          | |   | '   | |   | |    .'`  |  | |  | |  | |  | |    
+     | |   _\_`.(___) | |  | |  | |  | |  | | |  |/  |  | |(   )  | |         | |  |  |               | |   _\_`.(___)  | |   / .'| |  | |  | |  | |  | |    
+     | |  (   ). '.   | |  | |  | |  | |  | | |  ' _.'  | | | |   | |         | |  |  | ___           | |  (   ). '.    | |  | /  | |  | |  | |  | |  | |    
+     | |   | |  `\ |  | '  | |  | |  | |  | | |  .'.-.  | ' | |   | |         | |  |  '(   )          | |   | |  `\ |   | |  ; |  ; |  | |  | |  | '  | |    
+     | |   ; '._,' '  '  `-' /  | |  | |  | | '  `-' /  ' `-' ;   | |         | |  '  `-' |           | |   ; '._,' '   | |  ' `-'  |  | |  | |  ' `-'  /    
+    (___)   '.___.'    `.__.'  (___)(___)(___) `.__.'    `.__.   (___)       (___)  `.__,'           (___)   '.___.'   (___) `.__.'_. (___)(___)  `.__,'  -->   
+                                                                                                                                                         
+                                                                                                                                                         
+
+
+
 <!DOCTYPE html>
-<html lang="ro">
+<html lang="ro"> <!-- This is my native language but it does not affect project's functionallity -->
 <head>
     <meta charset="UTF-8">
     <title>Isometric Island</title>
-    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
-    
+    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">  <!-- This is the title's font from google fonts -->
     <style>
         body {
             margin: 0;
@@ -17,6 +32,8 @@
             overflow: hidden;
             font-family: 'Press Start 2P', cursive;
             cursor: crosshair;
+            user-select: none;
+            -webkit-user-select: none;
         }
 
         .game-title {
@@ -26,14 +43,18 @@
             transform: translateX(-50%);
             margin: 0;
             z-index: 1000;
-
             color: #523519;
             font-size: 20px;
             font-weight: bold;
-            
             text-shadow: 2px 2px 0px rgba(255, 255, 255, 0.5);
             text-transform: uppercase;
             letter-spacing: 2px;
+            transition: transform 0.3s ease;
+            display: inline-block;
+        }
+
+        .game-title:hover {
+            transform: translateX(-50%) scale(1.2);
         }
         
         #stage {
@@ -62,7 +83,8 @@
             height: 24px;
             outline: 0.5px solid transparent; 
             -webkit-user-drag: none;
-            filter: drop-shadow(3px 4px 2px rgba(0,0,0,0.25))
+            filter: drop-shadow(3px 4px 2px rgba(0,0,0,0.20));
+            transition: opacity 0.1s;
         }
 
         .tile:hover {
@@ -82,6 +104,7 @@
         }
 
         #dock {
+            position: relative;
             pointer-events: auto;
             width: 1200px;
             height: 100%;
@@ -101,13 +124,20 @@
             justify-content: center;
             align-items: center;
             cursor: pointer;
+            z-index: 2;
         }
 
-        .slot.active {
+        #selection-highlight {
+            position: absolute;
+            width: 60px;
+            height: 60px;
             background: url('./Assets/GUI/selector.png') no-repeat center;
             background-size: contain;
-            transform: scale(1.2);
             image-rendering: pixelated;
+            transition: all 0.2s cubic-bezier(0.18, 0.89, 0.32, 1.28);
+            pointer-events: none;
+            z-index: 1;
+            transform: scale(1.2);
         }
 
         .slot img { width: 35px; height: 35px; image-rendering: pixelated; }
@@ -139,13 +169,19 @@
             position: absolute;
             top: 50%;
             left: 50%;
-            transform: translate(-50%, -50%);
+            transform: translate(-50%, -50%) scale(1);
             width: 25px;
             height: 25px;
             background: url('./Assets/GUI/zoomdot.png') no-repeat center;
             background-size: contain;
             image-rendering: pixelated;
-            pointer-events: none;
+            pointer-events: auto;
+            transition: transform 0.15s ease-out;
+        }
+
+        #zoom-track:hover #zoom-dot,
+        #zoom-dot:hover {
+            transform: translate(-50%, -50%) scale(1.2);
         }
     </style>
 </head>
@@ -157,17 +193,22 @@
     <div id="map"></div>
 </div>
 
-<div id="dock-container">
+<div id="dock-container"> <!-- this is the dock that contains all the placeable blocks avalabile in the game -->
     <div id="dock">
-        <div class="slot active" onclick="selectBlock('dirt', this)"><img src="./Assets/Blocks/dirt.png"></div>
+        <div id="selection-highlight"></div>
+        <div class="slot" onclick="selectBlock('eraser', this)"><img src="./Assets/Blocks/eraser.png"></div>
+        <div class="slot" onclick="selectBlock('dirt', this)"><img src="./Assets/Blocks/dirt.png"></div>
+        <div class="slot" onclick="selectBlock('flovers', this)"><img src="./Assets/Blocks/flovers.png"></div>
+        <div class="slot" onclick="selectBlock('rock', this)"><img src="./Assets/Blocks/rock.png"></div>
         <div class="slot" onclick="selectBlock('dirt2', this)"><img src="./Assets/Blocks/dirt2.png"></div>
         <div class="slot" onclick="selectBlock('crops', this)"><img src="./Assets/Blocks/crops.png"></div>
         <div class="slot" onclick="selectBlock('stone', this)"><img src="./Assets/Blocks/stone.png"></div>
         <div class="slot" onclick="selectBlock('water', this)"><img src="./Assets/Blocks/water.png"></div>
+        <div class="slot" onclick="selectBlock('wood', this)"><img src="./Assets/Blocks/wood.png"></div>
     </div>
 </div>
 
-<div id="zoom-ui">
+<div id="zoom-ui"> <!-- Zoom bar -->
     <img src="./Assets/GUI/zoom-.png" class="zoom-btn">
     <div id="zoom-track">
         <div id="zoom-dot"></div>
@@ -178,15 +219,31 @@
 <script>
     const TILE_W = 24; 
     const TILE_H = 12; 
-    let selectedBlockType = 'dirt';
+    let selectedBlockType = 'eraser';
+    //Here are the sfx sounds for my 'game' 
     const placeSound = new Audio('./Assets/Audio/place.wav');
+    const hotbarSound = new Audio('./Assets/Audio/hotbar.wav');
+    
     const mapContainer = document.getElementById("map");
+    const highlight = document.getElementById("selection-highlight");
 
     function selectBlock(type, el) {
         selectedBlockType = type;
+        highlight.style.left = el.offsetLeft + "px";
+        highlight.style.top = el.offsetTop + "px";
         document.querySelectorAll('.slot').forEach(s => s.classList.remove('active'));
         el.classList.add('active');
+
+        //  this plays the hotbar sound (kinda trashy but you know )
+        hotbarSound.currentTime = 0;
+        hotbarSound.play().catch(e => console.log("Audio play blocked until user interaction"));
     }
+
+    window.onload = () => {
+        const firstSlot = document.querySelector('.slot');
+        highlight.style.left = firstSlot.offsetLeft + "px";
+        highlight.style.top = firstSlot.offsetTop + "px";
+    };
 
     for(let y=0; y<8; y++) {
         for(let x=0; x<8; x++) {
@@ -196,9 +253,15 @@
             img.style.left = (x - y) * (TILE_W / 2) + "px";
             img.style.top  = (x + y) * (TILE_H / 2) + "px";
             img.style.zIndex = x + y;
+            
             img.onmousedown = function(e) {
                 e.preventDefault();
-                this.src = `./Assets/Blocks/${selectedBlockType}.png`;
+                if (selectedBlockType === 'eraser') {
+                    this.style.opacity = "0";
+                } else {
+                    this.src = `./Assets/Blocks/${selectedBlockType}.png`;
+                    this.style.opacity = "1";
+                }
                 placeSound.currentTime = 0; 
                 placeSound.play();
             };
@@ -219,7 +282,7 @@
         const yMove = percentage * -50; 
         map.style.transform = `translateZ(0) scale(${scale.toFixed(2)}) translateY(${yMove.toFixed(2)}px)`;
     }
-
+// this is the zoom traking script that smooths out the islant for a cool smoothing
     zoomTrack.addEventListener('mousedown', (e) => {
         updateZoom(e);
         const onMove = ev => updateZoom(ev);

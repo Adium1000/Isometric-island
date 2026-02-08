@@ -24,6 +24,25 @@ This is the base guide for my project if you are new to this (your "How to use" 
 - In order to place blocks you need to have selected the block you want, see 2. Hotbar or Blocks
 - After you do that you have to point your cursor to the tile you want to change, you know you change that tile when the block brightness changes a bit (see red mark), after that you just have to click and you're done. That easy!
 
+### 4. Island Shaping 
+![Island shapped like a circle image](GithubPreview/model%20island.png)
+
+- You can shape the island however you want thanks to the eraser tool from the hotbar, verry helpfull for different and more cooler designs
+
+
+![The Hotbar eraser item](GithubPreview/hotbareraser.png)
+- To use it you just have to click it from the hotbar like any regular item then press a higlighted block with your cursor and it will fade away
+- To bring an empty block back you just have to place another block from the hotbar here for exemple Dirt 
+- Overall verry helpfull
+
+### Warning! 
+- Do not try to use browser zoom because it can sometimes broke the island canvas for an unknown reason
+- this is not a survival game or any kind of competitive game, it is made for relaxation and creative propuses only
+- This 'Game' is only playable on a computer/tablet, playng on phone may result in some bugs that makes this 'game' unplayable
+- Do not copy my work and publish it witout crediting my github page , thanku!
+
+
+
 # Software that I used to make this project come true
 - Here is the list with the software I used to make this project
 1. PowerPoint: Thumbnails for the devlogs (crazzzzzyy ik)
@@ -33,6 +52,7 @@ This is the base guide for my project if you are new to this (your "How to use" 
 
 # Future functions
 - You can see an unorganised list of functions and stuff that I want to add in todo.md here on GitHub
+- You can also suggest some futures for my project on flavortown
 
 # Credits
 - Here you will find credits for stuff that I used from the internet
