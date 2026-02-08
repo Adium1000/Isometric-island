@@ -62,10 +62,11 @@
             height: 24px;
             outline: 0.5px solid transparent; 
             -webkit-user-drag: none;
+            filter: drop-shadow(3px 4px 2px rgba(0,0,0,0.25))
         }
 
         .tile:hover {
-            filter: brightness(1.2);
+            filter: brightness(1.2) drop-shadow(3px 4px 2px rgba(0,0,0,0.3));
         }
 
         #dock-container {
@@ -84,7 +85,7 @@
             pointer-events: auto;
             width: 1200px;
             height: 100%;
-            background: url('./Assets/hotbar.png') no-repeat center;
+            background: url('./Assets/GUI/hotbar.png') no-repeat center;
             background-size: contain;
             image-rendering: pixelated;
             display: flex;
@@ -103,7 +104,7 @@
         }
 
         .slot.active {
-            background: url('./Assets/selector.png') no-repeat center;
+            background: url('./Assets/GUI/selector.png') no-repeat center;
             background-size: contain;
             transform: scale(1.2);
             image-rendering: pixelated;
@@ -128,7 +129,7 @@
             position: relative;
             width: 200px;
             height: 20px;
-            background: url('./Assets/zoombar.png') no-repeat center;
+            background: url('./Assets/GUI/zoombar.png') no-repeat center;
             background-size: 100% 100%;
             image-rendering: pixelated;
             cursor: pointer;
@@ -141,7 +142,7 @@
             transform: translate(-50%, -50%);
             width: 25px;
             height: 25px;
-            background: url('./Assets/zoomdot.png') no-repeat center;
+            background: url('./Assets/GUI/zoomdot.png') no-repeat center;
             background-size: contain;
             image-rendering: pixelated;
             pointer-events: none;
@@ -158,27 +159,27 @@
 
 <div id="dock-container">
     <div id="dock">
-        <div class="slot active" onclick="selectBlock('dirt', this)"><img src="./Assets/dirt.png"></div>
-        <div class="slot" onclick="selectBlock('dirt2', this)"><img src="./Assets/dirt2.png"></div>
-        <div class="slot" onclick="selectBlock('crops', this)"><img src="./Assets/crops.png"></div>
-        <div class="slot" onclick="selectBlock('stone', this)"><img src="./Assets/stone.png"></div>
-        <div class="slot" onclick="selectBlock('water', this)"><img src="./Assets/water.png"></div>
+        <div class="slot active" onclick="selectBlock('dirt', this)"><img src="./Assets/Blocks/dirt.png"></div>
+        <div class="slot" onclick="selectBlock('dirt2', this)"><img src="./Assets/Blocks/dirt2.png"></div>
+        <div class="slot" onclick="selectBlock('crops', this)"><img src="./Assets/Blocks/crops.png"></div>
+        <div class="slot" onclick="selectBlock('stone', this)"><img src="./Assets/Blocks/stone.png"></div>
+        <div class="slot" onclick="selectBlock('water', this)"><img src="./Assets/Blocks/water.png"></div>
     </div>
 </div>
 
 <div id="zoom-ui">
-    <img src="./Assets/zoom-.png" class="zoom-btn">
+    <img src="./Assets/GUI/zoom-.png" class="zoom-btn">
     <div id="zoom-track">
         <div id="zoom-dot"></div>
     </div>
-    <img src="./Assets/zoom+.png" class="zoom-btn">
+    <img src="./Assets/GUI/zoom+.png" class="zoom-btn">
 </div>
 
 <script>
     const TILE_W = 24; 
     const TILE_H = 12; 
     let selectedBlockType = 'dirt';
-    const placeSound = new Audio('./Assets/place.wav');
+    const placeSound = new Audio('./Assets/Audio/place.wav');
     const mapContainer = document.getElementById("map");
 
     function selectBlock(type, el) {
@@ -190,14 +191,14 @@
     for(let y=0; y<8; y++) {
         for(let x=0; x<8; x++) {
             const img = document.createElement("img");
-            img.src = `./Assets/dirt.png`;
+            img.src = `./Assets/Blocks/dirt.png`;
             img.className = "tile";
             img.style.left = (x - y) * (TILE_W / 2) + "px";
             img.style.top  = (x + y) * (TILE_H / 2) + "px";
             img.style.zIndex = x + y;
             img.onmousedown = function(e) {
                 e.preventDefault();
-                this.src = `./Assets/${selectedBlockType}.png`;
+                this.src = `./Assets/Blocks/${selectedBlockType}.png`;
                 placeSound.currentTime = 0; 
                 placeSound.play();
             };
@@ -221,7 +222,7 @@
 
     zoomTrack.addEventListener('mousedown', (e) => {
         updateZoom(e);
-        const onMove = (mE) => updateZoom(mE);
+        const onMove = ev => updateZoom(ev);
         const onUp = () => {
             window.removeEventListener('mousemove', onMove);
             window.removeEventListener('mouseup', onUp);
