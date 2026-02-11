@@ -12,3 +12,4 @@
 - Make a more readable description on github
 - undo redo
 - add a float on off switch
+- add actions to zoom buttons
