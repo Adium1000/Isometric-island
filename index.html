@@ -36,6 +36,7 @@
             -webkit-user-select: none;
         }
 
+        /* Recuperat: Animația la titlu din codul vechi */
         .game-title {
             position: absolute;
             top: 40px;
@@ -56,7 +57,7 @@
         .game-title:hover {
             transform: translateX(-50%) scale(1.2);
         }
-        
+
         #stage {
             position: relative;
             width: 100%;
@@ -87,100 +88,59 @@
             transition: opacity 0.1s;
         }
 
-        .tile:hover {
-            filter: brightness(1.2) drop-shadow(3px 4px 2px rgba(0,0,0,0.3));
+        /* Recuperat: Efectul de hover pe tile */
+        .tile:hover { 
+            filter: brightness(1.2) drop-shadow(3px 4px 2px rgba(0,0,0,0.3)); 
         }
 
         #dock-container {
             position: fixed;
-            bottom: 20px; 
-            width: 100%; 
-            height: 60px;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            z-index: 100;
-            pointer-events: none;
+            bottom: 20px; width: 100%; height: 60px;
+            display: flex; justify-content: center; align-items: center;
+            z-index: 100; pointer-events: none;
         }
 
         #dock {
-            position: relative;
-            pointer-events: auto;
-            width: 1200px;
-            height: 100%;
+            position: relative; pointer-events: auto; width: 1200px; height: 100%;
             background: url('./Assets/GUI/hotbar.png') no-repeat center;
-            background-size: contain;
-            image-rendering: pixelated;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            gap: 20px;
+            background-size: contain; image-rendering: pixelated;
+            display: flex; justify-content: center; align-items: center; gap: 20px;
         }
 
-        .slot {
-            width: 60px;
-            height: 60px;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            cursor: pointer;
-            z-index: 2;
-        }
-
-        #selection-highlight {
-            position: absolute;
-            width: 60px;
-            height: 60px;
-            background: url('./Assets/GUI/selector.png') no-repeat center;
-            background-size: contain;
-            image-rendering: pixelated;
-            transition: all 0.2s cubic-bezier(0.18, 0.89, 0.32, 1.28);
-            pointer-events: none;
-            z-index: 1;
-            transform: scale(1.2);
-        }
-
+        .slot { width: 60px; height: 60px; display: flex; justify-content: center; align-items: center; cursor: pointer; z-index: 2; }
         .slot img { width: 35px; height: 35px; image-rendering: pixelated; }
 
+        #selection-highlight {
+            position: absolute; width: 60px; height: 60px;
+            left: 0; top: 0; 
+            background: url('./Assets/GUI/selector.png') no-repeat center;
+            background-size: contain; image-rendering: pixelated;
+            transition: all 0.2s cubic-bezier(0.18, 0.89, 0.32, 1.28);
+            pointer-events: none; z-index: 1; transform: scale(1.2);
+        }
+
         #zoom-ui {
-            position: fixed;
-            bottom: 20px;
-            right: 40px;
-            height: 60px;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            z-index: 101;
+            position: fixed; bottom: 20px; right: 40px; height: 60px;
+            display: flex; align-items: center; gap: 10px; z-index: 101;
         }
 
         .zoom-btn { width: 25px; height: 25px; image-rendering: pixelated; }
 
         #zoom-track {
-            position: relative;
-            width: 200px;
-            height: 20px;
+            position: relative; width: 200px; height: 20px;
             background: url('./Assets/GUI/zoombar.png') no-repeat center;
-            background-size: 100% 100%;
-            image-rendering: pixelated;
-            cursor: pointer;
+            background-size: 100% 100%; image-rendering: pixelated; cursor: pointer;
         }
 
+        /* Recuperat: Interacțiunea vizuală cu butonul de zoom */
         #zoom-dot {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%) scale(1);
-            width: 25px;
-            height: 25px;
-            background: url('./Assets/GUI/zoomdot.png') no-repeat center;
-            background-size: contain;
-            image-rendering: pixelated;
-            pointer-events: auto;
+            position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
+            width: 25px; height: 25px; background: url('./Assets/GUI/zoomdot.png') no-repeat center;
+            background-size: contain; image-rendering: pixelated;
             transition: transform 0.15s ease-out;
         }
 
-        #zoom-track:hover #zoom-dot,
-        #zoom-dot:hover {
+        #zoom-track:hover #zoom-dot {
             transform: translate(-50%, -50%) scale(1.2);
         }
     </style>
@@ -193,7 +153,7 @@
     <div id="map"></div>
 </div>
 
-<div id="dock-container"> <!-- this is the dock that contains all the placeable blocks avalabile in the game -->
+<div id="dock-container">
     <div id="dock">
         <div id="selection-highlight"></div>
         <div class="slot" onclick="selectBlock('eraser', this)"><img src="./Assets/Blocks/eraser.png"></div>
@@ -204,15 +164,13 @@
         <div class="slot" onclick="selectBlock('crops', this)"><img src="./Assets/Blocks/crops.png"></div>
         <div class="slot" onclick="selectBlock('stone', this)"><img src="./Assets/Blocks/stone.png"></div>
         <div class="slot" onclick="selectBlock('water', this)"><img src="./Assets/Blocks/water.png"></div>
-        <div class="slot" onclick="selectBlock('wood', this)"><img src="./Assets/Blocks/wood.png"></div>
+        <div class="slot" onclick="selectBlock('tree', this)"><img src="./Assets/Blocks/tree.png"></div>
     </div>
 </div>
 
-<div id="zoom-ui"> <!-- Zoom bar -->
+<div id="zoom-ui">
     <img src="./Assets/GUI/zoom-.png" class="zoom-btn">
-    <div id="zoom-track">
-        <div id="zoom-dot"></div>
-    </div>
+    <div id="zoom-track"><div id="zoom-dot"></div></div>
     <img src="./Assets/GUI/zoom+.png" class="zoom-btn">
 </div>
 
@@ -220,76 +178,125 @@
     const TILE_W = 24; 
     const TILE_H = 12; 
     let selectedBlockType = 'eraser';
-    //Here are the sfx sounds for my 'game' 
+    let treeCounter = 0; 
+
     const placeSound = new Audio('./Assets/Audio/place.wav');
     const hotbarSound = new Audio('./Assets/Audio/hotbar.wav');
-    
     const mapContainer = document.getElementById("map");
     const highlight = document.getElementById("selection-highlight");
 
-    function selectBlock(type, el) {
+    // Deblocăm sunetul la prima interacțiune
+    window.addEventListener('mousedown', () => {
+        placeSound.load();
+        hotbarSound.load();
+    }, { once: true });
+
+    function selectBlock(type, el, skipSound = false) {
         selectedBlockType = type;
         highlight.style.left = el.offsetLeft + "px";
         highlight.style.top = el.offsetTop + "px";
-        document.querySelectorAll('.slot').forEach(s => s.classList.remove('active'));
-        el.classList.add('active');
-
-        //  this plays the hotbar sound (kinda trashy but you know )
-        hotbarSound.currentTime = 0;
-        hotbarSound.play().catch(e => console.log("Audio play blocked until user interaction"));
-    }
-
-    window.onload = () => {
-        const firstSlot = document.querySelector('.slot');
-        highlight.style.left = firstSlot.offsetLeft + "px";
-        highlight.style.top = firstSlot.offsetTop + "px";
-    };
-
-    for(let y=0; y<8; y++) {
-        for(let x=0; x<8; x++) {
-            const img = document.createElement("img");
-            img.src = `./Assets/Blocks/dirt.png`;
-            img.className = "tile";
-            img.style.left = (x - y) * (TILE_W / 2) + "px";
-            img.style.top  = (x + y) * (TILE_H / 2) + "px";
-            img.style.zIndex = x + y;
-            
-            img.onmousedown = function(e) {
-                e.preventDefault();
-                if (selectedBlockType === 'eraser') {
-                    this.style.opacity = "0";
-                } else {
-                    this.src = `./Assets/Blocks/${selectedBlockType}.png`;
-                    this.style.opacity = "1";
-                }
-                placeSound.currentTime = 0; 
-                placeSound.play();
-            };
-            mapContainer.appendChild(img);
+        
+        if (!skipSound) {
+            hotbarSound.currentTime = 0;
+            hotbarSound.play().catch(e => {});
         }
     }
 
+    function createTile(x, y, z, type) {
+        const img = document.createElement("img");
+        img.src = `./Assets/Blocks/${type}.png`;
+        img.className = "tile";
+        img.style.left = (x - y) * (TILE_W / 2) + "px";
+        img.style.top  = (x + y) * (TILE_H / 2) - (z * TILE_H) + "px";
+        img.style.zIndex = (x + y) + z;
+        
+        // Atașăm coordonatele pentru a le folosi la construcție
+        img.setAttribute('data-x', x);
+        img.setAttribute('data-y', y);
+        img.setAttribute('data-z', z);
+
+        img.onmousedown = (e) => { 
+            e.preventDefault(); 
+            handleInteraction(img, x, y, z); 
+        };
+        mapContainer.appendChild(img);
+        return img;
+    }
+
+    function handleInteraction(tile, x, y, z) {
+        if (selectedBlockType === 'eraser') {
+            const treeId = tile.getAttribute('data-tree-id');
+            if (treeId) {
+                document.querySelectorAll(`[data-tree-id="${treeId}"]`).forEach(el => el.remove());
+            } else {
+                tile.style.opacity = "0";
+            }
+        } else if (selectedBlockType === 'tree') {
+            treeCounter++;
+            const currentId = "tree_" + treeCounter;
+            
+            // Construcție trunchi
+            for(let i=1; i<=3; i++) {
+                createTile(x, y, i, 'wood').setAttribute('data-tree-id', currentId);
+            }
+            // Construcție frunze baza
+            for(let ox=-1; ox<=1; ox++) {
+                for(let oy=-1; oy<=1; oy++) {
+                    createTile(x + ox, y + oy, 4, 'leaf').setAttribute('data-tree-id', currentId);
+                }
+            }
+            // Construcție frunze mijloc
+            const midLeaves = [{dx:0, dy:0}, {dx:1, dy:0}, {dx:-1, dy:0}, {dx:0, dy:1}, {dx:0, dy:-1}];
+            midLeaves.forEach(l => {
+                createTile(x + l.dx, y + l.dy, 5, 'leaf').setAttribute('data-tree-id', currentId);
+            });
+            // Vârf
+            createTile(x, y, 6, 'leaf').setAttribute('data-tree-id', currentId);
+        } else {
+            // Modificare block existent (Recuperat din codul vechi)
+            tile.src = `./Assets/Blocks/${selectedBlockType}.png`;
+            tile.style.opacity = "1";
+            tile.removeAttribute('data-tree-id');
+        }
+        
+        placeSound.currentTime = 0; 
+        placeSound.play().catch(e => {});
+    }
+
+    // Inițializare hartă 8x8
+    for(let y=0; y<8; y++) { 
+        for(let x=0; x<8; x++) { 
+            createTile(x, y, 0, 'dirt'); 
+        } 
+    }
+
+    // Fix poziție selector la pornire
+    window.onload = () => {
+        const firstSlot = document.querySelector('.slot');
+        if (firstSlot) {
+            selectBlock('eraser', firstSlot, true);
+        }
+    };
+
+    // Zoom Logic (Recuperat și combinat)
     const zoomTrack = document.getElementById('zoom-track');
     const zoomDot = document.getElementById('zoom-dot');
     const map = document.getElementById('map');
 
     function updateZoom(e) {
         const rect = zoomTrack.getBoundingClientRect();
-        let percentage = (e.clientX - rect.left) / rect.width;
-        percentage = Math.max(0, Math.min(1, percentage));
-        zoomDot.style.left = (percentage * 100) + "%";
-        const scale = 1.0 + (percentage * 7.0);
-        const yMove = percentage * -50; 
-        map.style.transform = `translateZ(0) scale(${scale.toFixed(2)}) translateY(${yMove.toFixed(2)}px)`;
+        let p = Math.max(0, Math.min(1, (e.clientX - rect.left) / rect.width));
+        zoomDot.style.left = (p * 100) + "%";
+        
+        const scale = (1 + p * 7).toFixed(2);
+        const yMove = (p * -50).toFixed(2);
+        map.style.transform = `scale(${scale}) translateY(${yMove}px)`;
     }
-// this is the zoom traking script that smooths out the islant for a cool smoothing
+
     zoomTrack.addEventListener('mousedown', (e) => {
         updateZoom(e);
         const onMove = ev => updateZoom(ev);
-        const onUp = () => {
-            window.removeEventListener('mousemove', onMove);
-            window.removeEventListener('mouseup', onUp);
-        };
+        const onUp = () => { window.removeEventListener('mousemove', onMove); };
         window.addEventListener('mousemove', onMove);
         window.addEventListener('mouseup', onUp);
     });

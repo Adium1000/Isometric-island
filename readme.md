@@ -1,3 +1,4 @@
+![intro](GithubPreview/intro.png)
 # Welcome to Isometric Island Project!
 Here you will find some relevant subjects and explanations about my game including CREDITS, a quick guide, and much more!
 
@@ -29,11 +30,17 @@ This is the base guide for my project if you are new to this (your "How to use" 
 
 - You can shape the island however you want thanks to the eraser tool from the hotbar, verry helpfull for different and more cooler designs
 
-
 ![The Hotbar eraser item](GithubPreview/hotbareraser.png)
 - To use it you just have to click it from the hotbar like any regular item then press a higlighted block with your cursor and it will fade away
 - To bring an empty block back you just have to place another block from the hotbar here for exemple Dirt 
 - Overall verry helpfull
+
+### 5. MultiLayer Objects (Beta)
+![im](GithubPreview/intro.png)
+- You can add multilayer objects from the hotbar 
+- for now tree is the only option but it is stilish and cool!
+
+![im](GithubPreview/invent.png)
 
 ### Warning! 
 - Do not try to use browser zoom because it can sometimes broke the island canvas for an unknown reason
@@ -41,6 +48,10 @@ This is the base guide for my project if you are new to this (your "How to use" 
 - This 'Game' is only playable on a computer/tablet, playng on phone may result in some bugs that makes this 'game' unplayable
 - Do not copy my work and publish it witout crediting my github page , thanku!
 
+### (BETA) Meaning
+- even if the function works well for others it can be defective in some ways
+- if a function is categorized "BETA" you can expect bugs
+- bugs are like computer errors that ocures because of broken code, ore missing futures!
 
 
 # Software that I used to make this project come true
