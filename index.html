@@ -36,7 +36,6 @@
             -webkit-user-select: none;
         }
 
-        /* Recuperat: Animația la titlu din codul vechi */
         .game-title {
             position: absolute;
             top: 40px;
@@ -88,7 +87,7 @@
             transition: opacity 0.1s;
         }
 
-        /* Recuperat: Efectul de hover pe tile */
+    
         .tile:hover { 
             filter: brightness(1.2) drop-shadow(3px 4px 2px rgba(0,0,0,0.3)); 
         }
@@ -132,7 +131,7 @@
             background-size: 100% 100%; image-rendering: pixelated; cursor: pointer;
         }
 
-        /* Recuperat: Interacțiunea vizuală cu butonul de zoom */
+  
         #zoom-dot {
             position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
             width: 25px; height: 25px; background: url('./Assets/GUI/zoomdot.png') no-repeat center;
@@ -185,7 +184,6 @@
     const mapContainer = document.getElementById("map");
     const highlight = document.getElementById("selection-highlight");
 
-    // Deblocăm sunetul la prima interacțiune
     window.addEventListener('mousedown', () => {
         placeSound.load();
         hotbarSound.load();
@@ -210,7 +208,6 @@
         img.style.top  = (x + y) * (TILE_H / 2) - (z * TILE_H) + "px";
         img.style.zIndex = (x + y) + z;
         
-        // Atașăm coordonatele pentru a le folosi la construcție
         img.setAttribute('data-x', x);
         img.setAttribute('data-y', y);
         img.setAttribute('data-z', z);
@@ -235,17 +232,17 @@
             treeCounter++;
             const currentId = "tree_" + treeCounter;
             
-            // Construcție trunchi
+            
             for(let i=1; i<=3; i++) {
                 createTile(x, y, i, 'wood').setAttribute('data-tree-id', currentId);
             }
-            // Construcție frunze baza
+            
             for(let ox=-1; ox<=1; ox++) {
                 for(let oy=-1; oy<=1; oy++) {
                     createTile(x + ox, y + oy, 4, 'leaf').setAttribute('data-tree-id', currentId);
                 }
             }
-            // Construcție frunze mijloc
+            
             const midLeaves = [{dx:0, dy:0}, {dx:1, dy:0}, {dx:-1, dy:0}, {dx:0, dy:1}, {dx:0, dy:-1}];
             midLeaves.forEach(l => {
                 createTile(x + l.dx, y + l.dy, 5, 'leaf').setAttribute('data-tree-id', currentId);
@@ -263,14 +260,14 @@
         placeSound.play().catch(e => {});
     }
 
-    // Inițializare hartă 8x8
+   
     for(let y=0; y<8; y++) { 
         for(let x=0; x<8; x++) { 
             createTile(x, y, 0, 'dirt'); 
         } 
     }
 
-    // Fix poziție selector la pornire
+    
     window.onload = () => {
         const firstSlot = document.querySelector('.slot');
         if (firstSlot) {
@@ -278,7 +275,7 @@
         }
     };
 
-    // Zoom Logic (Recuperat și combinat)
+    
     const zoomTrack = document.getElementById('zoom-track');
     const zoomDot = document.getElementById('zoom-dot');
     const map = document.getElementById('map');
