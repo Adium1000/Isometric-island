@@ -4,7 +4,7 @@
 - more blocks to fill the hotbar
 - day/night/rain switch
 - add tree/ snow blocks/ and snowman/ flowers/rocks on grass
-- add shadows to the island 
+- add shadows to the island (done)
 - add music and music switch on off
 - add some comments so ppl understand what i did
 - decompile all of my game into HTML, CSS , JAVA
