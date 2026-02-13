@@ -12,8 +12,6 @@
                                                                                                                                                          
                                                                                                                                                          
 
-
-
 <!DOCTYPE html>
 <html lang="ro"> <!-- This is my native language but it does not affect project's functionallity -->
 <head>
@@ -184,8 +182,7 @@
     let selectedBlockType = 'eraser';
     let treeCounter = 0; 
 
-    // Zoom State
-    let currentZoomPercent = 0.43;
+    let currentZoomPercent = 0.43; 
     let zoomInterval = null;
 
     const placeSound = new Audio('./Assets/Audio/place.wav');
@@ -229,7 +226,6 @@
 
     function handleInteraction(tile, x, y, z) {
         const isPartOfTree = tile.hasAttribute('data-tree-id') && tile.getAttribute('data-tree-id') !== "";
-
         if (isPartOfTree && selectedBlockType !== 'eraser') return; 
 
         if (selectedBlockType === 'eraser') {
@@ -260,9 +256,7 @@
         placeSound.play().catch(e => {});
     }
 
-    // Initialize Map
     for(let y=0; y<8; y++) for(let x=0; x<8; x++) createTile(x, y, 0, 'dirt');
-
     function applyZoom() {
         zoomDot.style.left = (currentZoomPercent * 100) + "%";
         const scale = (1 + currentZoomPercent * 7).toFixed(2);
@@ -270,35 +264,37 @@
         map.style.transform = `scale(${scale}) translateY(${yMove}px)`;
     }
 
+    function updateSlider(clientX) {
+        const rect = zoomTrack.getBoundingClientRect();
+        let val = (clientX - rect.left) / rect.width;
+        currentZoomPercent = Math.max(0, Math.min(1, val));
+        applyZoom();
+    }
+
     zoomTrack.addEventListener('mousedown', (e) => {
-        const updateSlider = (ev) => {
-            const rect = zoomTrack.getBoundingClientRect();
-            currentZoomPercent = Math.max(0, Math.min(1, (ev.clientX - rect.left) / rect.width));
-            applyZoom();
+        updateSlider(e.clientX);
+        const onMove = ev => updateSlider(ev.clientX);
+        const onUp = () => {
+            window.removeEventListener('mousemove', onMove);
+            window.removeEventListener('mouseup', onUp);
         };
-        updateSlider(e);
-        const onMove = ev => updateSlider(ev);
-        const onUp = () => window.removeEventListener('mousemove', onMove);
         window.addEventListener('mousemove', onMove);
         window.addEventListener('mouseup', onUp);
     });
 
     function startZooming(delta) {
-        currentZoomPercent = Math.max(0, Math.min(1, currentZoomPercent + delta));
-        applyZoom();
-        zoomInterval = setInterval(() => {
+        if(zoomInterval) clearInterval(zoomInterval);
+        const tick = () => {
             currentZoomPercent = Math.max(0, Math.min(1, currentZoomPercent + delta));
             applyZoom();
-        }, 50);
-    }
-
-    function stopZooming() {
-        clearInterval(zoomInterval);
+        };
+        tick();
+        zoomInterval = setInterval(tick, 50);
     }
 
     document.getElementById('btn-zoom-in').addEventListener('mousedown', () => startZooming(0.02));
     document.getElementById('btn-zoom-out').addEventListener('mousedown', () => startZooming(-0.02));
-    window.addEventListener('mouseup', stopZooming);
+    window.addEventListener('mouseup', () => clearInterval(zoomInterval));
 
     window.onload = () => {
         applyZoom();
