@@ -91,37 +91,75 @@
 
         #dock-container {
             position: fixed;
-            bottom: 20px; width: 100%; height: 60px;
-            display: flex; justify-content: center; align-items: center;
-            z-index: 100; pointer-events: none;
+            bottom: 20px; 
+            width: 100%; 
+            height: 60px; 
+            display: flex; 
+            justify-content: center; 
+            align-items: center;
+            z-index: 100; 
+            pointer-events: none;
         }
 
         #dock {
-            position: relative; pointer-events: auto; width: 1200px; height: 100%;
+            position: relative; 
+            pointer-events: auto; 
+            width: 1200px; 
+            height: 100%;
             background: url('./Assets/GUI/hotbar.png') no-repeat center;
-            background-size: contain; image-rendering: pixelated;
-            display: flex; justify-content: center; align-items: center; gap: 20px;
+            background-size: contain; 
+            image-rendering: pixelated;
+            display: flex; 
+            justify-content: center; 
+            align-items: center; 
+            gap: 15px; 
         }
 
-        .slot { width: 60px; height: 60px; display: flex; justify-content: center; align-items: center; cursor: pointer; z-index: 2; }
-        .slot img { width: 35px; height: 35px; image-rendering: pixelated; }
+        .slot { 
+            width: 60px; 
+            height: 60px; 
+            display: flex; 
+            justify-content: center; 
+            align-items: center; 
+            cursor: pointer; 
+            z-index: 2; 
+        }
+        
+        .slot img { 
+            width: 34px; 
+            height: 34px; 
+            image-rendering: pixelated; 
+        }
 
         #selection-highlight {
-            position: absolute; width: 60px; height: 60px;
-            left: 0; top: 0; 
+            position: absolute; 
+            width: 60px; 
+            height: 60px;
+            left: 0; 
+            top: 0; 
             background: url('./Assets/GUI/selector.png') no-repeat center;
-            background-size: contain; image-rendering: pixelated;
+            background-size: contain; 
+            image-rendering: pixelated;
             transition: all 0.2s cubic-bezier(0.18, 0.89, 0.32, 1.28);
-            pointer-events: none; z-index: 1; transform: scale(1.2);
+            pointer-events: none; 
+            z-index: 1; 
+            transform: scale(1.1);
         }
 
         #zoom-ui {
-            position: fixed; bottom: 20px; right: 40px; height: 60px;
-            display: flex; align-items: center; gap: 10px; z-index: 101;
+            position: fixed; 
+            bottom: 20px; 
+            right: 40px; 
+            height: 60px;
+            display: flex; 
+            align-items: center; 
+            gap: 10px; 
+            z-index: 101;
         }
 
         .zoom-btn { 
-            width: 25px; height: 25px; 
+            width: 25px; 
+            height: 25px; 
             image-rendering: pixelated; 
             cursor: pointer; 
             transition: transform 0.1s;
@@ -129,15 +167,25 @@
         .zoom-btn:active { transform: scale(0.8); }
 
         #zoom-track {
-            position: relative; width: 200px; height: 20px;
+            position: relative; 
+            width: 200px; 
+            height: 20px;
             background: url('./Assets/GUI/zoombar.png') no-repeat center;
-            background-size: 100% 100%; image-rendering: pixelated; cursor: pointer;
+            background-size: 100% 100%; 
+            image-rendering: pixelated; 
+            cursor: pointer;
         }
 
         #zoom-dot {
-            position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
-            width: 25px; height: 25px; background: url('./Assets/GUI/zoomdot.png') no-repeat center;
-            background-size: contain; image-rendering: pixelated;
+            position: absolute; 
+            top: 50%; 
+            left: 50%; 
+            transform: translate(-50%, -50%);
+            width: 25px; 
+            height: 25px; 
+            background: url('./Assets/GUI/zoomdot.png') no-repeat center;
+            background-size: contain; 
+            image-rendering: pixelated;
             transition: transform 0.15s ease-out, left 0.1s ease-out;
             pointer-events: none;
         }
@@ -165,6 +213,11 @@
         <div class="slot" onclick="selectBlock('dirt2', this)"><img src="./Assets/Blocks/dirt2.png"></div>
         <div class="slot" onclick="selectBlock('crops', this)"><img src="./Assets/Blocks/crops.png"></div>
         <div class="slot" onclick="selectBlock('stone', this)"><img src="./Assets/Blocks/stone.png"></div>
+        <div class="slot" onclick="selectBlock('mossystone', this)"><img src="./Assets/Blocks/mossystone.png"></div>
+        <div class="slot" onclick="selectBlock('sand', this)"><img src="./Assets/Blocks/sand.png"></div>
+        <div class="slot" onclick="selectBlock('redsand', this)"><img src="./Assets/Blocks/redsand.png"></div>
+        <div class="slot" onclick="selectBlock('melon', this)"><img src="./Assets/Blocks/melon.png"></div>
+        <div class="slot" onclick="selectBlock('Hay', this)"><img src="./Assets/Blocks/Hay.png"></div>
         <div class="slot" onclick="selectBlock('water', this)"><img src="./Assets/Blocks/water.png"></div>
         <div class="slot" onclick="selectBlock('tree', this)"><img src="./Assets/Blocks/tree.png"></div>
     </div>
@@ -225,20 +278,20 @@
     }
 
     function handleInteraction(tile, x, y, z) {
-        const isPartOfTree = tile.hasAttribute('data-tree-id') && tile.getAttribute('data-tree-id') !== "";
-        if (isPartOfTree && selectedBlockType !== 'eraser') return; 
+        const isPartOfObject = tile.hasAttribute('data-tree-id') && tile.getAttribute('data-tree-id') !== "";
+        if (isPartOfObject && selectedBlockType !== 'eraser') return; 
 
         if (selectedBlockType === 'eraser') {
-            const treeId = tile.getAttribute('data-tree-id');
-            if (treeId) {
-                document.querySelectorAll(`[data-tree-id="${treeId}"]`).forEach(el => el.remove());
+            const objId = tile.getAttribute('data-tree-id');
+            if (objId) {
+                document.querySelectorAll(`[data-tree-id="${objId}"]`).forEach(el => el.remove());
             } else {
                 tile.style.opacity = "0";
             }
         } else if (selectedBlockType === 'tree') {
             if(tile.style.opacity === "0") return;
             treeCounter++;
-            const currentId = "tree_" + treeCounter;
+            const currentId = "obj_" + treeCounter;
             for(let i=1; i<=3; i++) createTile(x, y, i, 'wood').setAttribute('data-tree-id', currentId);
             for(let ox=-1; ox<=1; ox++) {
                 for(let oy=-1; oy<=1; oy++) createTile(x + ox, y + oy, 4, 'leaf').setAttribute('data-tree-id', currentId);
@@ -247,6 +300,11 @@
                 createTile(x + l.dx, y + l.dy, 5, 'leaf').setAttribute('data-tree-id', currentId);
             });
             createTile(x, y, 6, 'leaf').setAttribute('data-tree-id', currentId);
+        } else if (selectedBlockType === 'melon' || selectedBlockType === 'Hay') {
+            if(tile.style.opacity === "0") return;
+            treeCounter++;
+            const currentId = "obj_" + treeCounter;
+            createTile(x, y, z + 1, selectedBlockType).setAttribute('data-tree-id', currentId);
         } else {
             tile.src = `./Assets/Blocks/${selectedBlockType}.png`;
             tile.style.opacity = "1";
@@ -257,6 +315,7 @@
     }
 
     for(let y=0; y<8; y++) for(let x=0; x<8; x++) createTile(x, y, 0, 'dirt');
+    
     function applyZoom() {
         zoomDot.style.left = (currentZoomPercent * 100) + "%";
         const scale = (1 + currentZoomPercent * 7).toFixed(2);

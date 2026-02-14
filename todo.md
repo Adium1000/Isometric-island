@@ -13,3 +13,5 @@
 - undo redo
 - add a float on off switch
 - add actions to zoom buttons
+- add lanterns
+
