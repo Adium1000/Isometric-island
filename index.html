@@ -11,7 +11,7 @@
     (___)   '.___.'    `.__.'  (___)(___)(___) `.__.'    `.__.   (___)       (___)  `.__,'           (___)   '.___.'   (___) `.__.'_. (___)(___)  `.__,'  -->   
                                                                                                                                                          
                                                                                                                                                          
-
+<!-- Isometric island HTML Source code 17.02.26 -->
 <!DOCTYPE html>
 <html lang="ro"> <!-- This is my native language but it does not affect project's functionallity -->
 <head>
@@ -34,13 +34,17 @@
             -webkit-user-select: none;
         }
 
-        .game-title {
+        .game-title-container {
             position: absolute;
             top: 40px;
             left: 50%;
             transform: translateX(-50%);
-            margin: 0;
             z-index: 1000;
+            text-align: center;
+        }
+
+        .game-title {
+            margin: 0;
             color: #523519;
             font-size: 20px;
             font-weight: bold;
@@ -51,8 +55,26 @@
             display: inline-block;
         }
 
+        #splash-text {
+            position: absolute;
+            top: 20px;
+            right: -60px;
+            color: #ffff00;
+            font-size: 10px;
+            text-shadow: 2px 2px #3f3f00;
+            transform: rotate(-20deg);
+            animation: splashBounce 0.5s infinite alternate;
+            pointer-events: none;
+            white-space: nowrap;
+        }
+
+        @keyframes splashBounce {
+            from { transform: rotate(-20deg) scale(1); }
+            to { transform: rotate(-20deg) scale(1.1); }
+        }
+
         .game-title:hover {
-            transform: translateX(-50%) scale(1.2);
+            transform: scale(1.2);
         }
 
         #stage {
@@ -73,6 +95,16 @@
             z-index: 10;
             transform-origin: center center;
             backface-visibility: hidden;
+        }
+
+        @keyframes islandFloat {
+            0% { transform: scale(var(--zoom-scale)) translateY(var(--y-offset)); }
+            50% { transform: scale(var(--zoom-scale)) translateY(calc(var(--y-offset) - 15px)); }
+            100% { transform: scale(var(--zoom-scale)) translateY(var(--y-offset)); }
+        }
+
+        .floating-island {
+            animation: islandFloat 3s ease-in-out infinite;
         }
 
         .tile {
@@ -115,6 +147,20 @@
             gap: 15px; 
         }
 
+        #block-name-display {
+            position: absolute;
+            top: -40px;
+            left: 50%;
+            transform: translateX(-50%);
+            color: #523519;
+            font-size: 12px;
+            text-shadow: 1px 1px 0px rgba(255, 255, 255, 0.5);
+            pointer-events: none;
+            opacity: 0;
+            transition: opacity 0.2s;
+            text-transform: uppercase;
+        }
+
         .slot { 
             width: 60px; 
             height: 60px; 
@@ -129,6 +175,26 @@
             width: 34px; 
             height: 34px; 
             image-rendering: pixelated; 
+        }
+
+        #music-toggle {
+            position: absolute;
+            left: -75px;
+            width: 60px;
+            height: 60px;
+            cursor: pointer;
+            image-rendering: pixelated;
+            z-index: 5;
+        }
+
+        #float-toggle {
+            position: absolute;
+            left: -145px;
+            width: 60px;
+            height: 60px;
+            cursor: pointer;
+            image-rendering: pixelated;
+            z-index: 5;
         }
 
         #selection-highlight {
@@ -197,7 +263,10 @@
 </head>
 <body>
 
-<h1 class="game-title">Isometric Island</h1>
+<div class="game-title-container">
+    <h1 class="game-title">Isometric Island</h1>
+    <div id="splash-text">relaxing</div>
+</div>
 
 <div id="stage">
     <div id="map"></div>
@@ -205,21 +274,25 @@
 
 <div id="dock-container">
     <div id="dock">
+        <div id="block-name-display">Eraser</div>
+        <img id="float-toggle" src="./Assets/GUI/floatoff.png" onclick="toggleFloat()">
+        <img id="music-toggle" src="./Assets/GUI/bgoff.png" onclick="toggleMusic()">
+        
         <div id="selection-highlight"></div>
-        <div class="slot" onclick="selectBlock('eraser', this)"><img src="./Assets/Blocks/eraser.png"></div>
-        <div class="slot" onclick="selectBlock('dirt', this)"><img src="./Assets/Blocks/dirt.png"></div>
-        <div class="slot" onclick="selectBlock('flovers', this)"><img src="./Assets/Blocks/flovers.png"></div>
-        <div class="slot" onclick="selectBlock('rock', this)"><img src="./Assets/Blocks/rock.png"></div>
-        <div class="slot" onclick="selectBlock('dirt2', this)"><img src="./Assets/Blocks/dirt2.png"></div>
-        <div class="slot" onclick="selectBlock('crops', this)"><img src="./Assets/Blocks/crops.png"></div>
-        <div class="slot" onclick="selectBlock('stone', this)"><img src="./Assets/Blocks/stone.png"></div>
-        <div class="slot" onclick="selectBlock('mossystone', this)"><img src="./Assets/Blocks/mossystone.png"></div>
-        <div class="slot" onclick="selectBlock('sand', this)"><img src="./Assets/Blocks/sand.png"></div>
-        <div class="slot" onclick="selectBlock('redsand', this)"><img src="./Assets/Blocks/redsand.png"></div>
-        <div class="slot" onclick="selectBlock('melon', this)"><img src="./Assets/Blocks/melon.png"></div>
-        <div class="slot" onclick="selectBlock('Hay', this)"><img src="./Assets/Blocks/Hay.png"></div>
-        <div class="slot" onclick="selectBlock('water', this)"><img src="./Assets/Blocks/water.png"></div>
-        <div class="slot" onclick="selectBlock('tree', this)"><img src="./Assets/Blocks/tree.png"></div>
+        <div class="slot" onmouseover="showName('Eraser: Good for shaping and removing blocks ')" onmouseout="hideName()" onclick="selectBlock('eraser', this)"><img src="./Assets/Blocks/eraser.png"></div>
+        <div class="slot" onmouseover="showName('Grass: Natural block')" onmouseout="hideName()" onclick="selectBlock('dirt', this)"><img src="./Assets/Blocks/dirt.png"></div>
+        <div class="slot" onmouseover="showName('Flowers: Natural Decoration')" onmouseout="hideName()" onclick="selectBlock('flovers', this)"><img src="./Assets/Blocks/flovers.png"></div>
+        <div class="slot" onmouseover="showName('Rock: Natural Decoration')" onmouseout="hideName()" onclick="selectBlock('rock', this)"><img src="./Assets/Blocks/rock.png"></div>
+        <div class="slot" onmouseover="showName('Dirt: Natural block')" onmouseout="hideName()" onclick="selectBlock('dirt2', this)"><img src="./Assets/Blocks/dirt2.png"></div>
+        <div class="slot" onmouseover="showName('Crops: Natural Decoration')" onmouseout="hideName()" onclick="selectBlock('crops', this)"><img src="./Assets/Blocks/crops.png"></div>
+        <div class="slot" onmouseover="showName('Stone: Natural block')" onmouseout="hideName()" onclick="selectBlock('stone', this)"><img src="./Assets/Blocks/stone.png"></div>
+        <div class="slot" onmouseover="showName('Mossy Stone: Natural Decoration')" onmouseout="hideName()" onclick="selectBlock('mossystone', this)"><img src="./Assets/Blocks/mossystone.png"></div>
+        <div class="slot" onmouseover="showName('Sand: Natural block')" onmouseout="hideName()" onclick="selectBlock('sand', this)"><img src="./Assets/Blocks/sand.png"></div>
+        <div class="slot" onmouseover="showName('Red Sand: Natural block')" onmouseout="hideName()" onclick="selectBlock('redsand', this)"><img src="./Assets/Blocks/redsand.png"></div>
+        <div class="slot" onmouseover="showName('Watermelon: Natural Decoration (multilayer)')" onmouseout="hideName()" onclick="selectBlock('melon', this)"><img src="./Assets/Blocks/melon.png"></div>
+        <div class="slot" onmouseover="showName('Haystack: Natural Decoration (multilayer)')" onmouseout="hideName()" onclick="selectBlock('Hay', this)"><img src="./Assets/Blocks/Hay.png"></div>
+        <div class="slot" onmouseover="showName('Water: Natural block')" onmouseout="hideName()" onclick="selectBlock('water', this)"><img src="./Assets/Blocks/water.png"></div>
+        <div class="slot" onmouseover="showName('Tree: Natural Decoration (multilayer)')" onmouseout="hideName()" onclick="selectBlock('tree', this)"><img src="./Assets/Blocks/tree.png"></div>
     </div>
 </div>
 
@@ -237,19 +310,71 @@
 
     let currentZoomPercent = 0.43; 
     let zoomInterval = null;
+    let isFloating = false;
+
+    const splashes = ["amazing!", "wooooow!", "relaxing", "pixel art!", "isometric!", "build it!"];
+    const splashEl = document.getElementById('splash-text');
+    splashEl.innerText = splashes[Math.floor(Math.random() * splashes.length)];
+
+    const nameDisplay = document.getElementById('block-name-display');
+    function showName(name) {
+        nameDisplay.innerText = name;
+        nameDisplay.style.opacity = "1";
+    }
+    function hideName() {
+        nameDisplay.style.opacity = "0";
+    }
 
     const placeSound = new Audio('./Assets/Audio/place.wav');
     const hotbarSound = new Audio('./Assets/Audio/hotbar.wav');
+    const bgMusic = new Audio('./Assets/Audio/BG.wav');
+    bgMusic.loop = true;
+    let isMusicPlaying = true;
+
     const mapContainer = document.getElementById("map");
     const map = document.getElementById('map');
     const highlight = document.getElementById("selection-highlight");
     const zoomTrack = document.getElementById('zoom-track');
     const zoomDot = document.getElementById('zoom-dot');
+    const musicBtn = document.getElementById('music-toggle');
+    const floatBtn = document.getElementById('float-toggle');
+
+    function playMusic() {
+        bgMusic.play().catch(e => {
+            console.log("Autoplay blocat, asteptam interactiunea...");
+        });
+    }
 
     window.addEventListener('mousedown', () => {
         placeSound.load();
         hotbarSound.load();
+        bgMusic.load();
+        if (isMusicPlaying) playMusic();
     }, { once: true });
+
+    function toggleMusic() {
+        if (isMusicPlaying) {
+            bgMusic.pause();
+            musicBtn.src = "./Assets/GUI/bgon.png"; 
+            isMusicPlaying = false;
+        } else {
+            bgMusic.play().catch(e => {});
+            musicBtn.src = "./Assets/GUI/bgoff.png"; 
+            isMusicPlaying = true;
+        }
+    }
+
+    function toggleFloat() {
+        isFloating = !isFloating;
+        if (isFloating) {
+            map.classList.add('floating-island');
+            floatBtn.src = "./Assets/GUI/floaton.png";
+        } else {
+            map.classList.remove('floating-island');
+            floatBtn.src = "./Assets/GUI/floatoff.png";
+        }
+        applyZoom();
+    }
 
     function selectBlock(type, el, skipSound = false) {
         selectedBlockType = type;
@@ -265,6 +390,9 @@
         const img = document.createElement("img");
         img.src = `./Assets/Blocks/${type}.png`;
         img.className = "tile";
+        img.setAttribute('data-x', x);
+        img.setAttribute('data-y', y);
+        img.setAttribute('data-z', z);
         img.style.left = (x - y) * (TILE_W / 2) + "px";
         img.style.top  = (x + y) * (TILE_H / 2) - (z * TILE_H) + "px";
         img.style.zIndex = (x + y) + z;
@@ -277,10 +405,72 @@
         return img;
     }
 
+    function createFallingLeaf(startX, startY, treeId) {
+        if (!document.querySelector(`[data-tree-id="${treeId}"]`)) return;
+
+        const leaf = document.createElement("img");
+        const types = ['falling leaf1.png', 'falling leaf2.png', 'falling leaf3.png'];
+        const randomType = types[Math.floor(Math.random() * types.length)];
+        
+        leaf.src = `./Assets/Blocks/${randomType}`;
+        leaf.className = "tile";
+        leaf.style.pointerEvents = "none";
+        leaf.style.zIndex = "1000";
+        leaf.style.transform = "scale(0.5)"; 
+        leaf.style.transition = "opacity 1.5s ease-out"; 
+        mapContainer.appendChild(leaf);
+
+        let curX = startX + (Math.random() * 1.6 - 0.8);
+        let curY = startY + (Math.random() * 1.6 - 0.8);
+        let curZ = 5 + Math.random(); 
+        let angle = Math.random() * Math.PI * 2;
+        let speed = 0.015 + Math.random() * 0.02;
+
+        function animate() {
+            curZ -= speed;
+            angle += 0.03;
+            let driftX = curX + Math.sin(angle) * 0.5;
+            let driftY = curY + Math.cos(angle) * 0.5;
+
+            leaf.style.left = (driftX - driftY) * (TILE_W / 2) + "px";
+            leaf.style.top = (driftX + driftY) * (TILE_H / 2) - (curZ * TILE_H) + "px";
+
+            if (curZ <= 0.05) {
+                if (driftX >= -0.5 && driftX <= 7.5 && driftY >= -0.5 && driftY <= 7.5) {
+                    leaf.style.top = (driftX + driftY) * (TILE_H / 2) + "px";
+                    setTimeout(() => {
+                        leaf.style.opacity = "0";
+                        setTimeout(() => leaf.remove(), 1500);
+                    }, 3000);
+                } else {
+                    leaf.style.opacity = "0";
+                    setTimeout(() => leaf.remove(), 1500);
+                }
+                return;
+            }
+            requestAnimationFrame(animate);
+        }
+        animate();
+    }
+
+    function startInfiniteLeaves(x, y, treeId) {
+        const interval = setInterval(() => {
+            if (!document.querySelector(`[data-tree-id="${treeId}"]`)) {
+                clearInterval(interval);
+                return;
+            }
+            if (Math.random() > 0.6) {
+                const burst = Math.floor(Math.random() * 3) + 1;
+                for(let i=0; i<burst; i++) {
+                    setTimeout(() => createFallingLeaf(x, y, treeId), i * 500);
+                }
+            }
+        }, 3000 + Math.random() * 4000);
+    }
+
     function handleInteraction(tile, x, y, z) {
         const isPartOfObject = tile.hasAttribute('data-tree-id') && tile.getAttribute('data-tree-id') !== "";
-        if (isPartOfObject && selectedBlockType !== 'eraser') return; 
-
+        
         if (selectedBlockType === 'eraser') {
             const objId = tile.getAttribute('data-tree-id');
             if (objId) {
@@ -288,24 +478,30 @@
             } else {
                 tile.style.opacity = "0";
             }
-        } else if (selectedBlockType === 'tree') {
-            if(tile.style.opacity === "0") return;
+        } else if (selectedBlockType === 'tree' || selectedBlockType === 'melon' || selectedBlockType === 'Hay') {
+            if(tile.style.opacity === "0" || isPartOfObject) return;
+
+            const existing = document.querySelector(`[data-x="${x}"][data-y="${y}"][data-z="${z+1}"]`);
+            if (existing && existing.style.opacity !== "0") return;
+
             treeCounter++;
             const currentId = "obj_" + treeCounter;
-            for(let i=1; i<=3; i++) createTile(x, y, i, 'wood').setAttribute('data-tree-id', currentId);
-            for(let ox=-1; ox<=1; ox++) {
-                for(let oy=-1; oy<=1; oy++) createTile(x + ox, y + oy, 4, 'leaf').setAttribute('data-tree-id', currentId);
+
+            if (selectedBlockType === 'tree') {
+                for(let i=1; i<=3; i++) createTile(x, y, i, 'wood').setAttribute('data-tree-id', currentId);
+                for(let ox=-1; ox<=1; ox++) {
+                    for(let oy=-1; oy<=1; oy++) createTile(x + ox, y + oy, 4, 'leaf').setAttribute('data-tree-id', currentId);
+                }
+                [{dx:0, dy:0}, {dx:1, dy:0}, {dx:-1, dy:0}, {dx:0, dy:1}, {dx:0, dy:-1}].forEach(l => {
+                    createTile(x + l.dx, y + l.dy, 5, 'leaf').setAttribute('data-tree-id', currentId);
+                });
+                createTile(x, y, 6, 'leaf').setAttribute('data-tree-id', currentId);
+                startInfiniteLeaves(x, y, currentId);
+            } else {
+                createTile(x, y, z + 1, selectedBlockType).setAttribute('data-tree-id', currentId);
             }
-            [{dx:0, dy:0}, {dx:1, dy:0}, {dx:-1, dy:0}, {dx:0, dy:1}, {dx:0, dy:-1}].forEach(l => {
-                createTile(x + l.dx, y + l.dy, 5, 'leaf').setAttribute('data-tree-id', currentId);
-            });
-            createTile(x, y, 6, 'leaf').setAttribute('data-tree-id', currentId);
-        } else if (selectedBlockType === 'melon' || selectedBlockType === 'Hay') {
-            if(tile.style.opacity === "0") return;
-            treeCounter++;
-            const currentId = "obj_" + treeCounter;
-            createTile(x, y, z + 1, selectedBlockType).setAttribute('data-tree-id', currentId);
         } else {
+            if(isPartOfObject) return;
             tile.src = `./Assets/Blocks/${selectedBlockType}.png`;
             tile.style.opacity = "1";
             tile.removeAttribute('data-tree-id');
@@ -320,7 +516,13 @@
         zoomDot.style.left = (currentZoomPercent * 100) + "%";
         const scale = (1 + currentZoomPercent * 7).toFixed(2);
         const yMove = (currentZoomPercent * -50).toFixed(2);
-        map.style.transform = `scale(${scale}) translateY(${yMove}px)`;
+        
+        map.style.setProperty('--zoom-scale', scale);
+        map.style.setProperty('--y-offset', yMove + "px");
+
+        if (!isFloating) {
+            map.style.transform = `scale(${scale}) translateY(${yMove}px)`;
+        }
     }
 
     function updateSlider(clientX) {
@@ -359,6 +561,7 @@
         applyZoom();
         const firstSlot = document.querySelector('.slot');
         if (firstSlot) selectBlock('eraser', firstSlot, true);
+        playMusic(); 
     };
 </script>
 </body>
