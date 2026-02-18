@@ -13,6 +13,11 @@
 - make the game playable on small screens
 - add a scond page to the blocks page
 - opimize zoom
+- add a credits banner
+- add minecraft inspiured banner
+- add warning banner
+- add Beta banner
+- add icons in 7, 8 
 
 What I added:
 - add actions to zoom buttons!
@@ -21,28 +26,3 @@ What I added:
 - add music and music switch on off
 - add a float on off switch
 
-Next Devlog Needed
-//redesign mute music switch
-// design float button
--//design a devlog thumbnail
-//- update the ZoomBar descripiton
-//- add info about multilayer blocks in 2.
-//- grammar corections because yea
-add icons in 7, 8 
-//add a user guide banner
-/add a credits banner
-/add minecraft inspiured banner
-
-
-
-What is new? Devlog Sketch
-
-- Inspired by minecraft Tips 
-Multilayer Tree update
-- New tree leaf texture
-- New Tree Icon in hotbar
-- Random leafs falling out of the tree
-Hotbar updates
-- Hovering now shows the name of the item
-Island Float button!
-BG music Button!
