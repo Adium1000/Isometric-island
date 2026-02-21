@@ -11,7 +11,7 @@
     (___)   '.___.'    `.__.'  (___)(___)(___) `.__.'    `.__.   (___)       (___)  `.__,'           (___)   '.___.'   (___) `.__.'_. (___)(___)  `.__,'  -->   
                                                                                                                                                          
                                                                                                                                                          
-<!-- Isometric island HTML Source code 17.02.26 -->
+<!-- Isometric island HTML Source code 21.02.26 BUILD 2 -->
 <!DOCTYPE html>
 <html lang="ro"> <!-- This is my native language but it does not affect project's functionallity -->
 <head>
@@ -73,9 +73,7 @@
             to { transform: rotate(-20deg) scale(1.1); }
         }
 
-        .game-title:hover {
-            transform: scale(1.2);
-        }
+        .game-title:hover { transform: scale(1.2); }
 
         #stage {
             position: relative;
@@ -98,14 +96,12 @@
         }
 
         @keyframes islandFloat {
-            0% { transform: scale(var(--zoom-scale)) translateY(var(--y-offset)); }
-            50% { transform: scale(var(--zoom-scale)) translateY(calc(var(--y-offset) - 15px)); }
-            100% { transform: scale(var(--zoom-scale)) translateY(var(--y-offset)); }
+            0% { transform: scale(var(--zoom-scale)) translate(var(--pan-x), calc(var(--y-offset) + var(--pan-y))); }
+            50% { transform: scale(var(--zoom-scale)) translate(var(--pan-x), calc(var(--y-offset) - 15px + var(--pan-y))); }
+            100% { transform: scale(var(--zoom-scale)) translate(var(--pan-x), calc(var(--y-offset) + var(--pan-y))); }
         }
 
-        .floating-island {
-            animation: islandFloat 3s ease-in-out infinite;
-        }
+        .floating-island { animation: islandFloat 3s ease-in-out infinite; }
 
         .tile {
             position: absolute;
@@ -117,9 +113,7 @@
             transition: opacity 0.1s;
         }
 
-        .tile:hover { 
-            filter: brightness(1.2) drop-shadow(3px 4px 2px rgba(0,0,0,0.3)); 
-        }
+        .tile:hover { filter: brightness(1.2) drop-shadow(3px 4px 2px rgba(0,0,0,0.3)); }
 
         #dock-container {
             position: fixed;
@@ -177,25 +171,23 @@
             image-rendering: pixelated; 
         }
 
-        #music-toggle {
+        .page-2 { display: none; }
+
+        #music-toggle, #float-toggle {
             position: absolute;
-            left: -75px;
             width: 60px;
             height: 60px;
             cursor: pointer;
             image-rendering: pixelated;
             z-index: 5;
+            transition: transform 0.1s ease, filter 0.1s ease;
         }
 
-        #float-toggle {
-            position: absolute;
-            left: -145px;
-            width: 60px;
-            height: 60px;
-            cursor: pointer;
-            image-rendering: pixelated;
-            z-index: 5;
-        }
+        #music-toggle { left: -75px; }
+        #float-toggle { left: -145px; }
+
+        #music-toggle:hover, #float-toggle:hover { transform: scale(1.1); filter: brightness(1.1); }
+        #music-toggle:active, #float-toggle:active { transform: scale(0.9); }
 
         #selection-highlight {
             position: absolute; 
@@ -228,7 +220,7 @@
             height: 25px; 
             image-rendering: pixelated; 
             cursor: pointer; 
-            transition: transform 0.1s;
+            transition: transform 0.1s ease, opacity 0.2s ease;
         }
         .zoom-btn:active { transform: scale(0.8); }
 
@@ -253,11 +245,12 @@
             background-size: contain; 
             image-rendering: pixelated;
             transition: transform 0.15s ease-out, left 0.1s ease-out;
-            pointer-events: none;
+            pointer-events: auto;
         }
 
-        #zoom-track:hover #zoom-dot {
+        #zoom-dot:hover {
             transform: translate(-50%, -50%) scale(1.2);
+            cursor: grab;
         }
     </style>
 </head>
@@ -279,20 +272,27 @@
         <img id="music-toggle" src="./Assets/GUI/bgoff.png" onclick="toggleMusic()">
         
         <div id="selection-highlight"></div>
-        <div class="slot" onmouseover="showName('Eraser: Good for shaping and removing blocks ')" onmouseout="hideName()" onclick="selectBlock('eraser', this)"><img src="./Assets/Blocks/eraser.png"></div>
-        <div class="slot" onmouseover="showName('Grass: Natural block')" onmouseout="hideName()" onclick="selectBlock('dirt', this)"><img src="./Assets/Blocks/dirt.png"></div>
-        <div class="slot" onmouseover="showName('Flowers: Natural Decoration')" onmouseout="hideName()" onclick="selectBlock('flovers', this)"><img src="./Assets/Blocks/flovers.png"></div>
-        <div class="slot" onmouseover="showName('Rock: Natural Decoration')" onmouseout="hideName()" onclick="selectBlock('rock', this)"><img src="./Assets/Blocks/rock.png"></div>
-        <div class="slot" onmouseover="showName('Dirt: Natural block')" onmouseout="hideName()" onclick="selectBlock('dirt2', this)"><img src="./Assets/Blocks/dirt2.png"></div>
-        <div class="slot" onmouseover="showName('Crops: Natural Decoration')" onmouseout="hideName()" onclick="selectBlock('crops', this)"><img src="./Assets/Blocks/crops.png"></div>
-        <div class="slot" onmouseover="showName('Stone: Natural block')" onmouseout="hideName()" onclick="selectBlock('stone', this)"><img src="./Assets/Blocks/stone.png"></div>
-        <div class="slot" onmouseover="showName('Mossy Stone: Natural Decoration')" onmouseout="hideName()" onclick="selectBlock('mossystone', this)"><img src="./Assets/Blocks/mossystone.png"></div>
-        <div class="slot" onmouseover="showName('Sand: Natural block')" onmouseout="hideName()" onclick="selectBlock('sand', this)"><img src="./Assets/Blocks/sand.png"></div>
-        <div class="slot" onmouseover="showName('Red Sand: Natural block')" onmouseout="hideName()" onclick="selectBlock('redsand', this)"><img src="./Assets/Blocks/redsand.png"></div>
-        <div class="slot" onmouseover="showName('Watermelon: Natural Decoration (multilayer)')" onmouseout="hideName()" onclick="selectBlock('melon', this)"><img src="./Assets/Blocks/melon.png"></div>
-        <div class="slot" onmouseover="showName('Haystack: Natural Decoration (multilayer)')" onmouseout="hideName()" onclick="selectBlock('Hay', this)"><img src="./Assets/Blocks/Hay.png"></div>
-        <div class="slot" onmouseover="showName('Water: Natural block')" onmouseout="hideName()" onclick="selectBlock('water', this)"><img src="./Assets/Blocks/water.png"></div>
-        <div class="slot" onmouseover="showName('Tree: Natural Decoration (multilayer)')" onmouseout="hideName()" onclick="selectBlock('tree', this)"><img src="./Assets/Blocks/tree.png"></div>
+        
+        <div class="slot page-1" onmouseover="showName('Eraser: Good for shaping and removing blocks ')" onmouseout="hideName()" onclick="selectBlock('eraser', this)"><img src="./Assets/Blocks/eraser.png"></div>
+        <div class="slot page-1" onmouseover="showName('Grass: Natural block')" onmouseout="hideName()" onclick="selectBlock('dirt', this)"><img src="./Assets/Blocks/dirt.png"></div>
+        <div class="slot page-1" onmouseover="showName('Flowers: Natural Decoration')" onmouseout="hideName()" onclick="selectBlock('flovers', this)"><img src="./Assets/Blocks/flovers.png"></div>
+        <div class="slot page-1" onmouseover="showName('Rock: Natural Decoration')" onmouseout="hideName()" onclick="selectBlock('rock', this)"><img src="./Assets/Blocks/rock.png"></div>
+        <div class="slot page-1" onmouseover="showName('Dirt: Natural block')" onmouseout="hideName()" onclick="selectBlock('dirt2', this)"><img src="./Assets/Blocks/dirt2.png"></div>
+        <div class="slot page-1" onmouseover="showName('Crops: Natural Decoration')" onmouseout="hideName()" onclick="selectBlock('crops', this)"><img src="./Assets/Blocks/crops.png"></div>
+        <div class="slot page-1" onmouseover="showName('Stone: Natural block')" onmouseout="hideName()" onclick="selectBlock('stone', this)"><img src="./Assets/Blocks/stone.png"></div>
+        <div class="slot page-1" onmouseover="showName('Mossy Stone: Natural Decoration')" onmouseout="hideName()" onclick="selectBlock('mossystone', this)"><img src="./Assets/Blocks/mossystone.png"></div>
+        <div class="slot page-1" onmouseover="showName('Sand: Natural block')" onmouseout="hideName()" onclick="selectBlock('sand', this)"><img src="./Assets/Blocks/sand.png"></div>
+        <div class="slot page-1" onmouseover="showName('Red Sand: Natural block')" onmouseout="hideName()" onclick="selectBlock('redsand', this)"><img src="./Assets/Blocks/redsand.png"></div>
+        <div class="slot page-1" onmouseover="showName('Watermelon: Natural Decoration (multilayer)')" onmouseout="hideName()" onclick="selectBlock('melon', this)"><img src="./Assets/Blocks/melon.png"></div>
+        <div class="slot page-1" onmouseover="showName('Haystack: Natural Decoration (multilayer)')" onmouseout="hideName()" onclick="selectBlock('Hay', this)"><img src="./Assets/Blocks/Hay.png"></div>
+        <div class="slot page-1" onmouseover="showName('Water: Natural block')" onmouseout="hideName()" onclick="selectBlock('water', this)"><img src="./Assets/Blocks/water.png"></div>
+        <div class="slot page-1" onmouseover="showName('Tree: Natural Decoration (multilayer')" onmouseout="hideName()" onclick="selectBlock('tree', this)"><img src="./Assets/Blocks/tree.png"></div>
+        <div class="slot page-1" id="btn-next-page" onclick="switchPage(2)"><img src="./Assets/Blocks/p2.png"></div>
+
+        <div class="slot page-2" id="btn-prev-page" onclick="switchPage(1)"><img src="./Assets/Blocks/p1.png"></div>
+        <div class="slot page-2" onmouseover="showName('Snow: Natural block ')" onmouseout="hideName()" onclick="selectBlock('snow', this)"><img src="./Assets/Blocks/snow.png"></div>
+        <div class="slot page-2" onmouseover="showName('Snow Block: Natural block')" onmouseout="hideName()" onclick="selectBlock('snow2', this)"><img src="./Assets/Blocks/snow2.png"></div>
+        <div class="slot page-2" onmouseover="showName('Snowman: An Human Made decoration (multilayer)')" onmouseout="hideName()" onclick="selectBlock('snowman', this)"><img src="./Assets/Blocks/snowman.png"></div>
     </div>
 </div>
 
@@ -307,23 +307,25 @@
     const TILE_H = 12; 
     let selectedBlockType = 'eraser';
     let treeCounter = 0; 
-
     let currentZoomPercent = 0.43; 
     let zoomInterval = null;
     let isFloating = false;
+    let currentPage = 1;
 
-    const splashes = ["amazing!", "wooooow!", "relaxing", "pixel art!", "isometric!", "build it!"];
+    let panX = 0, panY = 0;
+    let isPanning = false;
+    let startPanX = 0, startPanY = 0;
+
+    let lastSelectedSlotP1 = null;
+    let lastSelectedSlotP2 = null;
+
+    const splashes = ["amazing!", "wooooow!", "relaxing", "pixel art!", "isometric!", "build it!" , "Adrian"];
     const splashEl = document.getElementById('splash-text');
     splashEl.innerText = splashes[Math.floor(Math.random() * splashes.length)];
 
     const nameDisplay = document.getElementById('block-name-display');
-    function showName(name) {
-        nameDisplay.innerText = name;
-        nameDisplay.style.opacity = "1";
-    }
-    function hideName() {
-        nameDisplay.style.opacity = "0";
-    }
+    function showName(name) { nameDisplay.innerText = name; nameDisplay.style.opacity = "1"; }
+    function hideName() { nameDisplay.style.opacity = "0"; }
 
     const placeSound = new Audio('./Assets/Audio/place.wav');
     const hotbarSound = new Audio('./Assets/Audio/hotbar.wav');
@@ -339,56 +341,53 @@
     const musicBtn = document.getElementById('music-toggle');
     const floatBtn = document.getElementById('float-toggle');
 
-    function playMusic() {
-        bgMusic.play().catch(e => {
-            console.log("Autoplay blocat, asteptam interactiunea...");
-        });
-    }
-
-    window.addEventListener('mousedown', () => {
-        placeSound.load();
-        hotbarSound.load();
-        bgMusic.load();
-        if (isMusicPlaying) playMusic();
-    }, { once: true });
+    function playMusic() { bgMusic.play().catch(e => {}); }
+    window.addEventListener('mousedown', () => { if (isMusicPlaying) playMusic(); }, { once: true });
 
     function toggleMusic() {
-        if (isMusicPlaying) {
-            bgMusic.pause();
-            musicBtn.src = "./Assets/GUI/bgon.png"; 
-            isMusicPlaying = false;
-        } else {
-            bgMusic.play().catch(e => {});
-            musicBtn.src = "./Assets/GUI/bgoff.png"; 
-            isMusicPlaying = true;
-        }
+        isMusicPlaying = !isMusicPlaying;
+        musicBtn.src = isMusicPlaying ? "./Assets/GUI/bgoff.png" : "./Assets/GUI/bgon.png";
+        if (isMusicPlaying) bgMusic.play(); else bgMusic.pause();
     }
 
     function toggleFloat() {
         isFloating = !isFloating;
-        if (isFloating) {
-            map.classList.add('floating-island');
-            floatBtn.src = "./Assets/GUI/floaton.png";
-        } else {
-            map.classList.remove('floating-island');
-            floatBtn.src = "./Assets/GUI/floatoff.png";
-        }
+        map.classList.toggle('floating-island', isFloating);
+        floatBtn.src = isFloating ? "./Assets/GUI/floaton.png" : "./Assets/GUI/floatoff.png";
         applyZoom();
     }
 
-    function selectBlock(type, el, skipSound = false) {
-        selectedBlockType = type;
-        highlight.style.left = el.offsetLeft + "px";
-        highlight.style.top = el.offsetTop + "px";
-        if (!skipSound) {
-            hotbarSound.currentTime = 0;
-            hotbarSound.play().catch(e => {});
+    function switchPage(pageNum) {
+        currentPage = pageNum;
+        const p1 = document.querySelectorAll('.page-1');
+        const p2 = document.querySelectorAll('.page-2');
+        if (pageNum === 2) {
+            p1.forEach(el => el.style.display = 'none');
+            p2.forEach(el => el.style.display = 'flex');
+            if(lastSelectedSlotP2) selectBlock(lastSelectedSlotP2.dataset.type, lastSelectedSlotP2, true);
+            else highlight.style.opacity = "0";
+        } else {
+            p1.forEach(el => el.style.display = 'flex');
+            p2.forEach(el => el.style.display = 'none');
+            if(lastSelectedSlotP1) selectBlock(lastSelectedSlotP1.dataset.type, lastSelectedSlotP1, true);
         }
+        hotbarSound.currentTime = 0; hotbarSound.play().catch(e => {});
     }
 
-    function createTile(x, y, z, type) {
+    function selectBlock(type, el, skipSound = false) {
+        if (el.id === 'btn-next-page' || el.id === 'btn-prev-page') return;
+        selectedBlockType = type;
+        el.dataset.type = type;
+        if(currentPage === 1) lastSelectedSlotP1 = el; else lastSelectedSlotP2 = el;
+        highlight.style.left = el.offsetLeft + "px";
+        highlight.style.top = el.offsetTop + "px";
+        highlight.style.opacity = "1";
+        if (!skipSound) { hotbarSound.currentTime = 0; hotbarSound.play().catch(e => {}); }
+    }
+
+    function createTile(x, y, z, type, customPath = null) {
         const img = document.createElement("img");
-        img.src = `./Assets/Blocks/${type}.png`;
+        img.src = customPath ? customPath : `./Assets/Blocks/${type}.png`;
         img.className = "tile";
         img.setAttribute('data-x', x);
         img.setAttribute('data-y', y);
@@ -396,8 +395,8 @@
         img.style.left = (x - y) * (TILE_W / 2) + "px";
         img.style.top  = (x + y) * (TILE_H / 2) - (z * TILE_H) + "px";
         img.style.zIndex = (x + y) + z;
-        
         img.onmousedown = (e) => { 
+            if (e.button === 1) return; 
             e.preventDefault(); 
             handleInteraction(img, x, y, z); 
         };
@@ -405,8 +404,8 @@
         return img;
     }
 
-    function createFallingLeaf(startX, startY, treeId) {
-        if (!document.querySelector(`[data-tree-id="${treeId}"]`)) return;
+    function createFallingLeaf(startX, startY, objId) {
+        if (!document.querySelector(`[data-obj-id="${objId}"]`)) return;
 
         const leaf = document.createElement("img");
         const types = ['falling leaf1.png', 'falling leaf2.png', 'falling leaf3.png'];
@@ -453,61 +452,58 @@
         animate();
     }
 
-    function startInfiniteLeaves(x, y, treeId) {
+    function startInfiniteLeaves(x, y, objId) {
         const interval = setInterval(() => {
-            if (!document.querySelector(`[data-tree-id="${treeId}"]`)) {
+            if (!document.querySelector(`[data-obj-id="${objId}"]`)) {
                 clearInterval(interval);
                 return;
             }
             if (Math.random() > 0.6) {
                 const burst = Math.floor(Math.random() * 3) + 1;
                 for(let i=0; i<burst; i++) {
-                    setTimeout(() => createFallingLeaf(x, y, treeId), i * 500);
+                    setTimeout(() => createFallingLeaf(x, y, objId), i * 500);
                 }
             }
         }, 3000 + Math.random() * 4000);
     }
 
     function handleInteraction(tile, x, y, z) {
-        const isPartOfObject = tile.hasAttribute('data-tree-id') && tile.getAttribute('data-tree-id') !== "";
-        
+        const isPartOfObject = tile.hasAttribute('data-obj-id') && tile.getAttribute('data-obj-id') !== "";
+        const existingAbove = document.querySelector(`.tile[data-x="${x}"][data-y="${y}"][data-z="${z + 1}"]`);
+
         if (selectedBlockType === 'eraser') {
-            const objId = tile.getAttribute('data-tree-id');
+            const objId = tile.getAttribute('data-obj-id');
             if (objId) {
-                document.querySelectorAll(`[data-tree-id="${objId}"]`).forEach(el => el.remove());
+                document.querySelectorAll(`[data-obj-id="${objId}"]`).forEach(el => el.remove());
             } else {
                 tile.style.opacity = "0";
             }
-        } else if (selectedBlockType === 'tree' || selectedBlockType === 'melon' || selectedBlockType === 'Hay') {
-            if(tile.style.opacity === "0" || isPartOfObject) return;
-
-            const existing = document.querySelector(`[data-x="${x}"][data-y="${y}"][data-z="${z+1}"]`);
-            if (existing && existing.style.opacity !== "0") return;
-
+        } else if (['tree', 'melon', 'Hay', 'snowman'].includes(selectedBlockType)) {
+            if(tile.style.opacity === "0" || isPartOfObject || existingAbove) return;
             treeCounter++;
             const currentId = "obj_" + treeCounter;
-
             if (selectedBlockType === 'tree') {
-                for(let i=1; i<=3; i++) createTile(x, y, i, 'wood').setAttribute('data-tree-id', currentId);
-                for(let ox=-1; ox<=1; ox++) {
-                    for(let oy=-1; oy<=1; oy++) createTile(x + ox, y + oy, 4, 'leaf').setAttribute('data-tree-id', currentId);
-                }
-                [{dx:0, dy:0}, {dx:1, dy:0}, {dx:-1, dy:0}, {dx:0, dy:1}, {dx:0, dy:-1}].forEach(l => {
-                    createTile(x + l.dx, y + l.dy, 5, 'leaf').setAttribute('data-tree-id', currentId);
-                });
-                createTile(x, y, 6, 'leaf').setAttribute('data-tree-id', currentId);
+                for(let i=1; i<=3; i++) createTile(x, y, i, 'wood').setAttribute('data-obj-id', currentId);
+                for(let ox=-1; ox<=1; ox++) for(let oy=-1; oy<=1; oy++) createTile(x + ox, y + oy, 4, 'leaf').setAttribute('data-obj-id', currentId);
+                [{dx:0,dy:0},{dx:1,dy:0},{dx:-1,dy:0},{dx:0,dy:1},{dx:0,dy:-1}].forEach(l => createTile(x+l.dx, y+l.dy, 5, 'leaf').setAttribute('data-obj-id', currentId));
+                createTile(x, y, 6, 'leaf').setAttribute('data-obj-id', currentId);
+       
                 startInfiniteLeaves(x, y, currentId);
+
+            } else if (selectedBlockType === 'snowman') {
+                createTile(x, y, z + 1, '', './Assets/Blocks/Snowman/snowmanb1.png').setAttribute('data-obj-id', currentId);
+                createTile(x, y, z + 2, '', './Assets/Blocks/Snowman/snowmanb2.png').setAttribute('data-obj-id', currentId);
+                createTile(x, y, z + 3, '', './Assets/Blocks/Snowman/SnowmanHead.png').setAttribute('data-obj-id', currentId);
             } else {
-                createTile(x, y, z + 1, selectedBlockType).setAttribute('data-tree-id', currentId);
+                createTile(x, y, z + 1, selectedBlockType).setAttribute('data-obj-id', currentId);
             }
         } else {
             if(isPartOfObject) return;
             tile.src = `./Assets/Blocks/${selectedBlockType}.png`;
             tile.style.opacity = "1";
-            tile.removeAttribute('data-tree-id');
+            tile.removeAttribute('data-obj-id');
         }
-        placeSound.currentTime = 0; 
-        placeSound.play().catch(e => {});
+        placeSound.currentTime = 0; placeSound.play().catch(e => {});
     }
 
     for(let y=0; y<8; y++) for(let x=0; x<8; x++) createTile(x, y, 0, 'dirt');
@@ -516,41 +512,56 @@
         zoomDot.style.left = (currentZoomPercent * 100) + "%";
         const scale = (1 + currentZoomPercent * 7).toFixed(2);
         const yMove = (currentZoomPercent * -50).toFixed(2);
-        
         map.style.setProperty('--zoom-scale', scale);
         map.style.setProperty('--y-offset', yMove + "px");
-
-        if (!isFloating) {
-            map.style.transform = `scale(${scale}) translateY(${yMove}px)`;
-        }
+        map.style.setProperty('--pan-x', panX + "px");
+        map.style.setProperty('--pan-y', panY + "px");
+        if (!isFloating) map.style.transform = `scale(${scale}) translate(${panX}px, calc(${yMove}px + ${panY}px))`;
     }
 
     function updateSlider(clientX) {
         const rect = zoomTrack.getBoundingClientRect();
-        let val = (clientX - rect.left) / rect.width;
-        currentZoomPercent = Math.max(0, Math.min(1, val));
+        currentZoomPercent = Math.max(0, Math.min(1, (clientX - rect.left) / rect.width));
         applyZoom();
     }
 
     zoomTrack.addEventListener('mousedown', (e) => {
         updateSlider(e.clientX);
         const onMove = ev => updateSlider(ev.clientX);
-        const onUp = () => {
-            window.removeEventListener('mousemove', onMove);
-            window.removeEventListener('mouseup', onUp);
-        };
+        const onUp = () => { window.removeEventListener('mousemove', onMove); window.removeEventListener('mouseup', onUp); };
         window.addEventListener('mousemove', onMove);
         window.addEventListener('mouseup', onUp);
     });
 
+    window.addEventListener('mousedown', (e) => {
+        if (e.button === 1) {
+            isPanning = true;
+            document.body.style.cursor = 'grabbing';
+            startPanX = e.clientX - panX;
+            startPanY = e.clientY - panY;
+            e.preventDefault();
+        }
+    });
+
+    window.addEventListener('mousemove', (e) => {
+        if (isPanning) {
+            panX = e.clientX - startPanX;
+            panY = e.clientY - startPanY;
+            applyZoom();
+        }
+    });
+
+    window.addEventListener('mouseup', (e) => { 
+        if (e.button === 1 || isPanning) {
+            isPanning = false; 
+            document.body.style.cursor = 'crosshair';
+        }
+    });
+
     function startZooming(delta) {
         if(zoomInterval) clearInterval(zoomInterval);
-        const tick = () => {
-            currentZoomPercent = Math.max(0, Math.min(1, currentZoomPercent + delta));
-            applyZoom();
-        };
-        tick();
-        zoomInterval = setInterval(tick, 50);
+        const tick = () => { currentZoomPercent = Math.max(0, Math.min(1, currentZoomPercent + delta)); applyZoom(); };
+        tick(); zoomInterval = setInterval(tick, 50);
     }
 
     document.getElementById('btn-zoom-in').addEventListener('mousedown', () => startZooming(0.02));
@@ -559,9 +570,9 @@
 
     window.onload = () => {
         applyZoom();
-        const firstSlot = document.querySelector('.slot');
-        if (firstSlot) selectBlock('eraser', firstSlot, true);
-        playMusic(); 
+        const firstSlot = document.querySelector('.slot.page-1');
+        lastSelectedSlotP1 = firstSlot;
+        selectBlock('eraser', firstSlot, true);
     };
 </script>
 </body>

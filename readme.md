@@ -65,34 +65,48 @@ Here you will find some relevant subjects and explanations about my game, includ
 ![float](GithubPreview/flo.png)
 
 ### Warning! 
+![WarnBanner](GithubPreview/warningb.png)
 - Do not try to use browser zoom because it can sometimes break the island canvas for unknown reasons.
 - This is not a survival game or any kind of competitive game; it is made for relaxation and creative purposes only.
 - This "game" is only playable on a computer/tablet. Playing on a phone may result in bugs that make the game unplayable.
 - Do not copy my work and publish it without crediting my GitHub page. Thank you!
 
 ### (BETA) Meaning
+![beta](GithubPreview/betab.png)
 - Even if a function works well for others, it can be defective in some ways.
 - If a function is categorized as "BETA," you can expect bugs.
 - Bugs are computer errors that occur because of broken code or missing features!
 
 # Software that I used to make this project come true
+![software banner](GithubPreview/softwareb.png)
 - Here is the list of software I used to make this project:
-1. PowerPoint: Thumbnails for the devlogs (crazy, I know!).
-2. Pixilart: For the textures.
-3. Visual Studio Code: For the project's HTML.
-4. Audacity + TurboWarp sound editor: For the SFX effects (just random headphone mic sounds with a bunch of effects).
+
+| Nr. Crt  | Software                       | Where I used it?                      |  
+|:--------:|:------------------------------:|:-------------------------------------:|
+| 1.       | Microsoft Office: PowerPoint   | Used for Devlogs and Banners          |
+| 2.       | Pixlart                        | Used for early game assets            |
+| 3.       | Paint.NET                      | Used for designing pixelart           | 
+| 4.       | Audacity                       | Used for SFX                          |
+| 5.       | Turbowarp sound editor         | Used for SFX speedups                 |
+| 6.       | Visual Studio Code IDE         | Used for pushing my repo and code     |
+
 
 # Future functions
 - You can see an unorganized list of functions and stuff that I want to add in `todo.md` here on GitHub.
 - You can also suggest some features for my project on Flavortown.
 
 # Credits
+![credits-logo](GithubPreview/creditsb.png)
 - Here you will find credits for stuff that I used from the internet:
 1. Google Fonts: For the text font title. See `FontLicense.md` for the APACHE license and Terms and Conditions. You can learn more about the Apache license here: https://www.apache.org/licenses/LICENSE-2.0  
-! Anything else you find in my project's Assets folder is purely made by me !
 2. Minecraft tips inspiration: The game title contains nonsense tips inspired by Minecraft. 
 
 ![logo](GithubPreview/logo.png)
+
+3. Some Devlogs and Banners use  Maagkramp by ficod. This font is used under its Personal Use License! Check out his DeviantArt profile: https://www.deviantart.com/ficod
+ - PLEASE NOTE THAT THE PROJECT DOES NOT USE THIS FONT!!
+
+# ! Anything else you find in my project's Assets folder is purely made by me !
 
 ### You reached the end for now :)
 - You can try:

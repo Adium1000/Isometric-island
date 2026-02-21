@@ -2,27 +2,53 @@
 # Here is my todo list where i list ideeas to remember them for later, take a look!
 - export as an png or as a code
 - more blocks to fill the hotbar
-- day/night/rain switch
-- add  snow blocks/ and snowman/
+- day/night/rain/snow switch
 - add some comments so ppl understand what i did
 - decompile all of my game into HTML, CSS , JAVA
 - use Chrome's PWA app
 - Make a more readable description on github
 - undo redo
 - add lanterns!
-- make the game playable on small screens
-- add a scond page to the blocks page
-- opimize zoom
-- add a credits banner
-- add minecraft inspiured banner
-- add warning banner
-- add Beta banner
-- add icons in 7, 8 
+- fix pause media button 
+- minimap 
+- mooving clouds sublayer
+- Random island button
+- Add banners to About 
+- Add banners to TODO
+- Add Banners to Software
+- Add shortcuts (keyboard)
+- add END banner
+
+
+Try Imposible
+- multilayer houses
+- Animals on the island
+- make the game playable on small screens (fun fact imposible)
+
 
 What I added:
+- add icons in 7, 8 
+- add Beta banner
+- add a credits banner
+- mouse wheel to move the island
+- add more snow blocks 
+- ice blocks
+- add warning banner
+- add a scond page to the blocks page
+- and snowman
+- opimize zoom
 - add actions to zoom buttons!
 - add shadows to the island
 - add tree/ flowers/rocks on grass
 - add music and music switch on off
 - add a float on off switch
 
+todo may varryy idk what else it can varry lol
+sooo yea gl
+
+Devlog Updates
+-Smooth out zoom bar 
+-Middle Click to drag the island
+-Smooth buttons hover
+-Added a second page to the hotbar
+-More grammar corrections and Banners to readme.md
