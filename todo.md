@@ -45,10 +45,3 @@ What I added:
 
 todo may varryy idk what else it can varry lol
 sooo yea gl
-
-Devlog Updates
--Smooth out zoom bar 
--Middle Click to drag the island
--Smooth buttons hover
--Added a second page to the hotbar
--More grammar corrections and Banners to readme.md
