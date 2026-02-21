@@ -45,3 +45,5 @@ What I added:
 
 todo may varryy idk what else it can varry lol
 sooo yea gl
+
+i hate missspelling
