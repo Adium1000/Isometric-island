@@ -45,14 +45,14 @@ Here you will find some relevant subjects and explanations about my game, includ
 - A multilayer object is placed ON the platform, so it does not affect the platform structure.
 - When erased, it is removed instantly.
 
-![im](GithubPreview/Banners/invent.png)
+![im](GithubPreview/Guide/invent.png)
 
 ### 6. Details & Shadows
 - This game includes island and block shadows.
 - Also, the trees sometimes drop leaves in 3 different styles
 
 
-![im](GithubPreview/Guide/leaf.png)
+![im](GithubPreview/Banners/leaf.png)
 
 ### 7. Background Music
 - Background music is a way to bring realistic detail to the game, although some people may not like it.

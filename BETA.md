@@ -1,4 +1,4 @@
-![intro](GithubPreview/banners/thumb.png)
+![intro](GithubPreview/Banners/thumb.png)
 # Welcome to the Isometric Island Project!
 Here you will find some relevant subjects and explanations about my game, including CREDITS, a quick guide, and much more!
 
@@ -7,7 +7,7 @@ Here you will find some relevant subjects and explanations about my game, includ
 - This "game" is made in HTML5 just to make sure anyone can play it on any browser from any device on this planet, even if you use Linux, Mac, or any other OS that uses a different method to run programs.
 - play it now: https://adium1000.github.io/Isometric-island/
 # Starter Guide
-![Starterguide](GithubPreview/banners/guide.png)
+![Starterguide](GithubPreview/Banners/guide.png)
 
 ### This is the base guide for my project if you are new to this (your "How to use" manual).
 
@@ -74,7 +74,7 @@ Here you will find some relevant subjects and explanations about my game, includ
 ![Aboutcursors](GithubPreview/Guide/about_cursors.png)
 
 ### Warning!
-![WarnBanner](GithubPreview/banners/warningb.png)
+![WarnBanner](GithubPreview/Banners/warningb.png)
 - This is not a survival game or any kind of competitive game; it is made for relaxation and creative purposes only.
 - This "game" is only playable on a computer/tablet. Playing on a phone may result in bugs that make the game unplayable.
 - Do not copy my work and publish it without crediting my GitHub page. Thank you!
@@ -83,13 +83,13 @@ Here you will find some relevant subjects and explanations about my game, includ
 - sometimes zoom can break the island canvas for unknown reasons.
 
 ### (BETA) Meaning
-![beta](GithubPreview/banners/betab.png)
+![beta](GithubPreview/Banners/betab.png)
 - Even if a function works well for others, it can be defective in some ways.
 - If a function is categorized as "BETA," you can expect bugs.
 - Bugs are computer errors that occur because of broken code or missing features!
 
 # Software that I used to make this project come true
-![software banner](GithubPreview/banners/softwareb.png)
+![software banner](GithubPreview/Banners/softwareb.png)
 - Here is the list of software I used to make this project:
 
 | Nr. Crt  | Software                       | Where I used it?                      |  
@@ -103,12 +103,12 @@ Here you will find some relevant subjects and explanations about my game, includ
 
 
 # Future functions
-![todolist banner](GithubPreview/banners/todolist.png)
+![todolist banner](GithubPreview/Banners/todolist.png)
 - You can see an unorganized list of functions and stuff that I want to add in `todo.md` here on GitHub.
 - You can also suggest some features for my project on Flavortown.
 
 # Credits
-![credits-logo](GithubPreview/banners/creditsb.png)
+![credits-logo](GithubPreview/Banners/creditsb.png)
 - Here you will find credits for stuff that I used from the internet:
 1. Google Fonts: For the text font title. See `FontLicense.md` for the APACHE license and Terms and Conditions. You can learn more about the Apache license here: https://www.apache.org/licenses/LICENSE-2.0  
 2. Minecraft tips inspiration: The game title contains nonsense tips inspired by Minecraft. 
@@ -121,10 +121,10 @@ Here you will find some relevant subjects and explanations about my game, includ
 # ! Anything else you find in my project's Assets folder is purely made by me !
 
 ### You reached the end for now :)
-![the end is near!!!](GithubPreview/banners/endreadme.png)   
+![the end is near!!!](GithubPreview/Banners/endreadme.png)   
 - You can try:
 1. Check `todo.md`
 2. Check assets
 3. Star the repo
 4. Suggest something cool (on Flavortown!)
-5. Don't like it? It's okay! Give me some feedback on what I can improve.
+5. Don't like it? It's okay! Give me some feedback on what I can improve. :)
