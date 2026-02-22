@@ -18,7 +18,7 @@
     <meta charset="UTF-8">
     <title>Isometric Island</title>
     <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">  <!-- This is the title's font from google fonts -->
-    <style>
+     <style>
         body {
             margin: 0;
             background: #aad6ff;
@@ -273,7 +273,7 @@
         
         <div id="selection-highlight"></div>
         
-        <div class="slot page-1" onmouseover="showName('Eraser: Good for shaping and removing blocks ')" onmouseout="hideName()" onclick="selectBlock('eraser', this)"><img src="./Assets/Blocks/eraser.png"></div>
+        <div class="slot page-1" id="slot-eraser" onmouseover="showName('Eraser: Good for shaping and removing blocks ')" onmouseout="hideName()" onclick="selectBlock('eraser', this)"><img src="./Assets/Blocks/eraser.png"></div>
         <div class="slot page-1" onmouseover="showName('Grass: Natural block')" onmouseout="hideName()" onclick="selectBlock('dirt', this)"><img src="./Assets/Blocks/dirt.png"></div>
         <div class="slot page-1" onmouseover="showName('Flowers: Natural Decoration')" onmouseout="hideName()" onclick="selectBlock('flovers', this)"><img src="./Assets/Blocks/flovers.png"></div>
         <div class="slot page-1" onmouseover="showName('Rock: Natural Decoration')" onmouseout="hideName()" onclick="selectBlock('rock', this)"><img src="./Assets/Blocks/rock.png"></div>
@@ -286,13 +286,16 @@
         <div class="slot page-1" onmouseover="showName('Watermelon: Natural Decoration (multilayer)')" onmouseout="hideName()" onclick="selectBlock('melon', this)"><img src="./Assets/Blocks/melon.png"></div>
         <div class="slot page-1" onmouseover="showName('Haystack: Natural Decoration (multilayer)')" onmouseout="hideName()" onclick="selectBlock('Hay', this)"><img src="./Assets/Blocks/Hay.png"></div>
         <div class="slot page-1" onmouseover="showName('Water: Natural block')" onmouseout="hideName()" onclick="selectBlock('water', this)"><img src="./Assets/Blocks/water.png"></div>
-        <div class="slot page-1" onmouseover="showName('Tree: Natural Decoration (multilayer')" onmouseout="hideName()" onclick="selectBlock('tree', this)"><img src="./Assets/Blocks/tree.png"></div>
+        <div class="slot page-1" onmouseover="showName('Tree: Natural Decoration (multilayer)')" onmouseout="hideName()" onclick="selectBlock('tree', this)"><img src="./Assets/Blocks/tree.png"></div>
         <div class="slot page-1" id="btn-next-page" onclick="switchPage(2)"><img src="./Assets/Blocks/p2.png"></div>
 
         <div class="slot page-2" id="btn-prev-page" onclick="switchPage(1)"><img src="./Assets/Blocks/p1.png"></div>
+        <div class="slot page-2" onmouseover="showName('Pumpkin: Natural Decoration')" onmouseout="hideName()" onclick="selectBlock('pumpkin', this)"><img src="./Assets/Blocks/pumpkin.png"></div>
         <div class="slot page-2" onmouseover="showName('Snow: Natural block ')" onmouseout="hideName()" onclick="selectBlock('snow', this)"><img src="./Assets/Blocks/snow.png"></div>
-        <div class="slot page-2" onmouseover="showName('Snow Block: Natural block')" onmouseout="hideName()" onclick="selectBlock('snow2', this)"><img src="./Assets/Blocks/snow2.png"></div>
-        <div class="slot page-2" onmouseover="showName('Snowman: An Human Made decoration (multilayer)')" onmouseout="hideName()" onclick="selectBlock('snowman', this)"><img src="./Assets/Blocks/snowman.png"></div>
+        <div class="slot page-2" onmouseover="showName('Snow Rocks: Natural block')" onmouseout="hideName()" onclick="selectBlock('snowrocks', this)"><img src="./Assets/Blocks/snowrocks.png"></div>
+        <div class="slot page-2" onmouseover="showName('Ice: Natural block')" onmouseout="hideName()" onclick="selectBlock('ice', this)"><img src="./Assets/Blocks/ice.png"></div>
+        <div class="slot page-2" onmouseover="showName('Snowman: Human Made decoration (multilayer)')" onmouseout="hideName()" onclick="selectBlock('snowman', this)"><img src="./Assets/Blocks/snowman.png"></div>
+        <div class="slot page-2" onmouseover="showName('Snowy Tree: Winter Decoration (multilayer)')" onmouseout="hideName()" onclick="selectBlock('snowed_tree', this)"><img src="./Assets/Blocks/snowedtree.png"></div>
     </div>
 </div>
 
@@ -341,6 +344,24 @@
     const musicBtn = document.getElementById('music-toggle');
     const floatBtn = document.getElementById('float-toggle');
 
+    window.addEventListener('keydown', (e) => {
+        const key = e.key.toLowerCase();
+        if (key === 'e') {
+            if (currentPage !== 1) switchPage(1);
+            const eraserSlot = document.getElementById('slot-eraser');
+            selectBlock('eraser', eraserSlot);
+        } 
+        else if (key === 'p') {
+            switchPage(currentPage === 1 ? 2 : 1);
+        } 
+        else if (key === 'm') {
+            toggleMusic();
+        } 
+        else if (key === 'f') {
+            toggleFloat();
+        }
+    });
+
     function playMusic() { bgMusic.play().catch(e => {}); }
     window.addEventListener('mousedown', () => { if (isMusicPlaying) playMusic(); }, { once: true });
 
@@ -375,7 +396,7 @@
     }
 
     function selectBlock(type, el, skipSound = false) {
-        if (el.id === 'btn-next-page' || el.id === 'btn-prev-page') return;
+        if (!el || el.id === 'btn-next-page' || el.id === 'btn-prev-page') return;
         selectedBlockType = type;
         el.dataset.type = type;
         if(currentPage === 1) lastSelectedSlotP1 = el; else lastSelectedSlotP2 = el;
@@ -404,69 +425,6 @@
         return img;
     }
 
-    function createFallingLeaf(startX, startY, objId) {
-        if (!document.querySelector(`[data-obj-id="${objId}"]`)) return;
-
-        const leaf = document.createElement("img");
-        const types = ['falling leaf1.png', 'falling leaf2.png', 'falling leaf3.png'];
-        const randomType = types[Math.floor(Math.random() * types.length)];
-        
-        leaf.src = `./Assets/Blocks/${randomType}`;
-        leaf.className = "tile";
-        leaf.style.pointerEvents = "none";
-        leaf.style.zIndex = "1000";
-        leaf.style.transform = "scale(0.5)"; 
-        leaf.style.transition = "opacity 1.5s ease-out"; 
-        mapContainer.appendChild(leaf);
-
-        let curX = startX + (Math.random() * 1.6 - 0.8);
-        let curY = startY + (Math.random() * 1.6 - 0.8);
-        let curZ = 5 + Math.random(); 
-        let angle = Math.random() * Math.PI * 2;
-        let speed = 0.015 + Math.random() * 0.02;
-
-        function animate() {
-            curZ -= speed;
-            angle += 0.03;
-            let driftX = curX + Math.sin(angle) * 0.5;
-            let driftY = curY + Math.cos(angle) * 0.5;
-
-            leaf.style.left = (driftX - driftY) * (TILE_W / 2) + "px";
-            leaf.style.top = (driftX + driftY) * (TILE_H / 2) - (curZ * TILE_H) + "px";
-
-            if (curZ <= 0.05) {
-                if (driftX >= -0.5 && driftX <= 7.5 && driftY >= -0.5 && driftY <= 7.5) {
-                    leaf.style.top = (driftX + driftY) * (TILE_H / 2) + "px";
-                    setTimeout(() => {
-                        leaf.style.opacity = "0";
-                        setTimeout(() => leaf.remove(), 1500);
-                    }, 3000);
-                } else {
-                    leaf.style.opacity = "0";
-                    setTimeout(() => leaf.remove(), 1500);
-                }
-                return;
-            }
-            requestAnimationFrame(animate);
-        }
-        animate();
-    }
-
-    function startInfiniteLeaves(x, y, objId) {
-        const interval = setInterval(() => {
-            if (!document.querySelector(`[data-obj-id="${objId}"]`)) {
-                clearInterval(interval);
-                return;
-            }
-            if (Math.random() > 0.6) {
-                const burst = Math.floor(Math.random() * 3) + 1;
-                for(let i=0; i<burst; i++) {
-                    setTimeout(() => createFallingLeaf(x, y, objId), i * 500);
-                }
-            }
-        }, 3000 + Math.random() * 4000);
-    }
-
     function handleInteraction(tile, x, y, z) {
         const isPartOfObject = tile.hasAttribute('data-obj-id') && tile.getAttribute('data-obj-id') !== "";
         const existingAbove = document.querySelector(`.tile[data-x="${x}"][data-y="${y}"][data-z="${z + 1}"]`);
@@ -478,19 +436,28 @@
             } else {
                 tile.style.opacity = "0";
             }
-        } else if (['tree', 'melon', 'Hay', 'snowman'].includes(selectedBlockType)) {
+        } 
+        // Logica extinsă pentru snowed_tree
+        else if (['tree', 'snowed_tree', 'melon', 'Hay', 'snowman', 'pumpkin'].includes(selectedBlockType)) {
             if(tile.style.opacity === "0" || isPartOfObject || existingAbove) return;
             treeCounter++;
             const currentId = "obj_" + treeCounter;
-            if (selectedBlockType === 'tree') {
+            
+            if (selectedBlockType === 'tree' || selectedBlockType === 'snowed_tree') {
+                const leafType = selectedBlockType === 'tree' ? 'leaf' : 'snow2';
+                // Trunchi
                 for(let i=1; i<=3; i++) createTile(x, y, i, 'wood').setAttribute('data-obj-id', currentId);
-                for(let ox=-1; ox<=1; ox++) for(let oy=-1; oy<=1; oy++) createTile(x + ox, y + oy, 4, 'leaf').setAttribute('data-obj-id', currentId);
-                [{dx:0,dy:0},{dx:1,dy:0},{dx:-1,dy:0},{dx:0,dy:1},{dx:0,dy:-1}].forEach(l => createTile(x+l.dx, y+l.dy, 5, 'leaf').setAttribute('data-obj-id', currentId));
-                createTile(x, y, 6, 'leaf').setAttribute('data-obj-id', currentId);
-       
-                startInfiniteLeaves(x, y, currentId);
-
-            } else if (selectedBlockType === 'snowman') {
+                // Strat frunze/zăpadă 1
+                for(let ox=-1; ox<=1; ox++) for(let oy=-1; oy<=1; oy++) createTile(x + ox, y + oy, 4, leafType).setAttribute('data-obj-id', currentId);
+                // Strat frunze/zăpadă 2
+                [{dx:0,dy:0},{dx:1,dy:0},{dx:-1,dy:0},{dx:0,dy:1},{dx:0,dy:-1}].forEach(l => createTile(x+l.dx, y+l.dy, 5, leafType).setAttribute('data-obj-id', currentId));
+                // Vârf
+                createTile(x, y, 6, leafType).setAttribute('data-obj-id', currentId);
+                
+                // Efecte (doar dacă e copac normal, sau poți lăsa și la cel de zăpadă)
+                if(selectedBlockType === 'tree') startInfiniteLeaves(x, y, currentId);
+            } 
+            else if (selectedBlockType === 'snowman') {
                 createTile(x, y, z + 1, '', './Assets/Blocks/Snowman/snowmanb1.png').setAttribute('data-obj-id', currentId);
                 createTile(x, y, z + 2, '', './Assets/Blocks/Snowman/snowmanb2.png').setAttribute('data-obj-id', currentId);
                 createTile(x, y, z + 3, '', './Assets/Blocks/Snowman/SnowmanHead.png').setAttribute('data-obj-id', currentId);
@@ -504,6 +471,50 @@
             tile.removeAttribute('data-obj-id');
         }
         placeSound.currentTime = 0; placeSound.play().catch(e => {});
+    }
+
+    // Funcțiile rămase (falling leaves etc.) nu s-au schimbat
+    function createFallingLeaf(startX, startY, objId) {
+        if (!document.querySelector(`[data-obj-id="${objId}"]`)) return;
+        const leaf = document.createElement("img");
+        const types = ['falling leaf1.png', 'falling leaf2.png', 'falling leaf3.png'];
+        const randomType = types[Math.floor(Math.random() * types.length)];
+        leaf.src = `./Assets/Blocks/${randomType}`;
+        leaf.className = "tile";
+        leaf.style.pointerEvents = "none";
+        leaf.style.zIndex = "1000";
+        leaf.style.transform = "scale(0.5)"; 
+        leaf.style.transition = "opacity 1.5s ease-out"; 
+        mapContainer.appendChild(leaf);
+        let curX = startX + (Math.random() * 1.6 - 0.8);
+        let curY = startY + (Math.random() * 1.6 - 0.8);
+        let curZ = 5 + Math.random(); 
+        let angle = Math.random() * Math.PI * 2;
+        let speed = 0.015 + Math.random() * 0.02;
+        function animate() {
+            curZ -= speed; angle += 0.03;
+            let driftX = curX + Math.sin(angle) * 0.5;
+            let driftY = curY + Math.cos(angle) * 0.5;
+            leaf.style.left = (driftX - driftY) * (TILE_W / 2) + "px";
+            leaf.style.top = (driftX + driftY) * (TILE_H / 2) - (curZ * TILE_H) + "px";
+            if (curZ <= 0.05) {
+                leaf.style.opacity = "0";
+                setTimeout(() => leaf.remove(), 1500);
+                return;
+            }
+            requestAnimationFrame(animate);
+        }
+        animate();
+    }
+
+    function startInfiniteLeaves(x, y, objId) {
+        const interval = setInterval(() => {
+            if (!document.querySelector(`[data-obj-id="${objId}"]`)) { clearInterval(interval); return; }
+            if (Math.random() > 0.6) {
+                const burst = Math.floor(Math.random() * 3) + 1;
+                for(let i=0; i<burst; i++) { setTimeout(() => createFallingLeaf(x, y, objId), i * 500); }
+            }
+        }, 3000 + Math.random() * 4000);
     }
 
     for(let y=0; y<8; y++) for(let x=0; x<8; x++) createTile(x, y, 0, 'dirt');
@@ -535,27 +546,18 @@
 
     window.addEventListener('mousedown', (e) => {
         if (e.button === 1) {
-            isPanning = true;
-            document.body.style.cursor = 'grabbing';
-            startPanX = e.clientX - panX;
-            startPanY = e.clientY - panY;
+            isPanning = true; document.body.style.cursor = 'grabbing';
+            startPanX = e.clientX - panX; startPanY = e.clientY - panY;
             e.preventDefault();
         }
     });
 
     window.addEventListener('mousemove', (e) => {
-        if (isPanning) {
-            panX = e.clientX - startPanX;
-            panY = e.clientY - startPanY;
-            applyZoom();
-        }
+        if (isPanning) { panX = e.clientX - startPanX; panY = e.clientY - startPanY; applyZoom(); }
     });
 
     window.addEventListener('mouseup', (e) => { 
-        if (e.button === 1 || isPanning) {
-            isPanning = false; 
-            document.body.style.cursor = 'crosshair';
-        }
+        if (e.button === 1 || isPanning) { isPanning = false; document.body.style.cursor = 'crosshair'; }
     });
 
     function startZooming(delta) {
@@ -570,7 +572,7 @@
 
     window.onload = () => {
         applyZoom();
-        const firstSlot = document.querySelector('.slot.page-1');
+        const firstSlot = document.getElementById('slot-eraser');
         lastSelectedSlotP1 = firstSlot;
         selectBlock('eraser', firstSlot, true);
     };
