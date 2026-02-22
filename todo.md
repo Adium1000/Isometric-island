@@ -1,9 +1,9 @@
-![Banner](GithubPreview/ToDo%20banner.png)
+![Banner](GithubPreview/banners/todolist.png)
 # Here is my todo list where i list ideeas to remember them for later, take a look!
-- export as an png or as a code
+- export as an png or as a code 1/2
 - more blocks to fill the hotbar
 - day/night/rain/snow switch
-- add some comments so ppl understand what i did
+- add some comments so ppl understand what i did (kinda)
 - decompile all of my game into HTML, CSS , JAVA
 - use Chrome's PWA app
 - Make a more readable description on github
@@ -13,12 +13,13 @@
 - minimap 
 - mooving clouds sublayer
 - Random island button
-- Add banners to About 
-- Add banners to TODO
-- Add Banners to Software
-- Add shortcuts (keyboard)
-- add END banner
-
+- Add banners to About /
+- Add custom cursors (this guy cant design a cursor )
+- Do an electron app for windows 
+- Design Save button
+- Design random island button
+- design a banner for issues
+- Add small banners to the Manual sections
 
 Try Imposible
 - multilayer houses
@@ -27,6 +28,11 @@ Try Imposible
 
 
 What I added:
+- Add shortcuts (keyboard)
+- Organize Github Preview Folder
+- add END banner
+- Add banners to TODO
+- Add Banners to Software
 - add icons in 7, 8 
 - add Beta banner
 - add a credits banner

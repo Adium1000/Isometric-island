@@ -52,7 +52,7 @@ Here you will find some relevant subjects and explanations about my game, includ
 - Also, the trees sometimes drop leaves in 3 different styles
 
 
-![im](GithubPreview/Guide/leaf.png)
+![im](GithubPreview/Banners/leaf.png)
 
 ### 7. Background Music
 - Background music is a way to bring realistic detail to the game, although some people may not like it.
