@@ -127,4 +127,4 @@ Here you will find some relevant subjects and explanations about my game, includ
 2. Check assets
 3. Star the repo
 4. Suggest something cool (on Flavortown!)
-5. Don't like it? It's okay! Give me some feedback on what I can improve.
+5. Don't like it? It's okay! Give me some feedback on what I can improve. :)
