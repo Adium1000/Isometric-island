@@ -45,7 +45,7 @@ Here you will find some relevant subjects and explanations about my game, includ
 - A multilayer object is placed ON the platform, so it does not affect the platform structure.
 - When erased, it is removed instantly.
 
-![im](GithubPreview/Guide/invent.png)
+![im](GithubPreview/Banners/invent.png)
 
 ### 6. Details & Shadows
 - This game includes island and block shadows.
