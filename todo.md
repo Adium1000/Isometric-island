@@ -1,4 +1,4 @@
-![Banner](GithubPreview/banners/todolist.png)
+![Banner](GithubPreview/Banners/todolist.png)
 # Here is my todo list where i list ideeas to remember them for later, take a look!
 - export as an png or as a code 1/2
 - more blocks to fill the hotbar
@@ -53,3 +53,8 @@ todo may varryy idk what else it can varry lol
 sooo yea gl
 
 i hate missspelling
+
+Devlog Sketch
+- Keyboard shortcuts
+- More readme changes
+- New snowyy items

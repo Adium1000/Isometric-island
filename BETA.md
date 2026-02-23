@@ -69,7 +69,7 @@ Here you will find some relevant subjects and explanations about my game, includ
 - The 'game' use your OS's default cursors for now 
 - if for exemple you hover, click or interact with specific buttons (Middle click to move the island, Touching Background, Touching Hotbar, Etc)
 
-### 9. Keyboard Shortcuts
+### 10. Keyboard Shortcuts
 
 ![Aboutcursors](GithubPreview/Guide/about_cursors.png)
 
