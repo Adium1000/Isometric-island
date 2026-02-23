@@ -1,33 +1,35 @@
 ![Banner](GithubPreview/Banners/todolist.png)
-# Here is my todo list where i list ideeas to remember them for later, take a look!
+# Here is my todo list where I list ideeas to remember them for later, take a look!
 - export as an png or as a code 1/2
 - more blocks to fill the hotbar
 - day/night/rain/snow switch
 - add some comments so ppl understand what i did (kinda)
 - decompile all of my game into HTML, CSS , JAVA
 - use Chrome's PWA app
-- Make a more readable description on github
-- undo redo
-- add lanterns!
-- fix pause media button 
-- minimap 
-- mooving clouds sublayer
+- add lanterns! //
+- mooving clouds sublayer//
 - Random island button
-- Add banners to About /
-- Add custom cursors (this guy cant design a cursor )
-- Do an electron app for windows 
 - Design Save button
 - Design random island button
-- design a banner for issues
-- Add small banners to the Manual sections
+
+- RE do main banner
+- Add Icon
 
 Try Imposible
-- multilayer houses
+- Add custom cursors (this guy cant design a cursor )
+- multilayer houses 
 - Animals on the island
 - make the game playable on small screens (fun fact imposible)
 
 
 What I added:
+- design a banner for issues
+- Add banners to About 
+- Do an electron app for windows 
+- Make a more readable description on github
+- fix pause media button 
+- undo redo
+- Add small banners to the Manual sections
 - Add shortcuts (keyboard)
 - Organize Github Preview Folder
 - add END banner
@@ -48,13 +50,16 @@ What I added:
 - add tree/ flowers/rocks on grass
 - add music and music switch on off
 - add a float on off switch
-
+- minimap 
 todo may varryy idk what else it can varry lol
 sooo yea gl
 
 i hate missspelling
 
 Devlog Sketch
-- Keyboard shortcuts
-- More readme changes
-- New snowyy items
+- minimap 
+- Add banners to About 
+- Do an electron app for windows 
+- undo redo
+- Make a more readable description on github
+- fix pause media button (keyboard)

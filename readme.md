@@ -5,18 +5,26 @@ Here you will find some relevant subjects and explanations about my game, includ
 # About Isometric Island
 - This is a chill simulation of a mini island where you can customize it using the hotbar elements :)
 - This "game" is made in HTML5 just to make sure anyone can play it on any browser from any device on this planet, even if you use Linux, Mac, or any other OS that uses a different method to run programs.
+PS:THIS GAME IS NOT MADE FOR A PHONE/TABLET OR SMALL SCREENS (The lowest supported resolution acceptable is 800x600 33% Zoom)
+
+
+![Game ss](GithubPreview/Banners/SS.png)
+
+
 - play it now: https://adium1000.github.io/Isometric-island/
 # Starter Guide
 ![Starterguide](GithubPreview/Banners/guide.png)
 
 ### This is the base guide for my project if you are new to this (your "How to use" manual).
 
-### 1. Zoom Bar
+![1.Zoom Bar](GithubPreview/Guide/1.png)
+
 ![ZoomBar Image](GithubPreview/Guide/zoom%20bar.png)
 - The Zoom bar is a convenient way to see your island smaller or bigger.
 - To do that, you simply have to drag the square that is present in that bar or press the buttons next to the bar.
 
-### 2. Hotbar or Blocks
+![2. Hotbar or Blocks](GithubPreview/Guide/2.png)
+
 ![Hotbar Image](GithubPreview/Guide/hotbar.png)
 - This is very useful if you want to change an existing block or add a new one.
 - The hotbar contains 2 pages, if you want to acces the second page you have to click on the arrow icon
@@ -24,12 +32,14 @@ Here you will find some relevant subjects and explanations about my game, includ
 - To use a specific block, you have to hover your mouse over it and then click until you see the selector on the item you picked. 
 - For multilayer blocks, see section 5.
 
-### 3. Island and Block Placement
+![3. Island and Block Placement](GithubPreview/Guide/3.png)
+
 ![Hotbar Image](GithubPreview/Guide/Island.png)
 - In order to place blocks, you need to have selected the block you want (see section 2).
 - After you do that, you have to point your cursor to the tile you want to change. You'll know the tile is targeted when the block brightness changes slightly (see red mark); after that, you just have to click and you're done. That easy!
 
-### 4. Island Shaping 
+![4. Island Shaping](GithubPreview/Guide/4.png)
+ 
 ![Island shaped like a circle image](GithubPreview/Guide/model%20island.png)
 
 - You can shape the island however you want thanks to the eraser tool from the hotbar, which is very helpful for different and cooler designs.
@@ -39,7 +49,8 @@ Here you will find some relevant subjects and explanations about my game, includ
 - To bring an empty block back, you just have to place another block from the hotbar there (for example, Dirt).
 - Overall, very helpful!
 
-### 5. MultiLayer Objects
+![5. MultiLayer Objects](GithubPreview/Guide/5.png)
+
 ![im](GithubPreview/Guide/intro.png)
 - You can add multilayer objects from the hotbar. 
 - A multilayer object is placed ON the platform, so it does not affect the platform structure.
@@ -47,28 +58,48 @@ Here you will find some relevant subjects and explanations about my game, includ
 
 ![im](GithubPreview/Guide/invent.png)
 
-### 6. Details & Shadows
+![6. Details & Shadows](GithubPreview/Guide/6.png)
+
 - This game includes island and block shadows.
 - Also, the trees sometimes drop leaves in 3 different styles
 
 
 ![im](GithubPreview/Banners/leaf.png)
 
-### 7. Background Music
+![7. Background Music](GithubPreview/Guide/7.png)
+
 - Background music is a way to bring realistic detail to the game, although some people may not like it.
 - It can be disabled via the button next to the hotbar.
 
 ![bgmusicbutton](GithubPreview/Guide/rmusic.png)
 
-### 8. Island Float
+![8. Island Float](GithubPreview/Guide/8.png)
+
 - The island can float, giving it a very cool effect when enabled.
 
 ![float](GithubPreview/Guide/flo.png)
 
-### 9. Cursors
+![9. Cursors](GithubPreview/Guide/9.png)
+
 - The 'game' use your OS's default cursors for now 
 - if for exemple you hover, click or interact with specific buttons (Middle click to move the island, Touching Background, Touching Hotbar, Etc)
+- Middle click to move the island
+
 ![Aboutcursors](GithubPreview/Guide/about_cursors.png)
+
+![10. Keyboard Shortcuts](GithubPreview/Guide/0.png)
+
+- The 'game' can be controled by any imput device like a keyboard, Macropad, Keypad
+- Here is the list of keyboard shortcuts
+
+|Key       | Action                         |
+|:--------:|:------------------------------:|
+| E        | Quick-select Eraser            |
+| P        | Toggle between Hotbar Pages    |
+| M        | Toggle Music                   |
+| F        | Toggle Island Float mode       |
+
+
 
 ### Warning!
 ![WarnBanner](GithubPreview/Banners/warningb.png)
@@ -118,7 +149,7 @@ Here you will find some relevant subjects and explanations about my game, includ
 # ! Anything else you find in my project's Assets folder is purely made by me !
 
 ### You reached the end for now :)
-![the end is near!!!](GithubPreview/Banners/endreadme.png)   
+![the end](GithubPreview/Banners/endreadme.png)   
 - You can try:
 1. Check `todo.md`
 2. Check assets
