@@ -11,7 +11,7 @@
 - Random island button
 - Design Save button
 - Design random island button
-
+- add iron ore
 - RE do main banner
 - Add Icon
 
