@@ -11,7 +11,7 @@ PS:THIS GAME IS NOT MADE FOR A PHONE/TABLET OR SMALL SCREENS (The lowest support
 ![Game ss](GithubPreview/Banners/SS.png)
 
 
-- play it now: https://adium1000.github.io/Isometric-island/
+### - play it now: https://adium1000.github.io/Isometric-island/
 # Starter Guide
 ![Starterguide](GithubPreview/Banners/guide.png)
 
@@ -98,8 +98,19 @@ PS:THIS GAME IS NOT MADE FOR A PHONE/TABLET OR SMALL SCREENS (The lowest support
 | P        | Toggle between Hotbar Pages    |
 | M        | Toggle Music                   |
 | F        | Toggle Island Float mode       |
+| CTRL + Z | Undo                           |
+| CTRL + Y | Redo                           |
+
+![MiniMap](GithubPreview/Guide/01.png)
+
+- Minimap is a small overall sketch of your island helping the user when using the pan tool or zoom
+
+![MiniMap](GithubPreview/Guide/minimap.png)
 
 
+![12. Undo and Redo](GithubPreview/Guide/02.png)
+
+- Undo and Redo functions are like a time machine: for example, if you make a mistake, you can turn back time to a point where the mistake did not exist, or if you still don't like it, you can return to the present
 
 ### Warning!
 ![WarnBanner](GithubPreview/Banners/warningb.png)
@@ -108,6 +119,8 @@ PS:THIS GAME IS NOT MADE FOR A PHONE/TABLET OR SMALL SCREENS (The lowest support
 - Do not copy my work and publish it without crediting my GitHub page. Thank you!
 
 ### Issues
+![Issues Banner](GithubPreview/Banners/Issues.png)
+
 - sometimes zoom can break the island canvas for unknown reasons.
 
 ### (BETA) Meaning
@@ -154,5 +167,5 @@ PS:THIS GAME IS NOT MADE FOR A PHONE/TABLET OR SMALL SCREENS (The lowest support
 1. Check `todo.md`
 2. Check assets
 3. Star the repo
-4. Suggest something cool (on Flavortown!)
+4. Suggest something cool (on Flavortown!) see `HackClub.md`
 5. Don't like it? It's okay! Give me some feedback on what I can improve. :)

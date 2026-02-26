@@ -19,7 +19,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     <title>Isometric Island</title>
     <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">  <!-- This is the title's font from google fonts -->
-     <style>
+   <style>
         body {
             margin: 0;
             background: #aad6ff;
@@ -76,6 +76,27 @@
 
         .game-title:hover { transform: scale(1.2); }
 
+        #minimap-container {
+            position: absolute;
+            top: 100px;
+            right: 40px;
+            width: 100px;
+            height: 100px;
+            background: #8b5e34;
+            padding: 4px;
+            border: 3px solid #523519;
+            box-shadow: 4px 4px 0px rgba(0,0,0,0.2);
+            z-index: 999;
+            image-rendering: pixelated;
+        }
+
+        #minimap {
+            width: 100%;
+            height: 100%;
+            background: #aad6ff;
+            display: block;
+        }
+
         #stage {
             position: relative;
             width: 100%;
@@ -94,6 +115,7 @@
             z-index: 10;
             transform-origin: center center;
             backface-visibility: hidden;
+            will-change: transform;
         }
 
         @keyframes islandFloat {
@@ -112,6 +134,7 @@
             -webkit-user-drag: none;
             filter: drop-shadow(3px 4px 2px rgba(0,0,0,0.20));
             transition: opacity 0.1s;
+            will-change: transform, opacity;
         }
 
         .tile:hover { filter: brightness(1.2) drop-shadow(3px 4px 2px rgba(0,0,0,0.3)); }
@@ -174,7 +197,7 @@
 
         .page-2 { display: none; }
 
-        #music-toggle, #float-toggle {
+        #music-toggle, #float-toggle, #undo-btn, #redo-btn {
             position: absolute;
             width: 60px;
             height: 60px;
@@ -186,9 +209,11 @@
 
         #music-toggle { left: -75px; }
         #float-toggle { left: -145px; }
+        #redo-btn { left: -215px; }
+        #undo-btn { left: -285px; }
 
-        #music-toggle:hover, #float-toggle:hover { transform: scale(1.1); filter: brightness(1.1); }
-        #music-toggle:active, #float-toggle:active { transform: scale(0.9); }
+        #music-toggle:hover, #float-toggle:hover, #undo-btn:hover, #redo-btn:hover { transform: scale(1.1); filter: brightness(1.1); }
+        #music-toggle:active, #float-toggle:active, #undo-btn:active, #redo-btn:active { transform: scale(0.9); }
 
         #selection-highlight {
             position: absolute; 
@@ -262,6 +287,10 @@
     <div id="splash-text">relaxing</div>
 </div>
 
+<div id="minimap-container">
+    <canvas id="minimap" width="100" height="100"></canvas>
+</div>
+
 <div id="stage">
     <div id="map"></div>
 </div>
@@ -269,8 +298,11 @@
 <div id="dock-container">
     <div id="dock">
         <div id="block-name-display">Eraser</div>
-        <img id="float-toggle" src="./Assets/GUI/floatoff.png" onclick="toggleFloat()">
-        <img id="music-toggle" src="./Assets/GUI/bgoff.png" onclick="toggleMusic()">
+        
+        <img id="undo-btn" src="./Assets/GUI/undo.png" onclick="undo()" title="Undo (Ctrl+Z)">
+        <img id="redo-btn" src="./Assets/GUI/redo.png" onclick="redo()" title="Redo (Ctrl+Y)">
+        <img id="float-toggle" src="./Assets/GUI/floatoff.png" onclick="toggleFloat()" title="Float (F)">
+        <img id="music-toggle" src="./Assets/GUI/bgoff.png" onclick="toggleMusic()" title="Music (M)">
         
         <div id="selection-highlight"></div>
         
@@ -323,6 +355,10 @@
     let lastSelectedSlotP1 = null;
     let lastSelectedSlotP2 = null;
 
+    let historyStack = [];
+    let redoStack = [];
+    const MAX_HISTORY = 40;
+
     const splashes = ["amazing!", "wooooow!", "relaxing", "pixel art!", "isometric!", "build it!" , "Adrian"];
     const splashEl = document.getElementById('splash-text');
     splashEl.innerText = splashes[Math.floor(Math.random() * splashes.length)];
@@ -345,22 +381,21 @@
     const musicBtn = document.getElementById('music-toggle');
     const floatBtn = document.getElementById('float-toggle');
 
+    const minimapCanvas = document.getElementById('minimap');
+    const mCtx = minimapCanvas.getContext('2d');
+
     window.addEventListener('keydown', (e) => {
         const key = e.key.toLowerCase();
-        if (key === 'e') {
+        if (e.ctrlKey && key === 'z') { e.preventDefault(); undo(); }
+        else if (e.ctrlKey && key === 'y') { e.preventDefault(); redo(); }
+        else if (key === 'e') {
             if (currentPage !== 1) switchPage(1);
             const eraserSlot = document.getElementById('slot-eraser');
             selectBlock('eraser', eraserSlot);
         } 
-        else if (key === 'p') {
-            switchPage(currentPage === 1 ? 2 : 1);
-        } 
-        else if (key === 'm') {
-            toggleMusic();
-        } 
-        else if (key === 'f') {
-            toggleFloat();
-        }
+        else if (key === 'p') { switchPage(currentPage === 1 ? 2 : 1); } 
+        else if (key === 'm') { toggleMusic(); } 
+        else if (key === 'f') { toggleFloat(); }
     });
 
     function playMusic() { bgMusic.play().catch(e => {}); }
@@ -407,13 +442,14 @@
         if (!skipSound) { hotbarSound.currentTime = 0; hotbarSound.play().catch(e => {}); }
     }
 
-    function createTile(x, y, z, type, customPath = null) {
+    function createTile(x, y, z, type, customPath = null, parent = mapContainer) {
         const img = document.createElement("img");
         img.src = customPath ? customPath : `./Assets/Blocks/${type}.png`;
         img.className = "tile";
         img.setAttribute('data-x', x);
         img.setAttribute('data-y', y);
         img.setAttribute('data-z', z);
+        img.setAttribute('data-color', getBlockColor(type, customPath));
         img.style.left = (x - y) * (TILE_W / 2) + "px";
         img.style.top  = (x + y) * (TILE_H / 2) - (z * TILE_H) + "px";
         img.style.zIndex = (x + y) + z;
@@ -422,23 +458,109 @@
             e.preventDefault(); 
             handleInteraction(img, x, y, z); 
         };
-        mapContainer.appendChild(img);
+        parent.appendChild(img);
         return img;
+    }
+
+    function getBlockColor(type, path) {
+        if (type === 'dirt' || type === 'dirt2') return '#4a7021';
+        if (type === 'sand') return '#f4d18d';
+        if (type === 'redsand') return '#b35d35';
+        if (type === 'stone' || type === 'rock') return '#808080';
+        if (type === 'water' || type === 'ice') return '#4da6ff';
+        if (type === 'snow' || type.includes('snow')) return '#ffffff';
+        if (type === 'wood' || type === 'leaf') return '#2d4c1e';
+        if (type === 'flovers') return '#ff69b4';
+        return '#523519';
+    }
+
+    function updateMinimap() {
+        requestAnimationFrame(() => {
+            mCtx.clearRect(0, 0, minimapCanvas.width, minimapCanvas.height);
+            const tiles = mapContainer.getElementsByClassName('tile');
+            const centerX = minimapCanvas.width / 2;
+            const centerY = minimapCanvas.height / 2;
+            const size = 4;
+
+            for (let i = 0; i < tiles.length; i++) {
+                const t = tiles[i];
+                if (t.style.opacity === "0") continue;
+                const x = parseInt(t.getAttribute('data-x'));
+                const y = parseInt(t.getAttribute('data-y'));
+                const z = parseInt(t.getAttribute('data-z'));
+                const color = t.getAttribute('data-color') || '#ffffff';
+
+                const isoX = (x - y) * (size * 1.5);
+                const isoY = (x + y) * (size * 0.75) - (z * 1);
+
+                mCtx.fillStyle = color;
+                mCtx.fillRect(centerX + isoX - size/2, centerY + isoY - size/2, size, size);
+            }
+        });
+    }
+
+    function saveState() {
+        const tiles = mapContainer.getElementsByClassName('tile');
+        const state = [];
+        for(let i=0; i<tiles.length; i++) {
+            const t = tiles[i];
+            state.push({
+                x: t.getAttribute('data-x'),
+                y: t.getAttribute('data-y'),
+                z: t.getAttribute('data-z'),
+                src: t.src,
+                opacity: t.style.opacity,
+                objId: t.getAttribute('data-obj-id'),
+                color: t.getAttribute('data-color')
+            });
+        }
+        historyStack.push(state);
+        if (historyStack.length > MAX_HISTORY) historyStack.shift();
+        redoStack = []; 
+        updateMinimap();
+    }
+
+    function undo() {
+        if (historyStack.length <= 1) return;
+        redoStack.push(historyStack.pop());
+        applyState(historyStack[historyStack.length - 1]);
+        hotbarSound.currentTime = 0; hotbarSound.play().catch(e => {});
+    }
+
+    function redo() {
+        if (redoStack.length === 0) return;
+        const state = redoStack.pop();
+        historyStack.push(state);
+        applyState(state);
+        hotbarSound.currentTime = 0; hotbarSound.play().catch(e => {});
+    }
+
+    function applyState(state) {
+        const fragment = document.createDocumentFragment();
+        mapContainer.innerHTML = '';
+        state.forEach(data => {
+            const t = createTile(parseInt(data.x), parseInt(data.y), parseInt(data.z), '', data.src, fragment);
+            t.style.opacity = data.opacity;
+            t.setAttribute('data-color', data.color);
+            if (data.objId) t.setAttribute('data-obj-id', data.objId);
+        });
+        mapContainer.appendChild(fragment);
+        updateMinimap();
     }
 
     function handleInteraction(tile, x, y, z) {
         const isPartOfObject = tile.hasAttribute('data-obj-id') && tile.getAttribute('data-obj-id') !== "";
-        const existingAbove = document.querySelector(`.tile[data-x="${x}"][data-y="${y}"][data-z="${z + 1}"]`);
+        const existingAbove = mapContainer.querySelector(`.tile[data-x="${x}"][data-y="${y}"][data-z="${z + 1}"]`);
 
         if (selectedBlockType === 'eraser') {
             const objId = tile.getAttribute('data-obj-id');
             if (objId) {
-                document.querySelectorAll(`[data-obj-id="${objId}"]`).forEach(el => el.remove());
+                const objects = mapContainer.querySelectorAll(`[data-obj-id="${objId}"]`);
+                for(let i=0; i<objects.length; i++) objects[i].remove();
             } else {
                 tile.style.opacity = "0";
             }
         } 
-        // Logica extinsă pentru snowed_tree
         else if (['tree', 'snowed_tree', 'melon', 'Hay', 'snowman', 'pumpkin'].includes(selectedBlockType)) {
             if(tile.style.opacity === "0" || isPartOfObject || existingAbove) return;
             treeCounter++;
@@ -446,16 +568,10 @@
             
             if (selectedBlockType === 'tree' || selectedBlockType === 'snowed_tree') {
                 const leafType = selectedBlockType === 'tree' ? 'leaf' : 'snow2';
-                // Trunchi
                 for(let i=1; i<=3; i++) createTile(x, y, i, 'wood').setAttribute('data-obj-id', currentId);
-                // Strat frunze/zăpadă 1
                 for(let ox=-1; ox<=1; ox++) for(let oy=-1; oy<=1; oy++) createTile(x + ox, y + oy, 4, leafType).setAttribute('data-obj-id', currentId);
-                // Strat frunze/zăpadă 2
                 [{dx:0,dy:0},{dx:1,dy:0},{dx:-1,dy:0},{dx:0,dy:1},{dx:0,dy:-1}].forEach(l => createTile(x+l.dx, y+l.dy, 5, leafType).setAttribute('data-obj-id', currentId));
-                // Vârf
                 createTile(x, y, 6, leafType).setAttribute('data-obj-id', currentId);
-                
-                // Efecte (doar dacă e copac normal, sau poți lăsa și la cel de zăpadă)
                 if(selectedBlockType === 'tree') startInfiniteLeaves(x, y, currentId);
             } 
             else if (selectedBlockType === 'snowman') {
@@ -469,14 +585,15 @@
             if(isPartOfObject) return;
             tile.src = `./Assets/Blocks/${selectedBlockType}.png`;
             tile.style.opacity = "1";
+            tile.setAttribute('data-color', getBlockColor(selectedBlockType));
             tile.removeAttribute('data-obj-id');
         }
         placeSound.currentTime = 0; placeSound.play().catch(e => {});
+        saveState();
     }
 
-    // Funcțiile rămase (falling leaves etc.) nu s-au schimbat
     function createFallingLeaf(startX, startY, objId) {
-        if (!document.querySelector(`[data-obj-id="${objId}"]`)) return;
+        if (!mapContainer.querySelector(`[data-obj-id="${objId}"]`)) return;
         const leaf = document.createElement("img");
         const types = ['falling leaf1.png', 'falling leaf2.png', 'falling leaf3.png'];
         const randomType = types[Math.floor(Math.random() * types.length)];
@@ -492,6 +609,7 @@
         let curZ = 5 + Math.random(); 
         let angle = Math.random() * Math.PI * 2;
         let speed = 0.015 + Math.random() * 0.02;
+
         function animate() {
             curZ -= speed; angle += 0.03;
             let driftX = curX + Math.sin(angle) * 0.5;
@@ -505,12 +623,12 @@
             }
             requestAnimationFrame(animate);
         }
-        animate();
+        requestAnimationFrame(animate);
     }
 
     function startInfiniteLeaves(x, y, objId) {
         const interval = setInterval(() => {
-            if (!document.querySelector(`[data-obj-id="${objId}"]`)) { clearInterval(interval); return; }
+            if (!mapContainer.querySelector(`[data-obj-id="${objId}"]`)) { clearInterval(interval); return; }
             if (Math.random() > 0.6) {
                 const burst = Math.floor(Math.random() * 3) + 1;
                 for(let i=0; i<burst; i++) { setTimeout(() => createFallingLeaf(x, y, objId), i * 500); }
@@ -518,7 +636,9 @@
         }, 3000 + Math.random() * 4000);
     }
 
-    for(let y=0; y<8; y++) for(let x=0; x<8; x++) createTile(x, y, 0, 'dirt');
+    const initFrag = document.createDocumentFragment();
+    for(let y=0; y<8; y++) for(let x=0; x<8; x++) createTile(x, y, 0, 'dirt', null, initFrag);
+    mapContainer.appendChild(initFrag);
     
     function applyZoom() {
         zoomDot.style.left = (currentZoomPercent * 100) + "%";
@@ -576,6 +696,8 @@
         const firstSlot = document.getElementById('slot-eraser');
         lastSelectedSlotP1 = firstSlot;
         selectBlock('eraser', firstSlot, true);
+        saveState();
+        updateMinimap();
     };
 </script>
 </body>
