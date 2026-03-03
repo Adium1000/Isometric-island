@@ -5,10 +5,14 @@ Here you will find some relevant subjects and explanations about my game, includ
 # About Isometric Island
 - This is a chill simulation of a mini island where you can customize it using the hotbar elements :)
 - This "game" is made in HTML5 just to make sure anyone can play it on any browser from any device on this planet, even if you use Linux, Mac, or any other OS that uses a different method to run programs.
-PS:THIS GAME IS NOT MADE FOR A PHONE/TABLET OR SMALL SCREENS (The lowest supported resolution acceptable is 800x600 33% Zoom)
-
-
 ![Game ss](GithubPreview/Banners/SS.png)
+
+# Supported Devices 
+- The lowest supported PC resolution acceptable is 800x600 33% Zoom
+- Not compatible with Phone devices 
+- Tablets compability: 16:9 67% zoom (SM Tab 9 Shoot)
+![d](<GithubPreview/Devlogs (Flavortown)/SMSHT (2).jpg>)
+
 
 
 ### - play it now: https://adium1000.github.io/Isometric-island/
@@ -111,6 +115,16 @@ PS:THIS GAME IS NOT MADE FOR A PHONE/TABLET OR SMALL SCREENS (The lowest support
 ![12. Undo and Redo](GithubPreview/Guide/02.png)
 
 - Undo and Redo functions are like a time machine: for example, if you make a mistake, you can turn back time to a point where the mistake did not exist, or if you still don't like it, you can return to the present
+
+![13. File Menu](GithubPreview/Guide/03.png)
+
+- File menu is a tipical menu with actions for your island like: SAVE, LOAD, DELETE, RANDOM ISLAND using the same accent colors as the hotbar
+
+![File menu ](GithubPreview/Guide/FileMenu.png)
+
+### Fun: Contains a random seed generation button for islands , but is more experimental
+### Danger: If you want to reset the island
+### Save/Load if you want to resume or save your island :3
 
 ### Warning!
 ![WarnBanner](GithubPreview/Banners/warningb.png)

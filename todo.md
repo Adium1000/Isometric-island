@@ -1,32 +1,29 @@
 ![Banner](GithubPreview/Banners/todolist.png)
 # Here is my todo list where I list ideeas to remember them for later, take a look!
-- export as an png or as a code 1/2
-- more blocks to fill the hotbar //
-- day/night/rain/snow switch
-- add some comments so ppl understand what i did (kinda)
-- decompile all of my game into HTML, CSS , JAVA
+- day/night/rain/snow switch <=
+- decompile all of my game into HTML, CSS , JAVA <=
 - use Chrome's PWA app
-- add lanterns! //
-- mooving clouds sublayer//
-- Random island button
-- Design Save button
-- Design random island button
-- add iron ore
-- RE do main banner
-- Add Icon
-- Android Build
-- Add 3 emojis for readme
+- Add 3 emojis for readme//
 
+In Quere/Not important/Delayed
+- more blocks to fill the hotbar (- multilayer houses  - add lanterns! - add iron ore) 
+- mooving clouds sublayer
+- add some comments so ppl understand what i did 
 
 Try Imposible
 - Add custom cursors (this guy cant design a cursor )
-- multilayer houses 
 - Animals on the island
 - make the game playable on small screens (fun fact imposible) (Glassy ui different repo for the small screens using a kida futiger aero theme because I can't optimize my ui for small screens cuze I m dumb)
 
 
 
-What I added:
+What I added:- Electron release
+- Android Build
+- Design Save button
+- Add Icon to the page
+- Random island button
+- Hold tooltip
+- export as an png or as a codes
 - RE do main banner
 - design a banner for issues
 - Add banners to About 
@@ -62,26 +59,25 @@ sooo yea gl
 i hate missspelling
 
 Devlog Sketch
-- minimap 
-- Add banners to About 
-- Do an electron app for windows 
-- undo redo
-- Make a more readable description on github (readme)
-- fix pause media button (keyboard)
-- Hardware Acceleration & Gpu layering optimizations
-Here is the plan for the mobile devices version
-- I will design a glassy interface in html (maybe I'l use AI to accelerate the process)
+- Android Build
+- export as an png or as a codes
+- Add Icon to the page
+- Random island button
+- Design Save button
+- Tablet Patches!
 
-Overall Devlog ideea
-**Devlog 16**
--  Performance & Technical Polishing
-  - Hardware Acceleration: Implemented GPU layering optimizations to offload rendering tasks, ensuring a stable frame rate even on lower-end machines.
-  - Undo/Redo System: You now have full control over your build history.
-  - Minimap: Added a dedicated minimap 
-  - Readme updates
+Devlog Preview
+**DEVLOG 17**
 ---
-My plan for small screens (glassy ui) (PS: This will NOT be in the same repo or overwrite with this project, it is just an alternative for small screens and ui optimization)
-
-I’m moving away from the classic look for mobile in favor of a modern "Glassmorphism" interface built in HTML. This will provide a sleek, translucent aesthetic that feels native to modern iOS and Android devices. To speed up this transition, I’ll be utilizing AI-assisted design to generate the CSS layouts and component structures.
+- Android APK: The BETA Android build is live and available to download on the GitHub page
+- File window: This window let you delete, load, save, and make random seeds for islands (aw and it is lookin cool :3)
+- Export as Code: You can now export your island as a shareable code string directly from the save popup
+- Page Icon: The tab now shows the proper Isometric Island favicon instead of a blank default
+- Random Island: Hit the random button and get a fully generated island from one of five themed seeds: Summer, Snowy, Desert, Ocean, or Stone.(It does do some good islands but u gotta be lucky)
+- Tablet Patches: Fixed several layout issues on tablet-sized screens. The hotbar, minimap, and zoom bar were all misbehaving at mid-range resolutions (Tested on SM-TAB-A9+ 67% zoom)
+- README.md changes: Some readme changes at the guide section 
 ---
-That's all!
+Aw and btw, the glassy version will be delayed 
+And more to come, I still have some ideas but we are almost to the end of the project 
+---
+That's All, what do you think?
