@@ -4,12 +4,12 @@
     "name": "Isometric Island",
     "icons": [
         {
-            "src": "/Assets/Icons/icon-192.png",
+            "src": "Assets/Icons/icon-192.png",
             "type": "image/png",
             "sizes": "192x192"
         },
         {
-            "src": "/Assets/Icons/icon-512.png",
+            "src": "Assets/Icons/icon-512.png",
             "type": "image/png",
             "sizes": "512x512"
         }
