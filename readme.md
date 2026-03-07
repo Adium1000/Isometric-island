@@ -11,7 +11,7 @@ Here you will find some relevant subjects and explanations about my game, includ
 - The lowest supported PC resolution acceptable is 800x600 33% Zoom
 - Not compatible with Phone devices 
 - Tablets compability: 16:9 67% zoom (SM Tab 9 Shoot)
-![d](<GithubPreview/Devlogs (Flavortown)/SMSHT (2).jpg>)
+![d](GithubPreview/Devlogs (Flavortown)/SMSHT (2).jpg)
 
 
 
@@ -125,6 +125,24 @@ Here you will find some relevant subjects and explanations about my game, includ
 ### Fun: Contains a random seed generation button for islands , but is more experimental
 ### Danger: If you want to reset the island
 ### Save/Load if you want to resume or save your island :3
+
+# 14. Mouse Actions
+- You can perform more actions with your mouse such as Grabbing island/Select specific Blocks/ or the simple block change 
+
+|Mouse Key    | Action                               |
+|:-----------:|:------------------------------------:|
+| Left Click  | Place Blocks                         |
+| Right Click | Select island specific blocks/fill   |
+| Middle Click| Pan tool/Grabbing                    |
+
+- Let's Break each action down to be more easy to understand
+
+1. Left click - It lets you place or modify island blocks with the hotbar selected item
+2. Right click - Imagine the island is your desktop icons, when you drag with left click and select on your desktop you can delete, or copy. That is almost the same here you can select using `RIGHT` click or `CTRL + LEFT CLICK` 
+3. Middle click - here is the pan tool / dragging tool. When you don't have space on the screen you can drag your island where you want to design it
+
+
+
 
 ### Warning!
 ![WarnBanner](GithubPreview/Banners/warningb.png)
