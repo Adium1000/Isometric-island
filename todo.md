@@ -71,4 +71,4 @@ Added a lot of facilities: like Island rezolution in the file menu where you can
 
 
 Publish Sketch
-Shiped the first most stable version of the game, try it, hope you like it :3
+Shiped the first most stable version of the game, try it, hope you like it :3;;
