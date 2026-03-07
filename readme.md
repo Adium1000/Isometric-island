@@ -11,9 +11,8 @@ Here you will find some relevant subjects and explanations about my game, includ
 - The lowest supported PC resolution acceptable is 800x600 33% Zoom
 - Not compatible with Phone devices 
 - Tablets compability: 16:9 67% zoom (SM Tab 9 Shoot)
-![d](GithubPreview/Devlogs (Flavortown)/SMSHT (2).jpg)
 
-
+![TAB](GithubPreview/Banners/SMSHT.jpg)
 
 ### - play it now: https://adium1000.github.io/Isometric-island/
 # Starter Guide
