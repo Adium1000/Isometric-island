@@ -1711,7 +1711,7 @@
     function fetchReadme() {
         const loading = document.getElementById('readme-loading');
         const content = document.getElementById('welcome-readme');
-        fetch(REPO_RAW + 'readme.md')
+        fetch(REPO_RAW + 'readme.md?ts=' + Date.now(), { cache: 'no-store' })
             .then(r => { if (!r.ok) throw new Error(); return r.text(); })
             .then(md => { loading.style.display = 'none'; content.style.display = 'block'; content.innerHTML = parseMarkdown(md); })
             .catch(() => { loading.innerHTML = 'Error while loading. <a href="https://github.com/Adium1000/Isometric-island/blob/main/readme.md" target="_blank" style="color:#adffa8;">Open Github &#8599;</a>'; });
