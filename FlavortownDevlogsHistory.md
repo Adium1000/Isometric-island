@@ -1,13 +1,15 @@
 # This project was made for a programe named Flavortown which is owned by HackClub (Some nice ppl)
 ### If you are a teen learn more here => https://hackclub.com/ & get free stikers!!! 
 
-# Here you will find all devlogs from flavortown 
+# Here you will find all devlogs from flavortown (because why not :) 
 
 First Devlog
 
 I started rendering the “Isometric Island” using PNGs like assets with a 24x24 Rezolution, for now it is just a static island with nothing more, also we have a ski blue background
 You have up/down some reference (depends if you use a extension a preview kinda)
 What do you think?
+
+![1st devlog picture](<GithubPreview/Devlogs (Flavortown)/Devlog1.png>)
 
 ---
 
@@ -20,6 +22,8 @@ and also the cursor is a cross when touchin island
 What do you think?
 Down here you have some previews!
 
+![2nd Devlog Picture](<GithubPreview/Devlogs (Flavortown)/Devlog2.png>)
+
 ---
 
 3rd Devlovg
@@ -31,6 +35,8 @@ I redesigned the stone texture
 What do you tink?
 above this you fiind some of my working footage
 
+![3rd Devlog Picture](<GithubPreview/Devlogs (Flavortown)/Devlog3.png>)
+
 ---
 
 4th Devlog
@@ -40,6 +46,8 @@ added title text
 Cursor changes depending on what you select
 thst’s all! What do you think?
 
+![4th Devlog Picture](<GithubPreview/Devlogs (Flavortown)/Devlog4.png>)
+
 ---
 
 5th devlog
@@ -48,6 +56,8 @@ Finally the “game” is avalabile for testing on github pages
 Did a github documentation and shared all assets ATM with a short guide about the “game” and how to use it, and my todo list
 What do you think?
 
+![5th Devlog Picture](<GithubPreview/Devlogs (Flavortown)/Devlog5.png>)
+
 ---
 
 Devlog 6
@@ -55,6 +65,8 @@ Devlog 6
 Added shadows to the Island
 Added the font license for the title
 That’s All, What do you think?
+
+![6th Devlog Picture](<GithubPreview/Devlogs (Flavortown)/Devlog6.png>)
 
 ---
 
@@ -69,6 +81,8 @@ Selection bug fixed
 Added a big aschi title in the code
 What do you think?
 
+(devlog 7 has a video as a referance)
+
 ---
 
 Devlog 8
@@ -77,6 +91,8 @@ Added Trees (a multilayer object) [BETA]
 Trees can be removed by clicking with eraser on one of the blocks that represents the tree
 Smoothed out the taskbar animations
 What do you Think?
+
+![8th Devlog Image](<GithubPreview/Devlogs (Flavortown)/Devlog8.png>)
 
 ---
 
@@ -88,6 +104,8 @@ Some code optimizations
 That’s All!
 What do you think?
 
+![9th Devlog Image](<GithubPreview/Devlogs (Flavortown)/Devlog9image.png>)
+
 ---
 
 Devlog10
@@ -95,6 +113,8 @@ Devlog10
 Added some new assets to the game: Hay, GrassStone, Sand, RedSand, Raindrops effect, undo , redo buttons
 I did the assets in Paint.net
 That is all what do you think?
+
+![10 Devlog Image](<GithubPreview/Devlogs (Flavortown)/Devlog10.png>)
 
 ---
 
@@ -113,6 +133,8 @@ Melon
 
 That’s all what do you think
 
+![11 Devlog Image](<GithubPreview/Devlogs (Flavortown)/devlog11.png>)
+
 ---
 
 Devlog #12
@@ -124,6 +146,8 @@ Added new assets:
 -Leafs that will fall from the tree
 -MultilayerSowman Assets
 That’s All, What do you think
+
+![12 Devlog Image](<GithubPreview/Devlogs (Flavortown)/thumb13.png>)
 
 ---
 
@@ -140,6 +164,8 @@ Smart Hotbar: No more guessing blocks! Items’ names are now displayed when you
 Atmosphere: For an added “chill” feel, a new Island Float button and a BG Music toggle were added.
 README Revamp: Significant changes have been made to the VS Code documentation, including the addition of a new visual “How-to” guide
 What do you think?
+
+![13 Devlog Image](<GithubPreview/Devlogs (Flavortown)/Devlog13.png>)
 
 ---
 
@@ -169,7 +195,9 @@ Added navigation buttons for switching between pages.
 Grammar corrections.
 Added more visual banners for better readability.
 General formatting improvements.
-What do you think?
+What do you think?\
+
+![14 Devlog image](<GithubPreview/Devlogs (Flavortown)/devlog14.png>)
 
 ---
 
@@ -191,7 +219,10 @@ More readme polish
 Updates to banner designs & new banners
 That is all
 
+![15 Devlog image](<GithubPreview/Devlogs (Flavortown)/Devlog 15.png>)
+
 ---
+
 Devlog 16
 
 Performance & Technical Polishing
@@ -203,7 +234,11 @@ My plan for small screens (glassy ui) (PS: This will NOT be in the same repo or 
 
 I’m moving away from the classic look for mobile in favor of a modern “Glassmorphism” interface built in HTML. This will provide a sleek, translucent aesthetic that feels native to modern iOS and Android devices. To speed up this transition, I’ll be utilizing AI-assisted design to generate the CSS layouts and component structures. *
 That’s all!
+
+![16 Devlog Image](<GithubPreview/Devlogs (Flavortown)/devlog 16.png>)
+
 ---
+
 DEVLOG 17
 Android APK: The BETA Android build is live and available to download on the GitHub page
 File window: This window let you delete, load, save, and make random seeds for islands (aw and it is lookin cool :3)
@@ -215,3 +250,19 @@ README.md changes: Some readme changes at the guide section
 Aw and btw, the glassy version will be delayed
 And more to come, I still have some ideas but we are almost to the end of the project
 That’s All, what do you think?
+
+![17 Devlog Image](<GithubPreview/Devlogs (Flavortown)/Devlog17.png>)
+
+---
+
+**Devlog 18**
+
+With this release, you can now pick the island grid size right from the File Menu, up to 8×8, so you have way more control over how big and shaped your world is. There's also a new button that lets you create a random island by using seed generation. Block editing got easier too: just right-click or Ctrl + left click to pick a group of blocks. Then you can fill the whole area with any block you want in one go or delete the selected blocks all at once without needing the eraser. When you close a popup now, it plays a sound, and after finishing an action, a small confirmation toast pops up. The layout and touch controls have been updated to work better for tablet users, and now you can install the game straight from Chrome as a standalone PWA or APK (BETA) for tablets!!
+
+![18 Devlog Image](<GithubPreview/Devlogs (Flavortown)/devlog18.png>)
+
+---
+
+
+![yayyy](https://emoji.slack-edge.com/T09V59WQY1E/yayayayayay/203666b7424ee7a7.gif)
+

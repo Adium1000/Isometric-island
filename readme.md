@@ -5,12 +5,13 @@ Here you will find some relevant subjects and explanations about my game, includ
 # About Isometric Island
 - This is a chill simulation of a mini island where you can customize it using the hotbar elements :)
 - This "game" is made in HTML5 just to make sure anyone can play it on any browser from any device on this planet, even if you use Linux, Mac, or any other OS that uses a different method to run programs.
+
 ![Game ss](GithubPreview/Banners/SS.png)
 
 # Supported Devices !
 - The lowest supported PC resolution acceptable is 800x600 33% Zoom
 - Not compatible with Phone devices 
-- Tablets compability: 16:9 67% zoom (SM Tab 9 Shoot)
+- Tablets compatibility: 16:9 67% zoom (SM Tab 9 Shoot)
 
 ![TAB](GithubPreview/Banners/SMSHT.jpg)
 
@@ -30,7 +31,7 @@ Here you will find some relevant subjects and explanations about my game, includ
 
 ![Hotbar Image](GithubPreview/Guide/hotbar.png)
 - This is very useful if you want to change an existing block or add a new one.
-- The hotbar contains 2 pages, if you want to acces the second page you have to click on the arrow icon
+- The hotbar contains 2 pages, if you want to access the second page you have to click on the arrow icon
 - It contains every block available in the "game," drawn by me.
 - To use a specific block, you have to hover your mouse over it and then click until you see the selector on the item you picked. 
 - For multilayer blocks, see section 5.
@@ -92,7 +93,7 @@ Here you will find some relevant subjects and explanations about my game, includ
 
 ![10. Keyboard Shortcuts](GithubPreview/Guide/0.png)
 
-- The 'game' can be controled by any imput device like a keyboard, Macropad, Keypad
+- The 'game' can be controlled by any input device like a keyboard, Macropad, Keypad
 - Here is the list of keyboard shortcuts
 
 |Key       | Action                         |
@@ -117,7 +118,7 @@ Here you will find some relevant subjects and explanations about my game, includ
 
 ![13. File Menu](GithubPreview/Guide/03.png)
 
-- File menu is a tipical menu with actions for your island like: SAVE, LOAD, DELETE, RANDOM ISLAND using the same accent colors as the hotbar
+- File menu is a typical menu with actions for your island like: SAVE, LOAD, DELETE, RANDOM ISLAND using the same accent colors as the hotbar
 
 ![File menu ](GithubPreview/Guide/FileMenu.png)
 
@@ -128,7 +129,7 @@ Here you will find some relevant subjects and explanations about my game, includ
 3. Danger zone/Delete island
 - From here you can clear the island and start over
 4. Island shaping
-- This "tool" lets you format your island with a resolution up to 8X8 by just touching a squere with mouse 
+- This "tool" lets you format your island with a resolution up to 8X8 by just touching a square with mouse 
 5. Random Island
 - This button generates a random seed island : Stone/Snow/Desert/Summer/Ocean
 6. Climate
@@ -183,12 +184,17 @@ Here you will find some relevant subjects and explanations about my game, includ
 
 ![game](GithubPreview/Guide/07.png)
  
-1. Chrome PWA aplication(Recomanded!)
+1. Chrome PWA application (Recommended!)
 
 
 ![Chrome1](GithubPreview/Guide/chrome1.png)
 
 - For chrome go to that 3 dots in the right-up-corner -> Cast save & share -> Install page as an app
+
+- Or simply click this button
+
+![II](GithubPreview/Guide/ii.png)
+
 
 ![chrome2](GithubPreview/Guide/Chrome2.png)
 
@@ -209,7 +215,7 @@ Here you will find some relevant subjects and explanations about my game, includ
 
 ![apk3](GithubPreview/Guide/apk3.jpg)
 
-- If play protect pops click on more options-> install witout verification
+- If play protect pops click on more options-> install without verification
 
 ![apk4](GithubPreview/Guide/playtrash.jpg)
 

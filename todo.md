@@ -7,8 +7,9 @@ More to come
 - mooving clouds sublayer
 - add some comments so ppl understand what i did 
 - Add custom cursors (this guy cant design a cursor )
-- decompile all of my game into HTML, CSS , JAVA <=
+
 What I added:
+- decompile all of my game into HTML, CSS , JAVA
 - use Chrome's PWA app
 - make the game playable on small screens 
 - day/night/rain/snow switch 
@@ -60,15 +61,22 @@ Devlog Sketch
 - Popup close sound
 - Welcome popup
 - Climate functions
+- decompile all of my game into HTML, CSS , JAVA
+- use Chrome's PWA app
+
 Devlog Preview
+**Devlog 18**
+With this release, you can now pick the island grid size right from the File Menu, up to 8×8, so you have way more control over how big and shaped your world is. There's also a new button that lets you create a random island by using seed generation. Block editing got easier too: just right-click or Ctrl + left click to pick a group of blocks. Then you can fill the whole area with any block you want in one go or delete the selected blocks all at once without needing the eraser. When you close a popup now, it plays a sound, and after finishing an action, a small confirmation toast pops up. The layout and touch controls have been updated to work better for tablet users, and now you can install the game straight from Chrome as a standalone PWA or APK (BETA) for tablets!!
+![yayyy](https://emoji.slack-edge.com/T09V59WQY1E/yayayayayay/203666b7424ee7a7.gif)
+
 
 
 Devlog Sketch
-Added a lot of facilities: like Island rezolution in the file menu where you can choose resolutions up to 8x8, Random island button with seed generation, fill and select blocks on the island, select and delete blocks on the island,sounds when popup closed toasts and more tablet optimization, consistent UI everywere,  and  welcome screen... all of that to finnish a stable version of the game :)
-
-
+Added a lot of facilities: like Island rezolution in the file menu where you can choose resolutions up to 8x8, Random island button with seed generation, fill and select blocks on the island, select and delete blocks on the island,sounds when popup closed toasts and more tablet optimization, consistent UI everywere,Chrome PWA, and splited the game into HTML/JS/CSS  and  welcome screen... all of that to finnish a stable version of the game :)
 
 
 
 Publish Sketch
-Shiped the first most stable version of the game, try it, hope you like it :3;;
+Shiped the first most stable version of the game, try it cuze it is buggles(well I did not fiind any bug so yea), hope you like it :3
+
+/ > _ < \ here is the end hehe :3
