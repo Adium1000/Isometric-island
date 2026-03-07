@@ -7,7 +7,7 @@ Here you will find some relevant subjects and explanations about my game, includ
 - This "game" is made in HTML5 just to make sure anyone can play it on any browser from any device on this planet, even if you use Linux, Mac, or any other OS that uses a different method to run programs.
 ![Game ss](GithubPreview/Banners/SS.png)
 
-# Supported Devices 
+# Supported Devices !
 - The lowest supported PC resolution acceptable is 800x600 33% Zoom
 - Not compatible with Phone devices 
 - Tablets compability: 16:9 67% zoom (SM Tab 9 Shoot)
@@ -257,8 +257,6 @@ And done!
 1. Google Fonts: For the text font title. See `FontLicense.md` for the APACHE license and Terms and Conditions. You can learn more about the Apache license here: https://www.apache.org/licenses/LICENSE-2.0  
 2. Minecraft tips inspiration: The game title contains nonsense tips inspired by Minecraft. 
 
-
-
 3. Some Devlogs and Banners use  Maagkramp by ficod. This font is used under its Personal Use License! Check out his DeviantArt profile: https://www.deviantart.com/ficod
  - PLEASE NOTE THAT THE PROJECT DOES NOT USE THIS FONT!!
 
@@ -270,5 +268,5 @@ And done!
 1. Check `todo.md`
 2. Check assets
 3. Star the repo
-4. Suggest something cool (on Flavortown!) see `HackClub.md`
+4. Suggest something cool (on Flavortown!) see `FlavortownDevlogsHistory.md`
 5. Don't like it? It's okay! Give me some feedback on what I can improve. :)

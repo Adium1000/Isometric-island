@@ -192,3 +192,26 @@ Updates to banner designs & new banners
 That is all
 
 ---
+Devlog 16
+
+Performance & Technical Polishing
+Hardware Acceleration: Implemented GPU layering optimizations to offload rendering tasks, ensuring a stable frame rate even on lower-end machines.
+Undo/Redo System: You now have full control over your build history.
+Minimap: Added a dedicated minimap
+Readme updates
+My plan for small screens (glassy ui) (PS: This will NOT be in the same repo or overwrite with this project, it is just an alternative for small screens and ui optimization)
+
+I’m moving away from the classic look for mobile in favor of a modern “Glassmorphism” interface built in HTML. This will provide a sleek, translucent aesthetic that feels native to modern iOS and Android devices. To speed up this transition, I’ll be utilizing AI-assisted design to generate the CSS layouts and component structures. *
+That’s all!
+---
+DEVLOG 17
+Android APK: The BETA Android build is live and available to download on the GitHub page
+File window: This window let you delete, load, save, and make random seeds for islands (aw and it is lookin cool :3)
+Export as Code: You can now export your island as a shareable code string directly from the save popup
+Page Icon: The tab now shows the proper Isometric Island favicon instead of a blank default
+Random Island: Hit the random button and get a fully generated island from one of five themed seeds: Summer, Snowy, Desert, Ocean, or Stone.(It does do some good islands but u gotta be lucky)
+Tablet Patches: Fixed several layout issues on tablet-sized screens. The hotbar, minimap, and zoom bar were all misbehaving at mid-range resolutions (Tested on SM-TAB-A9+ 67% zoom)
+README.md changes: Some readme changes at the guide section
+Aw and btw, the glassy version will be delayed
+And more to come, I still have some ideas but we are almost to the end of the project
+That’s All, what do you think?
