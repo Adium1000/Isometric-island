@@ -121,11 +121,23 @@ Here you will find some relevant subjects and explanations about my game, includ
 
 ![File menu ](GithubPreview/Guide/FileMenu.png)
 
-### Fun: Contains a random seed generation button for islands , but is more experimental
-### Danger: If you want to reset the island
-### Save/Load if you want to resume or save your island :3
+1. Island Code
+- This is a save code for your island, copy it and keep it safe :3
+2. Load Island Code
+- Here you paste the code you saved from (1.)
+3. Danger zone/Delete island
+- From here you can clear the island and start over
+4. Island shaping
+- This "tool" lets you format your island with a resolution up to 8X8 by just touching a squere with mouse 
+5. Random Island
+- This button generates a random seed island : Stone/Snow/Desert/Summer/Ocean
+6. Climate
+- This option lets you change the climate for better visuals for your island stile :3
 
-# 14. Mouse Actions
+
+
+![Mouse actions](GithubPreview/Guide/04.png)
+
 - You can perform more actions with your mouse such as Grabbing island/Select specific Blocks/ or the simple block change 
 
 |Mouse Key    | Action                               |
@@ -137,11 +149,71 @@ Here you will find some relevant subjects and explanations about my game, includ
 - Let's Break each action down to be more easy to understand
 
 1. Left click - It lets you place or modify island blocks with the hotbar selected item
+
+![LMC](GithubPreview/Guide/lmc.png)
+
 2. Right click - Imagine the island is your desktop icons, when you drag with left click and select on your desktop you can delete, or copy. That is almost the same here you can select using `RIGHT` click or `CTRL + LEFT CLICK` 
+
+![RMC](GithubPreview/Guide/rcl.png)
+
 3. Middle click - here is the pan tool / dragging tool. When you don't have space on the screen you can drag your island where you want to design it
 
+![GRB](GithubPreview/Guide/grb.png)
 
 
+![fill](GithubPreview/Guide/05.png)
+
+- This function lets you fill a selected area of blocks with the Right Click or ctrl + Left Click
+- After a number of blocks is selected, a button will appear on the bottom of the island 
+
+![Button](GithubPreview/Guide/G!.png)
+
+- After you click on the button this popup will open 
+
+![fill](GithubPreview/Guide/fill.png)
+
+- From here you can choose the block you want to fill your area
+
+![Toast](GithubPreview/Guide/06.png)
+
+- Toasts are like small bit of information/Confirmation of actions
+- This project uses toasts to show an action that has been completed succesfully
+
+![Toast](GithubPreview/Guide/Toast.png)
+
+![game](GithubPreview/Guide/07.png)
+ 
+1. Chrome PWA aplication(Recomanded!)
+
+
+![Chrome1](GithubPreview/Guide/chrome1.png)
+
+- For chrome go to that 3 dots in the right-up-corner -> Cast save & share -> Install page as an app
+
+![chrome2](GithubPreview/Guide/Chrome2.png)
+
+- Press create
+
+2. Android APK Build for tablets(BETA)
+
+- Please note that this is a beta version an may not work on some tablets/android devices!
+- First download the APK from releases
+
+![apk1](GithubPreview/Guide/apk1.jpg)
+
+- Click on the file and choose package installer 
+
+![apk2](GithubPreview/Guide/apk2.jpg)
+
+- Click on install
+
+![apk3](GithubPreview/Guide/apk3.jpg)
+
+- If play protect pops click on more options-> install witout verification
+
+![apk4](GithubPreview/Guide/playtrash.jpg)
+
+And done!
 
 ### Warning!
 ![WarnBanner](GithubPreview/Banners/warningb.png)

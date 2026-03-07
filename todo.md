@@ -61,7 +61,6 @@ i hate missspelling
 Devlog Sketch
 - File-> Island Shaping grid
 - Right click , Ctrl to select & fill
-- Phone patches for the game on lower Zoom scales form chrome flags!
 - consistent UI fixes
 - Popup close sound
 - Welcome popup
