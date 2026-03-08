@@ -263,6 +263,15 @@ With this release, you can now pick the island grid size right from the File Men
 
 ---
 
+**Devlog 19**
+
+Separated the Settings from the File menu, it never really made sense to have it there. Pulled it out into its own menu so the File menu stays focused on saving and loading. Along with that, added four new visual toggles inside Settings: Clouds, Shadows, Leafs, and Fullscreen, all of which get saved with your island and persist between sessions. Deleting an island used to be instant, now a confirmation dialog pops up, also added QR Code saving, you can now export yours as a QR code straight from the File menu, scan it with your phone, and load it on another device.
+
+![heh](https://emoji.slack-edge.com/T09V59WQY1E/blob_bounce/08065e62349fc5a2.gif)
+
+![devlog 18 image](GithubPreview/Devlogs%20(Flavortown)/devlog19.png)
+
 
 ![yayyy](https://emoji.slack-edge.com/T09V59WQY1E/yayayayayay/203666b7424ee7a7.gif)
 
+---
