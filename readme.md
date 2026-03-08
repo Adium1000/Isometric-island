@@ -128,14 +128,8 @@ Here you will find some relevant subjects and explanations about my game, includ
 - Here you paste the code you saved from (1.)
 3. Danger zone/Delete island
 - From here you can clear the island and start over
-4. Island shaping
-- This "tool" lets you format your island with a resolution up to 8X8 by just touching a square with mouse 
-5. Random Island
-- This button generates a random seed island : Stone/Snow/Desert/Summer/Ocean
-6. Climate
-- This option lets you change the climate for better visuals for your island stile :3
-
-
+4. Settigns 
+- Configuration tool for your island
 
 ![Mouse actions](GithubPreview/Guide/04.png)
 
@@ -220,6 +214,38 @@ Here you will find some relevant subjects and explanations about my game, includ
 ![apk4](GithubPreview/Guide/playtrash.jpg)
 
 And done!
+
+
+![18. QR code save](GithubPreview/Guide/08.png)
+
+- You can share small islands by QR codes via file menu -> QR code button
+
+![QR](GithubPreview/Guide/qr.png)
+
+- Then you can scan it using your phone and keep it safe :3
+
+![SPa56](GithubPreview/Guide/a56scan.png)
+
+
+![19. Settings Menu](GithubPreview/Guide/09.png)
+
+![SettingsMenu](GithubPreview/Guide/settings_menu.png)
+
+- Settings menu contains Island configuration tools like:
+1. Island shaping
+- This "tool" lets you format your island with a resolution up to 8X8 by just touching a square with mouse 
+2. Random Island
+- This button generates a random seed island : Stone/Snow/Desert/Summer/Ocean
+3. Climate
+- This option lets you change the climate for better visuals for your island stile :3
+4. Time of the day
+- This option lets you change the time on the game 
+
+
+
+
+
+    
 
 ### Warning!
 ![WarnBanner](GithubPreview/Banners/warningb.png)

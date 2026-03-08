@@ -81,14 +81,18 @@
             <h2><img src="./Assets/Icons/todorm.png" style="width:48px;height:48px;image-rendering:pixelated;vertical-align:middle;margin-right:10px;">FILE</h2>
             <div id="save-popup-body">
                 <div id="save-popup-left">
+
                     <div>
                         <div class="popup-section-title">ISLAND CODE:</div>
                         <textarea id="popup-code-output" readonly onclick="this.select()"></textarea>
-                        <div class="popup-row">
-                            <button class="btn-copy" onclick="navigator.clipboard.writeText(document.getElementById('popup-code-output').value).then(()=>showToast('Succesfully copied to clipboard!'))">COPY ISLAND CODE</button>
+                        <div class="popup-row" style="flex-direction:column;gap:6px;margin-top:8px;">
+                            <button class="btn-qr" onclick="showQRCode()" style="width:100%;box-sizing:border-box;">SHOW QR CODE</button>
+                            <button class="btn-copy" onclick="navigator.clipboard.writeText(document.getElementById('popup-code-output').value).then(()=>showToast('Succesfully copied to clipboard!'))" style="width:100%;box-sizing:border-box;">COPY ISLAND CODE</button>
                         </div>
                     </div>
+
                     <hr class="popup-divider">
+
                     <div>
                         <div class="popup-section-title">LOAD ISLAND CODE:</div>
                         <input type="text" id="popup-code-input" placeholder="Paste your code here... ;)">
@@ -97,35 +101,146 @@
                             <button class="btn-load" onclick="openLoadPopup()" style="width:100%;box-sizing:border-box;">LOAD</button>
                         </div>
                     </div>
-                    <hr class="popup-divider">
-                    <div class="danger-zone">
-                        <div class="popup-section-title">DANGER ZONE:</div>
-                        <button class="btn-danger" onclick="deleteIsland()">DELETE ISLAND</button>
-                    </div>
+
                 </div>
+
+                <div id="save-popup-divider"></div>
+
                 <div id="save-popup-right">
-                    <div id="island-shape-section">
+
+                    <div style="display:flex;flex-direction:column;gap:14px;flex:1;">
+                        <div>
+                            <div class="popup-section-title">FUN:</div>
+                            <button class="btn-random" onclick="generateRandomIsland(); closeSavePopup();"> RANDOM ISLAND</button>
+                            <div id="random-island-type" style="color:#ffdf80;font-size:7px;text-align:center;margin-top:6px;min-height:12px;letter-spacing:1px;"></div>
+                        </div>
+
+                        <div style="display:flex;flex-direction:column;gap:8px;">
+                            <button class="btn-settings" onclick="openSettingsPopup()"> SETTINGS</button>
+                        </div>
+
+                        <div class="danger-zone">
+                            <div class="popup-section-title">DANGER ZONE:</div>
+                            <button class="btn-danger" onclick="openConfirmDelete()">DELETE ISLAND</button>
+                        </div>
+                    </div>
+
+                    <div style="display:flex;justify-content:flex-end;margin-top:auto;padding-top:10px;">
+                        <button class="btn-ok" onclick="confirmSavePopup()">OK</button>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="settings-popup-overlay" onclick="if(event.target===this)closeSettingsPopup()">
+    <div id="settings-popup-wrapper">
+        <button id="settings-close-btn" onclick="closeSettingsPopup()">&#10005;</button>
+        <div id="settings-popup" class="pixel-corners">
+            <h2> SETTINGS</h2>
+            <div id="settings-popup-body">
+
+                <div id="settings-left">
+
+                    <div>
                         <div class="popup-section-title">ISLAND SHAPING:</div>
                         <div id="island-shape-grid"></div>
                         <div id="shape-size-label">Hover to preview size</div>
                     </div>
-                    <div>
-                        <button class="btn-random" onclick="generateRandomIsland(); closeSavePopup();">RANDOM ISLAND</button>
-                        <div id="random-island-type" style="color:#ffdf80;font-size:7px;text-align:center;margin-top:6px;min-height:12px;letter-spacing:1px;"></div>
-                    </div>
+
+                    <hr class="popup-divider">
+
                     <div>
                         <div class="popup-section-title">CLIMATE:</div>
                         <div style="display:grid;grid-template-columns:1fr 1fr;gap:6px;">
-                            <button class="climate-btn active" id="cbtn-off"  onclick="setClimate('off')">OFF</button>
+                            <button class="climate-btn active" id="cbtn-off" onclick="setClimate('off')">OFF</button>
                             <button class="climate-btn" id="cbtn-rain" onclick="setClimate('rain')">Rain</button>
                             <button class="climate-btn" id="cbtn-snow" onclick="setClimate('snow')">Snowy</button>
                             <button class="climate-btn" id="cbtn-wind" onclick="setClimate('wind')">Wind</button>
                         </div>
                     </div>
-                    <div class="popup-row-right">
-                        <button class="btn-ok" onclick="confirmSavePopup()">OK</button>
+
+                    <hr class="popup-divider">
+
+                    <div>
+                        <div class="popup-section-title">TIME OF DAY:</div>
+                        <div style="display:flex;gap:6px;">
+                            <button class="timp-btn active" id="tbtn-zi" onclick="setTimp('Day')"> Day</button>
+                            <button class="timp-btn" id="tbtn-apus" onclick="setTimp('Sunset')">Sunset</button>
+                            <button class="timp-btn" id="tbtn-noapte" onclick="setTimp('Night')"> Night</button>
+                        </div>
                     </div>
+
                 </div>
+
+                <div id="settings-divider"></div>
+
+                <div id="settings-right">
+
+                    <div class="popup-section-title">Visuals</div>
+
+                    <div class="visual-option-row">
+                        <span class="visual-option-label"> Island shadows</span>
+                        <button class="px-switch on" id="sw-shadows" onclick="toggleVisualOption('shadows', this)">
+                            <span class="px-switch-thumb"></span>
+                        </button>
+                    </div>
+
+                    <div class="visual-option-row">
+                        <span class="visual-option-label"> Leafs</span>
+                        <button class="px-switch on" id="sw-leaves" onclick="toggleVisualOption('leaves', this)">
+                            <span class="px-switch-thumb"></span>
+                        </button>
+                    </div>
+
+                    <div class="visual-option-row">
+                        <span class="visual-option-label"> Clouds</span>
+                        <button class="px-switch" id="sw-clouds" onclick="toggleVisualOption('clouds', this)">
+                            <span class="px-switch-thumb"></span>
+                        </button>
+                    </div>
+
+                    <div class="visual-option-row">
+                        <span class="visual-option-label"> Fullscreen</span>
+                        <button class="px-switch" id="sw-fullscreen" onclick="toggleFullscreen(this)">
+                            <span class="px-switch-thumb"></span>
+                        </button>
+                    </div>
+
+                    <div style="display:flex;justify-content:flex-end;margin-top:auto;padding-top:10px;">
+                        <button class="btn-ok" onclick="closeSettingsPopup()">OK</button>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="qr-popup-overlay" onclick="if(event.target===this)closeQRPopup()">
+    <div id="qr-popup-wrapper">
+        <button id="qr-close-btn" onclick="closeQRPopup()">&#10005;</button>
+        <div id="qr-popup" class="pixel-corners">
+            <h2> QR CODE</h2>
+            <div id="qr-subtitle">Scan to share your island!</div>
+            <div id="qr-canvas-wrap">
+                <div id="qr-output"></div>
+            </div>
+            <div id="qr-hint">Scan with any QR app to load your island code</div>
+        </div>
+    </div>
+</div>
+
+<div id="confirm-delete-overlay" onclick="if(event.target===this)closeConfirmDelete()">
+    <div id="confirm-delete-wrapper">
+        <div id="confirm-delete-popup" class="pixel-corners">
+            <h2>DELETE ISLAND?</h2>
+            <p id="confirm-delete-msg">Are you sure you want to delete the island? This action cannot be undone!</p>
+            <div id="confirm-delete-btns">
+                <button class="btn-cancel-del" onclick="closeConfirmDelete()">CANCEL</button>
+                <button class="btn-confirm-del" onclick="confirmDeleteIsland()">DELETE</button>
             </div>
         </div>
     </div>

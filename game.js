@@ -34,6 +34,7 @@ function showName(name) { nameDisplay.innerText = name; nameDisplay.style.opacit
 function hideName() { nameDisplay.style.opacity = "0"; }
 
 const placeSound = new Audio('./Assets/Audio/place.wav');
+const grassSound = new Audio('./Assets/Audio/grass.wav');
 const hotbarSound = new Audio('./Assets/Audio/hotbar.wav');
 const bgMusic = new Audio('./Assets/Audio/BG.wav');
 const pclsSound = new Audio('./Assets/Audio/pcls.wav');
@@ -79,6 +80,112 @@ function toggleFloat() {
     map.classList.toggle('floating-island', isFloating);
     floatBtn.src = isFloating ? "./Assets/GUI/floaton.png" : "./Assets/GUI/floatoff.png";
     applyZoom();
+}
+
+let shadowsEnabled = true;
+let leavesEnabled = true;
+let cloudsEnabled = false;
+let cloudInterval = null;
+
+(function loadVisualOptions() {
+    const saved = JSON.parse(localStorage.getItem('visualOptions') || '{}');
+    if (saved.shadows === false) shadowsEnabled = false;
+    if (saved.leaves === false) leavesEnabled = false;
+    if (saved.clouds === true) cloudsEnabled = true;
+
+    requestAnimationFrame(() => {
+        if (!shadowsEnabled) {
+            const el = document.createElement('style');
+            el.id = 'shadow-override';
+            el.textContent = '.tile { filter: none !important; } .tile:hover { filter: brightness(1.2) !important; }';
+            document.head.appendChild(el);
+            const sw = document.getElementById('sw-shadows');
+            if (sw) sw.classList.remove('on');
+        }
+        if (!leavesEnabled) {
+            const sw = document.getElementById('sw-leaves');
+            if (sw) sw.classList.remove('on');
+        }
+        if (cloudsEnabled) {
+            const sw = document.getElementById('sw-clouds');
+            if (sw) sw.classList.add('on');
+            startClouds();
+        }
+    });
+})();
+
+function toggleFullscreen(btn) {
+    if (!document.fullscreenElement) {
+        document.documentElement.requestFullscreen().then(() => {
+            btn.classList.add('on');
+        }).catch(() => {});
+    } else {
+        document.exitFullscreen().then(() => {
+            btn.classList.remove('on');
+        }).catch(() => {});
+    }
+}
+
+document.addEventListener('fullscreenchange', () => {
+    const btn = document.getElementById('sw-fullscreen');
+    if (!btn) return;
+    if (document.fullscreenElement) btn.classList.add('on');
+    else btn.classList.remove('on');
+});
+
+function toggleVisualOption(option, btn) {
+    btn.classList.toggle('on');
+    const isOn = btn.classList.contains('on');
+    hotbarSound.currentTime = 0; hotbarSound.play().catch(e => {});
+    if (option === 'shadows') {
+        shadowsEnabled = isOn;
+        document.querySelectorAll('.tile').forEach(t => {
+            t.style.filter = shadowsEnabled ? '' : 'none';
+        });
+        const styleId = 'shadow-override';
+        let el = document.getElementById(styleId);
+        if (!el) { el = document.createElement('style'); el.id = styleId; document.head.appendChild(el); }
+        el.textContent = shadowsEnabled ? '' : '.tile { filter: none !important; } .tile:hover { filter: brightness(1.2) !important; }';
+    } else if (option === 'leaves') {
+        leavesEnabled = isOn;
+    } else if (option === 'clouds') {
+        cloudsEnabled = isOn;
+        if (cloudsEnabled) startClouds(); else stopClouds();
+    }
+
+    const saved = JSON.parse(localStorage.getItem('visualOptions') || '{}');
+    saved[option] = isOn;
+    localStorage.setItem('visualOptions', JSON.stringify(saved));
+}
+
+function spawnCloud(startX = -200) {
+    const cloud = document.createElement('div');
+    cloud.className = 'pixel-cloud';
+    const size = (Math.floor(Math.random() * 3) + 2) * 8;
+    cloud.style.cssText = `width:${size * 3}px;height:${size}px;top:${Math.random() * 40 + 5}%;left:${startX}px;z-index:2;`;
+    document.body.appendChild(cloud);
+    let posX = startX;
+    const speed = 0.3 + Math.random() * 0.4;
+    function moveCloud() {
+        if (!cloudsEnabled) { cloud.remove(); return; }
+        posX += speed;
+        cloud.style.left = posX + 'px';
+        if (posX > window.innerWidth + 200) { cloud.remove(); return; }
+        requestAnimationFrame(moveCloud);
+    }
+    requestAnimationFrame(moveCloud);
+}
+function startClouds() {
+
+    const initialCount = 3 + Math.floor(Math.random() * 3);
+    for (let i = 0; i < initialCount; i++) {
+        spawnCloud(Math.random() * window.innerWidth);
+    }
+    cloudInterval = setInterval(() => { if (cloudsEnabled) spawnCloud(); }, 4000 + Math.random() * 3000);
+}
+function stopClouds() {
+    if (cloudInterval) { clearInterval(cloudInterval); cloudInterval = null; }
+    document.querySelectorAll('.pixel-cloud').forEach(c => c.remove());
 }
 
 function switchPage(pageNum) {
@@ -376,7 +483,9 @@ function handleInteraction(tile, x, y, z) {
         tile.setAttribute('data-color', getBlockColor(selectedBlockType));
         tile.removeAttribute('data-obj-id');
     }
-    placeSound.currentTime = 0; placeSound.play().catch(e => {});
+    const grassBlocks = ['dirt', 'flovers', 'rock', 'dirt2', 'crops', 'tree'];
+    const soundToPlay = grassBlocks.includes(selectedBlockType) ? grassSound : placeSound;
+    soundToPlay.currentTime = 0; soundToPlay.play().catch(e => {});
     if (!isDrawing) { saveState(); }
 }
 
@@ -411,6 +520,7 @@ function createFallingLeaf(startX, startY, objId) {
 function startInfiniteLeaves(x, y, objId) {
     const interval = setInterval(() => {
         if (!mapContainer.querySelector(`[data-obj-id="${objId}"]`)) { clearInterval(interval); return; }
+        if (!leavesEnabled) return;
         if (Math.random() > 0.6) {
             const burst = Math.floor(Math.random() * 3) + 1;
             for(let i=0; i<burst; i++) { setTimeout(() => createFallingLeaf(x, y, objId), i * 500); }
@@ -497,6 +607,21 @@ function deleteIsland() {
     saveState(); updateMinimap(); closeSavePopup();
     showToast('Succesfully Deleted!');
     hotbarSound.currentTime = 0; hotbarSound.play().catch(e => {});
+}
+
+function openConfirmDelete() {
+    const overlay = document.getElementById('confirm-delete-overlay');
+    overlay.style.display = 'flex';
+    requestAnimationFrame(() => overlay.classList.add('popup-visible'));
+}
+function closeConfirmDelete() {
+    const overlay = document.getElementById('confirm-delete-overlay');
+    overlay.classList.remove('popup-visible');
+    setTimeout(() => { overlay.style.display = 'none'; }, 250);
+}
+function confirmDeleteIsland() {
+    closeConfirmDelete();
+    deleteIsland();
 }
 
 function generateRandomIsland() {
@@ -762,7 +887,6 @@ function fillSelectedTiles(blockType) {
         } else {
             const x = parseInt(tile.getAttribute('data-x'));
             const y = parseInt(tile.getAttribute('data-y'));
-            // Sterge orice structura multilayer existenta deasupra
             const existingObjId = tile.getAttribute('data-obj-id');
             if (existingObjId) {
                 mapContainer.querySelectorAll(`[data-obj-id="${existingObjId}"]`).forEach(t => {
@@ -849,10 +973,9 @@ window.addEventListener('keydown', (e) => {
     });
 
     selectedTiles.forEach(tile => {
-        if (!document.body.contains(tile)) return; // deja sters
+        if (!document.body.contains(tile)) return;
         const x = parseInt(tile.getAttribute('data-x'));
         const y = parseInt(tile.getAttribute('data-y'));
-        // Sterge toate tile-urile de deasupra (z > 0)
         mapContainer.querySelectorAll(`.tile[data-x="${x}"][data-y="${y}"]`).forEach(t => {
             if (parseInt(t.getAttribute('data-z')) > 0) t.remove();
         });
@@ -1080,6 +1203,142 @@ function animateWeather(mode) {
         }
     }
     weatherAnimFrame = requestAnimationFrame(() => animateWeather(mode));
+}
+
+function openSettingsPopup() {
+    const overlay = document.getElementById('settings-popup-overlay');
+    overlay.style.display = 'flex';
+    requestAnimationFrame(() => requestAnimationFrame(() => overlay.classList.add('popup-visible')));
+    refreshShapeGrid();
+    hotbarSound.currentTime = 0; hotbarSound.play().catch(e => {});
+}
+function closeSettingsPopup() {
+    const overlay = document.getElementById('settings-popup-overlay');
+    overlay.classList.remove('popup-visible');
+    pclsSound.currentTime = 0; pclsSound.play().catch(e => {});
+    setTimeout(() => { overlay.style.display = 'none'; }, 300);
+}
+
+let currentTimp = 'zi';
+const timpOverlay = document.createElement('div');
+timpOverlay.id = 'timp-overlay';
+timpOverlay.style.cssText = 'position:fixed;inset:0;pointer-events:none;z-index:9;transition:background 1.2s ease,opacity 1.2s ease;opacity:0;';
+document.body.appendChild(timpOverlay);
+
+function setTimp(mode) {
+    currentTimp = mode;
+    ['zi','apus','noapte'].forEach(m => {
+        const b = document.getElementById('tbtn-' + m);
+        if (b) b.classList.toggle('active', m === mode);
+    });
+    if (mode === 'zi') {
+        timpOverlay.style.opacity = '0';
+        document.querySelector('.game-title').style.color = '#523519';
+        hideStars();
+    } else if (mode === 'apus') {
+        timpOverlay.style.background = 'linear-gradient(to bottom, #ff6030 0%, #ff9933 40%, #ffcc66 100%)';
+        timpOverlay.style.opacity = '0.38';
+        document.querySelector('.game-title').style.color = '#7a3200';
+        hideStars();
+    } else if (mode === 'noapte') {
+        timpOverlay.style.background = 'linear-gradient(to bottom, #050d1a 0%, #0d1b3e 60%, #1a2a5a 100%)';
+        timpOverlay.style.opacity = '0.72';
+        document.querySelector('.game-title').style.color = '#b0c8ff';
+        showStars();
+    }
+    hotbarSound.currentTime = 0; hotbarSound.play().catch(e => {});
+    showToast(mode.toUpperCase() + '!');
+}
+
+let starsContainer = null;
+
+function showStars() {
+    if (starsContainer) { starsContainer.style.opacity = '1'; return; }
+    starsContainer = document.createElement('div');
+    starsContainer.id = 'stars-container';
+    starsContainer.style.cssText = 'position:fixed;inset:0;pointer-events:none;z-index:2;opacity:0;transition:opacity 1.5s ease;';
+    const count = 80 + Math.floor(Math.random() * 40);
+    for (let i = 0; i < count; i++) {
+        const star = document.createElement('div');
+        const size = Math.random() < 0.7 ? 2 : Math.random() < 0.5 ? 3 : 4;
+        const x = Math.random() * 100;
+        const y = Math.random() * 65;
+        const delay = Math.random() * 3;
+        const dur = 1.5 + Math.random() * 2.5;
+        star.style.cssText = `
+            position:absolute;
+            left:${x}%;top:${y}%;
+            width:${size}px;height:${size}px;
+            background:#fff;
+            image-rendering:pixelated;
+            animation: starTwinkle ${dur}s ${delay}s ease-in-out infinite alternate;
+        `;
+        starsContainer.appendChild(star);
+    }
+    document.body.appendChild(starsContainer);
+    requestAnimationFrame(() => { starsContainer.style.opacity = '1'; });
+}
+
+function hideStars() {
+    if (!starsContainer) return;
+    starsContainer.style.opacity = '0';
+    setTimeout(() => {
+        if (starsContainer) { starsContainer.remove(); starsContainer = null; }
+    }, 1500);
+}
+
+function drawQR(text) {
+    const output = document.getElementById('qr-output');
+    output.innerHTML = '';
+    function buildQR() {
+        output.innerHTML = '';
+        try {
+            new QRCode(output, {
+                text: text,
+                width: 380,
+                height: 380,
+                colorDark: '#000000',
+                colorLight: '#ffffff',
+                correctLevel: QRCode.CorrectLevel.L
+            });
+            setTimeout(() => {
+                const cv = output.querySelector('canvas');
+                const img = output.querySelector('img');
+                if (cv) { cv.style.display = 'none'; }
+                if (img) { img.style.cssText = 'display:block;width:380px;height:380px;'; }
+            }, 50);
+        } catch(e) {
+            output.innerHTML = '<div style="color:#ff6060;font-size:8px;padding:10px;font-family:\'Press Start 2P\',cursive;">QR Error</div>';
+        }
+    }
+    if (window.QRCode) {
+        buildQR();
+    } else {
+        const script = document.createElement('script');
+        script.src = 'https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js';
+        script.onload = buildQR;
+        script.onerror = () => { output.innerHTML = '<div style="color:#ff6060;font-size:8px;padding:10px;font-family:\'Press Start 2P\',cursive;">Nu se poate incarca QR</div>'; };
+        document.head.appendChild(script);
+    }
+}
+
+function showQRCode() {
+    const code = document.getElementById('popup-code-output').value;
+    if (!code) { showToast('No code yet!'); return; }
+    const overlay = document.getElementById('qr-popup-overlay');
+    overlay.style.display = 'flex';
+    requestAnimationFrame(() => requestAnimationFrame(() => {
+        overlay.classList.add('popup-visible');
+        drawQR(code);
+    }));
+    hotbarSound.currentTime = 0; hotbarSound.play().catch(e => {});
+}
+
+function closeQRPopup() {
+    const overlay = document.getElementById('qr-popup-overlay');
+    overlay.classList.remove('popup-visible');
+    pclsSound.currentTime = 0; pclsSound.play().catch(e => {});
+    setTimeout(() => { overlay.style.display = 'none'; }, 260);
 }
 
 function closeWelcome() {
