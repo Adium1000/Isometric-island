@@ -50,8 +50,10 @@
     <div id="welcome-wrapper">
         <button id="welcome-close-btn" onclick="closeWelcome()">&#10005;</button>
         <div id="welcome-popup" class="pixel-corners">
+
+            <!-- SHARED HEADER -->
             <div id="welcome-header">
-                <h2>WELCOME! Read this before playng!</h2>
+                <h2>WELCOME! Read this before playing!</h2>
                 <div class="sub">
                     Made with &#10084;&#65039; by <strong style="color:#fff8e1;">Adium1000</strong>
                     &nbsp;&middot;&nbsp;
@@ -59,17 +61,59 @@
                 </div>
             </div>
             <hr class="wdivider">
-            <div id="welcome-readme-wrap">
-                <div id="readme-titlebar">
-                    <span class="rdot"></span>
-                    &#128196; readme.md &mdash; Adium1000/Isometric-island
+
+            <!-- SLIDES CONTAINER -->
+            <div id="welcome-slides">
+
+                <!-- STEP 1: Zoom -->
+                <div id="welcome-step-1">
+                    <div id="zoom-notice-banner">
+                        <img src="./Assets/Icons/book.png" id="zoom-notice-icon">
+                        <div id="zoom-notice-text">
+                            <div id="zoom-notice-title">REDUCE BROWSER ZOOM</div>
+                            <div id="zoom-notice-sub">For the best experience, lower your browser zoom level</div>
+                        </div>
+                    </div>
+                    <div id="zoom-slider-row">
+                        <button class="zoom-step-btn" id="welcome-zoom-out" onclick="stepZoom('welcome', -10)">−</button>
+                        <span id="welcome-zoom-value">100%</span>
+                        <button class="zoom-step-btn" id="welcome-zoom-in" onclick="stepZoom('welcome', +10)">+</button>
+                    </div>
+                    <div id="zoom-reference">
+                        <div class="zoom-ref-text">⚠ If the hotbar intercalates, you should lower the zoom:</div>
+                        <div class="zoom-ref-images">
+                            <div class="zoom-ref-item">
+                                <img src="./Assets/Icons/ic.png" class="zoom-ref-img">
+                            </div>
+                            <div class="zoom-ref-arrow">▼</div>
+                            <div class="zoom-ref-item">
+                                <div class="zoom-ref-caption">Until it looks like this:</div>
+                                <img src="./Assets/Icons/lt.png" class="zoom-ref-img">
+                            </div>
+                        </div>
+                    </div>
+                    <div id="welcome-footer" style="margin-top: 14px;">
+                        <button class="btn-welcome-ok" onclick="welcomeNextStep()">NEXT &#9654;</button>
+                    </div>
                 </div>
-                <div id="readme-loading">Loading...</div>
-                <div id="welcome-readme" style="display:none;"></div>
+
+                <!-- STEP 2: README -->
+                <div id="welcome-step-2">
+                    <div id="welcome-readme-wrap">
+                        <div id="readme-titlebar">
+                            <span class="rdot"></span>
+                            &#128196; readme.md &mdash; Adium1000/Isometric-island
+                        </div>
+                        <div id="readme-loading">Loading...</div>
+                        <div id="welcome-readme" style="display:none;"></div>
+                    </div>
+                    <div id="welcome-footer" style="margin-top: 14px;">
+                        <button class="btn-welcome-ok" onclick="closeWelcome()">START BUILDING</button>
+                    </div>
+                </div>
+
             </div>
-            <div id="welcome-footer">
-                <button class="btn-welcome-ok" onclick="closeWelcome()">START BUILDING</button>
-            </div>
+
         </div>
     </div>
 </div>
@@ -139,7 +183,7 @@
     <div id="settings-popup-wrapper">
         <button id="settings-close-btn" onclick="closeSettingsPopup()">&#10005;</button>
         <div id="settings-popup" class="pixel-corners">
-            <h2> SETTINGS</h2>
+            <h2><img src="./Assets/Icons/maintenance.png" style="width:26px;height:26px;image-rendering:pixelated;vertical-align:middle;margin-right:6px;"> SETTINGS</h2>
             <div id="settings-popup-body">
 
                 <div id="settings-left">
@@ -207,6 +251,27 @@
                         <button class="px-switch" id="sw-fullscreen" onclick="toggleFullscreen(this)">
                             <span class="px-switch-thumb"></span>
                         </button>
+                    </div>
+
+                    <hr class="popup-divider" style="margin:10px 0;">
+
+                    <div class="popup-section-title">Controls</div>
+
+                    <div class="visual-option-row">
+                        <span class="visual-option-label"> Slide to place</span>
+                        <button class="px-switch" id="sw-slide-place" onclick="toggleVisualOption('slideToPlace', this)">
+                            <span class="px-switch-thumb"></span>
+                        </button>
+                    </div>
+
+                    <hr class="popup-divider" style="margin:10px 0;">
+
+                    <div class="popup-section-title">Scale</div>
+
+                    <div id="settings-scale-row">
+                        <button class="zoom-step-btn" id="settings-zoom-out" onclick="stepZoom('settings', -10)">−</button>
+                        <span id="settings-zoom-value">100%</span>
+                        <button class="zoom-step-btn" id="settings-zoom-in" onclick="stepZoom('settings', +10)">+</button>
                     </div>
 
                     <div style="display:flex;justify-content:flex-end;margin-top:auto;padding-top:10px;">
@@ -280,6 +345,7 @@
         <div class="slot page-1" onmouseover="showName('Flowers: Natural Decoration')" onmouseout="hideName()" onclick="selectBlock('flovers', this)"><img src="./Assets/Blocks/flovers.png"></div>
         <div class="slot page-1" onmouseover="showName('Rock: Natural Decoration')" onmouseout="hideName()" onclick="selectBlock('rock', this)"><img src="./Assets/Blocks/rock.png"></div>
         <div class="slot page-1" onmouseover="showName('Dirt: Natural block')" onmouseout="hideName()" onclick="selectBlock('dirt2', this)"><img src="./Assets/Blocks/dirt2.png"></div>
+        <div class="slot page-1" onmouseover="showName('Shoved Dirt: Natural block')" onmouseout="hideName()" onclick="selectBlock('ShovedDirt', this)"><img src="./Assets/Blocks/ShovedDirt.png"></div>
         <div class="slot page-1" onmouseover="showName('Crops: Natural Decoration')" onmouseout="hideName()" onclick="selectBlock('crops', this)"><img src="./Assets/Blocks/crops.png"></div>
         <div class="slot page-1" onmouseover="showName('Stone: Natural block')" onmouseout="hideName()" onclick="selectBlock('stone', this)"><img src="./Assets/Blocks/stone.png"></div>
         <div class="slot page-1" onmouseover="showName('Mossy Stone: Natural Decoration')" onmouseout="hideName()" onclick="selectBlock('mossystone', this)"><img src="./Assets/Blocks/mossystone.png"></div>
@@ -297,6 +363,7 @@
         <div class="slot page-2" onmouseover="showName('Ice: Natural block')" onmouseout="hideName()" onclick="selectBlock('ice', this)"><img src="./Assets/Blocks/ice.png"></div>
         <div class="slot page-2" onmouseover="showName('Snowman: Human Made decoration (multilayer)')" onmouseout="hideName()" onclick="selectBlock('snowman', this)"><img src="./Assets/Blocks/snowman.png"></div>
         <div class="slot page-2" onmouseover="showName('Snowy Tree: Winter Decoration (multilayer)')" onmouseout="hideName()" onclick="selectBlock('snowed_tree', this)"><img src="./Assets/Blocks/snowedtree.png"></div>
+
     </div>
 </div>
 

@@ -19,6 +19,7 @@ let panX = 0, panY = 0;
 let isPanning = false;
 let startPanX = 0, startPanY = 0;
 let isDrawing = false;
+let slideToPlace = false; // default: click to place
 let lastSelectedSlotP1 = null;
 let lastSelectedSlotP2 = null;
 let historyStack = [];
@@ -92,6 +93,12 @@ let cloudInterval = null;
     if (saved.shadows === false) shadowsEnabled = false;
     if (saved.leaves === false) leavesEnabled = false;
     if (saved.clouds === true) cloudsEnabled = true;
+    if (saved.slideToPlace === true) slideToPlace = true;
+
+    // Restore scale
+    if (saved.scale) {
+        document.body.style.zoom = saved.scale / 100;
+    }
 
     requestAnimationFrame(() => {
         if (!shadowsEnabled) {
@@ -111,6 +118,18 @@ let cloudInterval = null;
             if (sw) sw.classList.add('on');
             startClouds();
         }
+        if (slideToPlace) {
+            const sw = document.getElementById('sw-slide-place');
+            if (sw) sw.classList.add('on');
+        }
+        // Sync zoom labels
+        const saved2 = JSON.parse(localStorage.getItem('visualOptions') || '{}');
+        const scale = saved2.scale || Math.round(window.devicePixelRatio * 100);
+        const clamped = Math.max(30, Math.min(150, Math.round(scale / 10) * 10));
+        const wl = document.getElementById('welcome-zoom-value');
+        const sl = document.getElementById('settings-zoom-value');
+        if (wl) wl.textContent = clamped + '%';
+        if (sl) sl.textContent = clamped + '%';
     });
 })();
 
@@ -151,11 +170,28 @@ function toggleVisualOption(option, btn) {
     } else if (option === 'clouds') {
         cloudsEnabled = isOn;
         if (cloudsEnabled) startClouds(); else stopClouds();
+    } else if (option === 'slideToPlace') {
+        slideToPlace = isOn;
     }
 
     const saved = JSON.parse(localStorage.getItem('visualOptions') || '{}');
     saved[option] = isOn;
     localStorage.setItem('visualOptions', JSON.stringify(saved));
+}
+
+function stepZoom(context, delta) {
+    const saved = JSON.parse(localStorage.getItem('visualOptions') || '{}');
+    const cur = saved.scale || Math.round(window.devicePixelRatio * 100);
+    const val = Math.max(30, Math.min(150, Math.round(cur / 10) * 10 + delta));
+    document.body.style.zoom = val / 100;
+    saved.scale = val;
+    localStorage.setItem('visualOptions', JSON.stringify(saved));
+    // Update both labels
+    const wl = document.getElementById('welcome-zoom-value');
+    const sl = document.getElementById('settings-zoom-value');
+    if (wl) wl.textContent = val + '%';
+    if (sl) sl.textContent = val + '%';
+    hotbarSound.currentTime = 0; hotbarSound.play().catch(e => {});
 }
 
 function spawnCloud(startX = -200) {
@@ -248,11 +284,14 @@ function createTile(x, y, z, type, customPath = null, parent = mapContainer) {
             return;
         }
         isDrawing = true;
-        handleInteraction(img, x, y, z); 
+        handleInteraction(img, x, y, z);
+        // In click-to-place mode, place once and stop drawing
+        if (!slideToPlace) { isDrawing = false; saveState(); updateMinimap(); }
     };
     img.addEventListener('mouseenter', (e) => {
         if (!isDrawing) return;
         if (e.ctrlKey || e.metaKey) return;
+        if (!slideToPlace) return; // click-to-place: no drag placing
         handleInteraction(img, x, y, z);
     });
     parent.appendChild(img);
@@ -300,47 +339,241 @@ function showToast(msg) {
     setTimeout(() => toast.classList.remove('show'), 2500);
 }
 
+// ── ISLAND SAVE/LOAD — binary packed, base64url ─────────────────────────────
+//
+// FORMAT (no prefix):
+//   Byte 0  : cols(4) | rows(4)
+//   Byte 1  : overlayCount(8)
+//   Byte 2  : climate(2) | timp(2) | padding(4)
+//   Base    : ceil(cols*rows*6/8) bytes — per cell: assetIdx(5)|visible(1), row-major
+//   Overlays: overlayCount * 3 bytes
+//             byte0: x(4)|y(4)
+//             byte1: z(4)|assetHi(1)|objIdHi(3)
+//             byte2: assetLo(4)|objIdLo(3)|visible(1)
+//   Encoded as base64url, no padding, no prefix.
+//
+// climate: 0=off 1=rain 2=snow 3=wind
+// timp:    0=zi  1=apus 2=noapte
+
+const ASSET_MAP = [
+    'eraser',                       // 00
+    'dirt',                         // 01
+    'dirt2',                        // 02
+    'ShovedDirt',                   // 03
+    'flovers',                      // 04
+    'rock',                         // 05
+    'crops',                        // 06
+    'stone',                        // 07
+    'mossystone',                   // 08
+    'sand',                         // 09
+    'redsand',                      // 0a
+    'water',                        // 0b
+    'snow',                         // 0c
+    'snowrocks',                    // 0d
+    'ice',                          // 0e
+    'pumpkin',                      // 0f
+    'Hay',                          // 10
+    'melon',                        // 11
+    'tree',                         // 12
+    'snowed_tree',                  // 13
+    'snowman',                      // 14
+    'wood',                         // 15
+    'leaf',                         // 16
+    'snow2',                        // 17
+    'Snowman/snowmanb1.png',        // 18
+    'Snowman/snowmanb2.png',        // 19
+    'Snowman/SnowmanHead.png',      // 1a
+];
+
+const CLIMATE_MAP = ['off', 'rain', 'snow', 'wind'];
+const TIMP_MAP    = ['zi', 'apus', 'noapte'];
+
+function srcToAssetIdx(srcFull) {
+    if (!srcFull) return -1;
+    const marker = 'Assets/Blocks/';
+    const mi = srcFull.indexOf(marker);
+    const s = (mi !== -1 ? srcFull.slice(mi + marker.length) : srcFull).replace(/\.png$/i, '');
+    return ASSET_MAP.findIndex(a => {
+        const clean = a.replace(/\.png$/i, '');
+        return clean === s || clean.split('/').pop() === s.split('/').pop();
+    });
+}
+
+function assetIdxToSrc(idx) {
+    const a = ASSET_MAP[idx];
+    if (!a) return null;
+    return './Assets/Blocks/' + (a.endsWith('.png') ? a : a + '.png');
+}
+
+function assetIdxToType(idx) {
+    const a = ASSET_MAP[idx];
+    if (!a) return '';
+    return a.replace(/\.png$/i, '').split('/').pop();
+}
+
+function makeBitWriter() {
+    const bytes = [];
+    let cur = 0, bits = 0;
+    return {
+        write(val, n) {
+            for (let i = n - 1; i >= 0; i--) {
+                cur = (cur << 1) | ((val >> i) & 1);
+                if (++bits === 8) { bytes.push(cur); cur = 0; bits = 0; }
+            }
+        },
+        flush() { if (bits > 0) { bytes.push(cur << (8 - bits)); } },
+        bytes
+    };
+}
+
+function makeBitReader(bytes) {
+    let bp = 0, bt = 0;
+    return {
+        read(n) {
+            let val = 0;
+            for (let i = 0; i < n; i++) {
+                if (bp >= bytes.length) return val;
+                val = (val << 1) | ((bytes[bp] >> (7 - bt)) & 1);
+                if (++bt === 8) { bt = 0; bp++; }
+            }
+            return val;
+        }
+    };
+}
+
+function bytesToBase64url(bytes) {
+    let bin = '';
+    for (const b of bytes) bin += String.fromCharCode(b);
+    return btoa(bin).replace(/\+/g, '-').replace(/\//g, '_').replace(/=+$/, '');
+}
+
+function base64urlToBytes(str) {
+    const b64 = str.replace(/-/g, '+').replace(/_/g, '/');
+    const bin = atob(b64);
+    const bytes = new Uint8Array(bin.length);
+    for (let i = 0; i < bin.length; i++) bytes[i] = bin.charCodeAt(i);
+    return bytes;
+}
+
 function generateIslandCode() {
-    const tiles = mapContainer.getElementsByClassName('tile');
-    const data = [];
-    for (let i = 0; i < tiles.length; i++) {
-        const t = tiles[i];
-        const srcFull = t.getAttribute('src') || t.src;
-        const srcShort = srcFull.replace(window.location.href.replace('index.html',''), '')
-                                .replace(location.origin, '')
-                                .replace('./Assets/Blocks/', '')
-                                .replace('./Assets/Blocks/', '');
-        data.push([
-            t.getAttribute('data-x'), t.getAttribute('data-y'), t.getAttribute('data-z'),
-            t.style.opacity === '0' ? '0' : '1',
-            t.getAttribute('data-obj-id') || '', t.getAttribute('data-color') || '', srcShort
-        ].join(':'));
+    const tiles = Array.from(mapContainer.getElementsByClassName('tile'));
+    const cols = currentIslandCols || 8;
+    const rows = currentIslandRows || 8;
+
+    const objIdMap = {};
+    let objCounter = 0;
+    tiles.forEach(t => {
+        const raw = t.getAttribute('data-obj-id');
+        if (raw && !objIdMap[raw]) objIdMap[raw] = ++objCounter;
+    });
+
+    const baseGrid = {};
+    const overlays = [];
+    tiles.forEach(t => {
+        const x = parseInt(t.getAttribute('data-x'));
+        const y = parseInt(t.getAttribute('data-y'));
+        const z = parseInt(t.getAttribute('data-z'));
+        const visible = t.style.opacity !== '0' ? 1 : 0;
+        const assetIdx = srcToAssetIdx(t.src || t.getAttribute('src') || '');
+        if (assetIdx === -1) return;
+        const objIdNum = objIdMap[t.getAttribute('data-obj-id') || ''] || 0;
+        if (z === 0) baseGrid[x + ',' + y] = { assetIdx, visible };
+        else overlays.push({ x, y, z, assetIdx, objIdNum, visible });
+    });
+
+    const climateIdx = Math.max(0, CLIMATE_MAP.indexOf(currentClimate));
+    const timpIdx    = Math.max(0, TIMP_MAP.indexOf(currentTimp));
+
+    const bw = makeBitWriter();
+    bw.write(cols, 4);
+    bw.write(rows, 4);
+    bw.write(Math.min(overlays.length, 255), 8);
+    bw.write(climateIdx, 2);
+    bw.write(timpIdx, 2);
+    bw.write(0, 4); // padding
+
+    for (let y = 0; y < rows; y++) {
+        for (let x = 0; x < cols; x++) {
+            const cell = baseGrid[x + ',' + y] || { assetIdx: 0, visible: 0 };
+            bw.write(cell.assetIdx & 0x1F, 5);
+            bw.write(cell.visible, 1);
+        }
     }
-    const raw = data.join('|');
-    return btoa(unescape(encodeURIComponent(raw)));
+
+    overlays.slice(0, 255).forEach(({ x, y, z, assetIdx, objIdNum, visible }) => {
+        bw.write(x & 0xF, 4); bw.write(y & 0xF, 4);
+        bw.write(z & 0xF, 4); bw.write((assetIdx >> 4) & 1, 1); bw.write((objIdNum >> 3) & 7, 3);
+        bw.write(assetIdx & 0xF, 4); bw.write(objIdNum & 7, 3); bw.write(visible, 1);
+    });
+
+    bw.flush();
+    return bytesToBase64url(bw.bytes);
 }
 
 function loadIslandCode(code) {
     try {
-        const raw = decodeURIComponent(escape(atob(code.trim())));
-        const entries = raw.split('|');
+        const bytes = base64urlToBytes(code.trim());
+        const br = makeBitReader(bytes);
+
+        const cols         = br.read(4);
+        const rows         = br.read(4);
+        const overlayCount = br.read(8);
+        const climateIdx   = br.read(2);
+        const timpIdx      = br.read(2);
+        br.read(4); // padding
+
         mapContainer.innerHTML = '';
-        entries.forEach(entry => {
-            const [x, y, z, opacity, objId, color, srcShort] = entry.split(':');
-            let fullSrc;
-            if (srcShort.startsWith('http') || srcShort.startsWith('blob')) { fullSrc = srcShort; }
-            else if (srcShort.includes('/')) { fullSrc = './' + srcShort; }
-            else { fullSrc = './Assets/Blocks/' + srcShort; }
-            const t = createTile(parseInt(x), parseInt(y), parseInt(z), '', fullSrc);
-            t.style.opacity = opacity;
-            if (objId) t.setAttribute('data-obj-id', objId);
-            if (color) t.setAttribute('data-color', color);
-        });
+
+        for (let y = 0; y < rows; y++) {
+            for (let x = 0; x < cols; x++) {
+                const assetIdx = br.read(5);
+                const visible  = br.read(1);
+                const type = assetIdxToType(assetIdx);
+                const t = createTile(x, y, 0, type);
+                t.style.opacity = visible ? '1' : '0';
+            }
+        }
+
+        const objIdRemap = {};
+        let remapCounter = 0;
+        for (let i = 0; i < overlayCount; i++) {
+            const x       = br.read(4);
+            const y       = br.read(4);
+            const z       = br.read(4);
+            const assetHi = br.read(1);
+            const objHi   = br.read(3);
+            const assetLo = br.read(4);
+            const objLo   = br.read(3);
+            const visible = br.read(1);
+
+            const assetIdx = (assetHi << 4) | assetLo;
+            const objIdNum = (objHi << 3) | objLo;
+            const type = assetIdxToType(assetIdx);
+            const src  = assetIdxToSrc(assetIdx);
+            if (!src) continue;
+
+            let fullObjId = '';
+            if (objIdNum > 0) {
+                if (!objIdRemap[objIdNum]) objIdRemap[objIdNum] = 'obj_' + (++remapCounter);
+                fullObjId = objIdRemap[objIdNum];
+            }
+
+            const needsPath = ASSET_MAP[assetIdx] && ASSET_MAP[assetIdx].includes('/');
+            const t = needsPath ? createTile(x, y, z, '', src) : createTile(x, y, z, type);
+            t.style.opacity = visible ? '1' : '0';
+            if (fullObjId) t.setAttribute('data-obj-id', fullObjId);
+        }
+
+        currentIslandCols = cols;
+        currentIslandRows = rows;
+        setClimate(CLIMATE_MAP[climateIdx] || 'off');
+        setTimp(TIMP_MAP[timpIdx] || 'zi');
         saveState(); updateMinimap(); showCodeBar('');
         hotbarSound.currentTime = 0; hotbarSound.play().catch(e => {});
         return true;
     } catch(e) { console.error('Load failed:', e); return false; }
 }
+// ─────────────────────────────────────────────────────────────────────────────
 
 function saveIslandAsPNG() { openSavePopup(); }
 
@@ -763,7 +996,7 @@ function generateRandomIsland() {
 }
 
 const ALL_BLOCKS = [
-    { type: 'dirt', name: 'Grass' }, { type: 'dirt2', name: 'Dirt' }, { type: 'sand', name: 'Sand' },
+    { type: 'dirt', name: 'Grass' }, { type: 'dirt2', name: 'Dirt' }, { type: 'ShovedDirt', name: 'Shoved Dirt' }, { type: 'sand', name: 'Sand' },
     { type: 'redsand', name: 'Red Sand' }, { type: 'stone', name: 'Stone' }, { type: 'mossystone', name: 'Mossy Stone' },
     { type: 'water', name: 'Water' }, { type: 'snow', name: 'Snow' }, { type: 'snowrocks', name: 'Snow Rocks' },
     { type: 'ice', name: 'Ice' }, { type: 'rock', name: 'Rock' }, { type: 'flovers', name: 'Flowers' },
@@ -837,13 +1070,17 @@ function openFillPanel() {
     const info = document.getElementById('fill-panel-info');
     const closeBtn = document.getElementById('fill-panel-close-btn');
     info.textContent = selectedTiles.size + ' tile' + (selectedTiles.size !== 1 ? 's' : '') + ' selected';
-    overlay.style.display = 'block'; panel.style.display = 'flex'; closeBtn.style.display = 'flex';
+    overlay.style.display = 'block';
+    panel.style.display = 'flex';
+    closeBtn.style.display = 'flex';
     requestAnimationFrame(() => requestAnimationFrame(() => {
         overlay.classList.add('overlay-visible');
         panel.classList.add('panel-visible');
+        // Position X button at top-right corner of panel
         const rect = panel.getBoundingClientRect();
         closeBtn.style.top = (rect.top - 14) + 'px';
         closeBtn.style.left = (rect.right - 14) + 'px';
+        closeBtn.classList.add('panel-visible');
     }));
 }
 
@@ -853,6 +1090,7 @@ function closeFillPanel() {
     const closeBtn = document.getElementById('fill-panel-close-btn');
     panel.classList.remove('panel-visible');
     overlay.classList.remove('overlay-visible');
+    closeBtn.classList.remove('panel-visible');
     setTimeout(() => { panel.style.display = 'none'; overlay.style.display = 'none'; closeBtn.style.display = 'none'; }, 250);
     selectedTiles.forEach(t => t.classList.remove('selected-tile'));
     selectedTiles.clear();
@@ -921,6 +1159,12 @@ document.getElementById('stage').addEventListener('mousedown', (e) => {
 window.addEventListener('mousedown', (e) => {
     if (e.button !== 2) return;
     if (e.target.closest('#dock-container, #save-popup-overlay, #fill-panel, #fill-overlay, #welcome-overlay, #zoom-ui, #minimap-container, .game-title-container')) return;
+    // Clear any existing selection before starting a new one
+    if (selectedTiles.size > 0) {
+        selectedTiles.forEach(t => t.classList.remove('selected-tile'));
+        selectedTiles.clear();
+        updateFillButton();
+    }
     isRectSelecting = true;
     rectStartX = e.clientX; rectStartY = e.clientY;
     updateSelectionRectUI(rectStartX, rectStartY, rectStartX, rectStartY);
@@ -1226,6 +1470,8 @@ timpOverlay.style.cssText = 'position:fixed;inset:0;pointer-events:none;z-index:
 document.body.appendChild(timpOverlay);
 
 function setTimp(mode) {
+    const norm = {'Day':'zi','day':'zi','Zi':'zi','Sunset':'apus','sunset':'apus','Night':'noapte','night':'noapte'};
+    mode = norm[mode] || mode;
     currentTimp = mode;
     ['zi','apus','noapte'].forEach(m => {
         const b = document.getElementById('tbtn-' + m);
@@ -1295,18 +1541,23 @@ function drawQR(text) {
         try {
             new QRCode(output, {
                 text: text,
-                width: 380,
-                height: 380,
+                width: 240,
+                height: 240,
                 colorDark: '#000000',
                 colorLight: '#ffffff',
                 correctLevel: QRCode.CorrectLevel.L
             });
+            // Show canvas directly — most reliable across browsers
             setTimeout(() => {
                 const cv = output.querySelector('canvas');
                 const img = output.querySelector('img');
-                if (cv) { cv.style.display = 'none'; }
-                if (img) { img.style.cssText = 'display:block;width:380px;height:380px;'; }
-            }, 50);
+                if (cv) {
+                    cv.style.cssText = 'display:block;width:240px;height:240px;image-rendering:pixelated;';
+                    if (img) img.style.display = 'none';
+                } else if (img) {
+                    img.style.cssText = 'display:block;width:240px;height:240px;';
+                }
+            }, 100);
         } catch(e) {
             output.innerHTML = '<div style="color:#ff6060;font-size:8px;padding:10px;font-family:\'Press Start 2P\',cursive;">QR Error</div>';
         }
@@ -1347,6 +1598,33 @@ function closeWelcome() {
     pclsSound.currentTime = 0; pclsSound.play().catch(e => {});
     setTimeout(() => { ov.style.display = 'none'; }, 350);
 }
-document.getElementById('welcome-overlay').addEventListener('click', function(e) {
-    if (e.target === this) closeWelcome();
-});
+// Welcome overlay click outside disabled — must use X button or START BUILDING
+
+// Welcome zoom label sync on open
+(function() {
+    const welcomeOv = document.getElementById('welcome-overlay');
+    function syncLabel() {
+        const saved = JSON.parse(localStorage.getItem('visualOptions') || '{}');
+        const scale = saved.scale || Math.round(window.devicePixelRatio * 100);
+        const clamped = Math.max(30, Math.min(150, Math.round(scale / 10) * 10));
+        const lbl = document.getElementById('welcome-zoom-value');
+        if (lbl) lbl.textContent = clamped + '%';
+    }
+    const observer = new MutationObserver(() => {
+        if (welcomeOv.classList.contains('popup-visible')) syncLabel();
+    });
+    observer.observe(welcomeOv, { attributes: true, attributeFilter: ['class'] });
+    syncLabel();
+})();
+
+function welcomeNextStep() {
+    const step1 = document.getElementById('welcome-step-1');
+    const step2 = document.getElementById('welcome-step-2');
+    step1.classList.add('slide-out');
+    step1.addEventListener('animationend', function handler() {
+        step1.removeEventListener('animationend', handler);
+        step1.style.display = 'none';
+        step2.classList.add('slide-in');
+    });
+}
+
