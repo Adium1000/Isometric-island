@@ -1,11 +1,20 @@
-//      ::::::::::: ::::::::   ::::::::    :::   :::   :::::::::: ::::::::::: :::::::::  ::::::::::: ::::::::          ::::::::::: ::::::::  :::            :::     ::::    ::: :::::::::         ::::::::::: :::::::: 
-//         :┼:    :┼:    :┼: :┼:    :┼:  :┼:┼: :┼:┼:  :┼:            :┼:     :┼:    :┼:     :┼:    :┼:    :┼:             :┼:    :┼:    :┼: :┼:          :┼: :┼:   :┼:┼:   :┼: :┼:    :┼:            :┼:    :┼:    :┼: 
-//        ┼:┼    ┼:┼        ┼:┼    ┼:┼ ┼:┼ ┼:┼:┼ ┼:┼ ┼:┼            ┼:┼     ┼:┼    ┼:┼     ┼:┼    ┼:┼                    ┼:┼    ┼:┼        ┼:┼         ┼:┼   ┼:┼  :┼:┼:┼  ┼:┼ ┼:┼    ┼:┼            ┼:┼    ┼:┼         
-//       ┼#┼    ┼#┼┼:┼┼#┼┼ ┼#┼    ┼:┼ ┼#┼  ┼:┼  ┼#┼ ┼#┼┼:┼┼#       ┼#┼     ┼#┼┼:┼┼#:      ┼#┼    ┼#┼                    ┼#┼    ┼#┼┼:┼┼#┼┼ ┼#┼        ┼#┼┼:┼┼#┼┼: ┼#┼ ┼:┼ ┼#┼ ┼#┼    ┼:┼            ┼#┼    ┼#┼┼:┼┼#┼┼   
-//      ┼#┼           ┼#┼ ┼#┼    ┼#┼ ┼#┼       ┼#┼ ┼#┼            ┼#┼     ┼#┼    ┼#┼     ┼#┼    ┼#┼                    ┼#┼           ┼#┼ ┼#┼        ┼#┼     ┼#┼ ┼#┼  ┼#┼#┼# ┼#┼    ┼#┼            ┼#┼           ┼#┼    
-//     #┼#    #┼#    #┼# #┼#    #┼# #┼#       #┼# #┼#            #┼#     #┼#    #┼#     #┼#    #┼#    #┼#             #┼#    #┼#    #┼# #┼#        #┼#     #┼# #┼#   #┼#┼# #┼#    #┼#        #┼# #┼#    #┼#    #┼#     
-//########### ########   ########  ###       ### ##########     ###     ###    ### ########### ########          ########### ########  ########## ###     ### ###    #### #########          #####      ########       
-
+function setBrowserZoom(ratio) {
+    const isFirefox = typeof InstallTrigger !== 'undefined' || CSS.supports('-moz-appearance', 'none');
+    if (isFirefox) {
+        document.body.style.zoom = '';
+        document.body.style.transform = `scale(${ratio})`;
+        document.body.style.transformOrigin = 'top center';
+        document.body.style.width = (100 / ratio) + '%';
+        document.body.style.height = (100 / ratio) + 'vh';
+        document.body.style.marginBottom = '';
+    } else {
+        document.body.style.transform = '';
+        document.body.style.transformOrigin = '';
+        document.body.style.width = '';
+        document.body.style.height = '';
+        document.body.style.zoom = ratio;
+    }
+}
 
 const TILE_W = 24; 
 const TILE_H = 12; 
@@ -19,7 +28,7 @@ let panX = 0, panY = 0;
 let isPanning = false;
 let startPanX = 0, startPanY = 0;
 let isDrawing = false;
-let slideToPlace = false; // default: click to place
+let slideToPlace = false; 
 let lastSelectedSlotP1 = null;
 let lastSelectedSlotP2 = null;
 let historyStack = [];
@@ -95,9 +104,9 @@ let cloudInterval = null;
     if (saved.clouds === true) cloudsEnabled = true;
     if (saved.slideToPlace === true) slideToPlace = true;
 
-    // Restore scale
+   
     if (saved.scale) {
-        document.body.style.zoom = saved.scale / 100;
+        setBrowserZoom(saved.scale / 100);
     }
 
     requestAnimationFrame(() => {
@@ -122,7 +131,6 @@ let cloudInterval = null;
             const sw = document.getElementById('sw-slide-place');
             if (sw) sw.classList.add('on');
         }
-        // Sync zoom labels
         const saved2 = JSON.parse(localStorage.getItem('visualOptions') || '{}');
         const scale = saved2.scale || Math.round(window.devicePixelRatio * 100);
         const clamped = Math.max(30, Math.min(150, Math.round(scale / 10) * 10));
@@ -183,10 +191,9 @@ function stepZoom(context, delta) {
     const saved = JSON.parse(localStorage.getItem('visualOptions') || '{}');
     const cur = saved.scale || Math.round(window.devicePixelRatio * 100);
     const val = Math.max(30, Math.min(150, Math.round(cur / 10) * 10 + delta));
-    document.body.style.zoom = val / 100;
+    setBrowserZoom(val / 100);
     saved.scale = val;
     localStorage.setItem('visualOptions', JSON.stringify(saved));
-    // Update both labels
     const wl = document.getElementById('welcome-zoom-value');
     const sl = document.getElementById('settings-zoom-value');
     if (wl) wl.textContent = val + '%';
@@ -285,13 +292,12 @@ function createTile(x, y, z, type, customPath = null, parent = mapContainer) {
         }
         isDrawing = true;
         handleInteraction(img, x, y, z);
-        // In click-to-place mode, place once and stop drawing
         if (!slideToPlace) { isDrawing = false; saveState(); updateMinimap(); }
     };
     img.addEventListener('mouseenter', (e) => {
         if (!isDrawing) return;
         if (e.ctrlKey || e.metaKey) return;
-        if (!slideToPlace) return; // click-to-place: no drag placing
+        if (!slideToPlace) return;
         handleInteraction(img, x, y, z);
     });
     parent.appendChild(img);
@@ -339,50 +345,34 @@ function showToast(msg) {
     setTimeout(() => toast.classList.remove('show'), 2500);
 }
 
-// ── ISLAND SAVE/LOAD — binary packed, base64url ─────────────────────────────
-//
-// FORMAT (no prefix):
-//   Byte 0  : cols(4) | rows(4)
-//   Byte 1  : overlayCount(8)
-//   Byte 2  : climate(2) | timp(2) | padding(4)
-//   Base    : ceil(cols*rows*6/8) bytes — per cell: assetIdx(5)|visible(1), row-major
-//   Overlays: overlayCount * 3 bytes
-//             byte0: x(4)|y(4)
-//             byte1: z(4)|assetHi(1)|objIdHi(3)
-//             byte2: assetLo(4)|objIdLo(3)|visible(1)
-//   Encoded as base64url, no padding, no prefix.
-//
-// climate: 0=off 1=rain 2=snow 3=wind
-// timp:    0=zi  1=apus 2=noapte
-
 const ASSET_MAP = [
-    'eraser',                       // 00
-    'dirt',                         // 01
-    'dirt2',                        // 02
-    'ShovedDirt',                   // 03
-    'flovers',                      // 04
-    'rock',                         // 05
-    'crops',                        // 06
-    'stone',                        // 07
-    'mossystone',                   // 08
-    'sand',                         // 09
-    'redsand',                      // 0a
-    'water',                        // 0b
-    'snow',                         // 0c
-    'snowrocks',                    // 0d
-    'ice',                          // 0e
-    'pumpkin',                      // 0f
-    'Hay',                          // 10
-    'melon',                        // 11
-    'tree',                         // 12
-    'snowed_tree',                  // 13
-    'snowman',                      // 14
-    'wood',                         // 15
-    'leaf',                         // 16
-    'snow2',                        // 17
-    'Snowman/snowmanb1.png',        // 18
-    'Snowman/snowmanb2.png',        // 19
-    'Snowman/SnowmanHead.png',      // 1a
+    'eraser',
+    'dirt',
+    'dirt2',
+    'ShovedDirt',
+    'flovers',
+    'rock',
+    'crops',
+    'stone',
+    'mossystone',
+    'sand',
+    'redsand',
+    'water',
+    'snow',
+    'snowrocks',
+    'ice',
+    'pumpkin',
+    'Hay',
+    'melon',
+    'tree',
+    'snowed_tree',
+    'snowman',
+    'wood',
+    'leaf',
+    'snow2',
+    'Snowman/snowmanb1.png',
+    'Snowman/snowmanb2.png',
+    'Snowman/SnowmanHead.png',
 ];
 
 const CLIMATE_MAP = ['off', 'rain', 'snow', 'wind'];
@@ -490,7 +480,7 @@ function generateIslandCode() {
     bw.write(Math.min(overlays.length, 255), 8);
     bw.write(climateIdx, 2);
     bw.write(timpIdx, 2);
-    bw.write(0, 4); // padding
+    bw.write(0, 4);
 
     for (let y = 0; y < rows; y++) {
         for (let x = 0; x < cols; x++) {
@@ -520,7 +510,7 @@ function loadIslandCode(code) {
         const overlayCount = br.read(8);
         const climateIdx   = br.read(2);
         const timpIdx      = br.read(2);
-        br.read(4); // padding
+        br.read(4);
 
         mapContainer.innerHTML = '';
 
@@ -573,7 +563,6 @@ function loadIslandCode(code) {
         return true;
     } catch(e) { console.error('Load failed:', e); return false; }
 }
-// ─────────────────────────────────────────────────────────────────────────────
 
 function saveIslandAsPNG() { openSavePopup(); }
 
@@ -1026,11 +1015,13 @@ function getSelectionRect(x1, y1, x2, y2) {
     return { left: Math.min(x1,x2), top: Math.min(y1,y2), right: Math.max(x1,x2), bottom: Math.max(y1,y2) };
 }
 
-function updateSelectionRectUI(x1, y1, x2, y2) {
-    const r = getSelectionRect(x1, y1, x2, y2);
-    selRect.style.left = r.left + 'px'; selRect.style.top = r.top + 'px';
-    selRect.style.width = (r.right - r.left) + 'px'; selRect.style.height = (r.bottom - r.top) + 'px';
-    selRect.style.display = 'block';
+function updateSelectionRectUI(x1, y1, x2, y2) {}
+
+function getBodyScale() {
+    const t = document.body.style.transform;
+    if (!t) return 1;
+    const m = t.match(/scale\(([^)]+)\)/);
+    return m ? parseFloat(m[1]) : 1;
 }
 
 function getTilesInRect(x1, y1, x2, y2) {
@@ -1076,10 +1067,6 @@ function openFillPanel() {
     requestAnimationFrame(() => requestAnimationFrame(() => {
         overlay.classList.add('overlay-visible');
         panel.classList.add('panel-visible');
-        // Position X button at top-right corner of panel
-        const rect = panel.getBoundingClientRect();
-        closeBtn.style.top = (rect.top - 14) + 'px';
-        closeBtn.style.left = (rect.right - 14) + 'px';
         closeBtn.classList.add('panel-visible');
     }));
 }
@@ -1159,7 +1146,6 @@ document.getElementById('stage').addEventListener('mousedown', (e) => {
 window.addEventListener('mousedown', (e) => {
     if (e.button !== 2) return;
     if (e.target.closest('#dock-container, #save-popup-overlay, #fill-panel, #fill-overlay, #welcome-overlay, #zoom-ui, #minimap-container, .game-title-container')) return;
-    // Clear any existing selection before starting a new one
     if (selectedTiles.size > 0) {
         selectedTiles.forEach(t => t.classList.remove('selected-tile'));
         selectedTiles.clear();
@@ -1179,7 +1165,6 @@ window.addEventListener('mousemove', (e) => {
 window.addEventListener('mouseup', (e) => {
     if (e.button !== 2 || !isRectSelecting) return;
     isRectSelecting = false;
-    selRect.style.display = 'none';
     const tilesInRect = getTilesInRect(rectStartX, rectStartY, e.clientX, e.clientY);
     const allSelected = tilesInRect.length > 0 && tilesInRect.every(t => selectedTiles.has(t));
     if (allSelected) {
@@ -1547,7 +1532,6 @@ function drawQR(text) {
                 colorLight: '#ffffff',
                 correctLevel: QRCode.CorrectLevel.L
             });
-            // Show canvas directly — most reliable across browsers
             setTimeout(() => {
                 const cv = output.querySelector('canvas');
                 const img = output.querySelector('img');
@@ -1598,9 +1582,7 @@ function closeWelcome() {
     pclsSound.currentTime = 0; pclsSound.play().catch(e => {});
     setTimeout(() => { ov.style.display = 'none'; }, 350);
 }
-// Welcome overlay click outside disabled — must use X button or START BUILDING
 
-// Welcome zoom label sync on open
 (function() {
     const welcomeOv = document.getElementById('welcome-overlay');
     function syncLabel() {
@@ -1627,4 +1609,3 @@ function welcomeNextStep() {
         step2.classList.add('slide-in');
     });
 }
-

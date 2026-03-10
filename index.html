@@ -50,8 +50,6 @@
     <div id="welcome-wrapper">
         <button id="welcome-close-btn" onclick="closeWelcome()">&#10005;</button>
         <div id="welcome-popup" class="pixel-corners">
-
-            <!-- SHARED HEADER -->
             <div id="welcome-header">
                 <h2>WELCOME! Read this before playing!</h2>
                 <div class="sub">
@@ -61,11 +59,7 @@
                 </div>
             </div>
             <hr class="wdivider">
-
-            <!-- SLIDES CONTAINER -->
             <div id="welcome-slides">
-
-                <!-- STEP 1: Zoom -->
                 <div id="welcome-step-1">
                     <div id="zoom-notice-banner">
                         <img src="./Assets/Icons/book.png" id="zoom-notice-icon">
@@ -97,7 +91,6 @@
                     </div>
                 </div>
 
-                <!-- STEP 2: README -->
                 <div id="welcome-step-2">
                     <div id="welcome-readme-wrap">
                         <div id="readme-titlebar">
@@ -314,13 +307,15 @@
 <div id="selection-rect"></div>
 <button id="fill-selected-btn" onclick="openFillPanel()">FILL SELECTED BLOCKS</button>
 <div id="fill-overlay" onclick="closeFillPanel()"></div>
-<button id="fill-panel-close-btn" onclick="closeFillPanel()">&#10005;</button>
-<div id="fill-panel" class="pixel-corners" onclick="event.stopPropagation()">
-    <h3>Fill</h3>
-    <div id="fill-panel-info">0 tiles selected</div>
-    <div id="fill-blocks-grid"></div>
-    <div id="fill-panel-actions">
-        <button onclick="closeFillPanel()" style="background:#7a2020;color:#fff;border-color:#523519;">CANCEL</button>
+<div id="fill-panel" onclick="event.stopPropagation()">
+    <button id="fill-panel-close-btn" onclick="closeFillPanel()">&#10005;</button>
+    <div id="fill-panel-inner" class="pixel-corners">
+        <h3>Fill</h3>
+        <div id="fill-panel-info">0 tiles selected</div>
+        <div id="fill-blocks-grid"></div>
+        <div id="fill-panel-actions">
+            <button onclick="closeFillPanel()" style="background:#7a2020;color:#fff;border-color:#523519;">CANCEL</button>
+        </div>
     </div>
 </div>
 

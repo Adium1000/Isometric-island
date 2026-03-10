@@ -59,6 +59,12 @@ added  toggles for Clouds, Shadows , leafs, full screen
 
 
 Devlog Sketch
+** Devlog 20 **
+
+- More settings options 
+- Bug fixes
+- In-game scale option (welcome screen & settings)
+
 
 Devlog Final
 
