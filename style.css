@@ -87,16 +87,13 @@ body {
     justify-content: center;
     align-items: center; 
     margin-bottom: 200px; 
-    perspective: 1000px;
     z-index: 10;
 }
 #map {
     position: relative;
-    transform: scale(4.0);
     image-rendering: pixelated;
     z-index: 10;
     transform-origin: center center;
-    backface-visibility: hidden;
     will-change: transform;
 }
 @keyframes islandFloat {

@@ -55,7 +55,6 @@ Devlog Sketch
 - Added a separated settings menu from file menu 
 added  toggles for Clouds, Shadows , leafs, full screen
 
-- added a delete dialog,qr code save
 
 
 Devlog Sketch
@@ -67,6 +66,15 @@ Devlog Sketch
 
 
 Devlog Final
+
+**Devlog 21**
+
+Fixed the game bugs that exist in firefox (zoom, island blur)
+now firefox users can play witout any problems during gameplay or so hehe :)
+
+
+
+
 
 Release
 

@@ -1,18 +1,36 @@
+//      ::::::::::: ::::::::   ::::::::    :::   :::   :::::::::: ::::::::::: :::::::::  ::::::::::: ::::::::          ::::::::::: ::::::::  :::            :::     ::::    ::: :::::::::         ::::::::::: :::::::: 
+//         :┼:    :┼:    :┼: :┼:    :┼:  :┼:┼: :┼:┼:  :┼:            :┼:     :┼:    :┼:     :┼:    :┼:    :┼:             :┼:    :┼:    :┼: :┼:          :┼: :┼:   :┼:┼:   :┼: :┼:    :┼:            :┼:    :┼:    :┼: 
+//        ┼:┼    ┼:┼        ┼:┼    ┼:┼ ┼:┼ ┼:┼:┼ ┼:┼ ┼:┼            ┼:┼     ┼:┼    ┼:┼     ┼:┼    ┼:┼                    ┼:┼    ┼:┼        ┼:┼         ┼:┼   ┼:┼  :┼:┼:┼  ┼:┼ ┼:┼    ┼:┼            ┼:┼    ┼:┼         
+//       ┼#┼    ┼#┼┼:┼┼#┼┼ ┼#┼    ┼:┼ ┼#┼  ┼:┼  ┼#┼ ┼#┼┼:┼┼#       ┼#┼     ┼#┼┼:┼┼#:      ┼#┼    ┼#┼                    ┼#┼    ┼#┼┼:┼┼#┼┼ ┼#┼        ┼#┼┼:┼┼#┼┼: ┼#┼ ┼:┼ ┼#┼ ┼#┼    ┼:┼            ┼#┼    ┼#┼┼:┼┼#┼┼   
+//      ┼#┼           ┼#┼ ┼#┼    ┼#┼ ┼#┼       ┼#┼ ┼#┼            ┼#┼     ┼#┼    ┼#┼     ┼#┼    ┼#┼                    ┼#┼           ┼#┼ ┼#┼        ┼#┼     ┼#┼ ┼#┼  ┼#┼#┼# ┼#┼    ┼#┼            ┼#┼           ┼#┼    
+//     #┼#    #┼#    #┼# #┼#    #┼# #┼#       #┼# #┼#            #┼#     #┼#    #┼#     #┼#    #┼#    #┼#             #┼#    #┼#    #┼# #┼#        #┼#     #┼# #┼#   #┼#┼# #┼#    #┼#        #┼# #┼#    #┼#    #┼#     
+//########### ########   ########  ###       ### ##########     ###     ###    ### ########### ########          ########### ########  ########## ###     ### ###    #### #########          #####      ########       
+
+
 function setBrowserZoom(ratio) {
-    const isFirefox = typeof InstallTrigger !== 'undefined' || CSS.supports('-moz-appearance', 'none');
-    if (isFirefox) {
-        document.body.style.zoom = '';
-        document.body.style.transform = `scale(${ratio})`;
-        document.body.style.transformOrigin = 'top center';
-        document.body.style.width = (100 / ratio) + '%';
-        document.body.style.height = (100 / ratio) + 'vh';
-        document.body.style.marginBottom = '';
-    } else {
+    const isFirefox = CSS.supports('-moz-appearance', 'none');
+    const supportsZoom = CSS.supports('zoom', String(ratio));
+
+    if (!isFirefox || supportsZoom) {
+        document.documentElement.style.zoom = ratio;
         document.body.style.transform = '';
         document.body.style.transformOrigin = '';
         document.body.style.width = '';
         document.body.style.height = '';
-        document.body.style.zoom = ratio;
+        document.body.style.position = '';
+        document.body.style.left = '';
+        document.body.style.top = '';
+    } else {
+        document.documentElement.style.zoom = '';
+        document.body.style.transform = `scale(${ratio})`;
+        document.body.style.transformOrigin = '50% 50%';
+        document.body.style.position = 'fixed';
+        document.body.style.width = (100 / ratio) + 'vw';
+        document.body.style.height = (100 / ratio) + 'vh';
+        document.body.style.left = '50%';
+        document.body.style.top = '50%';
+        document.body.style.marginLeft = (-50 / ratio) + 'vw';
+        document.body.style.marginTop = (-50 / ratio) + 'vh';
     }
 }
 
