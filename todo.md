@@ -2,10 +2,13 @@
 # Here is my todo list where I list ideeas to remember them for later, take a look!
 
 More to come
-- Animals 
-- Add custom cursors
+- add generate popup
+- ui themes ex maro / albastru /verde
+Bănci, coșuri, felinare, garduri, fântâni, lantern
+
 
 What I added:
+- Add custom cursors
 - decompile all of my game into HTML, CSS , JAVA
 - use Chrome's PWA app
 - make the game playable on small screens 
@@ -52,32 +55,16 @@ sooo yea gl
 i hate missspelling
 
 Devlog Sketch
-- Added a separated settings menu from file menu 
-added  toggles for Clouds, Shadows , leafs, full screen
-
-
-
-Devlog Sketch
-** Devlog 20 **
-
-- More settings options 
-- Bug fixes
-- In-game scale option (welcome screen & settings)
-
 
 Devlog Final
 
-**Devlog 21**
-
-Fixed the game bugs that exist in firefox (zoom, island blur)
-now firefox users can play witout any problems during gameplay or so hehe :)
 
 
+**Devlog 23**
 
+- Added custom cursors for actions in the game, they can be disabled/activated in the settings tab
 
 
 Release
 
 Release Final
-
-/ > _ < \ here is the end hehe :3

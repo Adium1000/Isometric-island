@@ -38,7 +38,6 @@ const TILE_W = 24;
 const TILE_H = 12; 
 let selectedBlockType = 'eraser';
 let treeCounter = 0; 
-let terraformHeight = 1;
 let currentZoomPercent = 0.43; 
 let zoomInterval = null;
 let isFloating = false;
@@ -84,11 +83,7 @@ window.addEventListener('keydown', (e) => {
     const key = e.key.toLowerCase();
     if (e.ctrlKey && key === 'z') { e.preventDefault(); undo(); }
     else if (e.ctrlKey && key === 'y') { e.preventDefault(); redo(); }
-    else if (key === 's') { e.preventDefault(); toggleBlockSearch(); }
-    else if (key === 'g') {
-        const sw = document.getElementById('sw-grid');
-        if (sw) { toggleVisualOption('gridOverlay', sw); hotbarSound.currentTime = 0; hotbarSound.play().catch(e => {}); }
-    }
+    else if (key === 's') { e.preventDefault(); saveIslandAsPNG(); }
     else if (key === 'e') {
         if (currentPage !== 1) switchPage(1);
         const eraserSlot = document.getElementById('slot-eraser');
@@ -119,12 +114,6 @@ let shadowsEnabled = true;
 let leavesEnabled = true;
 let cloudsEnabled = false;
 let cloudInterval = null;
-let fpsCounterEnabled = false;
-let fpsAnimFrame = null;
-let fpsLastTime = performance.now();
-let fpsFrameCount = 0;
-let fpsValue = 0;
-let gridOverlayEnabled = false;
 
 (function loadVisualOptions() {
     const saved = JSON.parse(localStorage.getItem('visualOptions') || '{}');
@@ -159,18 +148,6 @@ let gridOverlayEnabled = false;
         if (slideToPlace) {
             const sw = document.getElementById('sw-slide-place');
             if (sw) sw.classList.add('on');
-        }
-        if (saved.fpsCounter === true) {
-            fpsCounterEnabled = true;
-            const sw = document.getElementById('sw-fps');
-            if (sw) sw.classList.add('on');
-            startFpsCounter();
-        }
-        if (saved.gridOverlay === true) {
-            gridOverlayEnabled = true;
-            const sw = document.getElementById('sw-grid');
-            if (sw) sw.classList.add('on');
-            applyGridOverlay(true);
         }
         const saved2 = JSON.parse(localStorage.getItem('visualOptions') || '{}');
         const scale = saved2.scale || Math.round(window.devicePixelRatio * 100);
@@ -221,12 +198,6 @@ function toggleVisualOption(option, btn) {
         if (cloudsEnabled) startClouds(); else stopClouds();
     } else if (option === 'slideToPlace') {
         slideToPlace = isOn;
-    } else if (option === 'fpsCounter') {
-        fpsCounterEnabled = isOn;
-        if (fpsCounterEnabled) startFpsCounter(); else stopFpsCounter();
-    } else if (option === 'gridOverlay') {
-        gridOverlayEnabled = isOn;
-        applyGridOverlay(isOn);
     }
 
     const saved = JSON.parse(localStorage.getItem('visualOptions') || '{}');
@@ -278,109 +249,6 @@ function stopClouds() {
     document.querySelectorAll('.pixel-cloud').forEach(c => c.remove());
 }
 
-function startFpsCounter() {
-    if (fpsAnimFrame) return;
-    let el = document.getElementById('fps-counter');
-    if (!el) {
-        el = document.createElement('div');
-        el.id = 'fps-counter';
-        el.style.cssText = [
-            'position:fixed', 'top:10px', 'left:50%', 'transform:translateX(-50%)',
-            'background:rgba(0,0,0,0.55)', 'color:#a8ff78',
-            'font-family:"Press Start 2P",cursive', 'font-size:8px',
-            'padding:4px 10px', 'border-radius:0',
-            'image-rendering:pixelated', 'z-index:9999',
-            'pointer-events:none', 'letter-spacing:1px',
-            'border:1px solid #2a5a1a'
-        ].join(';');
-        document.body.appendChild(el);
-    }
-    el.style.display = 'block';
-    fpsLastTime = performance.now();
-    fpsFrameCount = 0;
-    function tick(now) {
-        if (!fpsCounterEnabled) return;
-        fpsFrameCount++;
-        const delta = now - fpsLastTime;
-        if (delta >= 500) {
-            fpsValue = Math.round((fpsFrameCount / delta) * 1000);
-            fpsFrameCount = 0;
-            fpsLastTime = now;
-            const counter = document.getElementById('fps-counter');
-            if (counter) counter.textContent = fpsValue + ' FPS';
-        }
-        fpsAnimFrame = requestAnimationFrame(tick);
-    }
-    fpsAnimFrame = requestAnimationFrame(tick);
-}
-
-function stopFpsCounter() {
-    if (fpsAnimFrame) { cancelAnimationFrame(fpsAnimFrame); fpsAnimFrame = null; }
-    const el = document.getElementById('fps-counter');
-    if (el) el.style.display = 'none';
-}
-
-function drawDiamondCanvas(canvasId, tiles, strokeStyle) {
-    let canvas = document.getElementById(canvasId);
-    if (tiles.length === 0) {
-        if (canvas) canvas.remove();
-        return;
-    }
-    const mapW = mapContainer.offsetWidth || 400;
-    const mapH = mapContainer.offsetHeight || 400;
-    if (!canvas) {
-        canvas = document.createElement('canvas');
-        canvas.id = canvasId;
-        mapContainer.appendChild(canvas);
-    }
-    canvas.width = mapW + 200;
-    canvas.height = mapH + 200;
-    canvas.style.left = '-100px';
-    canvas.style.top = '-100px';
-    const ctx = canvas.getContext('2d');
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
-    ctx.strokeStyle = strokeStyle;
-    ctx.lineWidth = 1.5;
-    const W = TILE_W, H = TILE_H;
-    tiles.forEach(t => {
-        const left = parseFloat(t.getAttribute('data-pos-left'));
-        const top  = parseFloat(t.getAttribute('data-pos-top'));
-        const cx = left + W / 2 + 100;
-        const cy = top  + H / 2 + 100;
-        ctx.beginPath();
-        ctx.moveTo(cx,       cy - H / 2);
-        ctx.lineTo(cx + W/2, cy);
-        ctx.lineTo(cx,       cy + H / 2);
-        ctx.lineTo(cx - W/2, cy);
-        ctx.closePath();
-        ctx.stroke();
-    });
-}
-
-function applyGridOverlay(on) {
-    map.classList.toggle('grid-overlay-active', on);
-    if (!on) {
-        const canvas = document.getElementById('grid-canvas');
-        if (canvas) canvas.remove();
-        return;
-    }
-    const tiles = [];
-    mapContainer.querySelectorAll('.tile').forEach(t => {
-        if (parseInt(t.getAttribute('data-z')) === 0 && t.style.opacity !== '0') tiles.push(t);
-    });
-    drawDiamondCanvas('grid-canvas', tiles, 'rgba(255,255,255,0.9)');
-}
-
-function drawSelectionCanvas() {
-    const tiles = Array.from(selectedTiles);
-    if (tiles.length === 0) {
-        const canvas = document.getElementById('selection-canvas');
-        if (canvas) canvas.remove();
-        return;
-    }
-    drawDiamondCanvas('selection-canvas', tiles, 'rgba(230,160,60,0.95)');
-}
-
 function switchPage(pageNum) {
     currentPage = pageNum;
     const p1 = document.querySelectorAll('.page-1');
@@ -428,24 +296,15 @@ function createTile(x, y, z, type, customPath = null, parent = mapContainer) {
         if (e.button === 1 || e.button === 2) return; 
         e.preventDefault();
         if (e.ctrlKey || e.metaKey) {
-            let target = img;
-            if (parseInt(img.getAttribute('data-z')) !== 0) {
-                const tfId = img.getAttribute('data-terraform-group');
-                if (tfId) {
-                    const source = mapContainer.querySelector(`.tile[data-terraform-group="${tfId}"][data-z="0"]`);
-                    if (source && source.style.opacity !== '0') target = source;
-                    else return;
-                } else return;
-            }
-            if (target.style.opacity === '0') return;
-            if (selectedTiles.has(target)) {
-                selectedTiles.delete(target);
-                target.classList.remove('selected-tile');
+            if (parseInt(img.getAttribute('data-z')) !== 0) return;
+            if (img.style.opacity === '0') return;
+            if (selectedTiles.has(img)) {
+                selectedTiles.delete(img);
+                img.classList.remove('selected-tile');
             } else {
-                selectedTiles.add(target);
-                target.classList.add('selected-tile');
+                selectedTiles.add(img);
+                img.classList.add('selected-tile');
             }
-            drawSelectionCanvas();
             updateFillButton();
             return;
         }
@@ -494,7 +353,6 @@ function updateMinimap() {
             mCtx.fillStyle = color;
             mCtx.fillRect(centerX + isoX - size/2, centerY + isoY - size/2, size, size);
         }
-        if (gridOverlayEnabled) applyGridOverlay(true);
     });
 }
 
@@ -771,7 +629,6 @@ function pasteFromClipboard() {
 function openLoadPopup() {
     const input = document.getElementById('popup-code-input').value.trim();
     if (!input) return;
-    if (input.toUpperCase() === 'FLAVORTOWN') { showToast('Flavortown is the best :3'); return; }
     const ok = loadIslandCode(input);
     if (!ok) showToast('Invalid Code!');
     else { closeSavePopup(); showToast('Succesfully Loaded!'); }
@@ -794,8 +651,7 @@ function saveState() {
         state.push({
             x: t.getAttribute('data-x'), y: t.getAttribute('data-y'), z: t.getAttribute('data-z'),
             src: t.src, opacity: t.style.opacity, objId: t.getAttribute('data-obj-id'),
-            color: t.getAttribute('data-color'), posLeft: t.getAttribute('data-pos-left'), posTop: t.getAttribute('data-pos-top'),
-            tfGroup: t.getAttribute('data-terraform-group')
+            color: t.getAttribute('data-color'), posLeft: t.getAttribute('data-pos-left'), posTop: t.getAttribute('data-pos-top')
         });
     }
     historyStack.push(state);
@@ -827,7 +683,6 @@ function applyState(state) {
         t.style.opacity = data.opacity;
         t.setAttribute('data-color', data.color);
         if (data.objId) t.setAttribute('data-obj-id', data.objId);
-        if (data.tfGroup) t.setAttribute('data-terraform-group', data.tfGroup);
         if (data.posLeft !== null && data.posLeft !== undefined) { t.setAttribute('data-pos-left', data.posLeft); t.style.left = data.posLeft + 'px'; }
         if (data.posTop !== null && data.posTop !== undefined) { t.setAttribute('data-pos-top', data.posTop); t.style.top = data.posTop + 'px'; }
     });
@@ -841,45 +696,26 @@ function handleInteraction(tile, x, y, z) {
 
     if (selectedBlockType === 'eraser') {
         const objId = tile.getAttribute('data-obj-id');
-        const tfId = tile.getAttribute('data-terraform-group');
         if (objId) {
-            mapContainer.querySelectorAll(`[data-obj-id="${objId}"]`).forEach(t => t.remove());
-        }
-        if (tfId) {
-            mapContainer.querySelectorAll(`[data-terraform-group="${tfId}"]`).forEach(t => {
-                if (parseInt(t.getAttribute('data-z')) > 0) t.remove();
-                else { t.style.opacity = '0'; t.removeAttribute('data-terraform-group'); }
-            });
-        } else if (!objId) {
-            tile.style.opacity = '0';
-        }
+            const objects = mapContainer.querySelectorAll(`[data-obj-id="${objId}"]`);
+            for(let i=0; i<objects.length; i++) objects[i].remove();
+        } else { tile.style.opacity = "0"; }
     } else if (['tree', 'snowed_tree', 'melon', 'Hay', 'snowman', 'pumpkin'].includes(selectedBlockType)) {
-        if(tile.style.opacity === "0" || isPartOfObject) return;
-        let topZ = 0;
-        mapContainer.querySelectorAll(`.tile[data-x="${x}"][data-y="${y}"]`).forEach(t => {
-            const tz = parseInt(t.getAttribute('data-z'));
-            const belongsToObj = t.hasAttribute('data-obj-id') && t.getAttribute('data-obj-id') !== '';
-            if (t.style.opacity !== '0' && !belongsToObj && tz > topZ) topZ = tz;
-        });
-        const groundTile = mapContainer.querySelector(`.tile[data-x="${x}"][data-y="${y}"][data-z="${topZ}"]`);
-        if (!groundTile || groundTile.style.opacity === '0') return;
-        const baseZ = topZ + 1;
-        const alreadyObj = mapContainer.querySelector(`.tile[data-x="${x}"][data-y="${y}"][data-z="${baseZ}"]`);
-        if (alreadyObj && alreadyObj.getAttribute('data-obj-id')) return;
+        if(tile.style.opacity === "0" || isPartOfObject || existingAbove) return;
         treeCounter++;
         const currentId = "obj_" + treeCounter;
         if (selectedBlockType === 'tree' || selectedBlockType === 'snowed_tree') {
             const leafType = selectedBlockType === 'tree' ? 'leaf' : 'snow2';
-            for(let i = baseZ; i <= baseZ + 2; i++) createTile(x, y, i, 'wood').setAttribute('data-obj-id', currentId);
-            for(let ox=-1; ox<=1; ox++) for(let oy=-1; oy<=1; oy++) createTile(x+ox, y+oy, baseZ+3, leafType).setAttribute('data-obj-id', currentId);
-            [{dx:0,dy:0},{dx:1,dy:0},{dx:-1,dy:0},{dx:0,dy:1},{dx:0,dy:-1}].forEach(l => createTile(x+l.dx, y+l.dy, baseZ+4, leafType).setAttribute('data-obj-id', currentId));
-            createTile(x, y, baseZ+5, leafType).setAttribute('data-obj-id', currentId);
+            for(let i=1; i<=3; i++) createTile(x, y, i, 'wood').setAttribute('data-obj-id', currentId);
+            for(let ox=-1; ox<=1; ox++) for(let oy=-1; oy<=1; oy++) createTile(x + ox, y + oy, 4, leafType).setAttribute('data-obj-id', currentId);
+            [{dx:0,dy:0},{dx:1,dy:0},{dx:-1,dy:0},{dx:0,dy:1},{dx:0,dy:-1}].forEach(l => createTile(x+l.dx, y+l.dy, 5, leafType).setAttribute('data-obj-id', currentId));
+            createTile(x, y, 6, leafType).setAttribute('data-obj-id', currentId);
             if(selectedBlockType === 'tree') startInfiniteLeaves(x, y, currentId);
         } else if (selectedBlockType === 'snowman') {
-            createTile(x, y, baseZ,   '', './Assets/Blocks/Snowman/snowmanb1.png').setAttribute('data-obj-id', currentId);
-            createTile(x, y, baseZ+1, '', './Assets/Blocks/Snowman/snowmanb2.png').setAttribute('data-obj-id', currentId);
-            createTile(x, y, baseZ+2, '', './Assets/Blocks/Snowman/SnowmanHead.png').setAttribute('data-obj-id', currentId);
-        } else { createTile(x, y, baseZ, selectedBlockType).setAttribute('data-obj-id', currentId); }
+            createTile(x, y, z + 1, '', './Assets/Blocks/Snowman/snowmanb1.png').setAttribute('data-obj-id', currentId);
+            createTile(x, y, z + 2, '', './Assets/Blocks/Snowman/snowmanb2.png').setAttribute('data-obj-id', currentId);
+            createTile(x, y, z + 3, '', './Assets/Blocks/Snowman/SnowmanHead.png').setAttribute('data-obj-id', currentId);
+        } else { createTile(x, y, z + 1, selectedBlockType).setAttribute('data-obj-id', currentId); }
     } else {
         if(isPartOfObject) return;
         tile.src = `./Assets/Blocks/${selectedBlockType}.png`;
@@ -1134,13 +970,10 @@ function generateRandomIsland() {
     }
     mapContainer.appendChild(frag);
 
-    let treeSpawned = false;
     grid.forEach(cell => {
         const isEdge = grid.some(n => Math.abs(n.x - cell.x) <= 1 && Math.abs(n.y - cell.y) <= 1 && !grid.find(g => g.x === n.x && g.y === n.y));
         const objType = theme.multilayer(cell.dist, SIZE, isEdge);
         if (!objType) return;
-        if ((objType === 'tree' || objType === 'snowed_tree') && treeSpawned) return;
-        if (objType === 'tree' || objType === 'snowed_tree') treeSpawned = true;
         const alreadyAbove = mapContainer.querySelector(`.tile[data-x="${cell.x}"][data-y="${cell.y}"][data-z="1"]`);
         if (alreadyAbove) return;
         treeCounter++;
@@ -1163,136 +996,6 @@ function generateRandomIsland() {
     });
 
     const labelEl = document.getElementById('random-island-type');
-    if (labelEl) labelEl.innerText = 'Last ' + theme.label;
-    saveState(); updateMinimap();
-    showToast(theme.label + '!');
-    hotbarSound.currentTime = 0; hotbarSound.play().catch(e => {});
-}
-
-function generateMountain() {
-    const SIZE = 8;
-    const noise2d = (x, y, seed) => {
-        const s = Math.sin(x * 127.1 + y * 311.7 + seed * 74.3) * 43758.5453;
-        return s - Math.floor(s);
-    };
-    const seed = Math.random() * 1000;
-    const noise = (x, y) => (noise2d(x, y, seed) - 0.5) * 1.2;
-    const themes = [
-        {
-            label: 'Mountain:"ALPINE"',
-            base: 'stone', mid: 'mossystone', top: 'snow', peak: 'snowrocks',
-            treePick: () => Math.random() < 0.6 ? 'snowed_tree' : 'snowman'
-        },
-        {
-            label: 'Mountain:"VOLCANIC"',
-            base: 'rock', mid: 'stone', top: 'redsand', peak: 'rock',
-            treePick: () => null
-        },
-        {
-            label: 'Mountain:"EARTHY"',
-            base: 'dirt2', mid: 'stone', top: 'dirt', peak: 'dirt',
-            treePick: () => Math.random() < 0.7 ? 'tree' : 'Hay'
-        },
-        {
-            label: 'Mountain:"MOSSY"',
-            base: 'rock', mid: 'mossystone', top: 'dirt', peak: 'dirt2',
-            treePick: () => 'tree'
-        }
-    ];
-    const theme = themes[Math.floor(Math.random() * themes.length)];
-
-    mapContainer.innerHTML = '';
-    const frag = document.createDocumentFragment();
-    const MAX_H = 6;
-    const heightMap = {};
-    for (let y = 0; y < SIZE; y++) {
-        for (let x = 0; x < SIZE; x++) {
-            const cx = x - SIZE / 2 + 0.5;
-            const cy = y - SIZE / 2 + 0.5;
-            const dist = Math.sqrt(cx * cx + cy * cy);
-            const norm = dist / (SIZE * 0.5);
-            if (norm > 0.92) {
-                heightMap[x + ',' + y] = -1;
-                continue;
-            }
-            const profile = Math.pow(1 - norm, 1.6); 
-            const h = Math.round(profile * MAX_H + noise(x, y));
-            heightMap[x + ',' + y] = Math.max(0, Math.min(MAX_H, h));
-        }
-    }
-    for (let y = 0; y < SIZE; y++) {
-        for (let x = 0; x < SIZE; x++) {
-            const h = heightMap[x + ',' + y];
-            if (h === -1) {
-                const t = createTile(x, y, 0, 'dirt', null, frag);
-                t.style.opacity = '0';
-                continue;
-            }
-            const baseType = h === 0 ? theme.base : theme.base;
-            createTile(x, y, 0, baseType, null, frag);
-        }
-    }
-    mapContainer.appendChild(frag);
-    const tfGroups = {};
-    for (let y = 0; y < SIZE; y++) {
-        for (let x = 0; x < SIZE; x++) {
-            const h = heightMap[x + ',' + y];
-            if (h <= 0) continue;
-
-            treeCounter++;
-            const tfGroupId = 'tf_' + treeCounter;
-            const baseTile = mapContainer.querySelector(`.tile[data-x="${x}"][data-y="${y}"][data-z="0"]`);
-            if (baseTile) baseTile.setAttribute('data-terraform-group', tfGroupId);
-
-            for (let zi = 1; zi <= h; zi++) {
-                let blockType;
-                const ratio = zi / h;
-                if (zi === h) {
-                    blockType = h >= 5 ? theme.peak : (h >= 3 ? theme.top : theme.mid);
-                } else if (ratio > 0.5) {
-                    blockType = theme.mid;
-                } else {
-                    blockType = theme.base;
-                }
-                const t = createTile(x, y, zi, blockType);
-                t.setAttribute('data-terraform-group', tfGroupId);
-            }
-            tfGroups[x + ',' + y] = { h, tfGroupId };
-        }
-    }
-    let bestCell = null, bestH = -1;
-    for (const key in tfGroups) {
-        const [gx, gy] = key.split(',').map(Number);
-        const cx = gx - SIZE / 2 + 0.5, cy = gy - SIZE / 2 + 0.5;
-        const dist = Math.sqrt(cx*cx + cy*cy);
-        const { h } = tfGroups[key];
-        if (h > bestH && dist < SIZE * 0.25) { bestH = h; bestCell = { x: gx, y: gy, h }; }
-    }
-    if (bestCell && theme.treePick) {
-        const objType = theme.treePick();
-        if (objType) {
-            treeCounter++;
-            const currentId = 'obj_' + treeCounter;
-            const { x, y, h } = bestCell;
-            const baseZ = h + 1;
-            if (objType === 'tree' || objType === 'snowed_tree') {
-                const leafType = objType === 'tree' ? 'leaf' : 'snow2';
-                for (let i = baseZ; i <= baseZ + 2; i++) createTile(x, y, i, 'wood').setAttribute('data-obj-id', currentId);
-                for (let ox = -1; ox <= 1; ox++) for (let oy = -1; oy <= 1; oy++) createTile(x+ox, y+oy, baseZ+3, leafType).setAttribute('data-obj-id', currentId);
-                [{dx:0,dy:0},{dx:1,dy:0},{dx:-1,dy:0},{dx:0,dy:1},{dx:0,dy:-1}].forEach(l => createTile(x+l.dx, y+l.dy, baseZ+4, leafType).setAttribute('data-obj-id', currentId));
-                createTile(x, y, baseZ+5, leafType).setAttribute('data-obj-id', currentId);
-                if (objType === 'tree') startInfiniteLeaves(x, y, currentId);
-            } else if (objType === 'snowman') {
-                createTile(x, y, baseZ,   '', './Assets/Blocks/Snowman/snowmanb1.png').setAttribute('data-obj-id', currentId);
-                createTile(x, y, baseZ+1, '', './Assets/Blocks/Snowman/snowmanb2.png').setAttribute('data-obj-id', currentId);
-                createTile(x, y, baseZ+2, '', './Assets/Blocks/Snowman/SnowmanHead.png').setAttribute('data-obj-id', currentId);
-            } else {
-                createTile(x, y, baseZ, objType).setAttribute('data-obj-id', currentId);
-            }
-        }
-    }
-
-    const labelEl = document.getElementById('mountain-type');
     if (labelEl) labelEl.innerText = 'Last ' + theme.label;
     saveState(); updateMinimap();
     showToast(theme.label + '!');
@@ -1356,11 +1059,9 @@ function getTilesInRect(x1, y1, x2, y2) {
 function highlightSelectedTiles() {
     mapContainer.querySelectorAll('.tile').forEach(t => t.classList.remove('selected-tile'));
     selectedTiles.forEach(t => t.classList.add('selected-tile'));
-    drawSelectionCanvas();
 }
 
 function updateFillButton() {
-    drawSelectionCanvas();
     const btn = document.getElementById('fill-selected-btn');
     if (selectedTiles.size > 0) {
         btn.textContent = 'FILL ' + selectedTiles.size + ' BLOCK' + (selectedTiles.size !== 1 ? 'S' : '');
@@ -1402,96 +1103,52 @@ function closeFillPanel() {
     pclsSound.currentTime = 0; pclsSound.play().catch(e => {});
 }
 
-function setTerraformHeight(h) {
-    terraformHeight = h;
-    document.querySelectorAll('.terraform-h-btn').forEach(btn => {
-        btn.classList.toggle('active', parseInt(btn.dataset.h) === h);
-    });
-    hotbarSound.currentTime = 0; hotbarSound.play().catch(e => {});
-}
-
 function fillSelectedTiles(blockType) {
     if (selectedTiles.size === 0) return;
     const isMultilayer = ['tree','snowed_tree','melon','Hay','snowman','pumpkin'].includes(blockType);
-    const h = terraformHeight;
-
     selectedTiles.forEach(tile => {
-        const x = parseInt(tile.getAttribute('data-x'));
-        const y = parseInt(tile.getAttribute('data-y'));
-        const z = parseInt(tile.getAttribute('data-z'));
-        const existingObjId = tile.getAttribute('data-obj-id');
-        if (existingObjId) {
-            mapContainer.querySelectorAll(`[data-obj-id="${existingObjId}"]`).forEach(t => {
-                if (parseInt(t.getAttribute('data-z')) > 0) t.remove();
-            });
-        }
-        const existingTfId = tile.getAttribute('data-terraform-group');
-        if (existingTfId) {
-            mapContainer.querySelectorAll(`[data-terraform-group="${existingTfId}"]`).forEach(t => {
-                if (parseInt(t.getAttribute('data-z')) > 0) t.remove();
-            });
-        }
-        mapContainer.querySelectorAll(`.tile[data-x="${x}"][data-y="${y}"]`).forEach(t => {
-            if (parseInt(t.getAttribute('data-z')) > 0) t.remove();
-        });
-
         if (isMultilayer) {
-            const topZ = h; 
+            const x = parseInt(tile.getAttribute('data-x'));
+            const y = parseInt(tile.getAttribute('data-y'));
+            const z = parseInt(tile.getAttribute('data-z'));
+            const existingAbove = mapContainer.querySelector(`.tile[data-x="${x}"][data-y="${y}"][data-z="${z+1}"]`);
+            if (existingAbove || tile.hasAttribute('data-obj-id')) return;
             treeCounter++;
             const currentId = 'obj_' + treeCounter;
-            let tfGroupId = null;
-            if (h > 1) {
-                treeCounter++;
-                tfGroupId = 'tf_' + treeCounter;
-                for (let zi = 1; zi < h; zi++) {
-                    const t = createTile(x, y, zi, blockType === 'snowed_tree' ? 'snow' : 'dirt');
-                    t.setAttribute('data-terraform-group', tfGroupId);
-                }
-                tile.setAttribute('data-terraform-group', tfGroupId);
-            } else {
-                tile.removeAttribute('data-terraform-group');
-            }
             if (blockType === 'tree' || blockType === 'snowed_tree') {
                 const leafType = blockType === 'tree' ? 'leaf' : 'snow2';
-                for (let i = topZ; i <= topZ + 2; i++) createTile(x, y, i, 'wood').setAttribute('data-obj-id', currentId);
-                for (let ox = -1; ox <= 1; ox++) for (let oy = -1; oy <= 1; oy++) createTile(x+ox, y+oy, topZ+3, leafType).setAttribute('data-obj-id', currentId);
-                [{dx:0,dy:0},{dx:1,dy:0},{dx:-1,dy:0},{dx:0,dy:1},{dx:0,dy:-1}].forEach(l => createTile(x+l.dx, y+l.dy, topZ+4, leafType).setAttribute('data-obj-id', currentId));
-                createTile(x, y, topZ+5, leafType).setAttribute('data-obj-id', currentId);
-                if (blockType === 'tree') startInfiniteLeaves(x, y, currentId);
+                for(let i=1; i<=3; i++) createTile(x, y, i, 'wood').setAttribute('data-obj-id', currentId);
+                for(let ox=-1; ox<=1; ox++) for(let oy=-1; oy<=1; oy++) createTile(x+ox, y+oy, 4, leafType).setAttribute('data-obj-id', currentId);
+                [{dx:0,dy:0},{dx:1,dy:0},{dx:-1,dy:0},{dx:0,dy:1},{dx:0,dy:-1}].forEach(l => createTile(x+l.dx, y+l.dy, 5, leafType).setAttribute('data-obj-id', currentId));
+                createTile(x, y, 6, leafType).setAttribute('data-obj-id', currentId);
+                if(blockType === 'tree') startInfiniteLeaves(x, y, currentId);
             } else if (blockType === 'snowman') {
-                createTile(x, y, topZ,   '', './Assets/Blocks/Snowman/snowmanb1.png').setAttribute('data-obj-id', currentId);
-                createTile(x, y, topZ+1, '', './Assets/Blocks/Snowman/snowmanb2.png').setAttribute('data-obj-id', currentId);
-                createTile(x, y, topZ+2, '', './Assets/Blocks/Snowman/SnowmanHead.png').setAttribute('data-obj-id', currentId);
-            } else {
-                createTile(x, y, topZ, blockType).setAttribute('data-obj-id', currentId);
-            }
+                createTile(x, y, z+1, '', './Assets/Blocks/Snowman/snowmanb1.png').setAttribute('data-obj-id', currentId);
+                createTile(x, y, z+2, '', './Assets/Blocks/Snowman/snowmanb2.png').setAttribute('data-obj-id', currentId);
+                createTile(x, y, z+3, '', './Assets/Blocks/Snowman/SnowmanHead.png').setAttribute('data-obj-id', currentId);
+            } else { createTile(x, y, z+1, blockType).setAttribute('data-obj-id', currentId); }
         } else {
-            if (h === 1) {
-                tile.src = `./Assets/Blocks/${blockType}.png`;
-                tile.style.opacity = '1';
-                tile.setAttribute('data-color', getBlockColor(blockType));
-                tile.removeAttribute('data-obj-id');
-                tile.removeAttribute('data-terraform-group');
-            } else {
-                treeCounter++;
-                const tfGroupId = 'tf_' + treeCounter;
-                tile.src = `./Assets/Blocks/${blockType}.png`;
-                tile.style.opacity = '1';
-                tile.setAttribute('data-color', getBlockColor(blockType));
-                tile.removeAttribute('data-obj-id');
-                tile.setAttribute('data-terraform-group', tfGroupId);
-                for (let zi = 1; zi < h; zi++) {
-                    const t = createTile(x, y, zi, blockType);
-                    t.setAttribute('data-terraform-group', tfGroupId);
-                }
+            const x = parseInt(tile.getAttribute('data-x'));
+            const y = parseInt(tile.getAttribute('data-y'));
+            const existingObjId = tile.getAttribute('data-obj-id');
+            if (existingObjId) {
+                mapContainer.querySelectorAll(`[data-obj-id="${existingObjId}"]`).forEach(t => {
+                    if (parseInt(t.getAttribute('data-z')) > 0) t.remove();
+                });
             }
+            mapContainer.querySelectorAll(`.tile[data-x="${x}"][data-y="${y}"]`).forEach(t => {
+                if (parseInt(t.getAttribute('data-z')) > 0) t.remove();
+            });
+            tile.src = `./Assets/Blocks/${blockType}.png`;
+            tile.style.opacity = '1';
+            tile.setAttribute('data-color', getBlockColor(blockType));
+            tile.removeAttribute('data-obj-id');
         }
     });
     placeSound.currentTime = 0; placeSound.play().catch(e => {});
     saveState();
-    updateMinimap();
     closeFillPanel();
-    showToast('Filled' + (h > 1 ? ' (H:' + h + ')' : '') + '!');
+    showToast('Succesfully Filled!');
 }
 
 document.getElementById('stage').addEventListener('mousedown', (e) => {
@@ -1551,24 +1208,15 @@ window.addEventListener('keydown', (e) => {
 
     let deletedCount = 0;
     const objIdsToDelete = new Set();
-    const tfGroupsToDelete = new Set();
 
     selectedTiles.forEach(tile => {
         const objId = tile.getAttribute('data-obj-id');
         if (objId) objIdsToDelete.add(objId);
-        const tfId = tile.getAttribute('data-terraform-group');
-        if (tfId) tfGroupsToDelete.add(tfId);
     });
 
+   
     objIdsToDelete.forEach(objId => {
         mapContainer.querySelectorAll(`[data-obj-id="${objId}"]`).forEach(t => t.remove());
-    });
-
-    tfGroupsToDelete.forEach(tfId => {
-        mapContainer.querySelectorAll(`[data-terraform-group="${tfId}"]`).forEach(t => {
-            if (parseInt(t.getAttribute('data-z')) > 0) t.remove();
-            else { t.style.opacity = '0'; t.removeAttribute('data-terraform-group'); }
-        });
     });
 
     selectedTiles.forEach(tile => {
@@ -1580,7 +1228,6 @@ window.addEventListener('keydown', (e) => {
         });
         tile.style.opacity = '0';
         tile.removeAttribute('data-obj-id');
-        tile.removeAttribute('data-terraform-group');
         tile.classList.remove('selected-tile');
         deletedCount++;
     });
@@ -1806,10 +1453,6 @@ function animateWeather(mode) {
 }
 
 function openSettingsPopup() {
-    const swCursor = document.getElementById('sw-custom-cursor');
-    if (swCursor) {
-        swCursor.classList.toggle('on', window._customCursorEnabled !== false);
-    }
     const overlay = document.getElementById('settings-popup-overlay');
     overlay.style.display = 'flex';
     requestAnimationFrame(() => requestAnimationFrame(() => overlay.classList.add('popup-visible')));
@@ -1983,273 +1626,4 @@ function welcomeNextStep() {
         step1.style.display = 'none';
         step2.classList.add('slide-in');
     });
-}
-
-const BLOCK_SEARCH_LIST = [
-    { type: 'eraser',      name: 'Eraser',        tag: 'Tool',             cat: 'tools' },
-    { type: 'dirt',        name: 'Grass',          tag: 'Natural Block',    cat: 'natural' },
-    { type: 'flovers',     name: 'Flowers',        tag: 'Natural Deco',     cat: 'decoration' },
-    { type: 'rock',        name: 'Rock',           tag: 'Natural Deco',     cat: 'decoration' },
-    { type: 'dirt2',       name: 'Dirt',           tag: 'Natural Block',    cat: 'natural' },
-    { type: 'ShovedDirt',  name: 'Shoved Dirt',    tag: 'Natural Block',    cat: 'natural' },
-    { type: 'crops',       name: 'Crops',          tag: 'Natural Deco',     cat: 'decoration' },
-    { type: 'stone',       name: 'Stone',          tag: 'Natural Block',    cat: 'natural' },
-    { type: 'mossystone',  name: 'Mossy Stone',    tag: 'Natural Deco',     cat: 'decoration' },
-    { type: 'sand',        name: 'Sand',           tag: 'Natural Block',    cat: 'natural' },
-    { type: 'redsand',     name: 'Red Sand',       tag: 'Natural Block',    cat: 'natural' },
-    { type: 'melon',       name: 'Watermelon',     tag: 'Deco (multilayer)',  cat: 'decoration' },
-    { type: 'Hay',         name: 'Haystack',       tag: 'Deco (multilayer)',  cat: 'decoration' },
-    { type: 'water',       name: 'Water',          tag: 'Natural Block',    cat: 'natural' },
-    { type: 'tree',        name: 'Tree',           tag: 'Deco (multilayer)', cat: 'nature' },
-    { type: 'pumpkin',     name: 'Pumpkin',        tag: 'Natural Deco',     cat: 'decoration' },
-    { type: 'snow',        name: 'Snow',           tag: 'Natural Block',    cat: 'winter' },
-    { type: 'snowrocks',   name: 'Snow Rocks',     tag: 'Natural Block',    cat: 'winter' },
-    { type: 'ice',         name: 'Ice',            tag: 'Natural Block',    cat: 'winter' },
-    { type: 'snowman',     name: 'Snowman',        tag: 'Deco (multilayer)', cat: 'winter' },
-    { type: 'snowed_tree', name: 'Snowy Tree',     tag: 'Winter Deco',      cat: 'winter',  img: 'snowedtree' },
-];
-
-const BSEARCH_CATEGORIES = [
-    { id: 'all',        label: 'ALL' },
-    { id: 'natural',    label: 'NATURAL' },
-    { id: 'decoration', label: 'DECO' },
-    { id: 'nature',     label: 'NATURE' },
-    { id: 'winter',     label: 'WINTER' },
-    { id: 'tools',      label: 'TOOLS' },
-];
-
-let bsearchActiveCategory = 'all';
-let bsearchOpen = false;
-
-function buildBlockSearchMenu() {
-    const catEl = document.getElementById('block-search-categories');
-    catEl.innerHTML = '';
-    BSEARCH_CATEGORIES.forEach(cat => {
-        const btn = document.createElement('button');
-        btn.className = 'bsearch-cat-btn' + (cat.id === bsearchActiveCategory ? ' active' : '');
-        btn.textContent = cat.label;
-        btn.onclick = () => {
-            bsearchActiveCategory = cat.id;
-            document.querySelectorAll('.bsearch-cat-btn').forEach(b => b.classList.remove('active'));
-            btn.classList.add('active');
-            const q = document.getElementById('block-search-input').value;
-            renderBlockSearchGrid(q);
-        };
-        catEl.appendChild(btn);
-    });
-    renderBlockSearchGrid('');
-}
-
-function renderBlockSearchGrid(query) {
-    const grid = document.getElementById('block-search-grid');
-    grid.innerHTML = '';
-    const q = query.trim().toLowerCase();
-    const filtered = BLOCK_SEARCH_LIST.filter(b => {
-        const matchCat = bsearchActiveCategory === 'all' || b.cat === bsearchActiveCategory;
-        const matchQ = !q || b.name.toLowerCase().includes(q) || b.tag.toLowerCase().includes(q) || b.type.toLowerCase().includes(q);
-        return matchCat && matchQ;
-    });
-
-    if (filtered.length === 0) {
-        const empty = document.createElement('div');
-        empty.id = 'block-search-empty';
-        empty.textContent = 'NO BLOCKS FOUND';
-        grid.appendChild(empty);
-        return;
-    }
-
-    filtered.forEach(b => {
-        const item = document.createElement('div');
-        item.className = 'bsearch-item';
-        if (b.type === selectedBlockType) item.classList.add('selected');
-
-        const imgSrc = b.img ? `./Assets/Blocks/${b.img}.png` : `./Assets/Blocks/${b.type}.png`;
-        item.innerHTML = `
-            <img src="${imgSrc}" alt="${b.name}" draggable="false">
-            <div class="bsearch-item-name">${b.name}</div>
-            <div class="bsearch-item-tag">${b.tag}</div>
-        `;
-        item.onclick = () => {
-            let slot = document.querySelector(`#dock .slot[onclick*="selectBlock('${b.type}'"]`);
-            if (!slot) {
-                document.querySelectorAll('#dock .slot').forEach(s => {
-                    if (s.getAttribute('onclick') && s.getAttribute('onclick').includes(`'${b.type}'`)) slot = s;
-                });
-            }
-            if (slot) {
-                const isP2 = slot.classList.contains('page-2');
-                if (isP2 && currentPage !== 2) switchPage(2);
-                else if (!isP2 && currentPage !== 1) switchPage(1);
-                selectBlock(b.type, slot);
-            } else {
-                selectedBlockType = b.type;
-                hotbarSound.currentTime = 0; hotbarSound.play().catch(e => {});
-            }
-            closeBlockSearch();
-        };
-        grid.appendChild(item);
-    });
-}
-
-function filterBlockSearch(q) {
-    renderBlockSearchGrid(q);
-}
-
-function openBlockSearch() {
-    if (bsearchOpen) return;
-    bsearchOpen = true;
-    bsearchActiveCategory = 'all';
-    const overlay = document.getElementById('block-search-overlay');
-    const wrapper = document.getElementById('block-search-wrapper');
-    const popup   = document.getElementById('block-search-popup');
-    overlay.style.display = 'flex';
-    wrapper.style.display = 'block';
-    popup.style.display   = 'flex';
-    requestAnimationFrame(() => {
-        overlay.classList.add('popup-visible');
-        wrapper.classList.add('popup-visible');
-    });
-    buildBlockSearchMenu();
-    setTimeout(() => {
-        const input = document.getElementById('block-search-input');
-        if (input) { input.value = ''; input.focus(); }
-    }, 60);
-}
-
-function closeBlockSearch() {
-    if (!bsearchOpen) return;
-    bsearchOpen = false;
-    const overlay = document.getElementById('block-search-overlay');
-    const wrapper = document.getElementById('block-search-wrapper');
-    const popup   = document.getElementById('block-search-popup');
-    overlay.classList.remove('popup-visible');
-    wrapper.classList.remove('popup-visible');
-    setTimeout(() => {
-        overlay.style.display = 'none';
-        wrapper.style.display = 'none';
-        popup.style.display   = 'none';
-    }, 250);
-}
-
-function toggleBlockSearch() {
-    if (bsearchOpen) closeBlockSearch(); else openBlockSearch();
-}
-
-document.addEventListener('keydown', (e) => {
-    if (e.key === 'Escape' && bsearchOpen) { e.preventDefault(); closeBlockSearch(); }
-});
-
-
-(function () {
-    const CURSOR_DEFAULT  = { src: './Assets/Cursors/cross.png',     size: 24, ox: 0.5,  oy: 0.5  };
-    const CURSOR_POINTER  = { src: './Assets/Cursors/hand-point.png', size: 24, ox: 0.15, oy: 0.05 };
-
-    const POINTER_SELECTOR = [
-        'a', 'button', 'input[type="button"]', 'input[type="submit"]',
-        'select', 'label',
-        '.slot', '.zoom-btn', '.zoom-step-btn', '.terraform-h-btn',
-        '.btn-welcome-ok', '.btn-cancel-del', '.btn-confirm-del',
-        '#save-btn', '#undo-btn', '#redo-btn', '#float-toggle', '#music-toggle',
-        '#welcome-close-btn', '#popup-close-btn', '#qr-close-btn',
-        '#block-search-close-btn', '#fill-panel-close-btn', '#fill-selected-btn',
-        '#zoom-dot', '#zoom-track', '#btn-next-page', '#btn-prev-page',
-        '[onclick]'
-    ].join(',');
-    function injectNoneStyle() {
-        if (!document.getElementById('custom-cursor-none-style')) {
-            const s = document.createElement('style');
-            s.id = 'custom-cursor-none-style';
-            s.textContent = '*, *::before, *::after { cursor: none !important; }';
-            document.head.appendChild(s);
-        }
-    }
-    function removeNoneStyle() {
-        const s = document.getElementById('custom-cursor-none-style');
-        if (s) s.remove();
-    }
-    injectNoneStyle();
-
-    const el = document.createElement('img');
-    el.id = 'custom-cursor';
-    Object.assign(el.style, {
-        position:       'fixed',
-        top:            '0',
-        left:           '0',
-        pointerEvents:  'none',
-        zIndex:         '2147483647',
-        imageRendering: 'pixelated',
-        display:        'none',
-        willChange:     'transform',
-    });
-    document.body.appendChild(el);
-
-    let currentCursor = null;
-
-    function applyCursor(cfg) {
-        if (currentCursor === cfg) return;
-        currentCursor = cfg;
-        el.src = cfg.src;
-        el.style.width  = cfg.size + 'px';
-        el.style.height = 'auto';
-    }
-
-    function moveCursor(e) {
-        const cfg = currentCursor || CURSOR_DEFAULT;
-        const x = e.clientX - cfg.size * cfg.ox;
-        const y = e.clientY - cfg.size * cfg.oy;
-        el.style.transform = `translate(${x}px,${y}px)`;
-        el.style.display = 'block';
-    }
-
-    function updateCursorType(e) {
-        const target = e.target;
-        if (target && target.closest && target.closest(POINTER_SELECTOR)) {
-            applyCursor(CURSOR_POINTER);
-        } else {
-            applyCursor(CURSOR_DEFAULT);
-        }
-    }
-
-    document.addEventListener('mousemove', (e) => {
-        if (!window._customCursorEnabled) return;
-        updateCursorType(e);
-        moveCursor(e);
-    }, { passive: true });
-
-    document.addEventListener('mouseleave', () => { el.style.display = 'none'; });
-    document.addEventListener('mouseenter', () => {
-        if (!window._customCursorEnabled) return;
-        el.style.display = 'block';
-    });
-
-
-    [CURSOR_DEFAULT, CURSOR_POINTER].forEach(c => { new Image().src = c.src; });
-
-    if (localStorage.getItem('customCursor') === 'off') {
-        el.style.display = 'none';
-        removeNoneStyle();
-    } else {
-        applyCursor(CURSOR_DEFAULT);
-    }
-
-    window._customCursorEnabled = localStorage.getItem('customCursor') !== 'off';
-
-    window._setCustomCursorEnabled = function(enabled) {
-        window._customCursorEnabled = enabled;
-        localStorage.setItem('customCursor', enabled ? 'on' : 'off');
-        if (enabled) {
-            injectNoneStyle();
-            el.style.display = 'block';
-            applyCursor(CURSOR_DEFAULT);
-        } else {
-            el.style.display = 'none';
-            removeNoneStyle();
-        }
-    };
-})();
-
-function toggleCustomCursor(btn) {
-    const enabled = !window._customCursorEnabled;
-    btn.classList.toggle('on', enabled);
-    window._setCustomCursorEnabled(enabled);
 }

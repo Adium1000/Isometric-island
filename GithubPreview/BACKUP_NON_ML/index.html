@@ -152,11 +152,6 @@
                             <div id="random-island-type" style="color:#ffdf80;font-size:7px;text-align:center;margin-top:6px;min-height:12px;letter-spacing:1px;"></div>
                         </div>
 
-                        <div>
-                            <button class="btn-random" onclick="generateMountain(); closeSavePopup();" style="background:#6b5a3e;border-color:#4a3a28;">RANDOM MOUNTAIN ISLAND</button>
-                            <div id="mountain-type" style="color:#ffdf80;font-size:7px;text-align:center;margin-top:6px;min-height:12px;letter-spacing:1px;"></div>
-                        </div>
-
                         <div style="display:flex;flex-direction:column;gap:8px;">
                             <button class="btn-settings" onclick="openSettingsPopup()"> SETTINGS</button>
                         </div>
@@ -245,20 +240,6 @@
                     </div>
 
                     <div class="visual-option-row">
-                        <span class="visual-option-label"> Grid Overlay</span>
-                        <button class="px-switch" id="sw-grid" onclick="toggleVisualOption('gridOverlay', this)">
-                            <span class="px-switch-thumb"></span>
-                        </button>
-                    </div>
-
-                    <div class="visual-option-row">
-                        <span class="visual-option-label"> Custom Cursors</span>
-                        <button class="px-switch on" id="sw-custom-cursor" onclick="toggleCustomCursor(this)">
-                            <span class="px-switch-thumb"></span>
-                        </button>
-                    </div>
-
-                    <div class="visual-option-row">
                         <span class="visual-option-label"> Fullscreen</span>
                         <button class="px-switch" id="sw-fullscreen" onclick="toggleFullscreen(this)">
                             <span class="px-switch-thumb"></span>
@@ -272,13 +253,6 @@
                     <div class="visual-option-row">
                         <span class="visual-option-label"> Slide to place</span>
                         <button class="px-switch" id="sw-slide-place" onclick="toggleVisualOption('slideToPlace', this)">
-                            <span class="px-switch-thumb"></span>
-                        </button>
-                    </div>
-
-                    <div class="visual-option-row">
-                        <span class="visual-option-label"> FPS Counter</span>
-                        <button class="px-switch" id="sw-fps" onclick="toggleVisualOption('fpsCounter', this)">
                             <span class="px-switch-thumb"></span>
                         </button>
                     </div>
@@ -338,19 +312,6 @@
     <div id="fill-panel-inner" class="pixel-corners">
         <h3>Fill</h3>
         <div id="fill-panel-info">0 tiles selected</div>
-        <div id="terraform-row">
-            <span id="terraform-label">HEIGHT:</span>
-            <div id="terraform-btns">
-                <button class="terraform-h-btn active" data-h="1" onclick="setTerraformHeight(1)">1</button>
-                <button class="terraform-h-btn" data-h="2" onclick="setTerraformHeight(2)">2</button>
-                <button class="terraform-h-btn" data-h="3" onclick="setTerraformHeight(3)">3</button>
-                <button class="terraform-h-btn" data-h="4" onclick="setTerraformHeight(4)">4</button>
-                <button class="terraform-h-btn" data-h="5" onclick="setTerraformHeight(5)">5</button>
-                <button class="terraform-h-btn" data-h="6" onclick="setTerraformHeight(6)">6</button>
-                <button class="terraform-h-btn" data-h="7" onclick="setTerraformHeight(7)">7</button>
-                <button class="terraform-h-btn" data-h="8" onclick="setTerraformHeight(8)">8</button>
-            </div>
-        </div>
         <div id="fill-blocks-grid"></div>
         <div id="fill-panel-actions">
             <button onclick="closeFillPanel()" style="background:#7a2020;color:#fff;border-color:#523519;">CANCEL</button>
@@ -406,20 +367,6 @@
     <div id="zoom-track"><div id="zoom-dot"></div></div>
     <img src="./Assets/GUI/zoom+.png" class="zoom-btn" id="btn-zoom-in">
 </div>
-    <div id="block-search-overlay" onclick="if(event.target===this)closeBlockSearch()"></div>
-    <div id="block-search-wrapper">
-        <button id="block-search-close-btn" onclick="closeBlockSearch()">&#10005;</button>
-        <div id="block-search-popup" class="pixel-corners">
-            <div id="block-search-header">
-                <h2> Search </h2>
-                <div id="block-search-input-wrap">
-                    <input id="block-search-input" type="text" placeholder="SEARCH BLOCKS..." autocomplete="off" oninput="filterBlockSearch(this.value)">
-                </div>
-            </div>
-            <div id="block-search-categories"></div>
-            <div id="block-search-grid"></div>
-        </div>
-    </div>
 
     <script src="game.js"></script>
 

@@ -271,6 +271,65 @@ Separated the Settings from the File menu, it never really made sense to have it
 
 ![devlog 18 image](GithubPreview/Devlogs%20(Flavortown)/devlog19.png)
 
+---
+
+Devlog 20
+
+- More settings options
+- Bug fixes
+- In-game scale option (welcome screen & settings)
+
+![devlog 20 image](<GithubPreview/Devlogs (Flavortown)/devlog20.png>)
+
+---
+Ship Event
+
+Hours: 43.11  | Cookies: 🍪 1266 | Multiplier: 29.37 cookies/hr | 12 votes received
+
+Description
+
+I created a browser-based isometric world builder with just plain HTML, CSS, and JS.
+You can place tiles, fill areas, switch between day/sunset/night, and add rain and snow. You can even share your island as a small save code or even as a QR code. The hardest part was implementing the binary save system with a full island in ~150 characters
+
+---
+
+
+
+cskartikey ⚡ sent their compliments to the chef of Isometric Island
+
+
+Tagged your project as well cooked!
+🔥 cskartikey marked your project as well cooked! As a prize for your nicely cooked project, look out for a bonus prize in the mail :)
+
+
+
+---
+
+Devlog 21
+
+Fixed the game bugs that exist in firefox (zoom, island blur)
+now firefox users can play witout any problems during gameplay or so hehe :)
+
+![devlog 21 image](<GithubPreview/Devlogs (Flavortown)/devlog21.png>)
+
+
+
+---
+
+ ** Devlog 22 **
+ Fixed some bugs for terraforming and made the selection grid better to see, also added a white grid that can be toggled. Now you can build or generate mountains and make your island more cooler!
+ also I added a search popup, just press "S" and you can search blocks  :)
+
+![devlog 22 art :)](<GithubPreview/Devlogs (Flavortown)/Devlog22.png>)
+
+---
+
+**Devlog 23**
+
+- Added custom cursors for actions in the game, they can be disabled/activated in the settings tab
+
+
+---
 
 ![yayyy](https://emoji.slack-edge.com/T09V59WQY1E/yayayayayay/203666b7424ee7a7.gif)
 

@@ -86,7 +86,7 @@ Here you will find some relevant subjects and explanations about my game, includ
 
 ![9. Cursors](GithubPreview/Guide/9.png)
 
-- The 'game' use your OS's default cursors for now 
+- The 'game' can use OS/OWN cursors, check settings
 - if for exemple you hover, click or interact with specific buttons (Middle click to move the island, Touching Background, Touching Hotbar, Etc)
 - Middle click to move the island
 
@@ -105,6 +105,8 @@ Here you will find some relevant subjects and explanations about my game, includ
 | F        | Toggle Island Float mode       |
 | CTRL + Z | Undo                           |
 | CTRL + Y | Redo                           |
+| S        | Search Blocks Menu             |
+| G        | Toggle Grid                    |
 
 ![MiniMap](GithubPreview/Guide/01.png)
 
@@ -168,7 +170,7 @@ Here you will find some relevant subjects and explanations about my game, includ
 
 ![fill](GithubPreview/Guide/fill.png)
 
-- From here you can choose the block you want to fill your area
+- From here you can choose the block you want to fill your area and choose how mutch to fill on the Y axis, verry helpfull for creating mountains and cool stuff
 
 ![Toast](GithubPreview/Guide/06.png)
 
@@ -241,12 +243,26 @@ And done!
 - This option lets you change the climate for better visuals for your island stile :3
 4. Time of the day
 - This option lets you change the time on the game 
+5. Visuals Menu
+- Contains a list of toggles for appearance and debugging
+6. Controls 
+- Contains a list of toggles for better options 
+7. Scale
+- Helpfull to make the game use all the screnn :3
+
+![removeisland](GithubPreview/Guide/Islandremove.png)
 
 
+![delete popup](GithubPreview/Guide/delete.png)
 
+- This menu makes sure you don't accidentally press the delete island button :)
 
+![Search](GithubPreview/Guide/search.png)
 
-    
+![SearchMenuPopup](GithubPreview/Guide/searchmenu.png)
+
+- Search menu is a menu where you can easely search for blocks by name or by scrolling
+   
 
 ### Warning!
 ![WarnBanner](GithubPreview/Banners/warningb.png)
