@@ -61,6 +61,7 @@ Devlog Sketch
 - about menu
 - cursor tooltips
 Devlog Final
+**Devlog 25**
 This devlogs adds a new popup in settings for cursor options, also i added cursor tooltips witch show your currentilly block in the right bottom of your cursor
 
 **Devlog 24**

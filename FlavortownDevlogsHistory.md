@@ -339,6 +339,12 @@ New popups for random island generators such as mountains or biomes, now you can
 ![devlog 24](<GithubPreview/Devlogs (Flavortown)/devlog24.png>)
 
 ---
+**Devlog 25**
+This devlogs adds a new popup in settings for cursor options, also i added cursor tooltips witch show your currentilly block in the right bottom of your cursor
+
+![dev 25](<GithubPreview/Devlogs (Flavortown)/devlog25.png>)
+
+---
 
 End 
 
