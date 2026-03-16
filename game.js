@@ -6,6 +6,8 @@
 //     #┼#    #┼#    #┼# #┼#    #┼# #┼#       #┼# #┼#            #┼#     #┼#    #┼#     #┼#    #┼#    #┼#             #┼#    #┼#    #┼# #┼#        #┼#     #┼# #┼#   #┼#┼# #┼#    #┼#        #┼# #┼#    #┼#    #┼#     
 //########### ########   ########  ###       ### ##########     ###     ###    ### ########### ########          ########### ########  ########## ###     ### ###    #### #########          #####      ########       
 
+// Isometric island HTML Source code 16.3.26 BUILD 2                                                                                                                                                                    
+
 
 function setBrowserZoom(ratio) {
     const isFirefox = CSS.supports('-moz-appearance', 'none');
@@ -406,6 +408,8 @@ function selectBlock(type, el, skipSound = false) {
     highlight.style.left = el.offsetLeft + "px";
     highlight.style.top = el.offsetTop + "px";
     highlight.style.opacity = "1";
+    const img = el.querySelector('img');
+    window._selectedBlockSrc = (img && type !== 'eraser') ? img.getAttribute('src') : '';
     if (!skipSound) { hotbarSound.currentTime = 0; hotbarSound.play().catch(e => {}); }
 }
 
@@ -835,6 +839,51 @@ function applyState(state) {
     updateMinimap();
 }
 
+function spawnDestroyParticles(tile) {
+    if (!tile || tile.style.opacity === '0') return;
+    const rect = tile.getBoundingClientRect();
+    const cx = rect.left + rect.width / 2;
+    const cy = rect.top + rect.height / 2;
+    const src = tile.src;
+    const count = 6;
+    for (let i = 0; i < count; i++) {
+        const p = document.createElement('img');
+        p.src = src;
+        const size = 5 + Math.random() * 5;
+        const angle = (Math.PI * 2 / count) * i + (Math.random() - 0.5) * 0.6;
+        const speed = 40 + Math.random() * 50;
+        const vx = Math.cos(angle) * speed;
+        const vy = Math.sin(angle) * speed - 30;
+        p.style.cssText = [
+            'position:fixed',
+            'pointer-events:none',
+            'z-index:99999',
+            'image-rendering:pixelated',
+            `width:${size}px`,
+            `height:${size}px`,
+            `left:${cx - size / 2}px`,
+            `top:${cy - size / 2}px`,
+            'opacity:1',
+            'transition:none',
+        ].join(';');
+        document.body.appendChild(p);
+        let startTime = null;
+        const duration = 400 + Math.random() * 200;
+        function animate(ts) {
+            if (!startTime) startTime = ts;
+            const t = (ts - startTime) / duration;
+            if (t >= 1) { p.remove(); return; }
+            const gravity = 120;
+            p.style.left = (cx - size / 2 + vx * t) + 'px';
+            p.style.top  = (cy - size / 2 + vy * t + 0.5 * gravity * t * t) + 'px';
+            p.style.opacity = 1 - t;
+            p.style.transform = `rotate(${t * 360}deg)`;
+            requestAnimationFrame(animate);
+        }
+        requestAnimationFrame(animate);
+    }
+}
+
 function handleInteraction(tile, x, y, z) {
     const isPartOfObject = tile.hasAttribute('data-obj-id') && tile.getAttribute('data-obj-id') !== "";
     const existingAbove = mapContainer.querySelector(`.tile[data-x="${x}"][data-y="${y}"][data-z="${z + 1}"]`);
@@ -843,14 +892,18 @@ function handleInteraction(tile, x, y, z) {
         const objId = tile.getAttribute('data-obj-id');
         const tfId = tile.getAttribute('data-terraform-group');
         if (objId) {
-            mapContainer.querySelectorAll(`[data-obj-id="${objId}"]`).forEach(t => t.remove());
+            const toRemove = Array.from(mapContainer.querySelectorAll(`[data-obj-id="${objId}"]`));
+            toRemove.forEach(t => spawnDestroyParticles(t));
+            toRemove.forEach(t => t.remove());
         }
         if (tfId) {
             mapContainer.querySelectorAll(`[data-terraform-group="${tfId}"]`).forEach(t => {
+                spawnDestroyParticles(t);
                 if (parseInt(t.getAttribute('data-z')) > 0) t.remove();
                 else { t.style.opacity = '0'; t.removeAttribute('data-terraform-group'); }
             });
         } else if (!objId) {
+            spawnDestroyParticles(tile);
             tile.style.opacity = '0';
         }
     } else if (['tree', 'snowed_tree', 'melon', 'Hay', 'snowman', 'pumpkin'].includes(selectedBlockType)) {
@@ -2270,14 +2323,14 @@ document.addEventListener('keydown', (e) => {
 
     [CURSOR_DEFAULT, CURSOR_POINTER].forEach(c => { new Image().src = c.src; });
 
-    if (localStorage.getItem('customCursor') === 'off') {
+    if (localStorage.getItem('customCursor') === 'on') {
+        applyCursor(CURSOR_DEFAULT);
+    } else {
         el.style.display = 'none';
         removeNoneStyle();
-    } else {
-        applyCursor(CURSOR_DEFAULT);
     }
 
-    window._customCursorEnabled = localStorage.getItem('customCursor') !== 'off';
+    window._customCursorEnabled = localStorage.getItem('customCursor') === 'on';
 
     window._setCustomCursorEnabled = function(enabled) {
         window._customCursorEnabled = enabled;
@@ -2297,4 +2350,84 @@ function toggleCustomCursor(btn) {
     const enabled = !window._customCursorEnabled;
     btn.classList.toggle('on', enabled);
     window._setCustomCursorEnabled(enabled);
+}
+
+function openPointerSettings() {
+    const overlay = document.getElementById('pointer-settings-overlay');
+    if (!overlay) return;
+    const swCursor = document.getElementById('sw-custom-cursor');
+    if (swCursor) swCursor.classList.toggle('on', !!window._customCursorEnabled);
+    const swTip = document.getElementById('sw-block-tooltips');
+    if (swTip) swTip.classList.toggle('on', window._blockTooltipsEnabled !== false);
+    overlay.style.display = 'flex';
+    requestAnimationFrame(() => overlay.classList.add('popup-visible'));
+    hotbarSound.currentTime = 0; hotbarSound.play().catch(e => {});
+}
+function closePointerSettings() {
+    const overlay = document.getElementById('pointer-settings-overlay');
+    if (!overlay) return;
+    overlay.classList.remove('popup-visible');
+    setTimeout(() => { overlay.style.display = 'none'; }, 260);
+}
+
+if (localStorage.getItem('blockTooltips') === null) localStorage.setItem('blockTooltips', 'on');
+window._blockTooltipsEnabled = localStorage.getItem('blockTooltips') !== 'off';
+
+(function initCursorItem() {
+    const el = document.createElement('img');
+    el.id = 'cursor-item-preview';
+    el.style.cssText = 'position:fixed;left:0;top:0;pointer-events:none;z-index:2147483646;image-rendering:pixelated;width:16px;height:16px;opacity:0.5;display:none;will-change:transform;';
+    document.body.appendChild(el);
+
+    function isAnyPopupOpen() {
+        var overlays = document.querySelectorAll(
+            '#save-popup-overlay, #settings-popup-overlay, #welcome-overlay, ' +
+            '#qr-popup-overlay, #confirm-delete-overlay, #block-search-overlay, ' +
+            '#island-biome-overlay, #mountain-biome-overlay, #pointer-settings-overlay, ' +
+            '#about-popup-overlay, #fill-overlay'
+        );
+        for (var i = 0; i < overlays.length; i++) {
+            var s = overlays[i].style.display;
+            if (s && s !== 'none') return true;
+        }
+        return false;
+    }
+
+    document.addEventListener('mousemove', function(e) {
+        if (!window._blockTooltipsEnabled || isAnyPopupOpen()) { el.style.display = 'none'; return; }
+        var src = window._selectedBlockSrc || '';
+        if (!src) { el.style.display = 'none'; return; }
+        if (el.getAttribute('src') !== src) el.setAttribute('src', src);
+        el.style.display = 'block';
+        el.style.transform = 'translate(' + (e.clientX + 14) + 'px,' + (e.clientY + 14) + 'px)';
+    }, { passive: true });
+
+    document.addEventListener('mouseleave', function() { el.style.display = 'none'; });
+})();
+
+
+
+function toggleBlockTooltips(btn) {
+    window._blockTooltipsEnabled = !window._blockTooltipsEnabled;
+    btn.classList.toggle('on', window._blockTooltipsEnabled);
+    localStorage.setItem('blockTooltips', window._blockTooltipsEnabled ? 'on' : 'off');
+    if (!window._blockTooltipsEnabled) {
+        const el = document.getElementById('cursor-item-preview');
+        if (el) el.style.display = 'none';
+    }
+    hotbarSound.currentTime = 0; hotbarSound.play().catch(e => {});
+}
+
+function openAboutPopup() {
+    const overlay = document.getElementById('about-popup-overlay');
+    if (!overlay) return;
+    overlay.style.display = 'flex';
+    requestAnimationFrame(() => overlay.classList.add('popup-visible'));
+    hotbarSound.currentTime = 0; hotbarSound.play().catch(e => {});
+}
+function closeAboutPopup() {
+    const overlay = document.getElementById('about-popup-overlay');
+    if (!overlay) return;
+    overlay.classList.remove('popup-visible');
+    setTimeout(() => { overlay.style.display = 'none'; }, 260);
 }

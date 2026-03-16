@@ -10,7 +10,7 @@
      | |   ; '._,' '  '  `-' /  | |  | |  | | '  `-' /  ' `-' ;   | |         | |  '  `-' |           | |   ; '._,' '   | |  ' `-'  |  | |  | |  ' `-'  /    
     (___)   '.___.'    `.__.'  (___)(___)(___) `.__.'    `.__.   (___)       (___)  `.__,'           (___)   '.___.'   (___) `.__.'_. (___)(___)  `.__,'  -->   
 
-<!-- Isometric island HTML Source code 07.03.26 BUILD 8 -->
+<!-- Isometric island HTML Source code 16.3.26 BUILD 2 -->
 <!DOCTYPE html>
 <html lang="ro">
 <head>
@@ -224,6 +224,11 @@
                     <div class="popup-section-title">Visuals</div>
 
                     <div class="visual-option-row">
+                        <span class="visual-option-label"> Pointer Settings</span>
+                        <button class="btn-pointer-settings" onclick="openPointerSettings()">&#9654;</button>
+                    </div>
+
+                    <div class="visual-option-row">
                         <span class="visual-option-label"> Island shadows</span>
                         <button class="px-switch on" id="sw-shadows" onclick="toggleVisualOption('shadows', this)">
                             <span class="px-switch-thumb"></span>
@@ -247,13 +252,6 @@
                     <div class="visual-option-row">
                         <span class="visual-option-label"> Grid Overlay</span>
                         <button class="px-switch" id="sw-grid" onclick="toggleVisualOption('gridOverlay', this)">
-                            <span class="px-switch-thumb"></span>
-                        </button>
-                    </div>
-
-                    <div class="visual-option-row">
-                        <span class="visual-option-label"> Custom Cursors</span>
-                        <button class="px-switch on" id="sw-custom-cursor" onclick="toggleCustomCursor(this)">
                             <span class="px-switch-thumb"></span>
                         </button>
                     </div>
@@ -293,7 +291,8 @@
                         <button class="zoom-step-btn" id="settings-zoom-in" onclick="stepZoom('settings', +10)">+</button>
                     </div>
 
-                    <div style="display:flex;justify-content:flex-end;margin-top:auto;padding-top:10px;">
+                    <div style="display:flex;justify-content:flex-end;gap:8px;margin-top:auto;padding-top:10px;">
+                        <button class="btn-info-about" onclick="openAboutPopup()">i</button>
                         <button class="btn-ok" onclick="closeSettingsPopup()">OK</button>
                     </div>
 
@@ -493,6 +492,51 @@
                     <div class="biome-name">RANDOM</div>
                     <div class="biome-desc">Surprise me!</div>
                 </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="pointer-settings-overlay" onclick="if(event.target===this)closePointerSettings()">
+    <div id="pointer-settings-wrapper">
+        <button id="pointer-settings-close-btn" onclick="closePointerSettings()">&#10005;</button>
+        <div id="pointer-settings-popup" class="pixel-corners">
+            <h2>POINTER SETTINGS</h2>
+            <div id="pointer-settings-body">
+
+                <div class="visual-option-row">
+                    <span class="visual-option-label"> Game Cursors</span>
+                    <button class="px-switch" id="sw-custom-cursor" onclick="toggleCustomCursor(this)">
+                        <span class="px-switch-thumb"></span>
+                    </button>
+                </div>
+
+                <div class="visual-option-row">
+                    <span class="visual-option-label">Item Tooltips</span>
+                    <button class="px-switch on" id="sw-block-tooltips" onclick="toggleBlockTooltips(this)">
+                        <span class="px-switch-thumb"></span>
+                    </button>
+                </div>
+
+                <div style="display:flex;justify-content:flex-end;margin-top:16px;">
+                    <button class="btn-ok" onclick="closePointerSettings()">OK</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="about-popup-overlay" onclick="if(event.target===this)closeAboutPopup()">
+    <div id="about-popup-wrapper">
+        <button id="about-close-btn" onclick="closeAboutPopup()">&#10005;</button>
+        <div id="about-popup" class="pixel-corners">
+            <img src="./Assets/Icons/icon.png" id="about-icon">
+            <h2 id="about-title">Isometric Island</h2>
+            <div id="about-version">Version 1603.26 </div>
+            <div id="about-divider"></div>
+            <div id="about-body"></div>
+            <div style="display:flex;justify-content:flex-end;margin-top:auto;padding-top:14px;">
+                <button class="btn-ok" onclick="closeAboutPopup()">Go Back</button>
             </div>
         </div>
     </div>

@@ -2,12 +2,15 @@
 # Here is my todo list where I list ideeas to remember them for later, take a look!
 
 More to come
-- add generate popup
+- add
 - ui themes ex maro / albastru /verde
 Bănci, coșuri, felinare, garduri, fântâni, lantern
 
 
 What I added:
+- about menu
+- cursor tooltips
+- add generate popup
 - Add custom cursors
 - decompile all of my game into HTML, CSS , JAVA
 - use Chrome's PWA app
@@ -55,9 +58,10 @@ sooo yea gl
 i hate missspelling
 
 Devlog Sketch
-
+- about menu
+- cursor tooltips
 Devlog Final
-
+This devlogs adds a new popup in settings for cursor options, also i added cursor tooltips witch show your currentilly block in the right bottom of your cursor
 
 **Devlog 24**
 New popups for random island generators such as mountains or biomes, now you can choose what type of biome you want to generate/the type of mountain you want to generate thanks to the new popups added for more flexibility :3
