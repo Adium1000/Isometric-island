@@ -328,8 +328,19 @@ now firefox users can play witout any problems during gameplay or so hehe :)
 
 - Added custom cursors for actions in the game, they can be disabled/activated in the settings tab
 
+![d](<GithubPreview/Devlogs (Flavortown)/devlog 23.png>)
 
 ---
+
+
+**Devlog 24**
+New popups for random island generators such as mountains or biomes, now you can choose what type of biome you want to generate/the type of mountain you want to generate thanks to the new popups added for more flexibility :3
+
+![devlog 24](<GithubPreview/Devlogs (Flavortown)/devlog24.png>)
+
+---
+
+End 
 
 ![yayyy](https://emoji.slack-edge.com/T09V59WQY1E/yayayayayay/203666b7424ee7a7.gif)
 

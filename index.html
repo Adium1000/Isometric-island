@@ -148,12 +148,12 @@
                     <div style="display:flex;flex-direction:column;gap:14px;flex:1;">
                         <div>
                             <div class="popup-section-title">FUN:</div>
-                            <button class="btn-random" onclick="generateRandomIsland(); closeSavePopup();"> RANDOM ISLAND</button>
+                            <button class="btn-random" onclick="openIslandBiomePopup()"> RANDOM ISLAND</button>
                             <div id="random-island-type" style="color:#ffdf80;font-size:7px;text-align:center;margin-top:6px;min-height:12px;letter-spacing:1px;"></div>
                         </div>
 
                         <div>
-                            <button class="btn-random" onclick="generateMountain(); closeSavePopup();" style="background:#6b5a3e;border-color:#4a3a28;">RANDOM MOUNTAIN ISLAND</button>
+                            <button class="btn-random" onclick="openMountainBiomePopup()" style="background:#6b5a3e;border-color:#4a3a28;">RANDOM MOUNTAIN ISLAND</button>
                             <div id="mountain-type" style="color:#ffdf80;font-size:7px;text-align:center;margin-top:6px;min-height:12px;letter-spacing:1px;"></div>
                         </div>
 
@@ -420,6 +420,83 @@
             <div id="block-search-grid"></div>
         </div>
     </div>
+
+<div id="island-biome-overlay" onclick="if(event.target===this)closeIslandBiomePopup()">
+    <div id="island-biome-wrapper">
+        <button id="island-biome-close-btn" onclick="closeIslandBiomePopup()">&#10005;</button>
+        <div id="island-biome-popup" class="pixel-corners">
+            <h2>CHOOSE ISLAND BIOME</h2>
+            <div class="biome-grid" id="island-biome-grid">
+                <div class="biome-card" onclick="selectIslandBiome(0)">
+                    <div class="biome-icon"></div>
+                    <div class="biome-name">SUMMER</div>
+                    <div class="biome-desc">Grass, flowers,<br>trees &amp; crops</div>
+                </div>
+                <div class="biome-card" onclick="selectIslandBiome(1)">
+                    <div class="biome-icon"></div>
+                    <div class="biome-name">SNOWY</div>
+                    <div class="biome-desc">Ice, snow,<br>snowmen &amp; pines</div>
+                </div>
+                <div class="biome-card" onclick="selectIslandBiome(2)">
+                    <div class="biome-icon"></div>
+                    <div class="biome-name">DESERT</div>
+                    <div class="biome-desc">Sand, red sand<br>&amp; rocks</div>
+                </div>
+                <div class="biome-card" onclick="selectIslandBiome(3)">
+                    <div class="biome-icon"></div>
+                    <div class="biome-name">OCEAN</div>
+                    <div class="biome-desc">Water, beaches<br>&amp; stone</div>
+                </div>
+                <div class="biome-card" onclick="selectIslandBiome(4)">
+                    <div class="biome-icon"></div>
+                    <div class="biome-name">STONE</div>
+                    <div class="biome-desc">Stone, moss<br>&amp; sparse trees</div>
+                </div>
+                <div class="biome-card biome-card-random" onclick="selectIslandBiome(-1)">
+                    <div class="biome-icon"></div>
+                    <div class="biome-name">RANDOM</div>
+                    <div class="biome-desc">Surprise me!</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="mountain-biome-overlay" onclick="if(event.target===this)closeMountainBiomePopup()">
+    <div id="mountain-biome-wrapper">
+        <button id="mountain-biome-close-btn" onclick="closeMountainBiomePopup()">&#10005</button>
+        <div id="mountain-biome-popup" class="pixel-corners">
+            <h2> CHOOSE MOUNTAIN TYPE</h2>
+            <div class="biome-grid" id="mountain-biome-grid">
+                <div class="biome-card" onclick="selectMountainBiome(0)">
+                    <div class="biome-icon"></div>
+                    <div class="biome-name">ALPINE</div>
+                    <div class="biome-desc">Snow peak,<br>stone &amp; pines</div>
+                </div>
+                <div class="biome-card" onclick="selectMountainBiome(1)">
+                    <div class="biome-icon"></div>
+                    <div class="biome-name">VOLCANIC</div>
+                    <div class="biome-desc">Dark rock &amp;<br>red sand summit</div>
+                </div>
+                <div class="biome-card" onclick="selectMountainBiome(2)">
+                    <div class="biome-icon"></div>
+                    <div class="biome-name">EARTHY</div>
+                    <div class="biome-desc">Dirt, stone,<br>trees &amp; hay</div>
+                </div>
+                <div class="biome-card" onclick="selectMountainBiome(3)">
+                    <div class="biome-icon"></div>
+                    <div class="biome-name">MOSSY</div>
+                    <div class="biome-desc">Mossy rock<br>covered in trees</div>
+                </div>
+                <div class="biome-card biome-card-random" onclick="selectMountainBiome(-1)">
+                    <div class="biome-icon"></div>
+                    <div class="biome-name">RANDOM</div>
+                    <div class="biome-desc">Surprise me!</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 
     <script src="game.js"></script>
 

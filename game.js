@@ -1028,7 +1028,7 @@ function confirmDeleteIsland() {
     deleteIsland();
 }
 
-function generateRandomIsland() {
+function generateRandomIsland(themeIdx) {
     const themes = [
         {
             label: 'Generated Seed:"SUMMER"',
@@ -1110,7 +1110,7 @@ function generateRandomIsland() {
         }
     ];
 
-    const theme = themes[Math.floor(Math.random() * themes.length)];
+    const theme = (typeof themeIdx === 'number' && themeIdx >= 0 && themeIdx < themes.length) ? themes[themeIdx] : themes[Math.floor(Math.random() * themes.length)];
     const SIZE = 8;
     const noise = () => (Math.random() - 0.5) * 0.8;
     mapContainer.innerHTML = '';
@@ -1169,7 +1169,7 @@ function generateRandomIsland() {
     hotbarSound.currentTime = 0; hotbarSound.play().catch(e => {});
 }
 
-function generateMountain() {
+function generateMountain(themeIdx) {
     const SIZE = 8;
     const noise2d = (x, y, seed) => {
         const s = Math.sin(x * 127.1 + y * 311.7 + seed * 74.3) * 43758.5453;
@@ -1199,7 +1199,7 @@ function generateMountain() {
             treePick: () => 'tree'
         }
     ];
-    const theme = themes[Math.floor(Math.random() * themes.length)];
+    const theme = (typeof themeIdx === 'number' && themeIdx >= 0 && themeIdx < themes.length) ? themes[themeIdx] : themes[Math.floor(Math.random() * themes.length)];
 
     mapContainer.innerHTML = '';
     const frag = document.createDocumentFragment();
@@ -2139,6 +2139,51 @@ document.addEventListener('keydown', (e) => {
     if (e.key === 'Escape' && bsearchOpen) { e.preventDefault(); closeBlockSearch(); }
 });
 
+
+function openIslandBiomePopup() {
+    const overlay = document.getElementById('island-biome-overlay');
+    if (!overlay) return;
+    overlay.style.display = 'flex';
+    requestAnimationFrame(() => overlay.classList.add('popup-visible'));
+    hotbarSound.currentTime = 0; hotbarSound.play().catch(e => {});
+}
+function closeIslandBiomePopup() {
+    const overlay = document.getElementById('island-biome-overlay');
+    if (!overlay) return;
+    overlay.classList.remove('popup-visible');
+    setTimeout(() => { overlay.style.display = 'none'; }, 260);
+}
+function selectIslandBiome(idx) {
+    closeIslandBiomePopup();
+    closeSavePopup();
+    setTimeout(() => { generateRandomIsland(idx < 0 ? undefined : idx); }, 270);
+}
+
+function openMountainBiomePopup() {
+    const overlay = document.getElementById('mountain-biome-overlay');
+    if (!overlay) return;
+    overlay.style.display = 'flex';
+    requestAnimationFrame(() => overlay.classList.add('popup-visible'));
+    hotbarSound.currentTime = 0; hotbarSound.play().catch(e => {});
+}
+function closeMountainBiomePopup() {
+    const overlay = document.getElementById('mountain-biome-overlay');
+    if (!overlay) return;
+    overlay.classList.remove('popup-visible');
+    setTimeout(() => { overlay.style.display = 'none'; }, 260);
+}
+function selectMountainBiome(idx) {
+    closeMountainBiomePopup();
+    closeSavePopup();
+    setTimeout(() => { generateMountain(idx < 0 ? undefined : idx); }, 270);
+}
+
+document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') {
+        closeIslandBiomePopup();
+        closeMountainBiomePopup();
+    }
+});
 
 (function () {
     const CURSOR_DEFAULT  = { src: './Assets/Cursors/cross.png',     size: 24, ox: 0.5,  oy: 0.5  };

@@ -1425,3 +1425,160 @@ body { transition: background-color 1.5s ease; }
     box-shadow: 4px 4px 0 rgba(0,0,0,0.1);
 }
 
+
+#island-biome-overlay,
+#mountain-biome-overlay {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.65);
+    z-index: 6000;
+    justify-content: center;
+    align-items: center;
+    opacity: 0;
+    transition: opacity 0.25s ease;
+}
+#island-biome-overlay.popup-visible,
+#mountain-biome-overlay.popup-visible {
+    opacity: 1;
+}
+
+#island-biome-wrapper,
+#mountain-biome-wrapper {
+    position: relative;
+    transform: scale(0.88) translateY(24px);
+    transition: transform 0.28s cubic-bezier(0.18, 0.89, 0.32, 1.28);
+}
+#island-biome-overlay.popup-visible #island-biome-wrapper,
+#mountain-biome-overlay.popup-visible #mountain-biome-wrapper {
+    transform: scale(1.3) translateY(0);
+}
+
+#island-biome-close-btn,
+#mountain-biome-close-btn {
+    position: absolute;
+    top: -18px;
+    right: -18px;
+    width: 36px;
+    height: 36px;
+    background: #7a2020;
+    border: 4px solid #523519;
+    box-shadow: 3px 3px 0 #3b1010;
+    color: #fff;
+    font-family: 'Press Start 2P', cursive;
+    font-size: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: transform 0.1s, filter 0.1s;
+    z-index: 10;
+    padding: 0;
+    line-height: 1;
+    clip-path: polygon(0% 4px, 4px 4px, 4px 0%, calc(100% - 4px) 0%, calc(100% - 4px) 4px, 100% 4px, 100% calc(100% - 4px), calc(100% - 4px) calc(100% - 4px), calc(100% - 4px) 100%, 4px 100%, 4px calc(100% - 4px), 0% calc(100% - 4px));
+}
+#island-biome-close-btn:hover,
+#mountain-biome-close-btn:hover { filter: brightness(1.3); transform: scale(1.1); }
+#island-biome-close-btn:active,
+#mountain-biome-close-btn:active { transform: scale(0.9); }
+
+#island-biome-popup,
+#mountain-biome-popup {
+    background: #8b5e34;
+    border: 4px solid #523519;
+    box-shadow: 6px 6px 0 #523519;
+    padding: 18px 18px 16px 18px;
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+    font-family: 'Press Start 2P', cursive;
+    image-rendering: pixelated;
+}
+
+#island-biome-popup h2,
+#mountain-biome-popup h2 {
+    margin: 0;
+    color: #fff8e1;
+    font-size: 11px;
+    text-shadow: 2px 2px #523519;
+    text-align: center;
+    letter-spacing: 1px;
+}
+
+.biome-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 130px);
+    gap: 8px;
+}
+
+.biome-card {
+    background: #3b2007;
+    border: 3px solid #523519;
+    padding: 12px 8px 10px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 6px;
+    cursor: pointer;
+    transition: filter 0.1s, transform 0.1s, border-color 0.1s;
+    clip-path: polygon(0% 4px, 4px 4px, 4px 0%, calc(100% - 4px) 0%, calc(100% - 4px) 4px, 100% 4px, 100% calc(100% - 4px), calc(100% - 4px) calc(100% - 4px), calc(100% - 4px) 100%, 4px 100%, 4px calc(100% - 4px), 0% calc(100% - 4px));
+}
+.biome-card:hover {
+    filter: brightness(1.35);
+    transform: scale(1.04);
+    border-color: #ffdf80;
+}
+.biome-card:active {
+    transform: scale(0.95);
+}
+
+.biome-card-random {
+    background: #2d1a5a;
+    border-color: #5a3a8b;
+    grid-column: span 3;
+    flex-direction: row;
+    justify-content: center;
+    padding: 10px 12px;
+    gap: 14px;
+}
+.biome-card-random:hover {
+    border-color: #c48aff;
+    background: #3a2070;
+}
+
+.biome-icon {
+    font-size: 22px;
+    line-height: 1;
+    image-rendering: pixelated;
+}
+
+.biome-name {
+    font-family: 'Press Start 2P', cursive;
+    font-size: 7px;
+    color: #ffdf80;
+    letter-spacing: 1px;
+    text-align: center;
+}
+.biome-card-random .biome-name {
+    color: #c48aff;
+    font-size: 8px;
+}
+
+.biome-desc {
+    font-family: 'Press Start 2P', cursive;
+    font-size: 5px;
+    color: #a0722a;
+    text-align: center;
+    letter-spacing: 0.3px;
+    line-height: 1.6;
+}
+.biome-card-random .biome-desc {
+    color: #9b72cc;
+}
+
+#mountain-biome-grid {
+    grid-template-columns: repeat(2, 160px);
+}
+#mountain-biome-grid .biome-card-random {
+    grid-column: span 2;
+}
+

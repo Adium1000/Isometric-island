@@ -262,7 +262,14 @@ And done!
 ![SearchMenuPopup](GithubPreview/Guide/searchmenu.png)
 
 - Search menu is a menu where you can easely search for blocks by name or by scrolling
-   
+
+![22.Random island/Mountain menu](GithubPreview/Guide/22.png)
+
+ - This menu lets you choose how the random generated island will look like  
+ 
+ ![ISLAND_RANDON](GithubPreview/Guide/IRG.png)
+
+ ![Mountain_Random](GithubPreview/Guide/MGEN.png)
 
 ### Warning!
 ![WarnBanner](GithubPreview/Banners/warningb.png)

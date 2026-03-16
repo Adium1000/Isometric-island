@@ -59,11 +59,8 @@ Devlog Sketch
 Devlog Final
 
 
-
-**Devlog 23**
-
-- Added custom cursors for actions in the game, they can be disabled/activated in the settings tab
-
+**Devlog 24**
+New popups for random island generators such as mountains or biomes, now you can choose what type of biome you want to generate/the type of mountain you want to generate thanks to the new popups added for more flexibility :3
 
 Release
 
