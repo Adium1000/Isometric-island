@@ -7,7 +7,7 @@
 //########### ########   ########  ###       ### ##########     ###     ###    ### ########### ########          ########### ########  ########## ###     ### ###    #### #########          #####      ########       
 
 // Isometric island HTML Source code 16.3.26 BUILD 2                                                                                                                                                                    
-
+// Update
 
 function setBrowserZoom(ratio) {
     const isFirefox = CSS.supports('-moz-appearance', 'none');
