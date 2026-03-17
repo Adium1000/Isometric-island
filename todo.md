@@ -61,11 +61,10 @@ Devlog Sketch
 - about menu
 - cursor tooltips
 Devlog Final
-**Devlog 25**
-This devlogs adds a new popup in settings for cursor options, also i added cursor tooltips witch show your currentilly block in the right bottom of your cursor
+**Devlog 26**
 
-**Devlog 24**
-New popups for random island generators such as mountains or biomes, now you can choose what type of biome you want to generate/the type of mountain you want to generate thanks to the new popups added for more flexibility :3
+-added graphics menu in the settings and moved some togles from settings in this popup, also updated readme to more info about this project, more to come  :)
+
 
 Release
 

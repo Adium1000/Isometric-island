@@ -346,6 +346,14 @@ This devlogs adds a new popup in settings for cursor options, also i added curso
 
 ---
 
+
+**Devlog 26**
+
+-added graphics menu in the settings and moved some togles from settings in this popup, also updated readme to more info about this project, more to come  :)
+
+![d26](<GithubPreview/Devlogs (Flavortown)/dev26.png>)
+
+---
 End 
 
 ![yayyy](https://emoji.slack-edge.com/T09V59WQY1E/yayayayayay/203666b7424ee7a7.gif)

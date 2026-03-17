@@ -10,8 +10,7 @@
      | |   ; '._,' '  '  `-' /  | |  | |  | | '  `-' /  ' `-' ;   | |         | |  '  `-' |           | |   ; '._,' '   | |  ' `-'  |  | |  | |  ' `-'  /    
     (___)   '.___.'    `.__.'  (___)(___)(___) `.__.'    `.__.   (___)       (___)  `.__,'           (___)   '.___.'   (___) `.__.'_. (___)(___)  `.__,'  -->   
 
-<!-- Isometric island HTML Source code 16.3.26 BUILD 2 -->
-<!--Update-->
+<!-- Isometric island HTML Source code 173.26 BUILD 8 -->
 <!DOCTYPE html>
 <html lang="ro">
 <head>
@@ -230,24 +229,8 @@
                     </div>
 
                     <div class="visual-option-row">
-                        <span class="visual-option-label"> Island shadows</span>
-                        <button class="px-switch on" id="sw-shadows" onclick="toggleVisualOption('shadows', this)">
-                            <span class="px-switch-thumb"></span>
-                        </button>
-                    </div>
-
-                    <div class="visual-option-row">
-                        <span class="visual-option-label"> Leafs</span>
-                        <button class="px-switch on" id="sw-leaves" onclick="toggleVisualOption('leaves', this)">
-                            <span class="px-switch-thumb"></span>
-                        </button>
-                    </div>
-
-                    <div class="visual-option-row">
-                        <span class="visual-option-label"> Clouds</span>
-                        <button class="px-switch" id="sw-clouds" onclick="toggleVisualOption('clouds', this)">
-                            <span class="px-switch-thumb"></span>
-                        </button>
+                        <span class="visual-option-label"> Graphics</span>
+                        <button class="btn-pointer-settings" onclick="openGraphicsSettings()">&#9654;</button>
                     </div>
 
                     <div class="visual-option-row">
@@ -498,6 +481,49 @@
     </div>
 </div>
 
+<div id="graphics-settings-overlay" onclick="if(event.target===this)closeGraphicsSettings()">
+    <div id="graphics-settings-wrapper">
+        <button id="graphics-settings-close-btn" onclick="closeGraphicsSettings()">&#10005;</button>
+        <div id="graphics-settings-popup" class="pixel-corners">
+            <h2> GRAPHICS SETTINGS </h2>
+            <div id="graphics-settings-body">
+
+                <div class="visual-option-row">
+                    <span class="visual-option-label"> Island Shadows</span>
+                    <button class="px-switch on" id="sw-shadows" onclick="toggleVisualOption('shadows', this)">
+                        <span class="px-switch-thumb"></span>
+                    </button>
+                </div>
+
+                <div class="visual-option-row">
+                    <span class="visual-option-label"> Leafs</span>
+                    <button class="px-switch on" id="sw-leaves" onclick="toggleVisualOption('leaves', this)">
+                        <span class="px-switch-thumb"></span>
+                    </button>
+                </div>
+
+                <div class="visual-option-row">
+                    <span class="visual-option-label"> Clouds</span>
+                    <button class="px-switch" id="sw-clouds" onclick="toggleVisualOption('clouds', this)">
+                        <span class="px-switch-thumb"></span>
+                    </button>
+                </div>
+
+                <div class="visual-option-row">
+                    <span class="visual-option-label"> Block Particles</span>
+                    <button class="px-switch on" id="sw-block-particles" onclick="toggleBlockParticles(this)">
+                        <span class="px-switch-thumb"></span>
+                    </button>
+                </div>
+
+                <div style="display:flex;justify-content:flex-end;margin-top:16px;">
+                    <button class="btn-ok" onclick="closeGraphicsSettings()">OK</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
 <div id="pointer-settings-overlay" onclick="if(event.target===this)closePointerSettings()">
     <div id="pointer-settings-wrapper">
         <button id="pointer-settings-close-btn" onclick="closePointerSettings()">&#10005;</button>
@@ -506,14 +532,14 @@
             <div id="pointer-settings-body">
 
                 <div class="visual-option-row">
-                    <span class="visual-option-label"> Game Cursors</span>
+                    <span class="visual-option-label"> Custom Cursors</span>
                     <button class="px-switch" id="sw-custom-cursor" onclick="toggleCustomCursor(this)">
                         <span class="px-switch-thumb"></span>
                     </button>
                 </div>
 
                 <div class="visual-option-row">
-                    <span class="visual-option-label">Item Tooltips</span>
+                    <span class="visual-option-label"> Block Tooltips</span>
                     <button class="px-switch on" id="sw-block-tooltips" onclick="toggleBlockTooltips(this)">
                         <span class="px-switch-thumb"></span>
                     </button>
@@ -527,17 +553,18 @@
     </div>
 </div>
 
+
 <div id="about-popup-overlay" onclick="if(event.target===this)closeAboutPopup()">
     <div id="about-popup-wrapper">
         <button id="about-close-btn" onclick="closeAboutPopup()">&#10005;</button>
         <div id="about-popup" class="pixel-corners">
             <img src="./Assets/Icons/icon.png" id="about-icon">
             <h2 id="about-title">Isometric Island</h2>
-            <div id="about-version">Version 1603.26 </div>
+            <div id="about-version">v1.0</div>
             <div id="about-divider"></div>
             <div id="about-body"></div>
             <div style="display:flex;justify-content:flex-end;margin-top:auto;padding-top:14px;">
-                <button class="btn-ok" onclick="closeAboutPopup()">Go Back</button>
+                <button class="btn-ok" onclick="closeAboutPopup()">OK</button>
             </div>
         </div>
     </div>

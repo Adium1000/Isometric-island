@@ -6,8 +6,6 @@
 //     #┼#    #┼#    #┼# #┼#    #┼# #┼#       #┼# #┼#            #┼#     #┼#    #┼#     #┼#    #┼#    #┼#             #┼#    #┼#    #┼# #┼#        #┼#     #┼# #┼#   #┼#┼# #┼#    #┼#        #┼# #┼#    #┼#    #┼#     
 //########### ########   ########  ###       ### ##########     ###     ###    ### ########### ########          ########### ########  ########## ###     ### ###    #### #########          #####      ########       
 
-// Isometric island HTML Source code 16.3.26 BUILD 2                                                                                                                                                                    
-// Update
 
 function setBrowserZoom(ratio) {
     const isFirefox = CSS.supports('-moz-appearance', 'none');
@@ -841,6 +839,7 @@ function applyState(state) {
 
 function spawnDestroyParticles(tile) {
     if (!tile || tile.style.opacity === '0') return;
+    if (window._blockParticlesEnabled === false) return;
     const rect = tile.getBoundingClientRect();
     const cx = rect.left + rect.width / 2;
     const cy = rect.top + rect.height / 2;
@@ -2384,7 +2383,7 @@ window._blockTooltipsEnabled = localStorage.getItem('blockTooltips') !== 'off';
             '#save-popup-overlay, #settings-popup-overlay, #welcome-overlay, ' +
             '#qr-popup-overlay, #confirm-delete-overlay, #block-search-overlay, ' +
             '#island-biome-overlay, #mountain-biome-overlay, #pointer-settings-overlay, ' +
-            '#about-popup-overlay, #fill-overlay'
+            '#about-popup-overlay, #fill-overlay, #graphics-settings-overlay'
         );
         for (var i = 0; i < overlays.length; i++) {
             var s = overlays[i].style.display;
@@ -2430,4 +2429,37 @@ function closeAboutPopup() {
     if (!overlay) return;
     overlay.classList.remove('popup-visible');
     setTimeout(() => { overlay.style.display = 'none'; }, 260);
+}
+
+function openGraphicsSettings() {
+    const overlay = document.getElementById('graphics-settings-overlay');
+    if (!overlay) return;
+    const saved = JSON.parse(localStorage.getItem('visualOptions') || '{}');
+    const swS = document.getElementById('sw-shadows');
+    const swL = document.getElementById('sw-leaves');
+    const swC = document.getElementById('sw-clouds');
+    const swP = document.getElementById('sw-block-particles');
+    if (swS) swS.classList.toggle('on', saved.shadows !== false);
+    if (swL) swL.classList.toggle('on', saved.leaves !== false);
+    if (swC) swC.classList.toggle('on', !!saved.clouds);
+    if (swP) swP.classList.toggle('on', window._blockParticlesEnabled !== false);
+    overlay.style.display = 'flex';
+    requestAnimationFrame(() => overlay.classList.add('popup-visible'));
+    hotbarSound.currentTime = 0; hotbarSound.play().catch(e => {});
+}
+function closeGraphicsSettings() {
+    const overlay = document.getElementById('graphics-settings-overlay');
+    if (!overlay) return;
+    overlay.classList.remove('popup-visible');
+    setTimeout(() => { overlay.style.display = 'none'; }, 260);
+}
+
+
+window._blockParticlesEnabled = localStorage.getItem('blockParticles') !== 'off';
+
+function toggleBlockParticles(btn) {
+    window._blockParticlesEnabled = !window._blockParticlesEnabled;
+    btn.classList.toggle('on', window._blockParticlesEnabled);
+    localStorage.setItem('blockParticles', window._blockParticlesEnabled ? 'on' : 'off');
+    hotbarSound.currentTime = 0; hotbarSound.play().catch(e => {});
 }

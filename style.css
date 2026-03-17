@@ -8,9 +8,7 @@
 /*8888888 88888P'  "Y88P"  888  888  888  "Y8888   "Y888 888     888  "Y8888P      8888888 88888P' 888 "Y888888 888  888  "Y88888       "Y8888P"   "Y8888P"   "Y8888P"  
   */                                                                                                                                                                    
                                                                                                                                                                       
-/* Helo sIsometric island HTML Source code 16.3.26 BUILD 2                                                                                                                                                                      
-    */
-/* update */
+                                                                                                                                                                      
 
 body {
     margin: 0;
@@ -1577,6 +1575,7 @@ body { transition: background-color 1.5s ease; }
     color: #9b72cc;
 }
 
+
 #pointer-settings-overlay {
     display: none;
     position: fixed;
@@ -1623,6 +1622,7 @@ body { transition: background-color 1.5s ease; }
 #pointer-settings-close-btn:hover { filter: brightness(1.3); transform: scale(1.1); }
 #pointer-settings-close-btn:active { transform: scale(0.9); }
 
+
 #pointer-settings-popup {
     background: #8b5e34;
     border: 4px solid #523519;
@@ -1661,6 +1661,7 @@ body { transition: background-color 1.5s ease; }
 }
 .btn-pointer-settings:hover { filter: brightness(1.4); transform: scale(1.08); }
 .btn-pointer-settings:active { transform: scale(0.92); }
+
 
 #cursor-item-preview {
     position: fixed;
@@ -1810,4 +1811,75 @@ body { transition: background-color 1.5s ease; }
     letter-spacing: 0.5px;
     min-height: 20px;
     width: 100%;
+}
+
+#graphics-settings-overlay {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.65);
+    z-index: 7000;
+    justify-content: center;
+    align-items: center;
+    opacity: 0;
+    transition: opacity 0.25s ease;
+}
+#graphics-settings-overlay.popup-visible { opacity: 1; }
+
+#graphics-settings-wrapper {
+    position: relative;
+    transform: scale(0.88) translateY(24px);
+    transition: transform 0.28s cubic-bezier(0.18, 0.89, 0.32, 1.28);
+}
+#graphics-settings-overlay.popup-visible #graphics-settings-wrapper {
+    transform: scale(1.15) translateY(0);
+}
+
+#graphics-settings-close-btn {
+    position: absolute;
+    top: -18px;
+    right: -18px;
+    width: 36px;
+    height: 36px;
+    background: #7a2020;
+    border: 4px solid #523519;
+    box-shadow: 3px 3px 0 #3b1010;
+    color: #fff;
+    font-family: 'Press Start 2P', cursive;
+    font-size: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: transform 0.1s, filter 0.1s;
+    z-index: 10;
+    padding: 0;
+    line-height: 1;
+    clip-path: polygon(0% 4px, 4px 4px, 4px 0%, calc(100% - 4px) 0%, calc(100% - 4px) 4px, 100% 4px, 100% calc(100% - 4px), calc(100% - 4px) calc(100% - 4px), calc(100% - 4px) 100%, 4px 100%, 4px calc(100% - 4px), 0% calc(100% - 4px));
+}
+#graphics-settings-close-btn:hover { filter: brightness(1.3); transform: scale(1.1); }
+#graphics-settings-close-btn:active { transform: scale(0.9); }
+
+#graphics-settings-popup {
+    background: #8b5e34;
+    border: 4px solid #523519;
+    box-shadow: 6px 6px 0 #523519;
+    padding: 18px 22px 16px 22px;
+    min-width: 280px;
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+    font-family: 'Press Start 2P', cursive;
+    image-rendering: pixelated;
+}
+#graphics-settings-popup h2 {
+    margin: 0 0 16px 0;
+    color: #fff8e1;
+    font-size: 10px;
+    text-shadow: 2px 2px #523519;
+    letter-spacing: 1px;
+}
+#graphics-settings-body {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
 }

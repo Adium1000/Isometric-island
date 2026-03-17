@@ -249,6 +249,16 @@ And done!
 - Contains a list of toggles for better options 
 7. Scale
 - Helpfull to make the game use all the screnn :3
+8. Mouse options
+- helpfull settings for mouse
+
+![pointer](GithubPreview/Guide/po.png)
+
+9. Visual or Graphic settings 
+- includes a bunch of sliders for shadows and more
+
+![go](GithubPreview/Guide/go.png)
+
 
 ![removeisland](GithubPreview/Guide/Islandremove.png)
 
@@ -270,6 +280,35 @@ And done!
  ![ISLAND_RANDON](GithubPreview/Guide/IRG.png)
 
  ![Mountain_Random](GithubPreview/Guide/MGEN.png)
+
+
+![Gameblocks](GithubPreview/Guide/blck.png)
+
+- Here is a list of the game blocks and the category of them
+
+| Block                                     | Category                       |     
+|:-----------------------------------------:|:------------------------------:|
+| ![dirt](Assets/Blocks/dirt.png)           | Natural                        |      
+| ![dirt2](Assets/Blocks/dirt2.png)         | Natural                        |  
+| ![crops](Assets/Blocks/crops.png)         | Natural Decoration             |  
+| ![flowers](Assets/Blocks/flovers.png)     | Natural Decoration             | 
+| ![hay](Assets/Blocks/Hay.png)             | Natural Decoration             | 
+| ![ice](Assets/Blocks/ice.png)             | Snowy Decoration               | 
+| ![melon](Assets/Blocks/melon.png)         | Natural                        |  
+| ![mossy](Assets/Blocks/mossystone.png)    | Natural                        |  
+| ![pumpkin](Assets/Blocks/pumpkin.png)     | Natural Decoration             | 
+| ![redsand](Assets/Blocks/redsand.png)     | Natural                        |  
+| ![rocks](Assets/Blocks/rock.png)          | Natural                        |   
+| ![sand](Assets/Blocks/sand.png)           | Natural                        |   
+| ![shoved](Assets/Blocks/ShovedDirt.png)   | Natural Decoration             |  
+| ![snow](Assets/Blocks/snow.png)           | Snowy Decoration               | 
+| ![snow2](Assets/Blocks/snow2.png)         | Snowy Decoration               | 
+| ![snowrooks](Assets/Blocks/snowrocks.png) | Snowy Decoration               | 
+| ![stone](Assets/Blocks/stone.png)         | Natural                        |   
+| ![tree](Assets/Blocks/treehb.png)         | Natural Decoration             |  
+| ![whater](Assets/Blocks/water.png)        | Natural                        |   
+| ![snowedtree](Assets/Blocks/treehbh.png)  | Snowy Decoration               | 
+
 
 ### Warning!
 ![WarnBanner](GithubPreview/Banners/warningb.png)
