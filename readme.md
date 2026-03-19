@@ -357,6 +357,14 @@ And done!
 
 # ! Anything else you find in my project's Assets folder is purely made by me !
 
+# Optimization
+
+1. Service Worker (sw.js). This is a file that catches all the requests the browser makes to the network. The time you visit it saves important things like the hotbar, blocks and audio in a special place so they load fast. The time you visit it gets these things from the special place on your computer instead of asking the server for them.
+
+2. In-Memory Image Cache (_imgCache). This is like a map that remembers pictures that have already been loaded. If you use the block a few times it does not have to decode the picture again. It just uses the one it already has in memory.
+
+3. Lazy Audio Loading. Before the game would load all the files at the same time when it started which could slow things down. Now it only loads the hotbar sound away. It loads the sounds like the place sound and background music only when they are needed for the first time.
+
 ### You reached the end for now :)
 ![the end](GithubPreview/Banners/endreadme.png)   
 - You can try:
