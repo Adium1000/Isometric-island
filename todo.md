@@ -58,12 +58,11 @@ sooo yea gl
 i hate missspelling
 
 Devlog Sketch
-- about menu
-- cursor tooltips
-Devlog Final
-**Devlog 26**
 
--added graphics menu in the settings and moved some togles from settings in this popup, also updated readme to more info about this project, more to come  :)
+**Devlog 27**
+- More compatibilty for tablets: Pinch to zoom , hold to select
+- Gui colors :) : Green, Blue , Brown (default) or automatic :3, this setting can be changed in the settings menu via GUI option 
+
 
 
 Release

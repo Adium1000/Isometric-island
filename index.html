@@ -24,6 +24,12 @@
     <meta name="apple-mobile-web-app-title" content="Isometric Island" />
     <link rel="manifest" href="manifest.json" />
     <link rel="stylesheet" href="style.css"/>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="preload" href="style.css" as="style">
+    <link rel="preload" href="game.js" as="script">
+    <link rel="preload" href="Assets/GUI/hotbar.png" as="image">
+    <link rel="preload" href="Assets/Audio/hotbar.wav" as="audio">
     <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
 
 </head>
@@ -231,6 +237,11 @@
                     <div class="visual-option-row">
                         <span class="visual-option-label"> Graphics</span>
                         <button class="btn-pointer-settings" onclick="openGraphicsSettings()">&#9654;</button>
+                    </div>
+
+                    <div class="visual-option-row">
+                        <span class="visual-option-label"> GUI</span>
+                        <button class="btn-pointer-settings" onclick="openGUISettings()">&#9654;</button>
                     </div>
 
                     <div class="visual-option-row">
@@ -554,6 +565,50 @@
 </div>
 
 
+<div id="gui-settings-overlay" onclick="if(event.target===this)closeGUISettings()">
+    <div id="gui-settings-wrapper">
+        <button id="gui-settings-close-btn" onclick="closeGUISettings()">&#10005;</button>
+        <div id="gui-settings-popup" class="pixel-corners">
+            <h2>GUI THEME</h2>
+            <div id="gui-settings-body">
+                <div id="gui-theme-grid">
+                    <div class="gui-theme-card" id="gui-card-auto" onclick="setGUIThemeManual('auto')">
+                        <div class="gui-theme-swatch gui-swatch-auto">
+                            <span class="gui-swatch-icon">&#9728;</span>
+                        </div>
+                        <div class="gui-theme-name">AUTO</div>
+                        <div class="gui-theme-desc">Follows climate</div>
+                    </div>
+                    <div class="gui-theme-card" id="gui-card-default" onclick="setGUIThemeManual('default')">
+                        <div class="gui-theme-swatch gui-swatch-default">
+                            <span class="gui-swatch-icon">&#127795;</span>
+                        </div>
+                        <div class="gui-theme-name">BROWN</div>
+                        <div class="gui-theme-desc">Default theme</div>
+                    </div>
+                    <div class="gui-theme-card" id="gui-card-blue" onclick="setGUIThemeManual('blue')">
+                        <div class="gui-theme-swatch gui-swatch-blue">
+                            <span class="gui-swatch-icon">&#10052;</span>
+                        </div>
+                        <div class="gui-theme-name">BLUE</div>
+                        <div class="gui-theme-desc">Rain &amp; Snow</div>
+                    </div>
+                    <div class="gui-theme-card" id="gui-card-green" onclick="setGUIThemeManual('green')">
+                        <div class="gui-theme-swatch gui-swatch-green">
+                            <span class="gui-swatch-icon">&#127807;</span>
+                        </div>
+                        <div class="gui-theme-name">GREEN</div>
+                        <div class="gui-theme-desc">Wind theme</div>
+                    </div>
+                </div>
+                <div style="display:flex;justify-content:flex-end;margin-top:16px;">
+                    <button class="btn-ok" onclick="closeGUISettings()">OK</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
 <div id="about-popup-overlay" onclick="if(event.target===this)closeAboutPopup()">
     <div id="about-popup-wrapper">
         <button id="about-close-btn" onclick="closeAboutPopup()">&#10005;</button>
@@ -570,7 +625,7 @@
     </div>
 </div>
 
-    <script src="game.js"></script>
+    <script src="game.js" defer></script>
 
 </body>
 </html>

@@ -7,6 +7,14 @@
 //########### ########   ########  ###       ### ##########     ###     ###    ### ########### ########          ########### ########  ########## ###     ### ###    #### #########          #####      ########       
 
 
+
+if ('serviceWorker' in navigator) {
+    window.addEventListener('load', () => {
+        navigator.serviceWorker.register('./sw.js')
+            .catch(() => { });
+    });
+}
+
 function setBrowserZoom(ratio) {
     const isFirefox = CSS.supports('-moz-appearance', 'none');
     const supportsZoom = CSS.supports('zoom', String(ratio));
@@ -62,12 +70,25 @@ const nameDisplay = document.getElementById('block-name-display');
 function showName(name) { nameDisplay.innerText = name; nameDisplay.style.opacity = "1"; }
 function hideName() { nameDisplay.style.opacity = "0"; }
 
-const placeSound = new Audio('./Assets/Audio/place.wav');
-const grassSound = new Audio('./Assets/Audio/grass.wav');
 const hotbarSound = new Audio('./Assets/Audio/hotbar.wav');
-const bgMusic = new Audio('./Assets/Audio/BG.wav');
-const pclsSound = new Audio('./Assets/Audio/pcls.wav');
-bgMusic.loop = true;
+
+let _placeSound, _grassSound, _pclsSound, _bgMusic;
+function getPlaceSound()  { if (!_placeSound)  { _placeSound  = new Audio('./Assets/Audio/place.wav'); } return _placeSound; }
+function getGrassSound()  { if (!_grassSound)  { _grassSound  = new Audio('./Assets/Audio/grass.wav'); } return _grassSound; }
+function getPclsSound()   { if (!_pclsSound)   { _pclsSound   = new Audio('./Assets/Audio/pcls.wav');  } return _pclsSound; }
+function getBgMusic()     {
+    if (!_bgMusic) { _bgMusic = new Audio('./Assets/Audio/BG.wav'); _bgMusic.loop = true; }
+    return _bgMusic;
+}
+
+// Compat shims so existing call-sites work without changes
+const placeSound = { get currentTime() { return getPlaceSound().currentTime; }, set currentTime(v) { getPlaceSound().currentTime = v; }, play() { return getPlaceSound().play(); } };
+const grassSound = { get currentTime() { return getGrassSound().currentTime; }, set currentTime(v) { getGrassSound().currentTime = v; }, play() { return getGrassSound().play(); } };
+const pclsSound  = { get currentTime() { return getPclsSound().currentTime;  }, set currentTime(v) { getPclsSound().currentTime  = v; }, play() { return getPclsSound().play();  } };
+const bgMusic    = { get loop()        { return getBgMusic().loop; },           set loop(v)        { getBgMusic().loop = v; },
+                     get src()         { return getBgMusic().src; },
+                     play()  { return getBgMusic().play();  },
+                     pause() { return getBgMusic().pause(); } };
 let isMusicPlaying = true;
 
 const mapContainer = document.getElementById("map");
@@ -102,16 +123,95 @@ window.addEventListener('keydown', (e) => {
 function playMusic() { bgMusic.play().catch(e => {}); }
 window.addEventListener('mousedown', () => { if (isMusicPlaying) playMusic(); }, { once: true });
 
+let currentGUITheme = 'default';
+let guiThemeOverride = 'auto'; 
+
+function getGUIFolder(mode) {
+    if (mode === 'rain' || mode === 'snow') return './Assets/GUI/blue/';
+    if (mode === 'wind') return './Assets/GUI/green/';
+    return './Assets/GUI/';
+}
+
+function openGUISettings() {
+    const overlay = document.getElementById('gui-settings-overlay');
+    if (!overlay) return;
+    overlay.style.display = 'flex';
+    requestAnimationFrame(() => requestAnimationFrame(() => overlay.classList.add('popup-visible')));
+    _refreshGUICards();
+    hotbarSound.currentTime = 0; hotbarSound.play().catch(e => {});
+}
+function closeGUISettings() {
+    const overlay = document.getElementById('gui-settings-overlay');
+    if (!overlay) return;
+    overlay.classList.remove('popup-visible');
+    setTimeout(() => { overlay.style.display = 'none'; }, 280);
+    hotbarSound.currentTime = 0; hotbarSound.play().catch(e => {});
+}
+function setGUIThemeManual(choice) {
+    guiThemeOverride = choice;
+    _refreshGUICards();
+    hotbarSound.currentTime = 0; hotbarSound.play().catch(e => {});
+    if (choice === 'auto') {
+        applyGUITheme(typeof currentClimate !== 'undefined' ? currentClimate : 'off');
+    } else {
+        const modeMap = { default: 'off', blue: 'rain', green: 'wind' };
+        applyGUITheme(modeMap[choice]);
+    }
+}
+function _refreshGUICards() {
+    ['auto','default','blue','green'].forEach(id => {
+        const card = document.getElementById('gui-card-' + id);
+        if (card) card.classList.toggle('selected', guiThemeOverride === id);
+    });
+}
+
+function applyGUITheme(climateMode) {
+    if (guiThemeOverride !== 'auto') {
+        const modeMap = { default: 'off', blue: 'rain', green: 'wind' };
+        climateMode = modeMap[guiThemeOverride] || 'off';
+    }
+    document.body.classList.remove('gui-theme-blue', 'gui-theme-green');
+    if (climateMode === 'rain' || climateMode === 'snow') document.body.classList.add('gui-theme-blue');
+    else if (climateMode === 'wind') document.body.classList.add('gui-theme-green');
+    const folder = getGUIFolder(climateMode);
+
+    const dock = document.getElementById('dock');
+    if (dock) dock.style.backgroundImage = `url('${folder}hotbar.png')`;
+
+    const sel = document.getElementById('selection-highlight');
+    if (sel) sel.style.backgroundImage = `url('${folder}selector.png')`;
+    const ztrack = document.getElementById('zoom-track');
+    if (ztrack) ztrack.style.backgroundImage = `url('${folder}zoombar.png')`;
+    const zdot = document.getElementById('zoom-dot');
+    if (zdot) zdot.style.backgroundImage = `url('${folder}zoomdot.png')`;
+    const zoomOut = document.getElementById('btn-zoom-out');
+    const zoomIn  = document.getElementById('btn-zoom-in');
+    if (zoomOut) zoomOut.src = folder + 'zoom-.png';
+    if (zoomIn)  zoomIn.src  = folder + 'zoom+.png';
+    const saveBtn = document.getElementById('save-btn');
+    const undoBtn = document.getElementById('undo-btn');
+    const redoBtn = document.getElementById('redo-btn');
+    if (saveBtn) saveBtn.src = folder + 'save.png';
+    if (undoBtn) undoBtn.src = folder + 'undo.png';
+    if (redoBtn) redoBtn.src = folder + 'redo.png';
+    musicBtn.src = folder + (isMusicPlaying ? 'bgoff.png' : 'bgon.png');
+    floatBtn.src = folder + (isFloating ? 'floaton.png' : 'floatoff.png');
+
+    currentGUITheme = climateMode;
+}
+
 function toggleMusic() {
     isMusicPlaying = !isMusicPlaying;
-    musicBtn.src = isMusicPlaying ? "./Assets/GUI/bgoff.png" : "./Assets/GUI/bgon.png";
+    const folder = getGUIFolder(currentGUITheme);
+    musicBtn.src = isMusicPlaying ? folder + 'bgoff.png' : folder + 'bgon.png';
     if (isMusicPlaying) bgMusic.play(); else bgMusic.pause();
 }
 
 function toggleFloat() {
     isFloating = !isFloating;
     map.classList.toggle('floating-island', isFloating);
-    floatBtn.src = isFloating ? "./Assets/GUI/floaton.png" : "./Assets/GUI/floatoff.png";
+    const folder = getGUIFolder(currentGUITheme);
+    floatBtn.src = isFloating ? folder + 'floaton.png' : folder + 'floatoff.png';
     applyZoom();
 }
 
@@ -411,6 +511,17 @@ function selectBlock(type, el, skipSound = false) {
     if (!skipSound) { hotbarSound.currentTime = 0; hotbarSound.play().catch(e => {}); }
 }
 
+const _imgCache = new Map();
+
+function getCachedImage(src) {
+    if (_imgCache.has(src)) return _imgCache.get(src);
+    const img = new Image();
+    img.src = src;
+    _imgCache.set(src, img);
+    return img;
+}
+
+
 function createTile(x, y, z, type, customPath = null, parent = mapContainer) {
     const img = document.createElement("img");
     img.src = customPath ? customPath : `./Assets/Blocks/${type}.png`;
@@ -461,6 +572,78 @@ function createTile(x, y, z, type, customPath = null, parent = mapContainer) {
         if (!slideToPlace) return;
         handleInteraction(img, x, y, z);
     });
+
+    let _touchTimer = null;
+    let _touchMoved = false;
+    let _touchStartX = 0;
+    let _touchStartY = 0;
+
+    img.addEventListener('touchstart', (e) => {
+        const anyPopup = document.querySelector(
+            '#save-popup-overlay[style*="flex"], #settings-popup-overlay[style*="flex"], ' +
+            '#welcome-overlay[style*="flex"], #fill-overlay[style*="block"], ' +
+            '#block-search-overlay[style*="flex"], #island-biome-overlay[style*="flex"], ' +
+            '#mountain-biome-overlay[style*="flex"], #graphics-settings-overlay[style*="flex"], ' +
+            '#pointer-settings-overlay[style*="flex"], #about-popup-overlay[style*="flex"]'
+        );
+        if (anyPopup) return;
+        if (e.touches.length > 1) { clearTimeout(_touchTimer); return; }
+
+        _touchMoved = false;
+        _touchStartX = e.touches[0].clientX;
+        _touchStartY = e.touches[0].clientY;
+        _touchTimer = setTimeout(() => {
+            if (_touchMoved) return;
+            if (navigator.vibrate) navigator.vibrate(40);
+
+            let target = img;
+            if (parseInt(img.getAttribute('data-z')) !== 0) {
+                const tfId = img.getAttribute('data-terraform-group');
+                if (tfId) {
+                    const source = mapContainer.querySelector(`.tile[data-terraform-group="${tfId}"][data-z="0"]`);
+                    if (source && source.style.opacity !== '0') target = source;
+                    else return;
+                } else return;
+            }
+            if (target.style.opacity === '0') return;
+
+            if (selectedTiles.has(target)) {
+                selectedTiles.delete(target);
+                target.classList.remove('selected-tile');
+            } else {
+                selectedTiles.add(target);
+                target.classList.add('selected-tile');
+            }
+            drawSelectionCanvas();
+            updateFillButton();
+            e.preventDefault();
+        }, 500);
+    }, { passive: true });
+
+    img.addEventListener('touchmove', (e) => {
+        const dx = e.touches[0].clientX - _touchStartX;
+        const dy = e.touches[0].clientY - _touchStartY;
+        if (Math.abs(dx) > 8 || Math.abs(dy) > 8 || e.touches.length > 1) {
+            _touchMoved = true;
+            clearTimeout(_touchTimer);
+        }
+    }, { passive: true });
+
+    img.addEventListener('touchend', (e) => {
+        clearTimeout(_touchTimer);
+        if (_touchMoved) return;
+        if (selectedTiles.size > 0) return;
+        e.preventDefault();
+        handleInteraction(img, x, y, z);
+        saveState();
+        updateMinimap();
+    });
+
+    img.addEventListener('touchcancel', () => {
+        clearTimeout(_touchTimer);
+        _touchMoved = true;
+    });
+
     parent.appendChild(img);
     return img;
 }
@@ -1556,6 +1739,108 @@ document.getElementById('stage').addEventListener('mousedown', (e) => {
     updateFillButton();
 });
 
+
+(function () {
+    let mode = 'idle'; 
+    let panAnchorX = 0;
+    let panAnchorY = 0;
+    let panMoved = false;
+    let pinchStartDist = 0;
+    let pinchStartZoom = 0;
+    let pinchMidStartX = 0;
+    let pinchMidStartY = 0;
+    let pinchPanStartX = 0;
+    let pinchPanStartY = 0;
+
+    function dist(t1, t2) {
+        const dx = t1.clientX - t2.clientX;
+        const dy = t1.clientY - t2.clientY;
+        return Math.sqrt(dx * dx + dy * dy);
+    }
+    function mid(t1, t2) {
+        return { x: (t1.clientX + t2.clientX) / 2, y: (t1.clientY + t2.clientY) / 2 };
+    }
+
+    document.addEventListener('touchstart', (e) => {
+        const inUI = e.target.closest(
+            '#dock-container, #minimap-container, .game-title-container, #zoom-ui, ' +
+            '#save-popup-overlay, #settings-popup-overlay, #welcome-overlay, ' +
+            '#fill-panel, #fill-overlay, #block-search-overlay, #island-biome-overlay, ' +
+            '#mountain-biome-overlay, #graphics-settings-overlay, #pointer-settings-overlay, ' +
+            '#about-popup-overlay, #qr-popup-overlay, #confirm-delete-overlay, ' +
+            '#fill-panel-close-btn, #fill-selected-btn'
+        );
+        if (inUI) return;
+
+        if (e.touches.length === 2) {
+            mode = 'pinch';
+            pinchStartDist  = dist(e.touches[0], e.touches[1]);
+            pinchStartZoom  = currentZoomPercent;
+            const m = mid(e.touches[0], e.touches[1]);
+            pinchMidStartX  = m.x;
+            pinchMidStartY  = m.y;
+            pinchPanStartX  = panX;
+            pinchPanStartY  = panY;
+        } else if (e.touches.length === 1 && mode === 'idle') {
+            mode = 'pan';
+            panMoved   = false;
+            panAnchorX = e.touches[0].clientX - panX;
+            panAnchorY = e.touches[0].clientY - panY;
+        }
+    }, { passive: true });
+
+    document.addEventListener('touchmove', (e) => {
+        if (mode === 'pinch' && e.touches.length === 2) {
+            e.preventDefault();
+
+            const d = dist(e.touches[0], e.touches[1]);
+            const scale = d / pinchStartDist;
+            currentZoomPercent = Math.max(0, Math.min(1, pinchStartZoom * scale
+                + (1 - scale) * pinchStartZoom 
+                + (d - pinchStartDist) * 0.002 
+            ));
+            currentZoomPercent = Math.max(0, Math.min(1,
+                pinchStartZoom + (d - pinchStartDist) * 0.003
+            ));
+            const m = mid(e.touches[0], e.touches[1]);
+            panX = pinchPanStartX + (m.x - pinchMidStartX);
+            panY = pinchPanStartY + (m.y - pinchMidStartY);
+
+            applyZoom();
+
+        } else if (mode === 'pan' && e.touches.length === 1) {
+            const dx = e.touches[0].clientX - panAnchorX - panX;
+            const dy = e.touches[0].clientY - panAnchorY - panY;
+            if (Math.abs(dx) > 4 || Math.abs(dy) > 4) panMoved = true;
+            if (!panMoved) return;
+
+            e.preventDefault();
+            panX = e.touches[0].clientX - panAnchorX;
+            panY = e.touches[0].clientY - panAnchorY;
+            applyZoom();
+        }
+    }, { passive: false });
+
+    document.addEventListener('touchend', (e) => {
+        if (e.touches.length === 0) {
+            if (mode === 'pan' && !panMoved && selectedTiles.size > 0) {
+                if (!e.target.classList.contains('tile')) {
+                    selectedTiles.forEach(t => t.classList.remove('selected-tile'));
+                    selectedTiles.clear();
+                    updateFillButton();
+                }
+            }
+            mode = 'idle';
+        } else if (e.touches.length === 1 && mode === 'pinch') {
+            mode = 'pan';
+            panMoved   = false;
+            panAnchorX = e.touches[0].clientX - panX;
+            panAnchorY = e.touches[0].clientY - panY;
+        }
+    }, { passive: true });
+
+    document.addEventListener('touchcancel', () => { mode = 'idle'; }, { passive: true });
+})();
 window.addEventListener('mousedown', (e) => {
     if (e.button !== 2) return;
     if (e.target.closest('#dock-container, #save-popup-overlay, #fill-panel, #fill-overlay, #welcome-overlay, #zoom-ui, #minimap-container, .game-title-container')) return;
@@ -1662,9 +1947,23 @@ const REPO_RAW = 'https://raw.githubusercontent.com/Adium1000/Isometric-island/m
 function fetchReadme() {
     const loading = document.getElementById('readme-loading');
     const content = document.getElementById('welcome-readme');
-    fetch(REPO_RAW + 'readme.md?ts=' + Date.now(), { cache: 'no-store' })
+    const SESSION_KEY = 'ii_readme_cache';
+    const cached = sessionStorage.getItem(SESSION_KEY);
+    if (cached) {
+        loading.style.display = 'none';
+        content.style.display = 'block';
+        content.innerHTML = cached;
+        return;
+    }
+    fetch(REPO_RAW + 'readme.md', { cache: 'force-cache' })
         .then(r => { if (!r.ok) throw new Error(); return r.text(); })
-        .then(md => { loading.style.display = 'none'; content.style.display = 'block'; content.innerHTML = parseMarkdown(md); })
+        .then(md => {
+            const html = parseMarkdown(md);
+            try { sessionStorage.setItem(SESSION_KEY, html); } catch { /* quota full — fine */ }
+            loading.style.display = 'none';
+            content.style.display = 'block';
+            content.innerHTML = html;
+        })
         .catch(() => { loading.innerHTML = 'Error while loading. <a href="https://github.com/Adium1000/Isometric-island/blob/main/readme.md" target="_blank" style="color:#adffa8;">Open Github &#8599;</a>'; });
 }
 
@@ -1817,6 +2116,7 @@ function setClimate(mode) {
     wCtx.clearRect(0, 0, weatherCanvas.width, weatherCanvas.height);
     weatherParticles = [];
     if (mode !== 'off') { initParticles(mode); animateWeather(mode); }
+    applyGUITheme(mode);
     hotbarSound.currentTime = 0; hotbarSound.play().catch(e => {});
     showToast(mode.toUpperCase() + '!');
 }
@@ -2463,3 +2763,46 @@ function toggleBlockParticles(btn) {
     localStorage.setItem('blockParticles', window._blockParticlesEnabled ? 'on' : 'off');
     hotbarSound.currentTime = 0; hotbarSound.play().catch(e => {});
 }
+
+(function idlePreload() {
+    const LAZY_BLOCKS = [
+        'pumpkin','snow','snowrocks','ice','snowman',
+        'snowed_tree','p2','p1',
+        'Blocks/Snowman/SnowmanHead','Blocks/Snowman/snowmanb1','Blocks/Snowman/snowmanb2',
+    ];
+    const GUI_THEMES = ['blue', 'green'];
+    const GUI_FILES  = ['hotbar','selector','zoombar','zoomdot','zoom-','zoom+','save','undo','redo','bgon','bgoff','floaton','floatoff'];
+
+    const queue = [
+        ...LAZY_BLOCKS.map(b => `./Assets/Blocks/${b}.png`),
+        ...GUI_THEMES.flatMap(t => GUI_FILES.map(f => `./Assets/GUI/${t}/${f}.png`)),
+        './Assets/Audio/place.wav',
+        './Assets/Audio/grass.wav',
+        './Assets/Audio/pcls.wav',
+        './Assets/Audio/BG.wav',
+    ];
+
+    let idx = 0;
+
+    function loadNext(deadline) {
+        while (idx < queue.length && (deadline.timeRemaining() > 2 || deadline.didTimeout)) {
+            const src = queue[idx++];
+            if (src.endsWith('.png')) {
+                getCachedImage(src);
+            } else if (src.endsWith('.wav') || src.endsWith('.mp3')) {
+                fetch(src, { cache: 'force-cache' }).catch(() => {});
+            }
+        }
+        if (idx < queue.length) scheduleNext();
+    }
+
+    function scheduleNext() {
+        if ('requestIdleCallback' in window) {
+            requestIdleCallback(loadNext, { timeout: 3000 });
+        } else {
+            setTimeout(() => loadNext({ timeRemaining: () => 10, didTimeout: false }), 500);
+        }
+    }
+
+    setTimeout(scheduleNext, 1500);
+})();
