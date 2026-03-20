@@ -251,6 +251,8 @@ And done!
 - Helpfull to make the game use all the screnn :3
 8. Mouse options
 - helpfull settings for mouse
+9. GUI colors
+- Customize the gui :3
 
 ![pointer](GithubPreview/Guide/po.png)
 

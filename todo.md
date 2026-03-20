@@ -1,12 +1,6 @@
 ![Banner](GithubPreview/Banners/todolist.png)
 # Here is my todo list where I list ideeas to remember them for later, take a look!
 
-More to come
-- add
-- ui themes ex maro / albastru /verde
-Bănci, coșuri, felinare, garduri, fântâni, lantern
-
-
 What I added:
 - about menu
 - cursor tooltips

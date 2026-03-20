@@ -359,7 +359,7 @@ This devlogs adds a new popup in settings for cursor options, also i added curso
 - More compatibilty for tablets: Pinch to zoom , hold to select
 - Gui colors :) : Green, Blue , Brown (default) or automatic :3, this setting can be changed in the settings menu via GUI option 
 
-
+![d](<GithubPreview/Devlogs (Flavortown)/Screenshot 2026-03-20 224647.png>)
 ---
 End 
 
