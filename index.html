@@ -727,6 +727,21 @@ window.cmLogin = async () => {
     }
 };
 
+// ── Conectare cu game.js ────────────────────────────────
+window.getIslandData = () => {
+    if (typeof generateIslandCode === 'function') {
+        const code = generateIslandCode();
+        return code ? { code } : null;
+    }
+    return null;
+};
+
+window.loadIslandFromData = (data) => {
+    if (typeof loadIslandCode === 'function' && data?.code) {
+        loadIslandCode(data.code);
+    }
+};
+
 // ── Get IP ──────────────────────────────────────────────
 async function getUserIP() {
     try { const r = await fetch('https://api.ipify.org?format=json'); const d = await r.json(); return d.ip; }
@@ -751,8 +766,8 @@ window.cmSaveMap = async () => {
     } catch(e) {}
 
     // Ia datele insulei din game.js
-    const islandData = window.getIslandData ? window.getIslandData() : {};
-    if (!islandData || Object.keys(islandData).length === 0) {
+    const islandData = window.getIslandData ? window.getIslandData() : null;
+    if (!islandData || !islandData.code) {
         status.style.color='#ff8888'; status.textContent='Insula e goala!'; return;
     }
 
