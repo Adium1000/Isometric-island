@@ -676,14 +676,14 @@
 <!-- ═══════════════════════════════════════════════════ -->
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
-import { getAuth, signInWithPopup, GoogleAuthProvider, signOut, onAuthStateChanged }
+import { getAuth, signInWithPopup, signInWithRedirect, getRedirectResult, GoogleAuthProvider, signOut, onAuthStateChanged }
     from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
 import { getFirestore, collection, addDoc, getDocs, deleteDoc, doc,
          query, orderBy, where, serverTimestamp, getDoc }
     from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
 
 const firebaseConfig = {
-    apiKey: "AIzaSyCuH3Eh8Lv1_erAvKaEGUrV_MW0w5PShHA",
+    apiKey: "AIzaSyCCj8rlSIw7L0AQJtXxu_uHT6YiAdanc4U",
     authDomain: "isometric-island-workshop.firebaseapp.com",
     projectId: "isometric-island-workshop",
     storageBucket: "isometric-island-workshop.firebasestorage.app",
@@ -714,9 +714,23 @@ onAuthStateChanged(auth, user => {
     }
 });
 
+// ── Handle redirect result (după ce userul revine din login Google) ─────────
+getRedirectResult(auth).then(result => {
+    if (result?.user) {
+        currentUser = result.user;
+        const btn  = document.getElementById('cm-auth-btn');
+        const info = document.getElementById('cm-user-info');
+        if (btn) { btn.textContent = 'LOGOUT'; btn.onclick = () => signOut(auth); }
+        if (info) info.textContent = result.user.displayName || result.user.email;
+        // Redeschide popup-ul după redirect
+        document.getElementById('community-overlay').style.display = 'block';
+        cmLoadMaps();
+    }
+}).catch(e => console.error('Redirect error:', e));
+
 // ── Login ───────────────────────────────────────────────
 window.cmLogin = async () => {
-    try { await signInWithPopup(auth, provider); }
+    try { await signInWithRedirect(auth, provider); }
     catch(e) { console.error(e); }
 };
 
