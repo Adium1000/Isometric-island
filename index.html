@@ -743,11 +743,13 @@ async function getUserIP() {
 // ── Save map ────────────────────────────────────────────
 window.cmSaveMap = async () => {
     const status = document.getElementById('cm-save-status');
-    if (!currentUser) {
+    const user = auth.currentUser || currentUser;
+    if (!user) {
         status.style.color = '#ff8888';
         status.textContent = 'Trebuie să fii logat!';
         return;
     }
+    currentUser = user;
     const name = document.getElementById('cm-map-name').value.trim();
     if (!name) { status.style.color='#ff8888'; status.textContent='Scrie un nume!'; return; }
 
@@ -806,7 +808,7 @@ async function cmLoadMaps() {
                 </div>
                 <div style="display:flex;gap:6px;flex-shrink:0;">
                     <button onclick="cmLoadMapData(${JSON.stringify(JSON.stringify(m.data))})" style="background:#1a3a1a;border:2px solid #2a5a2a;color:#7fffc4;font-family:'Press Start 2P',monospace;font-size:6px;padding:5px 8px;cursor:pointer;">ÎNCARCĂ</button>
-                    ${currentUser && currentUser.uid === m.authorUID
+                    ${(auth.currentUser || currentUser) && (auth.currentUser || currentUser).uid === m.authorUID
                         ? `<button onclick="cmDeleteMap('${m.id}')" style="background:#3a1a1a;border:2px solid #6a2a2a;color:#ff8888;font-family:'Press Start 2P',monospace;font-size:6px;padding:5px 8px;cursor:pointer;">✕</button>`
                         : ''}
                 </div>
