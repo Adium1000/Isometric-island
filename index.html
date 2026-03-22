@@ -366,7 +366,7 @@
         <img id="save-btn" src="./Assets/GUI/save.png" onclick="saveIslandAsPNG()" title="File">
         <img id="undo-btn" src="./Assets/GUI/undo.png" onclick="undo()" title="Undo (Ctrl+Z)">
         <img id="redo-btn" src="./Assets/GUI/redo.png" onclick="redo()" title="Redo (Ctrl+Y)">
-        <img id="float-toggle" src="./Assets/GUI/floatoff.png" onclick="toggleFloat()" title="Float (F)">
+        <img id="float-toggle" src="./Assets/GUI/floatoff.png" onclick="openFloatPopup()" title="Float (F)">
         <img id="music-toggle" src="./Assets/GUI/bgoff.png" onclick="openMusicPopup()" title="Music (M)">
         <div id="selection-highlight"></div>
         <div class="slot page-1" id="slot-eraser" onmouseover="showName('Eraser: Good for shaping and removing blocks ')" onmouseout="hideName()" onclick="selectBlock('eraser', this)"><img src="./Assets/Blocks/eraser.png"></div>
@@ -873,6 +873,38 @@ function esc(s) {
 
 </body>
 </html>
+<div id="float-popup-overlay" onclick="if(event.target===this)closeFloatPopup()">
+    <div id="float-popup-wrapper">
+        <button id="float-popup-close-btn" onclick="closeFloatPopup()">×</button>
+        <div id="float-popup">
+            <h2>✦ Float Mode</h2>
+            <hr class="popup-divider">
+            <div id="float-mode-grid">
+                <button class="float-mode-card" id="fmode-off" onclick="setFloatMode('off')">
+                    <div class="float-mode-icon">■</div>
+                    <div class="float-mode-label">Off</div>
+                </button>
+                <button class="float-mode-card" id="fmode-updown" onclick="setFloatMode('updown')">
+                    <div class="float-mode-icon">↕</div>
+                    <div class="float-mode-label">Up-Down</div>
+                </button>
+                <button class="float-mode-card" id="fmode-leftright" onclick="setFloatMode('leftright')">
+                    <div class="float-mode-icon">↔</div>
+                    <div class="float-mode-label">Left-Right</div>
+                </button>
+                <button class="float-mode-card" id="fmode-spin" onclick="setFloatMode('spin')">
+                    <div class="float-mode-icon">↻</div>
+                    <div class="float-mode-label">Spin</div>
+                </button>
+                <button class="float-mode-card" id="fmode-jiggle" onclick="setFloatMode('jiggle')">
+                    <div class="float-mode-icon">〜</div>
+                    <div class="float-mode-label">Jiggle</div>
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
 <div id="music-popup-overlay" onclick="if(event.target===this)closeMusicPopup()">
     <div id="music-popup-wrapper">
         <button id="music-popup-close-btn" onclick="closeMusicPopup()">×</button>

@@ -118,7 +118,7 @@ window.addEventListener('keydown', (e) => {
     } 
     else if (key === 'p') { switchPage(currentPage === 1 ? 2 : 1); } 
     else if (key === 'm') { openMusicPopup(); } 
-    else if (key === 'f') { toggleFloat(); }
+    else if (key === 'f') { openFloatPopup(); }
 });
 
 function playMusic() { bgMusic.play().catch(e => {}); }
@@ -238,12 +238,53 @@ function _syncMusicPopupSwitch() {
     sw.classList.toggle('on', isMusicPlaying);
 }
 
-function toggleFloat() {
-    isFloating = !isFloating;
-    map.classList.toggle('floating-island', isFloating);
+let currentFloatMode = 'off';
+
+function openFloatPopup() {
+    const overlay = document.getElementById('float-popup-overlay');
+    if (!overlay) return;
+    _syncFloatPopupCards();
+    overlay.style.display = 'flex';
+    requestAnimationFrame(() => requestAnimationFrame(() => overlay.classList.add('popup-visible')));
+    hotbarSound.currentTime = 0; hotbarSound.play().catch(e => {});
+}
+
+function closeFloatPopup() {
+    const overlay = document.getElementById('float-popup-overlay');
+    if (!overlay) return;
+    overlay.classList.remove('popup-visible');
+    setTimeout(() => { overlay.style.display = 'none'; }, 300);
+    hotbarSound.currentTime = 0; hotbarSound.play().catch(e => {});
+}
+
+function _syncFloatPopupCards() {
+    ['off','updown','leftright','spin','jiggle'].forEach(id => {
+        const card = document.getElementById('fmode-' + id);
+        if (card) card.classList.toggle('active', currentFloatMode === id);
+    });
+}
+
+function setFloatMode(mode) {
+    currentFloatMode = mode;
+    isFloating = (mode !== 'off');
+    map.classList.remove('floating-island', 'floating-island-lr', 'floating-island-spin', 'floating-island-jiggle');
+    if (mode === 'updown')    map.classList.add('floating-island');
+    else if (mode === 'leftright') map.classList.add('floating-island-lr');
+    else if (mode === 'spin')      map.classList.add('floating-island-spin');
+    else if (mode === 'jiggle')    map.classList.add('floating-island-jiggle');
     const folder = getGUIFolder(currentGUITheme);
     floatBtn.src = isFloating ? folder + 'floaton.png' : folder + 'floatoff.png';
+    _syncFloatPopupCards();
+    hotbarSound.currentTime = 0; hotbarSound.play().catch(e => {});
     applyZoom();
+}
+
+function toggleFloat() {
+    if (currentFloatMode === 'off') {
+        openFloatPopup();
+    } else {
+        setFloatMode('off');
+    }
 }
 
 let shadowsEnabled = true;
@@ -2794,7 +2835,8 @@ window._blockTooltipsEnabled = localStorage.getItem('blockTooltips') !== 'off';
             '#save-popup-overlay, #settings-popup-overlay, #welcome-overlay, ' +
             '#qr-popup-overlay, #confirm-delete-overlay, #block-search-overlay, ' +
             '#island-biome-overlay, #mountain-biome-overlay, #pointer-settings-overlay, ' +
-            '#about-popup-overlay, #fill-overlay, #graphics-settings-overlay'
+            '#about-popup-overlay, #fill-overlay, #graphics-settings-overlay, ' +
+            '#float-popup-overlay'
         );
         for (var i = 0; i < overlays.length; i++) {
             var s = overlays[i].style.display;

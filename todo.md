@@ -4,7 +4,7 @@
 -Minimap moove
 -MoreBlocks
 -optimization banner
-
+- float options
 
 What I added:
 - about menu

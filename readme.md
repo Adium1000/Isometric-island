@@ -83,7 +83,10 @@ Here you will find some relevant subjects and explanations about my game, includ
 
 ![8. Island Float](GithubPreview/Guide/8.png)
 
-- The island can float, giving it a very cool effect when enabled.
+- The island can float, giving it a very cool effect when enabled
+- Also you can set different modes for this
+
+![flo](GithubPreview/Guide/float-settings.png)
 
 ![float](GithubPreview/Guide/flo.png)
 

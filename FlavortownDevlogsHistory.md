@@ -381,8 +381,9 @@ Added icons to File, Settings, Graphics, and Pointer popups, and optimized GUI c
 
 ---
 
-**Devlog 30**
-I made bg music more... let's say intreasting now you can choose to listen between a spotifty playlist or the bg music, I embeded a playlist using an Iframe that let you listen :3. I added this because I think manny people will love a custom playlist. :3
+**Devlog 31**
+Added more Float modes for your island, just press the island float button and choose one maybe make it simple or funny, hehe
+
 
 ![D30](<GithubPreview/Devlogs (Flavortown)/dev30.png>)
 ---
