@@ -120,7 +120,7 @@ window.addEventListener('keydown', (e) => {
     } 
     else if (key === 'p') { switchPage(currentPage === 1 ? 2 : 1); } 
     else if (key === 'm') { openMusicPopup(); } 
-    else if (key === 'f') { openFloatPopup(); }
+    else if (key === 'f') { toggleFloat(); }
 });
 
 function playMusic() { bgMusic.play().catch(e => {}); }
@@ -240,53 +240,12 @@ function _syncMusicPopupSwitch() {
     sw.classList.toggle('on', isMusicPlaying);
 }
 
-let currentFloatMode = 'off';
-
-function openFloatPopup() {
-    const overlay = document.getElementById('float-popup-overlay');
-    if (!overlay) return;
-    _syncFloatPopupCards();
-    overlay.style.display = 'flex';
-    requestAnimationFrame(() => requestAnimationFrame(() => overlay.classList.add('popup-visible')));
-    hotbarSound.currentTime = 0; hotbarSound.play().catch(e => {});
-}
-
-function closeFloatPopup() {
-    const overlay = document.getElementById('float-popup-overlay');
-    if (!overlay) return;
-    overlay.classList.remove('popup-visible');
-    setTimeout(() => { overlay.style.display = 'none'; }, 300);
-    hotbarSound.currentTime = 0; hotbarSound.play().catch(e => {});
-}
-
-function _syncFloatPopupCards() {
-    ['off','updown','leftright','spin','jiggle'].forEach(id => {
-        const card = document.getElementById('fmode-' + id);
-        if (card) card.classList.toggle('active', currentFloatMode === id);
-    });
-}
-
-function setFloatMode(mode) {
-    currentFloatMode = mode;
-    isFloating = (mode !== 'off');
-    map.classList.remove('floating-island', 'floating-island-lr', 'floating-island-spin', 'floating-island-jiggle');
-    if (mode === 'updown')         map.classList.add('floating-island');
-    else if (mode === 'leftright') map.classList.add('floating-island-lr');
-    else if (mode === 'spin')      map.classList.add('floating-island-spin');
-    else if (mode === 'jiggle')    map.classList.add('floating-island-jiggle');
+function toggleFloat() {
+    isFloating = !isFloating;
+    map.classList.toggle('floating-island', isFloating);
     const folder = getGUIFolder(currentGUITheme);
     floatBtn.src = isFloating ? folder + 'floaton.png' : folder + 'floatoff.png';
-    _syncFloatPopupCards();
-    hotbarSound.currentTime = 0; hotbarSound.play().catch(e => {});
     applyZoom();
-}
-
-function toggleFloat() {
-    if (currentFloatMode === 'off') {
-        openFloatPopup();
-    } else {
-        setFloatMode('off');
-    }
 }
 
 let shadowsEnabled = true;
@@ -1272,7 +1231,7 @@ function handleInteraction(tile, x, y, z) {
         tile.setAttribute('data-color', getBlockColor(selectedBlockType));
         tile.removeAttribute('data-obj-id');
     }
-    const grassBlocks = ['dirt', 'flovers', 'rock', 'dirt2', 'crops', 'tree', 'wood', 'leaf'];
+    const grassBlocks = ['dirt', 'flovers', 'rock', 'dirt2', 'crops', 'tree'];
     const soundToPlay = selectedBlockType === 'eraser' ? eraserSound : grassBlocks.includes(selectedBlockType) ? grassSound : placeSound;
     soundToPlay.currentTime = 0; soundToPlay.play().catch(e => {});
     if (!isDrawing) { saveState(); }
@@ -1321,17 +1280,23 @@ const initFrag = document.createDocumentFragment();
 for(let y=0; y<8; y++) for(let x=0; x<8; x++) createTile(x, y, 0, 'dirt', null, initFrag);
 mapContainer.appendChild(initFrag);
 
+// --- Minimap hold-to-zoom ---
 (function initMinimapZoom() {
     const mc = document.getElementById('minimap-container');
     if (!mc) return;
     let _savedZoom = null;
     let _zoomRaf   = null;
 
-    function animateTo(target) {
+    function animateTo(target, onDone) {
         cancelAnimationFrame(_zoomRaf);
         function step() {
             const diff = target - currentZoomPercent;
-            if (Math.abs(diff) < 0.005) { currentZoomPercent = target; applyZoom(); return; }
+            if (Math.abs(diff) < 0.005) {
+                currentZoomPercent = target;
+                applyZoom();
+                if (onDone) onDone();
+                return;
+            }
             currentZoomPercent += diff * 0.08;
             applyZoom();
             _zoomRaf = requestAnimationFrame(step);
@@ -1339,10 +1304,15 @@ mapContainer.appendChild(initFrag);
         _zoomRaf = requestAnimationFrame(step);
     }
 
-    function onPress() { _savedZoom = currentZoomPercent; animateTo(1.0); }
+    function onPress() {
+        _savedZoom = currentZoomPercent;
+        animateTo(1.0);
+    }
     function onRelease() {
         if (_savedZoom === null) return;
-        const t = _savedZoom; _savedZoom = null; animateTo(t);
+        const target = _savedZoom;
+        _savedZoom = null;
+        animateTo(target);
     }
 
     mc.addEventListener('mousedown',  onPress);
@@ -1720,7 +1690,6 @@ const ALL_BLOCKS = [
     { type: 'water', name: 'Water' }, { type: 'snow', name: 'Snow' }, { type: 'snowrocks', name: 'Snow Rocks' },
     { type: 'ice', name: 'Ice' }, { type: 'rock', name: 'Rock' }, { type: 'flovers', name: 'Flowers' },
     { type: 'crops', name: 'Crops' }, { type: 'pumpkin', name: 'Pumpkin' }, { type: 'melon', name: 'Melon' }, { type: 'Hay', name: 'Hay' },
-    { type: 'wood', name: 'Wood' }, { type: 'leaf', name: 'Leaf' },
 ];
 
 let selectedTiles = new Set();
