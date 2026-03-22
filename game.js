@@ -102,6 +102,10 @@ const minimapCanvas = document.getElementById('minimap');
 const mCtx = minimapCanvas.getContext('2d');
 
 window.addEventListener('keydown', (e) => {
+    // Don't intercept keys when user is typing in an input or textarea
+    const tag = document.activeElement && document.activeElement.tagName;
+    if (tag === 'INPUT' || tag === 'TEXTAREA') return;
+
     const key = e.key.toLowerCase();
     if (e.ctrlKey && key === 'z') { e.preventDefault(); undo(); }
     else if (e.ctrlKey && key === 'y') { e.preventDefault(); redo(); }

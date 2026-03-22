@@ -693,6 +693,8 @@ const auth     = getAuth(app);
 const db       = getFirestore(app);
 const provider = new GoogleAuthProvider();
 let currentUser = null;
+const ADMIN_EMAIL = 'secretaditzu78@gmail.com';
+const isAdmin = () => currentUser && currentUser.email === ADMIN_EMAIL;
 
 // ── Auth state ──────────────────────────────────────────
 onAuthStateChanged(auth, user => {
@@ -701,7 +703,7 @@ onAuthStateChanged(auth, user => {
     const info = document.getElementById('cm-user-info');
     if (!btn) return;
     if (user) {
-        info.textContent = user.displayName || user.email;
+        info.textContent = (user.displayName || user.email) + (isAdmin() ? ' 👑' : '');
         btn.textContent  = 'LOGOUT';
         btn.onclick      = () => signOut(auth);
     } else {
@@ -811,8 +813,8 @@ async function cmLoadMaps() {
                 </div>
                 <div class="cm-map-actions">
                     <button class="btn-load" onclick="cmLoadMapData(this.dataset.mapdata)" data-mapdata="${esc(m.data)}">ÎNCARCĂ</button>
-                    ${currentUser && currentUser.uid === m.authorUID
-                        ? `<button class="btn-danger" onclick="cmDeleteMap('${m.id}')" style="padding:5px 8px;font-size:6px;">✕</button>`
+                    ${currentUser && (currentUser.uid === m.authorUID || isAdmin())
+                        ? `<button class="btn-danger" onclick="cmDeleteMap('${m.id}')" style="padding:5px 8px;font-size:6px;">${isAdmin() && currentUser.uid !== m.authorUID ? '🗑' : '✕'}</button>`
                         : ''}
                 </div>
             </div>`).join('');
@@ -821,11 +823,16 @@ async function cmLoadMaps() {
     }
 }
 
-// ── Delete own map ──────────────────────────────────────
+// ── Delete map (owner or admin) ────────────────────────
 window.cmDeleteMap = async (id) => {
-    if (!confirm('Ștergi această hartă?')) return;
-    await deleteDoc(doc(db, 'community_maps', id));
-    cmLoadMaps();
+    const msg = isAdmin() ? 'Ștergi această hartă ca admin?' : 'Ștergi această hartă?';
+    if (!confirm(msg)) return;
+    try {
+        await deleteDoc(doc(db, 'community_maps', id));
+        cmLoadMaps();
+    } catch(e) {
+        alert('Eroare la ștergere: ' + e.message);
+    }
 };
 
 // ── Load map into game ──────────────────────────────────
