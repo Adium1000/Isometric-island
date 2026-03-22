@@ -627,6 +627,7 @@
 </div>
 
     <script src="game.js" defer></script>
+
 <div id="community-overlay" onclick="if(event.target===this)closeCommunityPopup()">
     <div id="community-wrapper" onclick="event.stopPropagation()">
         <button id="community-close-btn" onclick="closeCommunityPopup()">&#10005;</button>
@@ -635,28 +636,31 @@
 
             <div id="cm-auth-bar">
                 <span id="cm-user-info"></span>
-                <button id="cm-auth-btn" onclick="cmLogin()">Sign in with GOOGLE</button>
+                <button id="cm-auth-btn" onclick="cmLogin()">LOGIN WITH GOOGLE</button>
             </div>
 
             <div id="cm-tabs">
                 <button id="cm-tab-browse-btn" class="cm-tab cm-tab-active" onclick="cmSwitchTab('browse')">BROWSE</button>
                 <button id="cm-tab-upload-btn" class="cm-tab" onclick="cmSwitchTab('upload')">UPLOAD</button>
             </div>
+
             <div id="cm-tab-browse" class="cm-tab-content">
                 <div id="cm-maps-list">
-                    <div class="cm-loading">Just a moment...</div>
+                    <div class="cm-loading">LOADING...</div>
                 </div>
             </div>
+
             <div id="cm-tab-upload" class="cm-tab-content" style="display:none;">
-                <div class="popup-section-title">Map name</div>
-                <input id="cm-map-name" type="text" maxlength="40" placeholder="ex: My cool island :3 ">
-                <div class="cm-hint">This will save your island to the server</div>
-                <button class="btn-qr" onclick="cmSaveMap()">Upload to Sever</button>
+                <div class="popup-section-title">MAP NAME:</div>
+                <input id="cm-map-name" type="text" maxlength="40" placeholder="ex: My cool island...">
+                <div class="cm-hint">Share your current island with the community</div>
+                <button class="btn-qr" onclick="cmSaveMap()">PUBLISH TO COMMUNITY</button>
                 <div id="cm-save-status"></div>
             </div>
         </div>
     </div>
 </div>
+
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
 import { getAuth, signInWithPopup, GoogleAuthProvider, signOut, onAuthStateChanged }
@@ -681,32 +685,34 @@ const provider = new GoogleAuthProvider();
 let currentUser = null;
 const ADMIN_EMAIL = 'secretaditzu78@gmail.com';
 const isAdmin = () => currentUser && currentUser.email === ADMIN_EMAIL;
+
 onAuthStateChanged(auth, user => {
     currentUser = user;
     const btn  = document.getElementById('cm-auth-btn');
     const info = document.getElementById('cm-user-info');
     if (!btn) return;
     if (user) {
-        info.textContent = (user.displayName || user.email) + (isAdmin() ? ' 👑' : '');
+        info.textContent = (user.displayName || user.email) + (isAdmin() ? ' [ADMIN]' : '');
         btn.textContent  = 'LOGOUT';
         btn.onclick      = () => signOut(auth);
     } else {
         info.textContent = '';
-        btn.textContent  = 'Continue with Google';
+        btn.textContent  = 'LOGIN WITH GOOGLE';
         btn.onclick      = cmLogin;
     }
 });
+
 window.cmLogin = async () => {
-    try { 
+    try {
         const result = await signInWithPopup(auth, provider);
         currentUser = result.user;
-    }
-    catch(e) { 
+    } catch(e) {
         console.error(e);
         const status = document.getElementById('cm-save-status');
-        if(status) { status.style.color='#ff8888'; status.textContent='Google OAuth error '+e.code; }
+        if (status) { status.style.color = '#ff8888'; status.textContent = 'Login error: ' + e.code; }
     }
 };
+
 window.getIslandData = () => {
     if (typeof generateIslandCode === 'function') {
         const code = generateIslandCode();
@@ -720,97 +726,99 @@ window.loadIslandFromData = (data) => {
         loadIslandCode(data.code);
     }
 };
+
 async function getUserIP() {
-    try { const r = await fetch('https:
-    api.ipify.org?format=json'); const d = await r.json(); return d.ip; }
+    try { const r = await fetch('https://api.ipify.org?format=json'); const d = await r.json(); return d.ip; }
     catch { return 'unknown'; }
 }
+
 window.cmSaveMap = async () => {
     const status = document.getElementById('cm-save-status');
     if (!currentUser) {
         status.style.color = '#ff8888';
-        status.textContent = 'Please login!';
+        status.textContent = 'You must be logged in!';
         return;
     }
     const name = document.getElementById('cm-map-name').value.trim();
-    if (!name) { status.style.color='#ff8888'; status.textContent='Whire a name'; return; }
+    if (!name) { status.style.color = '#ff8888'; status.textContent = 'Enter a name!'; return; }
 
-    // Verifică ban
     try {
         const banDoc = await getDoc(doc(db, 'banned_users', currentUser.uid));
-        if (banDoc.exists()) { status.style.color='#ff8888'; status.textContent='Banned Account'; return; }
+        if (banDoc.exists()) { status.style.color = '#ff8888'; status.textContent = 'Account banned!'; return; }
     } catch(e) {}
 
-    // Ia datele insulei din game.js
     const islandData = window.getIslandData ? window.getIslandData() : null;
     if (!islandData || !islandData.code) {
-        status.style.color='#ff8888'; status.textContent='Empty island'; return;
+        status.style.color = '#ff8888'; status.textContent = 'Island is empty!'; return;
     }
 
-    status.style.color='#aaa'; status.textContent='Publishing...';
+    status.style.color = '#aaa'; status.textContent = 'Saving...';
     const ip = await getUserIP();
 
     try {
         await addDoc(collection(db, 'community_maps'), {
             name,
             data: JSON.stringify(islandData),
-            authorName:  currentUser.displayName || 'Anonim',
+            authorName:  currentUser.displayName || 'Anonymous',
             authorUID:   currentUser.uid,
             authorEmail: currentUser.email,
             authorIP:    ip,
             createdAt:   serverTimestamp(),
             approved:    true
         });
-        status.style.color='#7fffc4'; status.textContent='Uploaded succesfully!';
+        status.style.color = '#7fffc4'; status.textContent = '+ Saved successfully!';
         document.getElementById('cm-map-name').value = '';
     } catch(e) {
-        status.style.color='#ff8888'; status.textContent='Err '+e.message;
+        status.style.color = '#ff8888'; status.textContent = 'Error: ' + e.message;
     }
 };
+
 async function cmLoadMaps() {
     const list = document.getElementById('cm-maps-list');
-    list.innerHTML = '<div class="cm-loading">Just a moment...</div>';
+    list.innerHTML = '<div class="cm-loading">LOADING...</div>';
     try {
         const q = query(collection(db, 'community_maps'),
-                        where('approved','==',true),
-                        orderBy('createdAt','desc'));
+                        where('approved', '==', true),
+                        orderBy('createdAt', 'desc'));
         const snap = await getDocs(q);
-        const maps = snap.docs.map(d => ({id:d.id,...d.data()}));
+        const maps = snap.docs.map(d => ({ id: d.id, ...d.data() }));
         if (!maps.length) {
-            list.innerHTML = '<div class="cm-loading">Nothing to see here.<br>Maybe.. publish a map?</div>';
+            list.innerHTML = '<div class="cm-loading">No maps yet.<br>Be the first!</div>';
             return;
         }
         list.innerHTML = maps.map(m => `
             <div class="cm-map-card">
                 <div class="cm-map-info">
                     <div class="cm-map-name">${esc(m.name)}</div>
-                    <div class="cm-map-author">By: ${esc(m.authorName)}</div>
+                    <div class="cm-map-author">by ${esc(m.authorName)}</div>
                 </div>
                 <div class="cm-map-actions">
-                    <button class="btn-load" onclick="cmLoadMapData(this.dataset.mapdata)" data-mapdata="${esc(m.data)}">Load island</button>
+                    <button class="btn-load" onclick="cmLoadMapData(this.dataset.mapdata)" data-mapdata="${esc(m.data)}">LOAD</button>
                     ${currentUser && (currentUser.uid === m.authorUID || isAdmin())
-                        ? `<button class="btn-danger" onclick="cmDeleteMap('${m.id}')" style="padding:5px 8px;font-size:6px;">${isAdmin() && currentUser.uid !== m.authorUID ? '🗑' : '✕'}</button>`
+                        ? `<button class="btn-danger" onclick="cmDeleteMap('${m.id}')" style="padding:5px 8px;font-size:6px;">${isAdmin() && currentUser.uid !== m.authorUID ? 'DEL' : 'X'}</button>`
                         : ''}
                 </div>
             </div>`).join('');
     } catch(e) {
-        list.innerHTML = `<div class="cm-loading" style="color:#ff8888;">Err.<br>${e.message}</div>`;
+        list.innerHTML = `<div class="cm-loading" style="color:#ff8888;">Failed to load.<br>${e.message}</div>`;
     }
 }
 
 window.cmDeleteMap = async (id) => {
-    const msg = isAdmin() ? 'Delete this map(As an ADMIN)' : 'Delete this Map?';
+    const msg = isAdmin() ? 'Delete this map as admin?' : 'Delete this map?';
     if (!confirm(msg)) return;
     try {
         await deleteDoc(doc(db, 'community_maps', id));
         cmLoadMaps();
     } catch(e) {
-        alert('Error while deleting: ' + e.message);
+        alert('Delete error: ' + e.message);
     }
 };
 
 window.cmLoadMapData = (dataStr) => {
     try {
+        // m.data is already JSON.stringify(islandData), so parse once to get {code:"..."}
+        // If result is still a string (double-encoded), parse again
         let data = JSON.parse(dataStr);
         if (typeof data === 'string') data = JSON.parse(data);
         if (window.loadIslandFromData) {
@@ -818,9 +826,9 @@ window.cmLoadMapData = (dataStr) => {
             closeCommunityPopup();
             showToast('Community map loaded!');
         } else {
-            alert('Connect loadIslandFromData() in game.js!');
+            alert('loadIslandFromData() not connected in game.js!');
         }
-    } catch(e) { alert('Error while loading: '+e.message); }
+    } catch(e) { alert('Load error: ' + e.message); }
 };
 
 window.openCommunityPopup = () => {
@@ -830,12 +838,14 @@ window.openCommunityPopup = () => {
     requestAnimationFrame(() => requestAnimationFrame(() => overlay.classList.add('popup-visible')));
     cmLoadMaps();
 };
+
 window.closeCommunityPopup = () => {
     const overlay = document.getElementById('community-overlay');
     if (!overlay) return;
     overlay.classList.remove('popup-visible');
     setTimeout(() => { overlay.style.display = 'none'; }, 280);
 };
+
 window.cmSwitchTab = (tab) => {
     const browse = document.getElementById('cm-tab-browse');
     const upload = document.getElementById('cm-tab-upload');
@@ -854,7 +864,7 @@ window.cmSwitchTab = (tab) => {
 };
 
 function esc(s) {
-    return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+    return String(s || '').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
 }
 </script>
 

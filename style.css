@@ -2059,6 +2059,7 @@ body {
 body { transition: background-color 1.5s ease; }
 * { transition: background-color 0.35s ease, border-color 0.35s ease, color 0.35s ease, box-shadow 0.35s ease; }
 
+
 #community-overlay {
     display: none;
     position: fixed;
@@ -2131,7 +2132,6 @@ body { transition: background-color 1.5s ease; }
     transition: max-height 0.4s cubic-bezier(0.4, 0, 0.2, 1),
                 padding    0.4s cubic-bezier(0.4, 0, 0.2, 1);
 }
-
 #community-popup.cm-upload-active {
     max-height: 380px;
 }
@@ -2176,7 +2176,6 @@ body { transition: background-color 1.5s ease; }
     transition: filter 0.1s;
 }
 #cm-auth-btn:hover { filter: brightness(1.2); }
-
 #cm-tabs {
     display: flex;
     gap: 7px;
@@ -2200,7 +2199,6 @@ body { transition: background-color 1.5s ease; }
     color: var(--gui-text, #ffdf80);
     border-color: var(--gui-accent, #ffdf80);
 }
-
 #cm-tab-browse.cm-tab-content {
     flex: 1;
     overflow: hidden;
@@ -2217,7 +2215,6 @@ body { transition: background-color 1.5s ease; }
     flex-direction: column;
     gap: 10px;
 }
-
 #cm-maps-list {
     flex: 1;
     overflow-y: scroll;
@@ -2276,13 +2273,13 @@ body { transition: background-color 1.5s ease; }
     flex-shrink: 0;
     align-items: center;
 }
-
 .cm-map-actions .btn-load {
     font-size: 8px;
     padding: 8px 14px;
     flex: unset;
     border: 3px solid #0d3a50;
 }
+
 .cm-map-actions .btn-danger {
     width: auto;
     padding: 7px 10px;
