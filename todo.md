@@ -4,6 +4,15 @@
 
 -MoreBlocks
 -optimization banner
+//(Eyedropper — ții apăsat Alt + click pe un bloc și îl selectează automat. Cel mai util tool care lipsește.
+Click de 10 ori pe TITLU text → confetti explosio)//
+Ctrl+A selectează toată insula
+Cărămidă / brick
+Statistics popup — câte blocuri, ce tip, înălțimea maximă, dimensiunea insulei
+- embed islads show everywere
+Presentation mode — ascunde tot UI-ul, rămâne doar insula frumos centrată
+"X people building right now" counter live
+
 
 
 What I added:-
@@ -59,15 +68,11 @@ i hate missspelling
 
 Devlog Sketch
 
-**Devlog 28**
 
-Added support for comunity maps using google firebase:
-this will let you load maps made by other cool persons, but it will let you publish only if you login using google OAuth
-
-Here are a few rule quoted from readme before publishing maps
-- Do not replicate EXPLICIT content (when you login I have acces to your username, gmail so it will be a shame to do that)
-- Do not make bad maps or empty maps
-
+**Devlog 32**
+- This devlog adds the possibility to click on the minimap to zoom the island to a corner or whatever
+- More easter eggs (PS: Dig in game files to fiind something)
+- More keyboard shortcuts
 
 
 

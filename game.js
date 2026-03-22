@@ -614,6 +614,34 @@ function createTile(x, y, z, type, customPath = null, parent = mapContainer) {
     img.onmousedown = (e) => { 
         if (e.button === 1 || e.button === 2) return; 
         e.preventDefault();
+        if (e.altKey) {
+            const tileSrc = img.src || '';
+            if (tileSrc && img.style.opacity !== '0') {
+                const marker = 'Assets/Blocks/';
+                const mi = tileSrc.indexOf(marker);
+                const rawName = (mi !== -1 ? tileSrc.slice(mi + marker.length) : tileSrc).replace(/\.png$/i, '').split('/').pop();
+                const allSlots = document.querySelectorAll('.slot');
+                let matched = false;
+                for (const slot of allSlots) {
+                    const slotType = slot.dataset.type || slot.getAttribute('onclick')?.match(/selectBlock\('([^']+)'/)?.[1];
+                    if (!slotType || slot.id === 'btn-next-page' || slot.id === 'btn-prev-page') continue;
+                    const slotImg = slot.querySelector('img');
+                    if (!slotImg) continue;
+                    const slotSrc = slotImg.getAttribute('src') || '';
+                    const slotName = slotSrc.replace(/\.png$/i, '').split('/').pop().toLowerCase();
+                    if (slotName === rawName.toLowerCase() || slotType.toLowerCase() === rawName.toLowerCase()) {
+                        if (slot.classList.contains('page-2') && currentPage !== 2) switchPage(2);
+                        else if (slot.classList.contains('page-1') && currentPage !== 1) switchPage(1);
+                        selectBlock(slotType, slot);
+                        showToast('Picked: ' + (rawName.charAt(0).toUpperCase() + rawName.slice(1)), './Assets/Blocks/' + rawName + '.png');
+                        matched = true;
+                        break;
+                    }
+                }
+                if (!matched) showToast('Block not in hotbar!');
+            }
+            return;
+        }
         if (e.ctrlKey || e.metaKey) {
             let target = img;
             if (parseInt(img.getAttribute('data-z')) !== 0) {
@@ -2990,4 +3018,76 @@ function toggleBlockParticles(btn) {
     }
 
     setTimeout(scheduleNext, 1500);
+})();
+(function() {
+    let titleClickCount = 0;
+    let titleClickTimer = null;
+
+    window.handleTitleClick = function() {
+        titleClickCount++;
+        clearTimeout(titleClickTimer);
+        titleClickTimer = setTimeout(() => { titleClickCount = 0; }, 2000);
+
+        if (titleClickCount >= 10) {
+            titleClickCount = 0;
+            clearTimeout(titleClickTimer);
+            launchConfetti();
+        }
+    };
+
+    function launchConfetti() {
+        const COLORS = ['#ff595e','#ffca3a','#6a4c93','#1982c4','#8ac926','#ff924c','#ff6b9d','#c77dff','#4cc9f0','#f72585'];
+        const SHAPES = ['square','circle','strip'];
+        const COUNT = 140;
+        const title = document.getElementById('game-title-el');
+        const rect = title ? title.getBoundingClientRect() : { left: window.innerWidth/2, top: 60, width: 0 };
+        const originX = rect.left + rect.width / 2;
+        const originY = rect.top + rect.height / 2;
+
+        for (let i = 0; i < COUNT; i++) {
+            const p = document.createElement('div');
+            const shape = SHAPES[Math.floor(Math.random() * SHAPES.length)];
+            const color = COLORS[Math.floor(Math.random() * COLORS.length)];
+            const size  = 6 + Math.random() * 8;
+            const angle = Math.random() * Math.PI * 2;
+            const speed = 120 + Math.random() * 280;
+            const vx = Math.cos(angle) * speed;
+            const vy = Math.sin(angle) * speed - 200 - Math.random() * 150;
+            const rot = Math.random() * 720 - 360;
+            p.style.cssText = [
+                'position:fixed',
+                'pointer-events:none',
+                'z-index:2147483647',
+                `background:${color}`,
+                `width:${shape === 'strip' ? Math.round(size*0.4)+'px' : size+'px'}`,
+                `height:${shape === 'strip' ? size*2.5+'px' : size+'px'}`,
+                shape === 'circle' ? 'border-radius:50%' : '',
+                `left:${originX - size/2}px`,
+                `top:${originY - size/2}px`,
+                'opacity:1',
+            ].join(';');
+            document.body.appendChild(p);
+
+            let startTime = null;
+            const duration = 900 + Math.random() * 600;
+            const gravity = 320;
+            (function animate(ts) {
+                if (!startTime) startTime = ts;
+                const t = (ts - startTime) / duration;
+                if (t >= 1) { p.remove(); return; }
+                p.style.left = (originX - size/2 + vx * t) + 'px';
+                p.style.top  = (originY - size/2 + vy * t + 0.5 * gravity * t * t) + 'px';
+                p.style.opacity = Math.max(0, 1 - t * 1.1);
+                p.style.transform = `rotate(${rot * t}deg)`;
+                requestAnimationFrame(animate);
+            })(performance.now());
+        }
+        if (title) {
+            title.style.transition = 'color 0.15s';
+            const orig = title.style.color || '';
+            title.style.color = '#ffca3a';
+            setTimeout(() => { title.style.color = orig; title.style.transition = ''; }, 400);
+        }
+        hotbarSound.currentTime = 0; hotbarSound.play().catch(e => {});
+    }
 })();

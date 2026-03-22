@@ -8,15 +8,15 @@ Here you will find some relevant subjects and explanations about my game, includ
 
 ![Game ss](GithubPreview/Banners/SS.png)
 
-# Supported Devices !
+# Supported Devices!
 - Some PCs can run the game but require low zoom. To do this, you need to go into your browser settings.
 - The lowest supported PC resolution acceptable is 800x600 33% Zoom
-- Not compatible with Phone devices 
+- Not compatible with phone devices
 - Tablets compatibility: 16:9 67% zoom (SM Tab 9 Shoot)
 
 ![TAB](GithubPreview/Banners/SMSHT.jpg)
 
-### - play it now: https://adium1000.github.io/Isometric-island/
+### - Play it now: https://adium1000.github.io/Isometric-island/
 # Starter Guide
 ![Starterguide](GithubPreview/Banners/guide.png)
 
@@ -32,9 +32,9 @@ Here you will find some relevant subjects and explanations about my game, includ
 
 ![Hotbar Image](GithubPreview/Guide/hotbar.png)
 - This is very useful if you want to change an existing block or add a new one.
-- The hotbar contains 2 pages, if you want to access the second page you have to click on the arrow icon
+- The hotbar contains 2 pages; if you want to access the second page, you have to click on the arrow icon.
 - It contains every block available in the "game," drawn by me.
-- To use a specific block, you have to hover your mouse over it and then click until you see the selector on the item you picked. 
+- To use a specific block, you have to hover your mouse over it and then click until you see the selector on the item you picked.
 - For multilayer blocks, see section 5.
 
 ![3. Island and Block Placement](GithubPreview/Guide/3.png)
@@ -57,7 +57,7 @@ Here you will find some relevant subjects and explanations about my game, includ
 ![5. MultiLayer Objects](GithubPreview/Guide/5.png)
 
 ![im](GithubPreview/Guide/intro.png)
-- You can add multilayer objects from the hotbar. 
+- You can add multilayer objects from the hotbar.
 - A multilayer object is placed ON the platform, so it does not affect the platform structure.
 - When erased, it is removed instantly.
 
@@ -66,15 +66,15 @@ Here you will find some relevant subjects and explanations about my game, includ
 ![6. Details & Shadows](GithubPreview/Guide/6.png)
 
 - This game includes island and block shadows.
-- Also, the trees sometimes drop leaves in 3 different styles
+- Also, the trees sometimes drop leaves in 3 different styles.
 
 
 ![im](GithubPreview/Banners/leaf.png)
 
 ![7. Background Music](GithubPreview/Guide/7.png)
 
-- Background music is a way to bring realistic detail to the game
-- Or if you don't like background music just listen to some spotify chill music :D
+- Background music is a way to bring realistic detail to the game.
+- Or if you don't like background music, just listen to some Spotify chill music :D
 
 ![spotifychill](GithubPreview/Guide/music.png)
 
@@ -83,8 +83,8 @@ Here you will find some relevant subjects and explanations about my game, includ
 
 ![8. Island Float](GithubPreview/Guide/8.png)
 
-- The island can float, giving it a very cool effect when enabled
-- Also you can set different modes for this
+- The island can float, giving it a very cool effect when enabled.
+- Also, you can set different modes for this.
 
 ![flo](GithubPreview/Guide/float-settings.png)
 
@@ -92,16 +92,16 @@ Here you will find some relevant subjects and explanations about my game, includ
 
 ![9. Cursors](GithubPreview/Guide/9.png)
 
-- The 'game' can use OS/OWN cursors, check settings
-- if for exemple you hover, click or interact with specific buttons (Middle click to move the island, Touching Background, Touching Hotbar, Etc)
-- Middle click to move the island
+- The 'game' can use OS/OWN cursors; check settings.
+- For example, if you hover, click, or interact with specific buttons (Middle click to move the island, Touching Background, Touching Hotbar, etc.)
+- Middle click to move the island.
 
 ![Aboutcursors](GithubPreview/Guide/about_cursors.png)
 
 ![10. Keyboard Shortcuts](GithubPreview/Guide/0.png)
 
-- The 'game' can be controlled by any input device like a keyboard, Macropad, Keypad
-- Here is the list of keyboard shortcuts
+- The 'game' can be controlled by any input device like a keyboard, Macropad, or Keypad.
+- Here is the list of keyboard shortcuts:
 
 |Key       | Action                         |
 |:--------:|:------------------------------:|
@@ -111,43 +111,43 @@ Here you will find some relevant subjects and explanations about my game, includ
 | F        | Toggle Island Float mode       |
 | CTRL + Z | Undo                           |
 | CTRL + Y | Redo                           |
-| S        | Search Blocks Menu             |
-| G        | Toggle Grid                    |
+| ALT + Click on Block | Eyedropper|
 
 ![MiniMap](GithubPreview/Guide/01.png)
 
-- Minimap is a small overall sketch of your island helping the user when using the pan tool or zoom
+- Minimap is a small overall sketch of your island helping the user when using the pan tool or zoom.
+- Clicking on the minimap zooms the island to see it better.
 
 ![MiniMap](GithubPreview/Guide/minimap.png)
 
 
 ![12. Undo and Redo](GithubPreview/Guide/02.png)
 
-- Undo and Redo functions are like a time machine: for example, if you make a mistake, you can turn back time to a point where the mistake did not exist, or if you still don't like it, you can return to the present
+- Undo and Redo functions are like a time machine: for example, if you make a mistake, you can turn back time to a point where the mistake did not exist, or if you still don't like it, you can return to the present.
 
 ![13. File Menu](GithubPreview/Guide/03.png)
 
-- File menu is a typical menu with actions for your island like: SAVE, LOAD, DELETE, RANDOM ISLAND using the same accent colors as the hotbar
+- File menu is a typical menu with actions for your island like: SAVE, LOAD, DELETE, RANDOM ISLAND using the same accent colors as the hotbar.
 
 ![File menu ](GithubPreview/Guide/FileMenu.png)
 
 1. Island Code
-- This is a save code for your island, copy it and keep it safe :3
+- This is a save code for your island; copy it and keep it safe :3
 2. Load Island Code
 - Here you paste the code you saved from (1.)
 3. Danger zone/Delete island
-- From here you can clear the island and start over
-4. Settigns 
-- Configuration tool for your island
-5. Random Islands Buttons and popus
-- Generate random islands
-6. Comunity maps
-- Publish a great map
+- From here you can clear the island and start over.
+4. Settings
+- Configuration tool for your island.
+5. Random Islands Buttons and popups
+- Generate random islands.
+6. Community maps
+- Publish a great map.
 RULES
-- Do not replicate EXPLICIT content (when you login I have acces to your username, gmail so it will be a shame to do that)
-- Do not make bad maps or empty maps
+- Do not replicate EXPLICIT content (when you log in, I have access to your username and Gmail, so it would be a shame to do that).
+- Do not make bad maps or empty maps.
 
-Comunity explorer
+Community explorer
 
 ![explorer](GithubPreview/Guide/c_map2.png)
 
@@ -157,7 +157,7 @@ Map publisher
 
 ![Mouse actions](GithubPreview/Guide/04.png)
 
-- You can perform more actions with your mouse such as Grabbing island/Select specific Blocks/ or the simple block change 
+- You can perform more actions with your mouse such as Grabbing island / Select specific Blocks / or the simple block change.
 
 |Mouse Key    | Action                               |
 |:-----------:|:------------------------------------:|
@@ -165,38 +165,38 @@ Map publisher
 | Right Click | Select island specific blocks/fill   |
 | Middle Click| Pan tool/Grabbing                    |
 
-- Let's Break each action down to be more easy to understand
+- Let's break each action down to make it easier to understand.
 
-1. Left click - It lets you place or modify island blocks with the hotbar selected item
+1. Left click - It lets you place or modify island blocks with the hotbar selected item.
 
 ![LMC](GithubPreview/Guide/lmc.png)
 
-2. Right click - Imagine the island is your desktop icons, when you drag with left click and select on your desktop you can delete, or copy. That is almost the same here you can select using `RIGHT` click or `CTRL + LEFT CLICK` 
+2. Right click - Imagine the island is your desktop; when you drag with left click and select on your desktop you can delete or copy. That is almost the same here  you can select using `RIGHT` click or `CTRL + LEFT CLICK`.
 
 ![RMC](GithubPreview/Guide/rcl.png)
 
-3. Middle click - here is the pan tool / dragging tool. When you don't have space on the screen you can drag your island where you want to design it
+3. Middle click - Here is the pan tool / dragging tool. When you don't have space on the screen you can drag your island where you want to design it.
 
 ![GRB](GithubPreview/Guide/grb.png)
 
 
 ![fill](GithubPreview/Guide/05.png)
 
-- This function lets you fill a selected area of blocks with the Right Click or ctrl + Left Click
-- After a number of blocks is selected, a button will appear on the bottom of the island 
+- This function lets you fill a selected area of blocks with Right Click or CTRL + Left Click.
+- After a number of blocks is selected, a button will appear at the bottom of the island.
 
 ![Button](GithubPreview/Guide/G!.png)
 
-- After you click on the button this popup will open 
+- After you click on the button, this popup will open.
 
 ![fill](GithubPreview/Guide/fill.png)
 
-- From here you can choose the block you want to fill your area and choose how mutch to fill on the Y axis, verry helpfull for creating mountains and cool stuff
+- From here you can choose the block you want to fill your area and choose how much to fill on the Y axis very helpful for creating mountains and cool stuff.
 
 ![Toast](GithubPreview/Guide/06.png)
 
-- Toasts are like small bit of information/Confirmation of actions
-- This project uses toasts to show an action that has been completed succesfully
+- Toasts are like small bits of information/confirmation of actions.
+- This project uses toasts to show an action that has been completed successfully.
 
 ![Toast](GithubPreview/Guide/Toast.png)
 
@@ -207,33 +207,33 @@ Map publisher
 
 ![Chrome1](GithubPreview/Guide/chrome1.png)
 
-- For chrome go to that 3 dots in the right-up-corner -> Cast save & share -> Install page as an app
+- For Chrome, go to the 3 dots in the top-right corner -> Cast, save & share -> Install page as an app.
 
-- Or simply click this button
+- Or simply click this button.
 
 ![II](GithubPreview/Guide/ii.png)
 
 
 ![chrome2](GithubPreview/Guide/Chrome2.png)
 
-- Press create
+- Press Create.
 
-2. Android APK Build for tablets(BETA)
+2. Android APK Build for tablets (BETA)
 
-- Please note that this is a beta version an may not work on some tablets/android devices!
-- First download the APK from releases
+- Please note that this is a beta version and may not work on some tablets/Android devices!
+- First, download the APK from releases.
 
 ![apk1](GithubPreview/Guide/apk1.jpg)
 
-- Click on the file and choose package installer 
+- Click on the file and choose package installer.
 
 ![apk2](GithubPreview/Guide/apk2.jpg)
 
-- Click on install
+- Click on Install.
 
 ![apk3](GithubPreview/Guide/apk3.jpg)
 
-- If play protect pops click on more options-> install without verification
+- If Play Protect pops up, click on More options -> Install without verification.
 
 ![apk4](GithubPreview/Guide/playtrash.jpg)
 
@@ -242,7 +242,7 @@ And done!
 
 ![18. QR code save](GithubPreview/Guide/08.png)
 
-- You can share small islands by QR codes via file menu -> QR code button
+- You can share small islands by QR codes via File menu -> QR code button.
 
 ![QR](GithubPreview/Guide/qr.png)
 
@@ -255,30 +255,30 @@ And done!
 
 ![SettingsMenu](GithubPreview/Guide/settings_menu.png)
 
-- Settings menu contains Island configuration tools like:
+- Settings menu contains island configuration tools like:
 1. Island shaping
-- This "tool" lets you format your island with a resolution up to 8X8 by just touching a square with mouse 
+- This "tool" lets you format your island with a resolution up to 8x8 by just touching a square with the mouse.
 2. Random Island
-- This button generates a random seed island : Stone/Snow/Desert/Summer/Ocean
+- This button generates a random seed island: Stone/Snow/Desert/Summer/Ocean.
 3. Climate
-- This option lets you change the climate for better visuals for your island stile :3
+- This option lets you change the climate for better visuals for your island style :3
 4. Time of the day
-- This option lets you change the time on the game 
+- This option lets you change the time in the game.
 5. Visuals Menu
-- Contains a list of toggles for appearance and debugging
-6. Controls 
-- Contains a list of toggles for better options 
+- Contains a list of toggles for appearance and debugging.
+6. Controls
+- Contains a list of toggles for better options.
 7. Scale
-- Helpfull to make the game use all the screnn :3
+- Helpful to make the game use all the screen :3
 8. Mouse options
-- helpfull settings for mouse
+- Helpful settings for the mouse.
 9. GUI colors
-- Customize the gui :3
+- Customize the GUI :3
 
 ![pointer](GithubPreview/Guide/po.png)
 
-9. Visual or Graphic settings 
-- includes a bunch of sliders for shadows and more
+9. Visual or Graphic settings
+- Includes a bunch of sliders for shadows and more.
 
 ![go](GithubPreview/Guide/go.png)
 
@@ -294,11 +294,11 @@ And done!
 
 ![SearchMenuPopup](GithubPreview/Guide/searchmenu.png)
 
-- Search menu is a menu where you can easely search for blocks by name or by scrolling
+- Search menu is a menu where you can easily search for blocks by name or by scrolling.
 
 ![22.Random island/Mountain menu](GithubPreview/Guide/22.png)
 
- - This menu lets you choose how the random generated island will look like  
+ - This menu lets you choose how the randomly generated island will look like.
  
  ![ISLAND_RANDON](GithubPreview/Guide/IRG.png)
 
@@ -307,7 +307,7 @@ And done!
 
 ![Gameblocks](GithubPreview/Guide/blck.png)
 
-- Here is a list of the game blocks and the category of them
+- Here is a list of the game blocks and their categories.
 
 | Block                                     | Category                       |     
 |:-----------------------------------------:|:------------------------------:|
@@ -329,7 +329,7 @@ And done!
 | ![snowrooks](Assets/Blocks/snowrocks.png) | Snowy Decoration               | 
 | ![stone](Assets/Blocks/stone.png)         | Natural                        |   
 | ![tree](Assets/Blocks/treehb.png)         | Natural Decoration             |  
-| ![whater](Assets/Blocks/water.png)        | Natural                        |   
+| ![water](Assets/Blocks/water.png)         | Natural                        |   
 | ![snowedtree](Assets/Blocks/treehbh.png)  | Snowy Decoration               | 
 
 
@@ -342,7 +342,7 @@ And done!
 ### Issues
 ![Issues Banner](GithubPreview/Banners/Issues.png)
 
-- sometimes zoom can break the island canvas for unknown reasons.
+- Sometimes zoom can break the island canvas for unknown reasons.
 
 ### (BETA) Meaning
 ![beta](GithubPreview/Banners/betab.png)
@@ -358,7 +358,7 @@ And done!
 |:--------:|:------------------------------:|:-------------------------------------:|
 | 1.       | Microsoft Office: PowerPoint   | Used for Devlogs and Banners          |
 | 2.       | Pixlart                        | Used for early game assets            |
-| 3.       | Paint.NET                      | Used for designing pixelart           | 
+| 3.       | Paint.NET                      | Used for designing pixel art          | 
 | 4.       | Audacity                       | Used for SFX                          |
 | 5.       | Turbowarp sound editor         | Used for SFX speedups                 |
 | 6.       | Visual Studio Code IDE         | Used for pushing my repo and code     |
@@ -369,24 +369,32 @@ And done!
 - You can see an unorganized list of functions and stuff that I want to add in `todo.md` here on GitHub.
 - You can also suggest some features for my project on Flavortown.
 
+# History of this game
+- The idea for Isometric Island started on 07.06.22 when the first version of Isometric Island was released by me on Scratch  that website that traumatized me until 8th grade or so. I kept it updated until 2024 when I gave up because it was so bad.
+
+![scratch_dont_use_scratch](GithubPreview/Guide/scratchstorry.png)
+
+- Almost 2 years later I remembered about that idea and I said "I need to remake it in HTML, but in an isometric style." That is how Isometric Island was born with a pretty interesting history.
+
+
 # Credits
 ![credits-logo](GithubPreview/Banners/creditsb.png)
 - Here you will find credits for stuff that I used from the internet:
-1. Google Fonts: For the text font title. See `FontLicense.md` for the APACHE license and Terms and Conditions. You can learn more about the Apache license here: https://www.apache.org/licenses/LICENSE-2.0  
+1. Google Fonts: For the text font title. See `FontLicense.md` for the APACHE license and Terms and Conditions. You can learn more about the Apache license here: https://www.apache.org/licenses/LICENSE-2.0  
 2. Minecraft tips inspiration: The game title contains nonsense tips inspired by Minecraft. 
 
-3. Some Devlogs and Banners use  Maagkramp by ficod. This font is used under its Personal Use License! Check out his DeviantArt profile: https://www.deviantart.com/ficod
+3. Some Devlogs and Banners use Maagkramp by ficod. This font is used under its Personal Use License! Check out his DeviantArt profile: https://www.deviantart.com/ficod
  - PLEASE NOTE THAT THE PROJECT DOES NOT USE THIS FONT!!
 
 # ! Anything else you find in my project's Assets folder is purely made by me !
 
 # Optimization
 
-1. Service Worker (sw.js). This is a file that catches all the requests the browser makes to the network. The time you visit it saves important things like the hotbar, blocks and audio in a special place so they load fast. The time you visit it gets these things from the special place on your computer instead of asking the server for them.
+1. Service Worker (sw.js). This is a file that catches all the requests the browser makes to the network. The first time you visit, it saves important things like the hotbar, blocks, and audio in a special place so they load fast. The next time you visit, it gets these things from that special place on your computer instead of asking the server for them.
 
-2. In-Memory Image Cache (_imgCache). This is like a map that remembers pictures that have already been loaded. If you use the block a few times it does not have to decode the picture again. It just uses the one it already has in memory.
+2. In-Memory Image Cache (_imgCache). This is like a map that remembers pictures that have already been loaded. If you use a block a few times, it does not have to decode the picture again  it just uses the one it already has in memory.
 
-3. Lazy Audio Loading. Before the game would load all the files at the same time when it started which could slow things down. Now it only loads the hotbar sound away. It loads the sounds like the place sound and background music only when they are needed for the first time.
+3. Lazy Audio Loading. Before, the game would load all the files at the same time when it started, which could slow things down. Now it only loads the hotbar sound right away. It loads sounds like the place sound and background music only when they are needed for the first time.
 
 ### You reached the end for now :)
 ![the end](GithubPreview/Banners/endreadme.png)   
