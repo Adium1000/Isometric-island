@@ -9,12 +9,12 @@ Click de 10 ori pe TITLU text → confetti explosio)//
 Ctrl+A selectează toată insula
 Cărămidă / brick
 Statistics popup — câte blocuri, ce tip, înălțimea maximă, dimensiunea insulei
-- embed islads show everywere
+(- embed islads show everywere)
 Presentation mode — ascunde tot UI-ul, rămâne doar insula frumos centrată
 "X people building right now" counter live
 
 
-
+   
 What I added:-
 - Minimap moove
 - about menu

@@ -131,7 +131,6 @@
                         <div class="popup-row" style="flex-direction:column;gap:6px;margin-top:8px;">
                             <button class="btn-qr" onclick="showQRCode()" style="width:100%;box-sizing:border-box;"><img src="./Assets/Icons/qr.png" style="width:16px;height:16px;image-rendering:pixelated;vertical-align:middle;margin-right:6px;">SHOW QR CODE</button>
                             <button class="btn-copy" onclick="navigator.clipboard.writeText(document.getElementById('popup-code-output').value).then(()=>showToast('Succesfully copied to clipboard!'))" style="width:100%;box-sizing:border-box;"><img src="./Assets/Icons/todorm.png" style="width:16px;height:16px;image-rendering:pixelated;vertical-align:middle;margin-right:6px;">COPY ISLAND CODE</button>
-                            <button class="btn-embed" onclick="openEmbedPopup()" style="width:100%;box-sizing:border-box;"><img src="./Assets/Icons/todorm.png" style="width:16px;height:16px;image-rendering:pixelated;vertical-align:middle;margin-right:6px;">&#60;/&#62; EMBED CODE</button>
                         </div>
                     </div>
 
@@ -872,112 +871,7 @@ window.cmSwitchTab = (tab) => {
 function esc(s) {
     return String(s || '').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
 }
-
-// ── EMBED POPUP ──────────────────────────────────────────────────────────────
-
-window.openEmbedPopup = () => {
-    const overlay = document.getElementById('embed-popup-overlay');
-    if (!overlay) return;
-
-    // Get current island code
-    const code = document.getElementById('popup-code-output')?.value || '';
-    const baseUrl = window.location.href.split('?')[0].split('#')[0];
-
-    // Build embed URL: ?embed=1 hides UI, island= loads the map
-    const params = new URLSearchParams();
-    params.set('embed', '1');
-    if (code) params.set('island', code);
-    const embedUrl = `${baseUrl}?${params.toString()}`;
-
-    const embedCode = `<iframe
-  src="${embedUrl}"
-  width="800"
-  height="600"
-  style="border:none;border-radius:12px;display:block;"
-  title="Isometric Island"
-  loading="lazy"
-  allowfullscreen>
-</iframe>`;
-
-    const ta = document.getElementById('embed-code-output');
-    if (ta) ta.value = embedCode;
-
-    // Reset preview area
-    const prev = document.getElementById('embed-preview-wrap');
-    const hint = document.getElementById('embed-preview-hint');
-    if (prev) {
-        // Remove iframe if already previewed
-        const existing = prev.querySelector('iframe');
-        if (existing) existing.remove();
-        if (hint) hint.style.display = 'block';
-        prev.classList.remove('has-preview');
-    }
-
-    overlay.style.display = 'flex';
-    requestAnimationFrame(() => requestAnimationFrame(() => overlay.classList.add('popup-visible')));
-};
-
-window.closeEmbedPopup = () => {
-    const overlay = document.getElementById('embed-popup-overlay');
-    if (!overlay) return;
-    overlay.classList.remove('popup-visible');
-    setTimeout(() => { overlay.style.display = 'none'; }, 280);
-};
-
-window.showEmbedPreview = () => {
-    const code = document.getElementById('embed-code-output')?.value || '';
-    const prev = document.getElementById('embed-preview-wrap');
-    const hint = document.getElementById('embed-preview-hint');
-    if (!prev || !code) return;
-
-    // Extract src from the embed code
-    const srcMatch = code.match(/src="([^"]+)"/);
-    if (!srcMatch) return;
-
-    if (hint) hint.style.display = 'none';
-    // Remove old iframe
-    const old = prev.querySelector('iframe');
-    if (old) old.remove();
-
-    const iframe = document.createElement('iframe');
-    iframe.src = srcMatch[1];
-    iframe.style.cssText = 'width:100%;height:100%;border:none;display:block;';
-    iframe.title = 'Embed Preview';
-    iframe.setAttribute('allowfullscreen', '');
-    prev.appendChild(iframe);
-    prev.classList.add('has-preview');
-};
 </script>
-
-
-<!-- EMBED POPUP -->
-<div id="embed-popup-overlay" onclick="if(event.target===this)closeEmbedPopup()">
-    <div id="embed-popup-wrapper">
-        <button id="embed-popup-close-btn" onclick="closeEmbedPopup()">&#10005;</button>
-        <div id="embed-popup" class="pixel-corners">
-            <h2><img src="./Assets/Icons/todorm.png" style="width:32px;height:32px;image-rendering:pixelated;vertical-align:middle;margin-right:10px;">EMBED ISLAND</h2>
-            <hr class="popup-divider">
-
-            <div class="popup-section-title">ISLAND EMBED CODE:</div>
-            <textarea id="embed-code-output" readonly onclick="this.select()"></textarea>
-
-            <div class="embed-btn-col">
-                <button class="btn-copy" onclick="navigator.clipboard.writeText(document.getElementById('embed-code-output').value).then(()=>showToast('Embed code copied!'))">
-                    <img src="./Assets/Icons/todorm.png" style="width:14px;height:14px;image-rendering:pixelated;vertical-align:middle;margin-right:6px;">COPY EMBED CODE
-                </button>
-                <button class="btn-qr" onclick="showEmbedPreview()">
-                    &#9654; PREVIEW
-                </button>
-            </div>
-
-            <hr class="popup-divider">
-            <div class="popup-section-title">PREVIEW:</div>
-            <div id="embed-preview-wrap">
-                <span id="embed-preview-hint">Press PREVIEW &#9654; to test</span>
-            </div>
-        </div>
-    </div>
-</div>
 
 </body>
 </html>
