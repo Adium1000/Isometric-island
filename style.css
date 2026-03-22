@@ -2059,9 +2059,6 @@ body {
 body { transition: background-color 1.5s ease; }
 * { transition: background-color 0.35s ease, border-color 0.35s ease, color 0.35s ease, box-shadow 0.35s ease; }
 
-/* ═══════════════════════════════════════════════════════ */
-/* COMMUNITY MAPS POPUP                                    */
-/* ═══════════════════════════════════════════════════════ */
 #community-overlay {
     display: none;
     position: fixed;
@@ -2076,7 +2073,6 @@ body { transition: background-color 1.5s ease; }
 }
 #community-overlay.popup-visible { opacity: 1; display: flex; }
 
-/* Ensure inputs/buttons inside community popup are fully interactive */
 #community-popup input,
 #community-popup button,
 #community-popup textarea {
@@ -2119,7 +2115,6 @@ body { transition: background-color 1.5s ease; }
 #community-close-btn:hover { filter: brightness(1.3); transform: scale(1.1); }
 #community-close-btn:active { transform: scale(0.9); }
 
-/* Browse tab: fixed tall popup; Upload tab: shrinks to content */
 #community-popup {
     background: var(--gui-bg);
     border: 4px solid var(--gui-border);
@@ -2136,7 +2131,7 @@ body { transition: background-color 1.5s ease; }
     transition: max-height 0.4s cubic-bezier(0.4, 0, 0.2, 1),
                 padding    0.4s cubic-bezier(0.4, 0, 0.2, 1);
 }
-/* When Upload tab is active, popup shrinks — animate via max-height */
+
 #community-popup.cm-upload-active {
     max-height: 380px;
 }
@@ -2150,7 +2145,6 @@ body { transition: background-color 1.5s ease; }
     text-align: center;
 }
 
-/* Auth bar */
 #cm-auth-bar {
     display: flex;
     align-items: center;
@@ -2183,7 +2177,6 @@ body { transition: background-color 1.5s ease; }
 }
 #cm-auth-btn:hover { filter: brightness(1.2); }
 
-/* Tabs */
 #cm-tabs {
     display: flex;
     gap: 7px;
@@ -2208,7 +2201,6 @@ body { transition: background-color 1.5s ease; }
     border-color: var(--gui-accent, #ffdf80);
 }
 
-/* Browse tab content: flex stretches to fill popup height */
 #cm-tab-browse.cm-tab-content {
     flex: 1;
     overflow: hidden;
@@ -2218,7 +2210,6 @@ body { transition: background-color 1.5s ease; }
     min-height: 0;
 }
 
-/* Upload tab content: does NOT flex-grow, just wraps its children */
 #cm-tab-upload.cm-tab-content {
     flex: 0 0 auto;
     overflow: visible;
@@ -2227,7 +2218,6 @@ body { transition: background-color 1.5s ease; }
     gap: 10px;
 }
 
-/* Maps list — scrollbar always visible, matches other popups */
 #cm-maps-list {
     flex: 1;
     overflow-y: scroll;
@@ -2242,7 +2232,6 @@ body { transition: background-color 1.5s ease; }
 #cm-maps-list::-webkit-scrollbar-thumb { background: var(--gui-bg); border: 1px solid var(--gui-accent); image-rendering: pixelated; }
 #cm-maps-list::-webkit-scrollbar-thumb:hover { background: var(--gui-bg); }
 
-/* All buttons inside community popup get clip-path + base style */
 #community-popup button {
     font-family: 'Press Start 2P', cursive;
     cursor: pointer;
@@ -2251,7 +2240,6 @@ body { transition: background-color 1.5s ease; }
 }
 #community-popup button:active { transform: scale(0.93); }
 
-/* popup-section-title fix */
 #community-popup .popup-section-title {
     color: var(--gui-accent, #ffdf80);
     font-size: 11px;
@@ -2259,7 +2247,6 @@ body { transition: background-color 1.5s ease; }
     letter-spacing: 1px;
 }
 
-/* Map cards */
 .cm-map-card {
     background: var(--gui-popup-section, #241a00);
     border: 2px solid var(--gui-divider);
@@ -2289,14 +2276,13 @@ body { transition: background-color 1.5s ease; }
     flex-shrink: 0;
     align-items: center;
 }
-/* ÎNCARCĂ button */
+
 .cm-map-actions .btn-load {
     font-size: 8px;
     padding: 8px 14px;
     flex: unset;
     border: 3px solid #0d3a50;
 }
-/* Delete (✕) button */
 .cm-map-actions .btn-danger {
     width: auto;
     padding: 7px 10px;
@@ -2310,7 +2296,6 @@ body { transition: background-color 1.5s ease; }
     font-family: 'Press Start 2P', monospace;
 }
 
-/* Upload tab extras */
 #cm-map-name {
     width: 100%;
     box-sizing: border-box;
@@ -2337,7 +2322,7 @@ body { transition: background-color 1.5s ease; }
     font-family: 'Press Start 2P', monospace;
     color: var(--gui-accent, #ffdf80);
 }
-/* Publish button — smaller, not full width */
+
 #cm-tab-upload .btn-qr {
     width: auto;
     align-self: flex-start;

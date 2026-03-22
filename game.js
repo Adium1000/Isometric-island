@@ -80,8 +80,6 @@ function getBgMusic()     {
     if (!_bgMusic) { _bgMusic = new Audio('./Assets/Audio/BG.wav'); _bgMusic.loop = true; }
     return _bgMusic;
 }
-
-// Compat shims so existing call-sites work without changes
 const placeSound = { get currentTime() { return getPlaceSound().currentTime; }, set currentTime(v) { getPlaceSound().currentTime = v; }, play() { return getPlaceSound().play(); } };
 const grassSound = { get currentTime() { return getGrassSound().currentTime; }, set currentTime(v) { getGrassSound().currentTime = v; }, play() { return getGrassSound().play(); } };
 const pclsSound  = { get currentTime() { return getPclsSound().currentTime;  }, set currentTime(v) { getPclsSound().currentTime  = v; }, play() { return getPclsSound().play();  } };
@@ -102,7 +100,6 @@ const minimapCanvas = document.getElementById('minimap');
 const mCtx = minimapCanvas.getContext('2d');
 
 window.addEventListener('keydown', (e) => {
-    // Don't intercept keys when user is typing in an input or textarea
     const tag = document.activeElement && document.activeElement.tagName;
     if (tag === 'INPUT' || tag === 'TEXTAREA') return;
 
@@ -795,12 +792,6 @@ function base64urlToBytes(str) {
 }
 
 function generateIslandCode() {
-    // FORMAT v2:
-    // Header: version(4) cols(4) rows(4) overlayCount(16) climateIdx(2) timpIdx(2) reserved(4)
-    // Base grid: per cell assetIdx(5) visible(1)
-    // Overlays v2: xSigned(6, offset+32) ySigned(6, offset+32) z(5) assetIdx(5) objIdNum(10) visible(1)
-    //   x/y stored as value+32, range -32..31, covers coords -1 at map edge
-    //   z up to 31 (trees go up to 6), assetIdx up to 31, objIdNum up to 1023
     const VERSION = 2;
 
     const tiles = Array.from(mapContainer.getElementsByClassName('tile'));
@@ -832,14 +823,13 @@ function generateIslandCode() {
     const timpIdx    = Math.max(0, TIMP_MAP.indexOf(currentTimp));
 
     const bw = makeBitWriter();
-    bw.write(VERSION, 4);          // version marker (v1 used cols here, cols<=8 so version<=8; we use 2)
+    bw.write(VERSION, 4);
     bw.write(cols, 4);
     bw.write(rows, 4);
-    bw.write(Math.min(overlays.length, 65535), 16); // 16 bits = up to 65535 overlays
+    bw.write(Math.min(overlays.length, 65535), 16);
     bw.write(climateIdx, 2);
     bw.write(timpIdx, 2);
-    bw.write(0, 4); // reserved
-
+    bw.write(0, 4); 
     for (let y = 0; y < rows; y++) {
         for (let x = 0; x < cols; x++) {
             const cell = baseGrid[x + ',' + y] || { assetIdx: 0, visible: 0 };
@@ -847,25 +837,22 @@ function generateIslandCode() {
             bw.write(cell.visible, 1);
         }
     }
-
     overlays.slice(0, 65535).forEach(({ x, y, z, assetIdx, objIdNum, visible }) => {
-        bw.write((x + 32) & 0x3F, 6);       // x offset by +32, 6 bits → range -32..31
-        bw.write((y + 32) & 0x3F, 6);       // y offset by +32, 6 bits → range -32..31
-        bw.write(z & 0x1F, 5);              // z 5 bits → 0..31
-        bw.write(assetIdx & 0x1F, 5);       // assetIdx 5 bits → 0..31
-        bw.write(objIdNum & 0x3FF, 10);     // objIdNum 10 bits → 0..1023
+        bw.write((x + 32) & 0x3F, 6);    
+        bw.write((y + 32) & 0x3F, 6);   
+        bw.write(z & 0x1F, 5);         
+        bw.write(assetIdx & 0x1F, 5);       
+        bw.write(objIdNum & 0x3FF, 10);    
         bw.write(visible, 1);
     });
 
     bw.flush();
-    return 'i' + bytesToBase64url(bw.bytes); // 'i' prefix marks v2
+    return 'i' + bytesToBase64url(bw.bytes); 
 }
 
 function loadIslandCode(code) {
     try {
         const trimmed = code.trim();
-
-        // Detect v2 by 'i' prefix
         if (trimmed.startsWith('i')) {
             return _loadIslandCodeV2(trimmed.slice(1));
         } else {
@@ -878,13 +865,13 @@ function _loadIslandCodeV2(b64) {
     const bytes = base64urlToBytes(b64);
     const br = makeBitReader(bytes);
 
-    const version      = br.read(4); // should be 2
+    const version      = br.read(4); 
     const cols         = br.read(4);
     const rows         = br.read(4);
     const overlayCount = br.read(16);
     const climateIdx   = br.read(2);
     const timpIdx      = br.read(2);
-    br.read(4); // reserved
+    br.read(4); 
 
     mapContainer.innerHTML = '';
 
@@ -901,7 +888,7 @@ function _loadIslandCodeV2(b64) {
     const objIdRemap = {};
     let remapCounter = 0;
     for (let i = 0; i < overlayCount; i++) {
-        const x        = br.read(6) - 32;  // decode signed
+        const x        = br.read(6) - 32; 
         const y        = br.read(6) - 32;
         const z        = br.read(5);
         const assetIdx = br.read(5);
@@ -934,7 +921,6 @@ function _loadIslandCodeV2(b64) {
 }
 
 function _loadIslandCodeV1(b64) {
-    // Legacy v1 format — unchanged for backward compatibility
     const bytes = base64urlToBytes(b64);
     const br = makeBitReader(bytes);
 
