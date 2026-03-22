@@ -791,6 +791,14 @@ function base64urlToBytes(str) {
 }
 
 function generateIslandCode() {
+    // FORMAT v2:
+    // Header: version(4) cols(4) rows(4) overlayCount(16) climateIdx(2) timpIdx(2) reserved(4)
+    // Base grid: per cell assetIdx(5) visible(1)
+    // Overlays v2: xSigned(6, offset+32) ySigned(6, offset+32) z(5) assetIdx(5) objIdNum(10) visible(1)
+    //   x/y stored as value+32, range -32..31, covers coords -1 at map edge
+    //   z up to 31 (trees go up to 6), assetIdx up to 31, objIdNum up to 1023
+    const VERSION = 2;
+
     const tiles = Array.from(mapContainer.getElementsByClassName('tile'));
     const cols = currentIslandCols || 8;
     const rows = currentIslandRows || 8;
@@ -820,12 +828,13 @@ function generateIslandCode() {
     const timpIdx    = Math.max(0, TIMP_MAP.indexOf(currentTimp));
 
     const bw = makeBitWriter();
+    bw.write(VERSION, 4);          // version marker (v1 used cols here, cols<=8 so version<=8; we use 2)
     bw.write(cols, 4);
     bw.write(rows, 4);
-    bw.write(Math.min(overlays.length, 255), 8);
+    bw.write(Math.min(overlays.length, 65535), 16); // 16 bits = up to 65535 overlays
     bw.write(climateIdx, 2);
     bw.write(timpIdx, 2);
-    bw.write(0, 4);
+    bw.write(0, 4); // reserved
 
     for (let y = 0; y < rows; y++) {
         for (let x = 0; x < cols; x++) {
@@ -835,78 +844,152 @@ function generateIslandCode() {
         }
     }
 
-    overlays.slice(0, 255).forEach(({ x, y, z, assetIdx, objIdNum, visible }) => {
-        bw.write(x & 0xF, 4); bw.write(y & 0xF, 4);
-        bw.write(z & 0xF, 4); bw.write((assetIdx >> 4) & 1, 1); bw.write((objIdNum >> 3) & 7, 3);
-        bw.write(assetIdx & 0xF, 4); bw.write(objIdNum & 7, 3); bw.write(visible, 1);
+    overlays.slice(0, 65535).forEach(({ x, y, z, assetIdx, objIdNum, visible }) => {
+        bw.write((x + 32) & 0x3F, 6);       // x offset by +32, 6 bits → range -32..31
+        bw.write((y + 32) & 0x3F, 6);       // y offset by +32, 6 bits → range -32..31
+        bw.write(z & 0x1F, 5);              // z 5 bits → 0..31
+        bw.write(assetIdx & 0x1F, 5);       // assetIdx 5 bits → 0..31
+        bw.write(objIdNum & 0x3FF, 10);     // objIdNum 10 bits → 0..1023
+        bw.write(visible, 1);
     });
 
     bw.flush();
-    return bytesToBase64url(bw.bytes);
+    return 'i' + bytesToBase64url(bw.bytes); // 'i' prefix marks v2
 }
 
 function loadIslandCode(code) {
     try {
-        const bytes = base64urlToBytes(code.trim());
-        const br = makeBitReader(bytes);
+        const trimmed = code.trim();
 
-        const cols         = br.read(4);
-        const rows         = br.read(4);
-        const overlayCount = br.read(8);
-        const climateIdx   = br.read(2);
-        const timpIdx      = br.read(2);
-        br.read(4);
-
-        mapContainer.innerHTML = '';
-
-        for (let y = 0; y < rows; y++) {
-            for (let x = 0; x < cols; x++) {
-                const assetIdx = br.read(5);
-                const visible  = br.read(1);
-                const type = assetIdxToType(assetIdx);
-                const t = createTile(x, y, 0, type);
-                t.style.opacity = visible ? '1' : '0';
-            }
+        // Detect v2 by 'i' prefix
+        if (trimmed.startsWith('i')) {
+            return _loadIslandCodeV2(trimmed.slice(1));
+        } else {
+            return _loadIslandCodeV1(trimmed);
         }
-
-        const objIdRemap = {};
-        let remapCounter = 0;
-        for (let i = 0; i < overlayCount; i++) {
-            const x       = br.read(4);
-            const y       = br.read(4);
-            const z       = br.read(4);
-            const assetHi = br.read(1);
-            const objHi   = br.read(3);
-            const assetLo = br.read(4);
-            const objLo   = br.read(3);
-            const visible = br.read(1);
-
-            const assetIdx = (assetHi << 4) | assetLo;
-            const objIdNum = (objHi << 3) | objLo;
-            const type = assetIdxToType(assetIdx);
-            const src  = assetIdxToSrc(assetIdx);
-            if (!src) continue;
-
-            let fullObjId = '';
-            if (objIdNum > 0) {
-                if (!objIdRemap[objIdNum]) objIdRemap[objIdNum] = 'obj_' + (++remapCounter);
-                fullObjId = objIdRemap[objIdNum];
-            }
-
-            const needsPath = ASSET_MAP[assetIdx] && ASSET_MAP[assetIdx].includes('/');
-            const t = needsPath ? createTile(x, y, z, '', src) : createTile(x, y, z, type);
-            t.style.opacity = visible ? '1' : '0';
-            if (fullObjId) t.setAttribute('data-obj-id', fullObjId);
-        }
-
-        currentIslandCols = cols;
-        currentIslandRows = rows;
-        setClimate(CLIMATE_MAP[climateIdx] || 'off');
-        setTimp(TIMP_MAP[timpIdx] || 'zi');
-        saveState(); updateMinimap(); showCodeBar('');
-        hotbarSound.currentTime = 0; hotbarSound.play().catch(e => {});
-        return true;
     } catch(e) { console.error('Load failed:', e); return false; }
+}
+
+function _loadIslandCodeV2(b64) {
+    const bytes = base64urlToBytes(b64);
+    const br = makeBitReader(bytes);
+
+    const version      = br.read(4); // should be 2
+    const cols         = br.read(4);
+    const rows         = br.read(4);
+    const overlayCount = br.read(16);
+    const climateIdx   = br.read(2);
+    const timpIdx      = br.read(2);
+    br.read(4); // reserved
+
+    mapContainer.innerHTML = '';
+
+    for (let y = 0; y < rows; y++) {
+        for (let x = 0; x < cols; x++) {
+            const assetIdx = br.read(5);
+            const visible  = br.read(1);
+            const type = assetIdxToType(assetIdx);
+            const t = createTile(x, y, 0, type);
+            t.style.opacity = visible ? '1' : '0';
+        }
+    }
+
+    const objIdRemap = {};
+    let remapCounter = 0;
+    for (let i = 0; i < overlayCount; i++) {
+        const x        = br.read(6) - 32;  // decode signed
+        const y        = br.read(6) - 32;
+        const z        = br.read(5);
+        const assetIdx = br.read(5);
+        const objIdNum = br.read(10);
+        const visible  = br.read(1);
+
+        const type = assetIdxToType(assetIdx);
+        const src  = assetIdxToSrc(assetIdx);
+        if (!src) continue;
+
+        let fullObjId = '';
+        if (objIdNum > 0) {
+            if (!objIdRemap[objIdNum]) objIdRemap[objIdNum] = 'obj_' + (++remapCounter);
+            fullObjId = objIdRemap[objIdNum];
+        }
+
+        const needsPath = ASSET_MAP[assetIdx] && ASSET_MAP[assetIdx].includes('/');
+        const t = needsPath ? createTile(x, y, z, '', src) : createTile(x, y, z, type);
+        t.style.opacity = visible ? '1' : '0';
+        if (fullObjId) t.setAttribute('data-obj-id', fullObjId);
+    }
+
+    currentIslandCols = cols;
+    currentIslandRows = rows;
+    setClimate(CLIMATE_MAP[climateIdx] || 'off');
+    setTimp(TIMP_MAP[timpIdx] || 'zi');
+    saveState(); updateMinimap(); showCodeBar('');
+    hotbarSound.currentTime = 0; hotbarSound.play().catch(e => {});
+    return true;
+}
+
+function _loadIslandCodeV1(b64) {
+    // Legacy v1 format — unchanged for backward compatibility
+    const bytes = base64urlToBytes(b64);
+    const br = makeBitReader(bytes);
+
+    const cols         = br.read(4);
+    const rows         = br.read(4);
+    const overlayCount = br.read(8);
+    const climateIdx   = br.read(2);
+    const timpIdx      = br.read(2);
+    br.read(4);
+
+    mapContainer.innerHTML = '';
+
+    for (let y = 0; y < rows; y++) {
+        for (let x = 0; x < cols; x++) {
+            const assetIdx = br.read(5);
+            const visible  = br.read(1);
+            const type = assetIdxToType(assetIdx);
+            const t = createTile(x, y, 0, type);
+            t.style.opacity = visible ? '1' : '0';
+        }
+    }
+
+    const objIdRemap = {};
+    let remapCounter = 0;
+    for (let i = 0; i < overlayCount; i++) {
+        const x       = br.read(4);
+        const y       = br.read(4);
+        const z       = br.read(4);
+        const assetHi = br.read(1);
+        const objHi   = br.read(3);
+        const assetLo = br.read(4);
+        const objLo   = br.read(3);
+        const visible = br.read(1);
+
+        const assetIdx = (assetHi << 4) | assetLo;
+        const objIdNum = (objHi << 3) | objLo;
+        const type = assetIdxToType(assetIdx);
+        const src  = assetIdxToSrc(assetIdx);
+        if (!src) continue;
+
+        let fullObjId = '';
+        if (objIdNum > 0) {
+            if (!objIdRemap[objIdNum]) objIdRemap[objIdNum] = 'obj_' + (++remapCounter);
+            fullObjId = objIdRemap[objIdNum];
+        }
+
+        const needsPath = ASSET_MAP[assetIdx] && ASSET_MAP[assetIdx].includes('/');
+        const t = needsPath ? createTile(x, y, z, '', src) : createTile(x, y, z, type);
+        t.style.opacity = visible ? '1' : '0';
+        if (fullObjId) t.setAttribute('data-obj-id', fullObjId);
+    }
+
+    currentIslandCols = cols;
+    currentIslandRows = rows;
+    setClimate(CLIMATE_MAP[climateIdx] || 'off');
+    setTimp(TIMP_MAP[timpIdx] || 'zi');
+    saveState(); updateMinimap(); showCodeBar('');
+    hotbarSound.currentTime = 0; hotbarSound.play().catch(e => {});
+    return true;
 }
 
 function saveIslandAsPNG() { openSavePopup(); }

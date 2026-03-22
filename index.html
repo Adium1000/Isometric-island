@@ -628,6 +628,9 @@
 
     <script src="game.js" defer></script>
 
+<!-- ═══════════════════════════════════════════════════ -->
+<!--  COMMUNITY MAPS POPUP                               -->
+<!-- ═══════════════════════════════════════════════════ -->
 <div id="community-overlay" onclick="if(event.target===this)closeCommunityPopup()">
     <div id="community-wrapper" onclick="event.stopPropagation()">
         <button id="community-close-btn" onclick="closeCommunityPopup()">&#10005;</button>
@@ -665,6 +668,9 @@
     </div>
 </div>
 
+<!-- ═══════════════════════════════════════════════════ -->
+<!--  FIREBASE + COMMUNITY LOGIC                         -->
+<!-- ═══════════════════════════════════════════════════ -->
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
 import { getAuth, signInWithPopup, GoogleAuthProvider, signOut, onAuthStateChanged }
@@ -688,6 +694,7 @@ const db       = getFirestore(app);
 const provider = new GoogleAuthProvider();
 let currentUser = null;
 
+// ── Auth state ──────────────────────────────────────────
 onAuthStateChanged(auth, user => {
     currentUser = user;
     const btn  = document.getElementById('cm-auth-btn');
@@ -704,7 +711,7 @@ onAuthStateChanged(auth, user => {
     }
 });
 
-
+// ── Login ───────────────────────────────────────────────
 window.cmLogin = async () => {
     try { 
         const result = await signInWithPopup(auth, provider);
@@ -717,6 +724,7 @@ window.cmLogin = async () => {
     }
 };
 
+// ── Conectare cu game.js ────────────────────────────────
 window.getIslandData = () => {
     if (typeof generateIslandCode === 'function') {
         const code = generateIslandCode();
@@ -731,11 +739,13 @@ window.loadIslandFromData = (data) => {
     }
 };
 
+// ── Get IP ──────────────────────────────────────────────
 async function getUserIP() {
     try { const r = await fetch('https://api.ipify.org?format=json'); const d = await r.json(); return d.ip; }
     catch { return 'unknown'; }
 }
 
+// ── Save map ────────────────────────────────────────────
 window.cmSaveMap = async () => {
     const status = document.getElementById('cm-save-status');
     if (!currentUser) {
@@ -752,6 +762,7 @@ window.cmSaveMap = async () => {
         if (banDoc.exists()) { status.style.color='#ff8888'; status.textContent='Cont banat!'; return; }
     } catch(e) {}
 
+    // Ia datele insulei din game.js
     const islandData = window.getIslandData ? window.getIslandData() : null;
     if (!islandData || !islandData.code) {
         status.style.color='#ff8888'; status.textContent='Insula e goala!'; return;
@@ -778,6 +789,7 @@ window.cmSaveMap = async () => {
     }
 };
 
+// ── Load maps list ──────────────────────────────────────
 async function cmLoadMaps() {
     const list = document.getElementById('cm-maps-list');
     list.innerHTML = '<div class="cm-loading">SE ÎNCARCĂ...</div>';
@@ -798,7 +810,7 @@ async function cmLoadMaps() {
                     <div class="cm-map-author">de ${esc(m.authorName)}</div>
                 </div>
                 <div class="cm-map-actions">
-                    <button class="btn-load" onclick="cmLoadMapData(${JSON.stringify(JSON.stringify(m.data))})">ÎNCARCĂ</button>
+                    <button class="btn-load" onclick="cmLoadMapData(this.dataset.mapdata)" data-mapdata="${esc(m.data)}">ÎNCARCĂ</button>
                     ${currentUser && currentUser.uid === m.authorUID
                         ? `<button class="btn-danger" onclick="cmDeleteMap('${m.id}')" style="padding:5px 8px;font-size:6px;">✕</button>`
                         : ''}
@@ -809,16 +821,20 @@ async function cmLoadMaps() {
     }
 }
 
-
+// ── Delete own map ──────────────────────────────────────
 window.cmDeleteMap = async (id) => {
     if (!confirm('Ștergi această hartă?')) return;
     await deleteDoc(doc(db, 'community_maps', id));
     cmLoadMaps();
 };
 
+// ── Load map into game ──────────────────────────────────
 window.cmLoadMapData = (dataStr) => {
     try {
-        const data = JSON.parse(dataStr);
+        // m.data is already JSON.stringify(islandData), so parse once to get {code:"..."}
+        // If result is still a string (double-encoded), parse again
+        let data = JSON.parse(dataStr);
+        if (typeof data === 'string') data = JSON.parse(data);
         if (window.loadIslandFromData) {
             window.loadIslandFromData(data);
             closeCommunityPopup();
