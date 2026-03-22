@@ -374,6 +374,12 @@ Here are a few rule quoted from readme before publishing maps
 ![devlog28](<GithubPreview/Devlogs (Flavortown)/Screenshot 2026-03-22 154051.png>)
 
 ---
+**Devlog 29**
+Added icons to File, Settings, Graphics, and Pointer popups, and optimized GUI colors
+
+![Devlog 29](<GithubPreview/Devlogs (Flavortown)/Screenshot 2026-03-22 180338.png>)
+
+---
 End 
 
 ![yayyy](https://emoji.slack-edge.com/T09V59WQY1E/yayayayayay/203666b7424ee7a7.gif)
