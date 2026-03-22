@@ -2087,11 +2087,11 @@ body { transition: background-color 1.5s ease; }
 
 #community-wrapper {
     position: relative;
-    transform: scale(1.15) translateY(30px);
+    transform: scale(1.0) translateY(30px);
     transition: transform 0.28s cubic-bezier(0.34,1.56,0.64,1);
 }
 #community-overlay.popup-visible #community-wrapper {
-    transform: scale(1.3) translateY(0);
+    transform: scale(1.0) translateY(0);
 }
 
 #community-close-btn {
@@ -2119,26 +2119,35 @@ body { transition: background-color 1.5s ease; }
 #community-close-btn:hover { filter: brightness(1.3); transform: scale(1.1); }
 #community-close-btn:active { transform: scale(0.9); }
 
+/* Browse tab: fixed tall popup; Upload tab: shrinks to content */
 #community-popup {
     background: var(--gui-bg);
     border: 4px solid var(--gui-border);
     box-shadow: 6px 6px 0 var(--gui-shadow);
-    padding: 18px 22px 16px 22px;
-    width: min(500px, 92vw);
-    max-height: 80vh;
+    padding: 26px 34px 24px 34px;
+    width: min(700px, 94vw);
+    max-height: min(660px, 88vh);
     display: flex;
     flex-direction: column;
     gap: 0;
     font-family: 'Press Start 2P', cursive;
     image-rendering: pixelated;
     overflow: hidden;
+    transition: max-height 0.4s cubic-bezier(0.4, 0, 0.2, 1),
+                padding    0.4s cubic-bezier(0.4, 0, 0.2, 1);
 }
+/* When Upload tab is active, popup shrinks — animate via max-height */
+#community-popup.cm-upload-active {
+    max-height: 380px;
+}
+
 #community-popup h2 {
-    margin: 0 0 14px 0;
+    margin: 0 0 16px 0;
     color: var(--gui-text);
-    font-size: 10px;
+    font-size: 13px;
     text-shadow: 2px 2px var(--gui-title-sh);
     letter-spacing: 1px;
+    text-align: center;
 }
 
 /* Auth bar */
@@ -2147,13 +2156,13 @@ body { transition: background-color 1.5s ease; }
     align-items: center;
     justify-content: space-between;
     gap: 8px;
-    padding: 8px 0;
+    padding: 10px 0;
     border-top: 2px solid var(--gui-divider);
     border-bottom: 2px solid var(--gui-divider);
-    margin-bottom: 10px;
+    margin-bottom: 12px;
 }
 #cm-user-info {
-    font-size: 6px;
+    font-size: 8px;
     color: #ffb347;
     flex: 1;
     overflow: hidden;
@@ -2165,8 +2174,8 @@ body { transition: background-color 1.5s ease; }
     border: 2px solid #2a5a9e;
     color: #a0d4ff;
     font-family: 'Press Start 2P', monospace;
-    font-size: 6px;
-    padding: 6px 10px;
+    font-size: 8px;
+    padding: 7px 12px;
     cursor: pointer;
     white-space: nowrap;
     clip-path: polygon(0% 3px, 3px 3px, 3px 0%, calc(100% - 3px) 0%, calc(100% - 3px) 3px, 100% 3px, 100% calc(100% - 3px), calc(100% - 3px) calc(100% - 3px), calc(100% - 3px) 100%, 3px 100%, 3px calc(100% - 3px), 0% calc(100% - 3px));
@@ -2177,8 +2186,8 @@ body { transition: background-color 1.5s ease; }
 /* Tabs */
 #cm-tabs {
     display: flex;
-    gap: 6px;
-    margin-bottom: 10px;
+    gap: 7px;
+    margin-bottom: 12px;
 }
 .cm-tab {
     flex: 1;
@@ -2186,8 +2195,8 @@ body { transition: background-color 1.5s ease; }
     border: 2px solid var(--gui-divider);
     color: var(--gui-text-dim, #888);
     font-family: 'Press Start 2P', monospace;
-    font-size: 7px;
-    padding: 8px;
+    font-size: 9px;
+    padding: 10px;
     cursor: pointer;
     clip-path: polygon(0% 3px, 3px 3px, 3px 0%, calc(100% - 3px) 0%, calc(100% - 3px) 3px, 100% 3px, 100% calc(100% - 3px), calc(100% - 3px) calc(100% - 3px), calc(100% - 3px) 100%, 3px 100%, 3px calc(100% - 3px), 0% calc(100% - 3px));
     transition: filter 0.1s;
@@ -2199,16 +2208,39 @@ body { transition: background-color 1.5s ease; }
     border-color: var(--gui-accent, #ffdf80);
 }
 
-/* Tab content */
-.cm-tab-content {
+/* Browse tab content: flex stretches to fill popup height */
+#cm-tab-browse.cm-tab-content {
     flex: 1;
-    overflow-y: auto;
+    overflow: hidden;
     display: flex;
     flex-direction: column;
-    gap: 8px;
+    gap: 10px;
     min-height: 0;
-    max-height: 42vh;
 }
+
+/* Upload tab content: does NOT flex-grow, just wraps its children */
+#cm-tab-upload.cm-tab-content {
+    flex: 0 0 auto;
+    overflow: visible;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+/* Maps list — scrollbar always visible, matches other popups */
+#cm-maps-list {
+    flex: 1;
+    overflow-y: scroll;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    min-height: 0;
+    padding-right: 6px;
+}
+#cm-maps-list::-webkit-scrollbar { width: 8px; height: 8px; }
+#cm-maps-list::-webkit-scrollbar-track { background: var(--gui-bg-dark); border: 1px solid var(--gui-border); }
+#cm-maps-list::-webkit-scrollbar-thumb { background: var(--gui-bg); border: 1px solid var(--gui-accent); image-rendering: pixelated; }
+#cm-maps-list::-webkit-scrollbar-thumb:hover { background: var(--gui-bg); }
 
 /* All buttons inside community popup get clip-path + base style */
 #community-popup button {
@@ -2219,11 +2251,11 @@ body { transition: background-color 1.5s ease; }
 }
 #community-popup button:active { transform: scale(0.93); }
 
-/* popup-section-title fix (global — not scoped only to save/settings) */
+/* popup-section-title fix */
 #community-popup .popup-section-title {
     color: var(--gui-accent, #ffdf80);
-    font-size: 8px;
-    margin-bottom: 6px;
+    font-size: 11px;
+    margin-bottom: 7px;
     letter-spacing: 1px;
 }
 
@@ -2231,49 +2263,50 @@ body { transition: background-color 1.5s ease; }
 .cm-map-card {
     background: var(--gui-popup-section, #241a00);
     border: 2px solid var(--gui-divider);
-    padding: 10px 12px;
+    padding: 14px 16px;
     display: flex;
     align-items: center;
     justify-content: space-between;
-    gap: 8px;
+    gap: 10px;
+    flex-shrink: 0;
 }
 .cm-map-info { flex: 1; overflow: hidden; }
 .cm-map-name {
-    font-size: 8px;
+    font-size: 10px;
     color: var(--gui-text, #ffdf80);
-    margin-bottom: 4px;
+    margin-bottom: 6px;
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
 }
 .cm-map-author {
-    font-size: 6px;
+    font-size: 8px;
     color: #888;
 }
 .cm-map-actions {
     display: flex;
-    gap: 6px;
+    gap: 7px;
     flex-shrink: 0;
     align-items: center;
 }
-/* ÎNCARCĂ button in browse tab — matches btn-load but with clip-path */
+/* ÎNCARCĂ button */
 .cm-map-actions .btn-load {
-    font-size: 6px;
-    padding: 6px 10px;
+    font-size: 8px;
+    padding: 8px 14px;
     flex: unset;
     border: 3px solid #0d3a50;
 }
-/* Delete (✕) button in browse tab */
+/* Delete (✕) button */
 .cm-map-actions .btn-danger {
     width: auto;
-    padding: 6px 8px;
-    font-size: 6px;
+    padding: 7px 10px;
+    font-size: 8px;
 }
 .cm-loading {
     text-align: center;
     color: #666;
-    font-size: 7px;
-    padding: 30px;
+    font-size: 9px;
+    padding: 36px;
     font-family: 'Press Start 2P', monospace;
 }
 
@@ -2285,30 +2318,31 @@ body { transition: background-color 1.5s ease; }
     border: 2px solid var(--gui-divider);
     color: var(--gui-text, #ffdf80);
     font-family: 'Press Start 2P', monospace;
-    font-size: 8px;
-    padding: 8px;
+    font-size: 9px;
+    padding: 10px;
     outline: none;
-    margin-bottom: 6px;
+    margin-bottom: 7px;
 }
 .cm-hint {
-    font-size: 6px;
+    font-size: 7px;
     color: #888;
     font-family: 'Press Start 2P', monospace;
-    margin-bottom: 4px;
+    margin-bottom: 5px;
 }
 #cm-save-status {
-    font-size: 7px;
+    font-size: 8px;
     text-align: center;
-    min-height: 16px;
-    margin-top: 4px;
+    min-height: 18px;
+    margin-top: 5px;
     font-family: 'Press Start 2P', monospace;
     color: var(--gui-accent, #ffdf80);
 }
-/* Save button in upload tab */
+/* Publish button — smaller, not full width */
 #cm-tab-upload .btn-qr {
-    width: 100%;
+    width: auto;
+    align-self: flex-start;
     box-sizing: border-box;
-    margin-top: 4px;
-    padding: 10px 16px;
+    margin-top: 5px;
+    padding: 9px 16px;
     font-size: 8px;
 }

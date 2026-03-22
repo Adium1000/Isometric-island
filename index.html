@@ -871,12 +871,15 @@ window.cmSwitchTab = (tab) => {
     const upload = document.getElementById('cm-tab-upload');
     const btnB   = document.getElementById('cm-tab-browse-btn');
     const btnU   = document.getElementById('cm-tab-upload-btn');
+    const popup  = document.getElementById('community-popup');
     if (tab === 'browse') {
         browse.style.display = 'flex'; upload.style.display = 'none';
         btnB.classList.add('cm-tab-active'); btnU.classList.remove('cm-tab-active');
+        if (popup) popup.classList.remove('cm-upload-active');
     } else {
         browse.style.display = 'none'; upload.style.display = 'flex';
         btnU.classList.add('cm-tab-active'); btnB.classList.remove('cm-tab-active');
+        if (popup) popup.classList.add('cm-upload-active');
     }
 };
 
