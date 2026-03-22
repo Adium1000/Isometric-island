@@ -2058,3 +2058,257 @@ body {
 
 body { transition: background-color 1.5s ease; }
 * { transition: background-color 0.35s ease, border-color 0.35s ease, color 0.35s ease, box-shadow 0.35s ease; }
+
+/* ═══════════════════════════════════════════════════════ */
+/* COMMUNITY MAPS POPUP                                    */
+/* ═══════════════════════════════════════════════════════ */
+#community-overlay {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.65);
+    z-index: 9998;
+    backdrop-filter: blur(3px);
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    transition: opacity 0.28s ease;
+}
+#community-overlay.popup-visible { opacity: 1; display: flex; }
+
+/* Ensure inputs/buttons inside community popup are fully interactive */
+#community-popup input,
+#community-popup button,
+#community-popup textarea {
+    pointer-events: auto;
+    position: relative;
+    z-index: 1;
+}
+
+#community-wrapper {
+    position: relative;
+    transform: scale(1.15) translateY(30px);
+    transition: transform 0.28s cubic-bezier(0.34,1.56,0.64,1);
+}
+#community-overlay.popup-visible #community-wrapper {
+    transform: scale(1.3) translateY(0);
+}
+
+#community-close-btn {
+    position: absolute;
+    cursor: pointer;
+    top: -18px;
+    right: -18px;
+    width: 36px;
+    height: 36px;
+    background: #7a2020;
+    border: 4px solid var(--gui-border);
+    box-shadow: 3px 3px 0 #3b1010;
+    color: #fff;
+    font-family: 'Press Start 2P', cursive;
+    font-size: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: transform 0.1s, filter 0.1s;
+    z-index: 10;
+    padding: 0;
+    line-height: 1;
+    clip-path: polygon(0% 4px, 4px 4px, 4px 0%, calc(100% - 4px) 0%, calc(100% - 4px) 4px, 100% 4px, 100% calc(100% - 4px), calc(100% - 4px) calc(100% - 4px), calc(100% - 4px) 100%, 4px 100%, 4px calc(100% - 4px), 0% calc(100% - 4px));
+}
+#community-close-btn:hover { filter: brightness(1.3); transform: scale(1.1); }
+#community-close-btn:active { transform: scale(0.9); }
+
+#community-popup {
+    background: var(--gui-bg);
+    border: 4px solid var(--gui-border);
+    box-shadow: 6px 6px 0 var(--gui-shadow);
+    padding: 18px 22px 16px 22px;
+    width: min(500px, 92vw);
+    max-height: 80vh;
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+    font-family: 'Press Start 2P', cursive;
+    image-rendering: pixelated;
+    overflow: hidden;
+}
+#community-popup h2 {
+    margin: 0 0 14px 0;
+    color: var(--gui-text);
+    font-size: 10px;
+    text-shadow: 2px 2px var(--gui-title-sh);
+    letter-spacing: 1px;
+}
+
+/* Auth bar */
+#cm-auth-bar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
+    padding: 8px 0;
+    border-top: 2px solid var(--gui-divider);
+    border-bottom: 2px solid var(--gui-divider);
+    margin-bottom: 10px;
+}
+#cm-user-info {
+    font-size: 6px;
+    color: #ffb347;
+    flex: 1;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+#cm-auth-btn {
+    background: #1a3a6a;
+    border: 2px solid #2a5a9e;
+    color: #a0d4ff;
+    font-family: 'Press Start 2P', monospace;
+    font-size: 6px;
+    padding: 6px 10px;
+    cursor: pointer;
+    white-space: nowrap;
+    clip-path: polygon(0% 3px, 3px 3px, 3px 0%, calc(100% - 3px) 0%, calc(100% - 3px) 3px, 100% 3px, 100% calc(100% - 3px), calc(100% - 3px) calc(100% - 3px), calc(100% - 3px) 100%, 3px 100%, 3px calc(100% - 3px), 0% calc(100% - 3px));
+    transition: filter 0.1s;
+}
+#cm-auth-btn:hover { filter: brightness(1.2); }
+
+/* Tabs */
+#cm-tabs {
+    display: flex;
+    gap: 6px;
+    margin-bottom: 10px;
+}
+.cm-tab {
+    flex: 1;
+    background: var(--gui-btn-bg, #3a2800);
+    border: 2px solid var(--gui-divider);
+    color: var(--gui-text-dim, #888);
+    font-family: 'Press Start 2P', monospace;
+    font-size: 7px;
+    padding: 8px;
+    cursor: pointer;
+    clip-path: polygon(0% 3px, 3px 3px, 3px 0%, calc(100% - 3px) 0%, calc(100% - 3px) 3px, 100% 3px, 100% calc(100% - 3px), calc(100% - 3px) calc(100% - 3px), calc(100% - 3px) 100%, 3px 100%, 3px calc(100% - 3px), 0% calc(100% - 3px));
+    transition: filter 0.1s;
+}
+.cm-tab:hover { filter: brightness(1.2); }
+.cm-tab-active {
+    background: var(--gui-border);
+    color: var(--gui-text, #ffdf80);
+    border-color: var(--gui-accent, #ffdf80);
+}
+
+/* Tab content */
+.cm-tab-content {
+    flex: 1;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    min-height: 0;
+    max-height: 42vh;
+}
+
+/* All buttons inside community popup get clip-path + base style */
+#community-popup button {
+    font-family: 'Press Start 2P', cursive;
+    cursor: pointer;
+    transition: transform 0.1s, filter 0.1s;
+    clip-path: polygon(0% 3px, 3px 3px, 3px 0%, calc(100% - 3px) 0%, calc(100% - 3px) 3px, 100% 3px, 100% calc(100% - 3px), calc(100% - 3px) calc(100% - 3px), calc(100% - 3px) 100%, 3px 100%, 3px calc(100% - 3px), 0% calc(100% - 3px));
+}
+#community-popup button:active { transform: scale(0.93); }
+
+/* popup-section-title fix (global — not scoped only to save/settings) */
+#community-popup .popup-section-title {
+    color: var(--gui-accent, #ffdf80);
+    font-size: 8px;
+    margin-bottom: 6px;
+    letter-spacing: 1px;
+}
+
+/* Map cards */
+.cm-map-card {
+    background: var(--gui-popup-section, #241a00);
+    border: 2px solid var(--gui-divider);
+    padding: 10px 12px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
+}
+.cm-map-info { flex: 1; overflow: hidden; }
+.cm-map-name {
+    font-size: 8px;
+    color: var(--gui-text, #ffdf80);
+    margin-bottom: 4px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+.cm-map-author {
+    font-size: 6px;
+    color: #888;
+}
+.cm-map-actions {
+    display: flex;
+    gap: 6px;
+    flex-shrink: 0;
+    align-items: center;
+}
+/* ÎNCARCĂ button in browse tab — matches btn-load but with clip-path */
+.cm-map-actions .btn-load {
+    font-size: 6px;
+    padding: 6px 10px;
+    flex: unset;
+    border: 3px solid #0d3a50;
+}
+/* Delete (✕) button in browse tab */
+.cm-map-actions .btn-danger {
+    width: auto;
+    padding: 6px 8px;
+    font-size: 6px;
+}
+.cm-loading {
+    text-align: center;
+    color: #666;
+    font-size: 7px;
+    padding: 30px;
+    font-family: 'Press Start 2P', monospace;
+}
+
+/* Upload tab extras */
+#cm-map-name {
+    width: 100%;
+    box-sizing: border-box;
+    background: #0d0d00;
+    border: 2px solid var(--gui-divider);
+    color: var(--gui-text, #ffdf80);
+    font-family: 'Press Start 2P', monospace;
+    font-size: 8px;
+    padding: 8px;
+    outline: none;
+    margin-bottom: 6px;
+}
+.cm-hint {
+    font-size: 6px;
+    color: #888;
+    font-family: 'Press Start 2P', monospace;
+    margin-bottom: 4px;
+}
+#cm-save-status {
+    font-size: 7px;
+    text-align: center;
+    min-height: 16px;
+    margin-top: 4px;
+    font-family: 'Press Start 2P', monospace;
+    color: var(--gui-accent, #ffdf80);
+}
+/* Save button in upload tab */
+#cm-tab-upload .btn-qr {
+    width: 100%;
+    box-sizing: border-box;
+    margin-top: 4px;
+    padding: 10px 16px;
+    font-size: 8px;
+}
