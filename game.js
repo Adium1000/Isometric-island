@@ -72,17 +72,19 @@ function hideName() { nameDisplay.style.opacity = "0"; }
 
 const hotbarSound = new Audio('./Assets/Audio/hotbar.wav');
 
-let _placeSound, _grassSound, _pclsSound, _bgMusic;
-function getPlaceSound()  { if (!_placeSound)  { _placeSound  = new Audio('./Assets/Audio/place.wav'); } return _placeSound; }
-function getGrassSound()  { if (!_grassSound)  { _grassSound  = new Audio('./Assets/Audio/grass.wav'); } return _grassSound; }
-function getPclsSound()   { if (!_pclsSound)   { _pclsSound   = new Audio('./Assets/Audio/pcls.wav');  } return _pclsSound; }
+let _placeSound, _grassSound, _pclsSound, _bgMusic, _eraserSound;
+function getPlaceSound()  { if (!_placeSound)  { _placeSound  = new Audio('./Assets/Audio/place.wav');  } return _placeSound; }
+function getGrassSound()  { if (!_grassSound)  { _grassSound  = new Audio('./Assets/Audio/grass.wav');  } return _grassSound; }
+function getPclsSound()   { if (!_pclsSound)   { _pclsSound   = new Audio('./Assets/Audio/pcls.wav');   } return _pclsSound; }
+function getEraserSound() { if (!_eraserSound) { _eraserSound = new Audio('./Assets/Audio/eraser.wav'); } return _eraserSound; }
 function getBgMusic()     {
     if (!_bgMusic) { _bgMusic = new Audio('./Assets/Audio/BG.wav'); _bgMusic.loop = true; }
     return _bgMusic;
 }
-const placeSound = { get currentTime() { return getPlaceSound().currentTime; }, set currentTime(v) { getPlaceSound().currentTime = v; }, play() { return getPlaceSound().play(); } };
-const grassSound = { get currentTime() { return getGrassSound().currentTime; }, set currentTime(v) { getGrassSound().currentTime = v; }, play() { return getGrassSound().play(); } };
-const pclsSound  = { get currentTime() { return getPclsSound().currentTime;  }, set currentTime(v) { getPclsSound().currentTime  = v; }, play() { return getPclsSound().play();  } };
+const placeSound  = { get currentTime() { return getPlaceSound().currentTime;  }, set currentTime(v) { getPlaceSound().currentTime  = v; }, play() { return getPlaceSound().play();  } };
+const grassSound  = { get currentTime() { return getGrassSound().currentTime;  }, set currentTime(v) { getGrassSound().currentTime  = v; }, play() { return getGrassSound().play();  } };
+const pclsSound   = { get currentTime() { return getPclsSound().currentTime;   }, set currentTime(v) { getPclsSound().currentTime   = v; }, play() { return getPclsSound().play();   } };
+const eraserSound = { get currentTime() { return getEraserSound().currentTime; }, set currentTime(v) { getEraserSound().currentTime = v; }, play() { return getEraserSound().play(); } };
 const bgMusic    = { get loop()        { return getBgMusic().loop; },           set loop(v)        { getBgMusic().loop = v; },
                      get src()         { return getBgMusic().src; },
                      play()  { return getBgMusic().play();  },
@@ -118,7 +120,7 @@ window.addEventListener('keydown', (e) => {
     } 
     else if (key === 'p') { switchPage(currentPage === 1 ? 2 : 1); } 
     else if (key === 'm') { openMusicPopup(); } 
-    else if (key === 'f') { openFloatPopup(); }
+    else if (key === 'f') { toggleFloat(); }
 });
 
 function playMusic() { bgMusic.play().catch(e => {}); }
@@ -238,53 +240,12 @@ function _syncMusicPopupSwitch() {
     sw.classList.toggle('on', isMusicPlaying);
 }
 
-let currentFloatMode = 'off';
-
-function openFloatPopup() {
-    const overlay = document.getElementById('float-popup-overlay');
-    if (!overlay) return;
-    _syncFloatPopupCards();
-    overlay.style.display = 'flex';
-    requestAnimationFrame(() => requestAnimationFrame(() => overlay.classList.add('popup-visible')));
-    hotbarSound.currentTime = 0; hotbarSound.play().catch(e => {});
-}
-
-function closeFloatPopup() {
-    const overlay = document.getElementById('float-popup-overlay');
-    if (!overlay) return;
-    overlay.classList.remove('popup-visible');
-    setTimeout(() => { overlay.style.display = 'none'; }, 300);
-    hotbarSound.currentTime = 0; hotbarSound.play().catch(e => {});
-}
-
-function _syncFloatPopupCards() {
-    ['off','updown','leftright','spin','jiggle'].forEach(id => {
-        const card = document.getElementById('fmode-' + id);
-        if (card) card.classList.toggle('active', currentFloatMode === id);
-    });
-}
-
-function setFloatMode(mode) {
-    currentFloatMode = mode;
-    isFloating = (mode !== 'off');
-    map.classList.remove('floating-island', 'floating-island-lr', 'floating-island-spin', 'floating-island-jiggle');
-    if (mode === 'updown')    map.classList.add('floating-island');
-    else if (mode === 'leftright') map.classList.add('floating-island-lr');
-    else if (mode === 'spin')      map.classList.add('floating-island-spin');
-    else if (mode === 'jiggle')    map.classList.add('floating-island-jiggle');
+function toggleFloat() {
+    isFloating = !isFloating;
+    map.classList.toggle('floating-island', isFloating);
     const folder = getGUIFolder(currentGUITheme);
     floatBtn.src = isFloating ? folder + 'floaton.png' : folder + 'floatoff.png';
-    _syncFloatPopupCards();
-    hotbarSound.currentTime = 0; hotbarSound.play().catch(e => {});
     applyZoom();
-}
-
-function toggleFloat() {
-    if (currentFloatMode === 'off') {
-        openFloatPopup();
-    } else {
-        setFloatMode('off');
-    }
 }
 
 let shadowsEnabled = true;
@@ -1271,7 +1232,7 @@ function handleInteraction(tile, x, y, z) {
         tile.removeAttribute('data-obj-id');
     }
     const grassBlocks = ['dirt', 'flovers', 'rock', 'dirt2', 'crops', 'tree'];
-    const soundToPlay = grassBlocks.includes(selectedBlockType) ? grassSound : placeSound;
+    const soundToPlay = selectedBlockType === 'eraser' ? eraserSound : grassBlocks.includes(selectedBlockType) ? grassSound : placeSound;
     soundToPlay.currentTime = 0; soundToPlay.play().catch(e => {});
     if (!isDrawing) { saveState(); }
 }
@@ -1318,6 +1279,47 @@ function startInfiniteLeaves(x, y, objId) {
 const initFrag = document.createDocumentFragment();
 for(let y=0; y<8; y++) for(let x=0; x<8; x++) createTile(x, y, 0, 'dirt', null, initFrag);
 mapContainer.appendChild(initFrag);
+
+// --- Minimap hold-to-zoom ---
+(function initMinimapZoom() {
+    const mc = document.getElementById('minimap-container');
+    if (!mc) return;
+    let _savedZoom = null;
+    let _zoomRaf   = null;
+
+    function animateTo(target, onDone) {
+        cancelAnimationFrame(_zoomRaf);
+        function step() {
+            const diff = target - currentZoomPercent;
+            if (Math.abs(diff) < 0.005) {
+                currentZoomPercent = target;
+                applyZoom();
+                if (onDone) onDone();
+                return;
+            }
+            currentZoomPercent += diff * 0.08;
+            applyZoom();
+            _zoomRaf = requestAnimationFrame(step);
+        }
+        _zoomRaf = requestAnimationFrame(step);
+    }
+
+    function onPress() {
+        _savedZoom = currentZoomPercent;
+        animateTo(1.0);
+    }
+    function onRelease() {
+        if (_savedZoom === null) return;
+        const target = _savedZoom;
+        _savedZoom = null;
+        animateTo(target);
+    }
+
+    mc.addEventListener('mousedown',  onPress);
+    mc.addEventListener('touchstart', onPress,   { passive: true });
+    window.addEventListener('mouseup',  onRelease);
+    window.addEventListener('touchend', onRelease);
+})();
 
 function applyZoom() {
     zoomDot.style.left = (currentZoomPercent * 100) + "%";
@@ -2835,8 +2837,7 @@ window._blockTooltipsEnabled = localStorage.getItem('blockTooltips') !== 'off';
             '#save-popup-overlay, #settings-popup-overlay, #welcome-overlay, ' +
             '#qr-popup-overlay, #confirm-delete-overlay, #block-search-overlay, ' +
             '#island-biome-overlay, #mountain-biome-overlay, #pointer-settings-overlay, ' +
-            '#about-popup-overlay, #fill-overlay, #graphics-settings-overlay, ' +
-            '#float-popup-overlay'
+            '#about-popup-overlay, #fill-overlay, #graphics-settings-overlay'
         );
         for (var i = 0; i < overlays.length; i++) {
             var s = overlays[i].style.display;

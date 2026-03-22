@@ -1,12 +1,13 @@
 ![Banner](GithubPreview/Banners/todolist.png)
 # Here is my todo list where I list ideeas to remember them for later, take a look!
 
--Minimap moove
+
 -MoreBlocks
 -optimization banner
-- float options
 
-What I added:
+
+What I added:-
+- Minimap moove
 - about menu
 - cursor tooltips
 - add generate popup

@@ -13,6 +13,7 @@ const PRECACHE_ASSETS = [
     './game.js',
     './Assets/Audio/place.wav',
     './Assets/Audio/hotbar.wav',
+    './Assets/Audio/eraser.wav',
     './Assets/GUI/hotbar.png',
     './Assets/GUI/selector.png',
     './Assets/GUI/zoombar.png',
