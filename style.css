@@ -12,6 +12,7 @@
  
 :root {
     --gui-bg:        #8b5e34;
+    --gui-bg-light:  #8b5e34;
     --gui-bg-dark:   #3b2007;
     --gui-border:    #523519;
     --gui-shadow:    #523519;
@@ -28,36 +29,38 @@
 }
 
 body.gui-theme-blue {
-    --gui-bg:        #1a3a6a;
+    --gui-bg:        #1e4070;
+    --gui-bg-light:  #2a5490;
     --gui-bg-dark:   #0d2040;
-    --gui-border:    #2a5aaa;
-    --gui-shadow:    #0d2040;
+    --gui-border:    #0a1830;
+    --gui-shadow:    #0a1830;
     --gui-accent:    #80c8ff;
     --gui-text:      #e8f4ff;
     --gui-text-dim:  #5a8ab0;
     --gui-active:    #1e4f8a;
-    --gui-divider:   #2a5aaa;
+    --gui-divider:   #0a1830;
     --gui-input-bg:  #0d2040;
     --gui-close-bg:  #7a2020;
     --gui-close-sh:  #3b1010;
-    --gui-title-sh:  #0d2040;
+    --gui-title-sh:  #0a1830;
     --gui-section-c: #80c8ff;
 }
 
 body.gui-theme-green {
-    --gui-bg:        #2a5a1a;
+    --gui-bg:        #2e6020;
+    --gui-bg-light:  #3e7a2a;
     --gui-bg-dark:   #0d3007;
-    --gui-border:    #4a8a2a;
-    --gui-shadow:    #0d3007;
+    --gui-border:    #091f04;
+    --gui-shadow:    #091f04;
     --gui-accent:    #a0e060;
     --gui-text:      #edffd8;
     --gui-text-dim:  #6a9a40;
     --gui-active:    #3a7020;
-    --gui-divider:   #4a8a2a;
+    --gui-divider:   #091f04;
     --gui-input-bg:  #0d3007;
     --gui-close-bg:  #7a2020;
     --gui-close-sh:  #3b1010;
-    --gui-title-sh:  #0d3007;
+    --gui-title-sh:  #091f04;
     --gui-section-c: #a0e060;
 }
 
@@ -370,7 +373,7 @@ body {
 #popup-close-btn:hover { filter: brightness(1.3); transform: scale(1.1); }
 #popup-close-btn:active { transform: scale(0.9); }
 #save-popup {
-    background: var(--gui-bg);
+    background: var(--gui-bg-light);
     border: 4px solid var(--gui-border);
     box-shadow: 6px 6px 0 var(--gui-shadow);
     padding: 16px 18px 14px 18px;
@@ -524,7 +527,7 @@ body {
 #settings-close-btn:hover { filter: brightness(1.3); transform: scale(1.1); }
 #settings-close-btn:active { transform: scale(0.9); }
 #settings-popup {
-    background: var(--gui-bg);
+    background: var(--gui-bg-light);
     border: 4px solid var(--gui-border);
     box-shadow: 6px 6px 0 var(--gui-shadow);
     padding: 16px 18px 14px 18px;
@@ -616,7 +619,7 @@ body {
 #qr-close-btn:hover { filter: brightness(1.3); transform: scale(1.1); }
 #qr-close-btn:active { transform: scale(0.9); }
 #qr-popup {
-    background: var(--gui-bg);
+    background: var(--gui-bg-light);
     border: 4px solid var(--gui-border);
     box-shadow: 6px 6px 0 var(--gui-shadow);
     padding: 20px 14px 24px 14px;
@@ -845,7 +848,7 @@ body {
 #welcome-close-btn:hover { filter: brightness(1.3); transform: scale(1.1); }
 #welcome-close-btn:active { transform: scale(0.9); }
 #welcome-popup {
-    background: var(--gui-bg); border: 4px solid var(--gui-border); box-shadow: 6px 6px 0 var(--gui-shadow);
+    background: var(--gui-bg-light); border: 4px solid var(--gui-border); box-shadow: 6px 6px 0 var(--gui-shadow);
     padding: 24px 28px 22px 28px; display: flex; flex-direction: column;
     gap: 0;
     width: min(620px, 92vw); max-height: 88vh; overflow: hidden;
@@ -1310,7 +1313,7 @@ body {
 
 #block-search-popup {
     position: relative;
-    background: var(--gui-bg);
+    background: var(--gui-bg-light);
     border: 4px solid var(--gui-border);
     box-shadow: 8px 8px 0 var(--gui-bg-dark);
     padding: 22px 22px 18px 22px;
@@ -1533,7 +1536,7 @@ body {
 
 #island-biome-popup,
 #mountain-biome-popup {
-    background: var(--gui-bg);
+    background: var(--gui-bg-light);
     border: 4px solid var(--gui-border);
     box-shadow: 6px 6px 0 var(--gui-shadow);
     padding: 18px 18px 16px 18px;
@@ -1674,7 +1677,7 @@ body {
 
 
 #pointer-settings-popup {
-    background: var(--gui-bg);
+    background: var(--gui-bg-light);
     border: 4px solid var(--gui-border);
     box-shadow: 6px 6px 0 var(--gui-shadow);
     padding: 18px 22px 16px 22px;
@@ -1910,7 +1913,7 @@ body {
 #graphics-settings-close-btn:active { transform: scale(0.9); }
 
 #graphics-settings-popup {
-    background: var(--gui-bg);
+    background: var(--gui-bg-light);
     border: 4px solid var(--gui-border);
     box-shadow: 6px 6px 0 var(--gui-shadow);
     padding: 18px 22px 16px 22px;
@@ -1980,7 +1983,7 @@ body {
 #gui-settings-close-btn:active { transform: scale(0.9); }
 
 #gui-settings-popup {
-    background: var(--gui-bg);
+    background: var(--gui-bg-light);
     border: 4px solid var(--gui-border);
     box-shadow: 6px 6px 0 var(--gui-shadow);
     padding: 18px 22px 16px 22px;
@@ -2035,8 +2038,8 @@ body {
     border: 2px solid rgba(255,255,255,0.15);
     clip-path: polygon(0% 2px, 2px 2px, 2px 0%, calc(100% - 2px) 0%, calc(100% - 2px) 2px, 100% 2px, 100% calc(100% - 2px), calc(100% - 2px) calc(100% - 2px), calc(100% - 2px) 100%, 2px 100%, 2px calc(100% - 2px), 0% calc(100% - 2px));
 }
-.gui-swatch-auto    { background: linear-gradient(135deg, var(--gui-bg) 25%, #3a7aaa 50%, #4a7a3a 75%); }
-.gui-swatch-default { background: var(--gui-bg); }
+.gui-swatch-auto    { background: linear-gradient(135deg, #9b6e3e 25%, #3a7aaa 50%, #4a7a3a 75%); }
+.gui-swatch-default { background: #9b6e3e; }
 .gui-swatch-blue    { background: #1a3a6a; }
 .gui-swatch-green   { background: #2a5a2a; }
 
@@ -2117,7 +2120,7 @@ body { transition: background-color 1.5s ease; }
 #community-close-btn:active { transform: scale(0.9); }
 
 #community-popup {
-    background: var(--gui-bg);
+    background: var(--gui-bg-light);
     border: 4px solid var(--gui-border);
     box-shadow: 6px 6px 0 var(--gui-shadow);
     padding: 26px 34px 24px 34px;
@@ -2254,7 +2257,7 @@ body { transition: background-color 1.5s ease; }
     gap: 10px;
     flex-shrink: 0;
 }
-.cm-map-info { flex: 1; overflow: hidden; }
+.cm-map-info { flex: 1; overflow: hidden; display: flex; align-items: center; gap: 8px; }
 .cm-map-name {
     font-size: 10px;
     color: var(--gui-text, #ffdf80);

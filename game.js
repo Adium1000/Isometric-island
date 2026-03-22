@@ -684,9 +684,13 @@ function updateMinimap() {
     });
 }
 
-function showToast(msg) {
+function showToast(msg, iconSrc) {
     const toast = document.getElementById('save-toast');
-    toast.innerText = msg;
+    if (iconSrc) {
+        toast.innerHTML = '<img src="' + iconSrc + '" style="width:14px;height:14px;image-rendering:pixelated;vertical-align:middle;margin-right:6px;">' + msg;
+    } else {
+        toast.innerText = msg;
+    }
     toast.classList.add('show');
     setTimeout(() => toast.classList.remove('show'), 2500);
 }
@@ -722,7 +726,7 @@ const ASSET_MAP = [
 ];
 
 const CLIMATE_MAP = ['off', 'rain', 'snow', 'wind'];
-const TIMP_MAP    = ['zi', 'apus', 'noapte'];
+const TIMP_MAP    = ['Day', 'Sunset', 'Night'];
 
 function srcToAssetIdx(srcFull) {
     if (!srcFull) return -1;
@@ -2191,7 +2195,8 @@ function setClimate(mode) {
     if (mode !== 'off') { initParticles(mode); animateWeather(mode); }
     applyGUITheme(mode);
     hotbarSound.currentTime = 0; hotbarSound.play().catch(e => {});
-    showToast(mode.toUpperCase() + '!');
+    const climateToastIcons = { off: './Assets/Icons/off.png', rain: './Assets/Icons/rainrr.png', snow: './Assets/Icons/rain.png', wind: './Assets/Icons/wind.png' };
+    showToast(mode.toUpperCase() + '!', climateToastIcons[mode]);
 }
 
 function initParticles(mode) {
@@ -2278,7 +2283,9 @@ function setTimp(mode) {
         showStars();
     }
     hotbarSound.currentTime = 0; hotbarSound.play().catch(e => {});
-    showToast(mode.toUpperCase() + '!');
+    const timpLabel = { zi: 'DAY', apus: 'SUNSET', noapte: 'NIGHT' };
+    const timpToastIcons = { zi: './Assets/Icons/day.png', apus: './Assets/Icons/resun.png', noapte: './Assets/Icons/night.png' };
+    showToast((timpLabel[mode] || mode.toUpperCase()) + '!', timpToastIcons[mode]);
 }
 
 let starsContainer = null;

@@ -133,6 +133,21 @@ Here you will find some relevant subjects and explanations about my game, includ
 - From here you can clear the island and start over
 4. Settigns 
 - Configuration tool for your island
+5. Random Islands Buttons and popus
+- Generate random islands
+6. Comunity maps
+- Publish a great map
+RULES
+- Do not replicate EXPLICIT content (when you login I have acces to your username, gmail so it will be a shame to do that)
+- Do not make bad maps or empty maps
+
+Comunity explorer
+
+![explorer](GithubPreview/Guide/c_map2.png)
+
+Map publisher
+
+![publish](GithubPreview/Guide/c_map.png)
 
 ![Mouse actions](GithubPreview/Guide/04.png)
 

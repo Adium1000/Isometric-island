@@ -53,9 +53,15 @@ i hate missspelling
 
 Devlog Sketch
 
-**Devlog 27**
-- More compatibilty for tablets: Pinch to zoom , hold to select
-- Gui colors :) : Green, Blue , Brown (default) or automatic :3, this setting can be changed in the settings menu via GUI option 
+**Devlog 28**
+
+Added support for comunity maps using google firebase:
+this will let you load maps made by other cool persons, but it will let you publish only if you login using google OAuth
+
+Here are a few rule quoted from readme before publishing maps
+- Do not replicate EXPLICIT content (when you login I have acces to your username, gmail so it will be a shame to do that)
+- Do not make bad maps or empty maps
+
 
 
 

@@ -129,8 +129,8 @@
                         <div class="popup-section-title">ISLAND CODE:</div>
                         <textarea id="popup-code-output" readonly onclick="this.select()"></textarea>
                         <div class="popup-row" style="flex-direction:column;gap:6px;margin-top:8px;">
-                            <button class="btn-qr" onclick="showQRCode()" style="width:100%;box-sizing:border-box;">SHOW QR CODE</button>
-                            <button class="btn-copy" onclick="navigator.clipboard.writeText(document.getElementById('popup-code-output').value).then(()=>showToast('Succesfully copied to clipboard!'))" style="width:100%;box-sizing:border-box;">COPY ISLAND CODE</button>
+                            <button class="btn-qr" onclick="showQRCode()" style="width:100%;box-sizing:border-box;"><img src="./Assets/Icons/qr.png" style="width:16px;height:16px;image-rendering:pixelated;vertical-align:middle;margin-right:6px;">SHOW QR CODE</button>
+                            <button class="btn-copy" onclick="navigator.clipboard.writeText(document.getElementById('popup-code-output').value).then(()=>showToast('Succesfully copied to clipboard!'))" style="width:100%;box-sizing:border-box;"><img src="./Assets/Icons/todorm.png" style="width:16px;height:16px;image-rendering:pixelated;vertical-align:middle;margin-right:6px;">COPY ISLAND CODE</button>
                         </div>
                     </div>
 
@@ -140,8 +140,8 @@
                         <div class="popup-section-title">LOAD ISLAND CODE:</div>
                         <input type="text" id="popup-code-input" placeholder="Paste your code here... ;)">
                         <div class="popup-row" style="flex-direction:column;gap:6px;">
-                            <button class="btn-paste" onclick="pasteFromClipboard()" style="width:100%;box-sizing:border-box;">PASTE FROM CLIPBOARD</button>
-                            <button class="btn-load" onclick="openLoadPopup()" style="width:100%;box-sizing:border-box;">LOAD</button>
+                            <button class="btn-paste" onclick="pasteFromClipboard()" style="width:100%;box-sizing:border-box;"><img src="./Assets/Icons/todorm.png" style="width:16px;height:16px;image-rendering:pixelated;vertical-align:middle;margin-right:6px;">PASTE FROM CLIPBOARD</button>
+                            <button class="btn-load" onclick="openLoadPopup()" style="width:100%;box-sizing:border-box;"><img src="./Assets/Icons/load.png" style="width:16px;height:16px;image-rendering:pixelated;vertical-align:middle;margin-right:6px;">LOAD</button>
                         </div>
                     </div>
 
@@ -154,23 +154,23 @@
                     <div style="display:flex;flex-direction:column;gap:14px;flex:1;">
                         <div>
                             <div class="popup-section-title">FUN:</div>
-                            <button class="btn-random" onclick="openIslandBiomePopup()"> RANDOM ISLAND</button>
+                            <button class="btn-random" onclick="openIslandBiomePopup()"><img src="./Assets/Icons/delete.png" style="width:16px;height:16px;image-rendering:pixelated;vertical-align:middle;margin-right:6px;"> RANDOM ISLAND</button>
                             <div id="random-island-type" style="color:#ffdf80;font-size:7px;text-align:center;margin-top:6px;min-height:12px;letter-spacing:1px;"></div>
                         </div>
 
                         <div>
-                            <button class="btn-random" onclick="openMountainBiomePopup()" style="background:#6b5a3e;border-color:#4a3a28;">RANDOM MOUNTAIN ISLAND</button>
+                            <button class="btn-random" onclick="openMountainBiomePopup()" style="background:#6b5a3e;border-color:#4a3a28;"><img src="./Assets/Icons/delete.png" style="width:16px;height:16px;image-rendering:pixelated;vertical-align:middle;margin-right:6px;">RANDOM MOUNTAIN ISLAND</button>
                             <div id="mountain-type" style="color:#ffdf80;font-size:7px;text-align:center;margin-top:6px;min-height:12px;letter-spacing:1px;"></div>
                         </div>
 
                         <div style="display:flex;flex-direction:column;gap:8px;">
-                            <button class="btn-settings" onclick="openSettingsPopup()"> SETTINGS</button>
-                            <button class="btn-settings" onclick="closeSavePopup();openCommunityPopup()" style="background:#1a3a5c;border-color:#2a6a9e;color:#a0d4ff;">COMMUNITY MAPS</button>
+                            <button class="btn-settings" onclick="openSettingsPopup()"><img src="./Assets/Icons/maintenance.png" style="width:16px;height:16px;image-rendering:pixelated;vertical-align:middle;margin-right:6px;"> SETTINGS</button>
+                            <button class="btn-settings" onclick="closeSavePopup();openCommunityPopup()" style="background:#1a3a5c;border-color:#2a6a9e;color:#a0d4ff;"><img src="./Assets/Icons/Comunitymaps.png" style="width:16px;height:16px;image-rendering:pixelated;vertical-align:middle;margin-right:6px;">COMMUNITY MAPS</button>
                         </div>
 
                         <div class="danger-zone">
                             <div class="popup-section-title">DANGER ZONE:</div>
-                            <button class="btn-danger" onclick="openConfirmDelete()">DELETE ISLAND</button>
+                            <button class="btn-danger" onclick="openConfirmDelete()"><img src="./Assets/Icons/remove.png" style="width:16px;height:16px;image-rendering:pixelated;vertical-align:middle;margin-right:6px;">DELETE ISLAND</button>
                         </div>
                     </div>
 
@@ -204,10 +204,10 @@
                     <div>
                         <div class="popup-section-title">CLIMATE:</div>
                         <div style="display:grid;grid-template-columns:1fr 1fr;gap:6px;">
-                            <button class="climate-btn active" id="cbtn-off" onclick="setClimate('off')">OFF</button>
-                            <button class="climate-btn" id="cbtn-rain" onclick="setClimate('rain')">Rain</button>
-                            <button class="climate-btn" id="cbtn-snow" onclick="setClimate('snow')">Snowy</button>
-                            <button class="climate-btn" id="cbtn-wind" onclick="setClimate('wind')">Wind</button>
+                            <button class="climate-btn active" id="cbtn-off" onclick="setClimate('off')"><img src="./Assets/Icons/off.png" style="width:14px;height:14px;image-rendering:pixelated;vertical-align:middle;margin-right:5px;">OFF</button>
+                            <button class="climate-btn" id="cbtn-rain" onclick="setClimate('rain')"><img src="./Assets/Icons/rainrr.png" style="width:14px;height:14px;image-rendering:pixelated;vertical-align:middle;margin-right:5px;">Rain</button>
+                            <button class="climate-btn" id="cbtn-snow" onclick="setClimate('snow')"><img src="./Assets/Icons/rain.png" style="width:14px;height:14px;image-rendering:pixelated;vertical-align:middle;margin-right:5px;">Snowy</button>
+                            <button class="climate-btn" id="cbtn-wind" onclick="setClimate('wind')"><img src="./Assets/Icons/wind.png" style="width:14px;height:14px;image-rendering:pixelated;vertical-align:middle;margin-right:5px;">Wind</button>
                         </div>
                     </div>
 
@@ -216,9 +216,9 @@
                     <div>
                         <div class="popup-section-title">TIME OF DAY:</div>
                         <div style="display:flex;gap:6px;">
-                            <button class="timp-btn active" id="tbtn-zi" onclick="setTimp('Day')"> Day</button>
-                            <button class="timp-btn" id="tbtn-apus" onclick="setTimp('Sunset')">Sunset</button>
-                            <button class="timp-btn" id="tbtn-noapte" onclick="setTimp('Night')"> Night</button>
+                            <button class="timp-btn active" id="tbtn-zi" onclick="setTimp('Day')"><img src="./Assets/Icons/day.png" style="width:14px;height:14px;image-rendering:pixelated;vertical-align:middle;margin-right:5px;">Day</button>
+                            <button class="timp-btn" id="tbtn-apus" onclick="setTimp('Sunset')"><img src="./Assets/Icons/resun.png" style="width:14px;height:14px;image-rendering:pixelated;vertical-align:middle;margin-right:5px;">Sunset</button>
+                            <button class="timp-btn" id="tbtn-noapte" onclick="setTimp('Night')"><img src="./Assets/Icons/night.png" style="width:14px;height:14px;image-rendering:pixelated;vertical-align:middle;margin-right:5px;">Night</button>
                         </div>
                     </div>
 
@@ -231,29 +231,29 @@
                     <div class="popup-section-title">Visuals</div>
 
                     <div class="visual-option-row">
-                        <span class="visual-option-label"> Pointer Settings</span>
+                        <span class="visual-option-label"><img src="./Assets/Cursors/pointer.png" style="width:14px;height:14px;image-rendering:pixelated;vertical-align:middle;margin-right:5px;">Pointer Settings</span>
                         <button class="btn-pointer-settings" onclick="openPointerSettings()">&#9654;</button>
                     </div>
 
                     <div class="visual-option-row">
-                        <span class="visual-option-label"> Graphics</span>
-                        <button class="btn-pointer-settings" onclick="openGraphicsSettings()">&#9654;</button>
-                    </div>
-
-                    <div class="visual-option-row">
-                        <span class="visual-option-label"> GUI</span>
+                        <span class="visual-option-label"><img src="./Assets/Icons/hotbar.png" style="width:14px;height:14px;image-rendering:pixelated;vertical-align:middle;margin-right:5px;">GUI</span>
                         <button class="btn-pointer-settings" onclick="openGUISettings()">&#9654;</button>
                     </div>
 
                     <div class="visual-option-row">
-                        <span class="visual-option-label"> Grid Overlay</span>
+                        <span class="visual-option-label"><img src="./Assets/Icons/video.png" style="width:14px;height:14px;image-rendering:pixelated;vertical-align:middle;margin-right:5px;">Graphics</span>
+                        <button class="btn-pointer-settings" onclick="openGraphicsSettings()">&#9654;</button>
+                    </div>
+
+                    <div class="visual-option-row">
+                        <span class="visual-option-label"><img src="./Assets/Icons/grid.png" style="width:14px;height:14px;image-rendering:pixelated;vertical-align:middle;margin-right:5px;">Grid Overlay</span>
                         <button class="px-switch" id="sw-grid" onclick="toggleVisualOption('gridOverlay', this)">
                             <span class="px-switch-thumb"></span>
                         </button>
                     </div>
 
                     <div class="visual-option-row">
-                        <span class="visual-option-label"> Fullscreen</span>
+                        <span class="visual-option-label"><img src="./Assets/Icons/full.png" style="width:14px;height:14px;image-rendering:pixelated;vertical-align:middle;margin-right:5px;">Fullscreen</span>
                         <button class="px-switch" id="sw-fullscreen" onclick="toggleFullscreen(this)">
                             <span class="px-switch-thumb"></span>
                         </button>
@@ -264,14 +264,14 @@
                     <div class="popup-section-title">Controls</div>
 
                     <div class="visual-option-row">
-                        <span class="visual-option-label"> Slide to place</span>
+                        <span class="visual-option-label"><img src="./Assets/Icons/slide.png" style="width:14px;height:14px;image-rendering:pixelated;vertical-align:middle;margin-right:5px;">Slide to place</span>
                         <button class="px-switch" id="sw-slide-place" onclick="toggleVisualOption('slideToPlace', this)">
                             <span class="px-switch-thumb"></span>
                         </button>
                     </div>
 
                     <div class="visual-option-row">
-                        <span class="visual-option-label"> FPS Counter</span>
+                        <span class="visual-option-label"><img src="./Assets/Icons/fps.png" style="width:14px;height:14px;image-rendering:pixelated;vertical-align:middle;margin-right:5px;">FPS Counter</span>
                         <button class="px-switch" id="sw-fps" onclick="toggleVisualOption('fpsCounter', this)">
                             <span class="px-switch-thumb"></span>
                         </button>
@@ -302,7 +302,7 @@
     <div id="qr-popup-wrapper">
         <button id="qr-close-btn" onclick="closeQRPopup()">&#10005;</button>
         <div id="qr-popup" class="pixel-corners">
-            <h2> QR CODE</h2>
+            <h2><img src="./Assets/Icons/qr.png" style="width:26px;height:26px;image-rendering:pixelated;vertical-align:middle;margin-right:6px;"> QR CODE</h2>
             <div id="qr-subtitle">Scan to share your island!</div>
             <div id="qr-canvas-wrap">
                 <div id="qr-output"></div>
@@ -315,7 +315,7 @@
 <div id="confirm-delete-overlay" onclick="if(event.target===this)closeConfirmDelete()">
     <div id="confirm-delete-wrapper">
         <div id="confirm-delete-popup" class="pixel-corners">
-            <h2>DELETE ISLAND?</h2>
+            <h2><img src="./Assets/Icons/remove.png" style="width:26px;height:26px;image-rendering:pixelated;vertical-align:middle;margin-right:6px;">DELETE ISLAND?</h2>
             <p id="confirm-delete-msg">Are you sure you want to delete the island? This action cannot be undone!</p>
             <div id="confirm-delete-btns">
                 <button class="btn-cancel-del" onclick="closeConfirmDelete()">CANCEL</button>
@@ -420,7 +420,7 @@
     <div id="island-biome-wrapper">
         <button id="island-biome-close-btn" onclick="closeIslandBiomePopup()">&#10005;</button>
         <div id="island-biome-popup" class="pixel-corners">
-            <h2>CHOOSE ISLAND BIOME</h2>
+            <h2><img src="./Assets/Icons/delete.png" style="width:26px;height:26px;image-rendering:pixelated;vertical-align:middle;margin-right:6px;">CHOOSE ISLAND BIOME</h2>
             <div class="biome-grid" id="island-biome-grid">
                 <div class="biome-card" onclick="selectIslandBiome(0)">
                     <div class="biome-icon"></div>
@@ -461,7 +461,7 @@
     <div id="mountain-biome-wrapper">
         <button id="mountain-biome-close-btn" onclick="closeMountainBiomePopup()">&#10005</button>
         <div id="mountain-biome-popup" class="pixel-corners">
-            <h2> CHOOSE MOUNTAIN TYPE</h2>
+            <h2><img src="./Assets/Icons/delete.png" style="width:26px;height:26px;image-rendering:pixelated;vertical-align:middle;margin-right:6px;"> CHOOSE MOUNTAIN TYPE</h2>
             <div class="biome-grid" id="mountain-biome-grid">
                 <div class="biome-card" onclick="selectMountainBiome(0)">
                     <div class="biome-icon"></div>
@@ -497,32 +497,32 @@
     <div id="graphics-settings-wrapper">
         <button id="graphics-settings-close-btn" onclick="closeGraphicsSettings()">&#10005;</button>
         <div id="graphics-settings-popup" class="pixel-corners">
-            <h2> GRAPHICS SETTINGS </h2>
+            <h2><img src="./Assets/Icons/video.png" style="width:26px;height:26px;image-rendering:pixelated;vertical-align:middle;margin-right:6px;"> GRAPHICS SETTINGS</h2>
             <div id="graphics-settings-body">
 
                 <div class="visual-option-row">
-                    <span class="visual-option-label"> Island Shadows</span>
+                    <span class="visual-option-label"><img src="./Assets/Icons/icon.png" style="width:14px;height:14px;image-rendering:pixelated;vertical-align:middle;margin-right:5px;">Island Shadows</span>
                     <button class="px-switch on" id="sw-shadows" onclick="toggleVisualOption('shadows', this)">
                         <span class="px-switch-thumb"></span>
                     </button>
                 </div>
 
                 <div class="visual-option-row">
-                    <span class="visual-option-label"> Leafs</span>
+                    <span class="visual-option-label"><img src="./Assets/Blocks/falling leaf3.png" style="width:14px;height:14px;image-rendering:pixelated;vertical-align:middle;margin-right:5px;">Leafs</span>
                     <button class="px-switch on" id="sw-leaves" onclick="toggleVisualOption('leaves', this)">
                         <span class="px-switch-thumb"></span>
                     </button>
                 </div>
 
                 <div class="visual-option-row">
-                    <span class="visual-option-label"> Clouds</span>
+                    <span class="visual-option-label"><img src="./Assets/Icons/rainrr.png" style="width:14px;height:14px;image-rendering:pixelated;vertical-align:middle;margin-right:5px;">Clouds</span>
                     <button class="px-switch" id="sw-clouds" onclick="toggleVisualOption('clouds', this)">
                         <span class="px-switch-thumb"></span>
                     </button>
                 </div>
 
                 <div class="visual-option-row">
-                    <span class="visual-option-label"> Block Particles</span>
+                    <span class="visual-option-label"><img src="./Assets/Blocks/dirt.png" style="width:14px;height:14px;image-rendering:pixelated;vertical-align:middle;margin-right:5px;">Block Particles</span>
                     <button class="px-switch on" id="sw-block-particles" onclick="toggleBlockParticles(this)">
                         <span class="px-switch-thumb"></span>
                     </button>
@@ -540,18 +540,18 @@
     <div id="pointer-settings-wrapper">
         <button id="pointer-settings-close-btn" onclick="closePointerSettings()">&#10005;</button>
         <div id="pointer-settings-popup" class="pixel-corners">
-            <h2>POINTER SETTINGS</h2>
+            <h2><img src="./Assets/Cursors/pointer.png" style="width:26px;height:26px;image-rendering:pixelated;vertical-align:middle;margin-right:6px;">POINTER SETTINGS</h2>
             <div id="pointer-settings-body">
 
                 <div class="visual-option-row">
-                    <span class="visual-option-label"> Custom Cursors</span>
+                    <span class="visual-option-label"><img src="./Assets/Cursors/pointer.png" style="width:14px;height:14px;image-rendering:pixelated;vertical-align:middle;margin-right:5px;">Custom Cursors</span>
                     <button class="px-switch" id="sw-custom-cursor" onclick="toggleCustomCursor(this)">
                         <span class="px-switch-thumb"></span>
                     </button>
                 </div>
 
                 <div class="visual-option-row">
-                    <span class="visual-option-label"> Block Tooltips</span>
+                    <span class="visual-option-label"><img src="./Assets/Blocks/dirt.png" style="width:14px;height:14px;image-rendering:pixelated;vertical-align:middle;margin-right:5px;">Block Tooltips</span>
                     <button class="px-switch on" id="sw-block-tooltips" onclick="toggleBlockTooltips(this)">
                         <span class="px-switch-thumb"></span>
                     </button>
@@ -570,7 +570,7 @@
     <div id="gui-settings-wrapper">
         <button id="gui-settings-close-btn" onclick="closeGUISettings()">&#10005;</button>
         <div id="gui-settings-popup" class="pixel-corners">
-            <h2>GUI THEME</h2>
+            <h2><img src="./Assets/Icons/hotbar.png" style="width:26px;height:26px;image-rendering:pixelated;vertical-align:middle;margin-right:6px;">GUI THEME</h2>
             <div id="gui-settings-body">
                 <div id="gui-theme-grid">
                     <div class="gui-theme-card" id="gui-card-auto" onclick="setGUIThemeManual('auto')">
@@ -632,11 +632,11 @@
     <div id="community-wrapper" onclick="event.stopPropagation()">
         <button id="community-close-btn" onclick="closeCommunityPopup()">&#10005;</button>
         <div id="community-popup" class="pixel-corners">
-            <h2>COMMUNITY MAPS</h2>
+            <h2><img src="./Assets/Icons/Comunitymaps.png" style="width:26px;height:26px;image-rendering:pixelated;vertical-align:middle;margin-right:6px;">COMMUNITY MAPS</h2>
 
             <div id="cm-auth-bar">
                 <span id="cm-user-info"></span>
-                <button id="cm-auth-btn" onclick="cmLogin()">LOGIN WITH GOOGLE</button>
+                <button id="cm-auth-btn" onclick="cmLogin()"><img src="./Assets/Icons/google.png" style="width:14px;height:14px;image-rendering:pixelated;vertical-align:middle;margin-right:6px;">LOGIN WITH GOOGLE</button>
             </div>
 
             <div id="cm-tabs">
@@ -697,7 +697,7 @@ onAuthStateChanged(auth, user => {
         btn.onclick      = () => signOut(auth);
     } else {
         info.textContent = '';
-        btn.textContent  = 'LOGIN WITH GOOGLE';
+        btn.innerHTML  = '<img src="./Assets/Icons/google.png" style="width:14px;height:14px;image-rendering:pixelated;vertical-align:middle;margin-right:6px;">LOGIN WITH GOOGLE';
         btn.onclick      = cmLogin;
     }
 });
@@ -789,8 +789,11 @@ async function cmLoadMaps() {
         list.innerHTML = maps.map(m => `
             <div class="cm-map-card">
                 <div class="cm-map-info">
-                    <div class="cm-map-name">${esc(m.name)}</div>
-                    <div class="cm-map-author">by ${esc(m.authorName)}</div>
+                    <img src="./Assets/Icons/icon.png" style="width:20px;height:20px;image-rendering:pixelated;vertical-align:middle;margin-right:8px;flex-shrink:0;">
+                    <div>
+                        <div class="cm-map-name">${esc(m.name)}</div>
+                        <div class="cm-map-author">by ${esc(m.authorName)}</div>
+                    </div>
                 </div>
                 <div class="cm-map-actions">
                     <button class="btn-load" onclick="cmLoadMapData(this.dataset.mapdata)" data-mapdata="${esc(m.data)}">LOAD</button>
