@@ -117,7 +117,7 @@ window.addEventListener('keydown', (e) => {
         selectBlock('eraser', eraserSlot);
     } 
     else if (key === 'p') { switchPage(currentPage === 1 ? 2 : 1); } 
-    else if (key === 'm') { toggleMusic(); } 
+    else if (key === 'm') { openMusicPopup(); } 
     else if (key === 'f') { toggleFloat(); }
 });
 
@@ -206,6 +206,36 @@ function toggleMusic() {
     const folder = getGUIFolder(currentGUITheme);
     musicBtn.src = isMusicPlaying ? folder + 'bgoff.png' : folder + 'bgon.png';
     if (isMusicPlaying) bgMusic.play(); else bgMusic.pause();
+    _syncMusicPopupSwitch();
+}
+
+function openMusicPopup() {
+    const overlay = document.getElementById('music-popup-overlay');
+    overlay.style.display = 'flex';
+    requestAnimationFrame(() => requestAnimationFrame(() => overlay.classList.add('popup-visible')));
+    hotbarSound.currentTime = 0; hotbarSound.play().catch(e => {});
+    _syncMusicPopupSwitch();
+}
+
+function closeMusicPopup() {
+    const overlay = document.getElementById('music-popup-overlay');
+    overlay.classList.remove('popup-visible');
+    pclsSound.currentTime = 0; pclsSound.play().catch(e => {});
+    setTimeout(() => { overlay.style.display = 'none'; }, 300);
+}
+
+function toggleBgMusicFromPopup() {
+    isMusicPlaying = !isMusicPlaying;
+    const folder = getGUIFolder(currentGUITheme);
+    musicBtn.src = isMusicPlaying ? folder + 'bgoff.png' : folder + 'bgon.png';
+    if (isMusicPlaying) bgMusic.play(); else bgMusic.pause();
+    _syncMusicPopupSwitch();
+}
+
+function _syncMusicPopupSwitch() {
+    const sw = document.getElementById('bg-music-px-switch');
+    if (!sw) return;
+    sw.classList.toggle('on', isMusicPlaying);
 }
 
 function toggleFloat() {
@@ -2614,6 +2644,7 @@ document.addEventListener('keydown', (e) => {
     if (e.key === 'Escape') {
         closeIslandBiomePopup();
         closeMountainBiomePopup();
+        closeMusicPopup();
     }
 });
 

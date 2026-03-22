@@ -380,6 +380,12 @@ Added icons to File, Settings, Graphics, and Pointer popups, and optimized GUI c
 ![Devlog 29](<GithubPreview/Devlogs (Flavortown)/Screenshot 2026-03-22 180338.png>)
 
 ---
+
+**Devlog 30**
+I made bg music more... let's say intreasting now you can choose to listen between a spotifty playlist or the bg music, I embeded a playlist using an Iframe that let you listen :3. I added this because I think manny people will love a custom playlist. :3
+
+![D30](<GithubPreview/Devlogs (Flavortown)/dev30.png>)
+---
 End 
 
 ![yayyy](https://emoji.slack-edge.com/T09V59WQY1E/yayayayayay/203666b7424ee7a7.gif)

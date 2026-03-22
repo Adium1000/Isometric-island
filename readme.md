@@ -73,8 +73,11 @@ Here you will find some relevant subjects and explanations about my game, includ
 
 ![7. Background Music](GithubPreview/Guide/7.png)
 
-- Background music is a way to bring realistic detail to the game, although some people may not like it.
-- It can be disabled via the button next to the hotbar.
+- Background music is a way to bring realistic detail to the game
+- Or if you don't like background music just listen to some spotify chill music :D
+
+![spotifychill](GithubPreview/Guide/music.png)
+
 
 ![bgmusicbutton](GithubPreview/Guide/rmusic.png)
 

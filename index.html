@@ -367,7 +367,7 @@
         <img id="undo-btn" src="./Assets/GUI/undo.png" onclick="undo()" title="Undo (Ctrl+Z)">
         <img id="redo-btn" src="./Assets/GUI/redo.png" onclick="redo()" title="Redo (Ctrl+Y)">
         <img id="float-toggle" src="./Assets/GUI/floatoff.png" onclick="toggleFloat()" title="Float (F)">
-        <img id="music-toggle" src="./Assets/GUI/bgoff.png" onclick="toggleMusic()" title="Music (M)">
+        <img id="music-toggle" src="./Assets/GUI/bgoff.png" onclick="openMusicPopup()" title="Music (M)">
         <div id="selection-highlight"></div>
         <div class="slot page-1" id="slot-eraser" onmouseover="showName('Eraser: Good for shaping and removing blocks ')" onmouseout="hideName()" onclick="selectBlock('eraser', this)"><img src="./Assets/Blocks/eraser.png"></div>
         <div class="slot page-1" onmouseover="showName('Grass: Natural block')" onmouseout="hideName()" onclick="selectBlock('dirt', this)"><img src="./Assets/Blocks/dirt.png"></div>
@@ -873,3 +873,23 @@ function esc(s) {
 
 </body>
 </html>
+<div id="music-popup-overlay" onclick="if(event.target===this)closeMusicPopup()">
+    <div id="music-popup-wrapper">
+        <button id="music-popup-close-btn" onclick="closeMusicPopup()">×</button>
+        <div id="music-popup">
+            <h2>♪ Music & Chill Vibes!</h2>
+            <iframe style="border-radius:4px; display:block;"
+                src="https://open.spotify.com/embed/playlist/5Ud8qznlRIBAXtxfwZB45B?utm_source=generator"
+                width="100%" height="152" frameBorder="0" allowfullscreen=""
+                allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"
+                loading="lazy"></iframe>
+            <hr class="popup-divider">
+            <div class="visual-option-row">
+                <span class="visual-option-label">BACKGROUND MUSIC</span>
+                <button id="bg-music-px-switch" class="px-switch on" onclick="toggleBgMusicFromPopup()">
+                    <div class="px-switch-thumb"></div>
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
