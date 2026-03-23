@@ -10,7 +10,7 @@
      | |   ; '._,' '  '  `-' /  | |  | |  | | '  `-' /  ' `-' ;   | |         | |  '  `-' |           | |   ; '._,' '   | |  ' `-'  |  | |  | |  ' `-'  /    
     (___)   '.___.'    `.__.'  (___)(___)(___) `.__.'    `.__.   (___)       (___)  `.__,'           (___)   '.___.'   (___) `.__.'_. (___)(___)  `.__,'  -->   
 
-<!-- Isometric island HTML Source code 173.26 BUILD 8 -->
+<!-- Isometric island HTML Source code 233.26 BUILD 8 -->
 <!DOCTYPE html>
 <html lang="ro">
 <head>
@@ -31,6 +31,39 @@
     <link rel="preload" href="Assets/GUI/hotbar.png" as="image">
     <link rel="preload" href="Assets/Audio/hotbar.wav" as="audio">
     <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
+    <style>
+        #about-author {
+            font-family: 'Press Start 2P', monospace;
+            font-size: 8px;
+            color: #c8b89a;
+            margin-bottom: 12px;
+            letter-spacing: 1px;
+        }
+        #about-links {
+            display: flex;
+            flex-direction: row;
+            gap: 10px;
+            justify-content: center;
+            flex-wrap: wrap;
+            margin-bottom: 10px;
+        }
+        .about-link {
+            font-family: 'Press Start 2P', monospace;
+            font-size: 7px;
+            color: var(--gui-accent, #ffdf80);
+            text-decoration: none;
+            border: 1.5px solid var(--gui-accent, #ffdf80);
+            padding: 5px 10px;
+            border-radius: 2px;
+            background: rgba(0,0,0,0.25);
+            transition: background 0.15s, color 0.15s;
+            letter-spacing: 0.5px;
+        }
+        .about-link:hover {
+            background: var(--gui-accent, #ffdf80);
+            color: #1a1208;
+        }
+    </style>
 
 </head>
 <body>
@@ -166,6 +199,7 @@
 
                         <div style="display:flex;flex-direction:column;gap:8px;">
                             <button class="btn-settings" onclick="openSettingsPopup()"><img src="./Assets/Icons/maintenance.png" style="width:16px;height:16px;image-rendering:pixelated;vertical-align:middle;margin-right:6px;"> SETTINGS</button>
+                            <button class="btn-settings" onclick="openAnalyticsPopup()" style="background:#2a4a2e;border-color:#1a3020;color:#a8ffb8;"> ISLAND ANALYTICS</button>
                             <button class="btn-settings" onclick="closeSavePopup();openCommunityPopup()" style="background:#1a3a5c;border-color:#2a6a9e;color:#a0d4ff;"><img src="./Assets/Icons/Comunitymaps.png" style="width:16px;height:16px;image-rendering:pixelated;vertical-align:middle;margin-right:6px;">COMMUNITY MAPS</button>
                         </div>
 
@@ -619,8 +653,14 @@
         <div id="about-popup" class="pixel-corners">
             <img src="./Assets/Icons/icon.png" id="about-icon">
             <h2 id="about-title">Isometric Island</h2>
-            <div id="about-version">v1.0</div>
+            <div id="about-version">Version: 233.26</div>
             <div id="about-divider"></div>
+            <div id="about-author">By <span style="color:var(--accent,#ffdf80);">Adium1000</span></div>
+            <div id="about-links">
+                <a href="https://www.instagram.com/adi.tomoiaga1000/" target="_blank" class="about-link">Instagram</a>
+                <a href="https://github.com/Adium1000" target="_blank" class="about-link">GitHub</a>
+                <a href="https://revolut.me/adrianu8cv" target="_blank" class="about-link">Revolut</a>
+            </div>
             <div id="about-body"></div>
             <div style="display:flex;justify-content:flex-end;margin-top:auto;padding-top:14px;">
                 <button class="btn-ok" onclick="closeAboutPopup()">OK</button>
@@ -842,6 +882,7 @@ window.openCommunityPopup = () => {
     if (!overlay) return;
     overlay.style.display = 'flex';
     requestAnimationFrame(() => requestAnimationFrame(() => overlay.classList.add('popup-visible')));
+    if (typeof hotbarSound !== 'undefined') { hotbarSound.currentTime = 0; hotbarSound.play().catch(e => {}); }
     cmLoadMaps();
 };
 
@@ -849,6 +890,7 @@ window.closeCommunityPopup = () => {
     const overlay = document.getElementById('community-overlay');
     if (!overlay) return;
     overlay.classList.remove('popup-visible');
+    if (typeof pclsSound !== 'undefined') { pclsSound.currentTime = 0; pclsSound.play().catch(e => {}); }
     setTimeout(() => { overlay.style.display = 'none'; }, 280);
 };
 
@@ -876,6 +918,7 @@ function esc(s) {
 // ── EMBED POPUP ──────────────────────────────────────────────────────────────
 
 window.openEmbedPopup = () => {
+    if (typeof hotbarSound !== 'undefined') { hotbarSound.currentTime = 0; hotbarSound.play().catch(e => {}); }
     const overlay = document.getElementById('embed-popup-overlay');
     if (!overlay) return;
 
@@ -921,6 +964,7 @@ window.closeEmbedPopup = () => {
     const overlay = document.getElementById('embed-popup-overlay');
     if (!overlay) return;
     overlay.classList.remove('popup-visible');
+    if (typeof pclsSound !== 'undefined') { pclsSound.currentTime = 0; pclsSound.play().catch(e => {}); }
     setTimeout(() => { overlay.style.display = 'none'; }, 280);
 };
 
@@ -948,6 +992,33 @@ window.showEmbedPreview = () => {
     prev.classList.add('has-preview');
 };
 </script>
+
+<div id="analytics-popup-overlay" onclick="if(event.target===this)closeAnalyticsPopup()">
+    <div id="analytics-popup-wrapper">
+        <button id="analytics-close-btn" onclick="closeAnalyticsPopup()">&#10005;</button>
+        <div id="analytics-popup" class="pixel-corners">
+            <h2>ISLAND ANALYTICS</h2>
+            <hr class="popup-divider">
+            <div id="analytics-summary-row">
+                <div class="analytics-stat-box">
+                    <div class="analytics-stat-num" id="analytics-total">0</div>
+                    <div class="analytics-stat-label">TOTAL BLOCKS</div>
+                </div>
+                <div class="analytics-stat-box">
+                    <div class="analytics-stat-num" id="analytics-types">0</div>
+                    <div class="analytics-stat-label">UNIQUE TYPES</div>
+                </div>
+                <div class="analytics-stat-box">
+                    <div class="analytics-stat-num" id="analytics-layers">0</div>
+                    <div class="analytics-stat-label">MAX HEIGHT</div>
+                </div>
+            </div>
+            <hr class="popup-divider">
+            <div class="popup-section-title">BLOCKS PLACED:</div>
+            <div id="analytics-list"></div>
+        </div>
+    </div>
+</div>
 
 <div id="embed-popup-overlay" onclick="if(event.target===this)closeEmbedPopup()">
     <div id="embed-popup-wrapper">

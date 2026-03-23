@@ -391,6 +391,19 @@ Added more Float modes for your island, just press the island float button and c
 - Added support for Iframe Embed, now you can show your island to other sites, even your personal one :3
 
 ![d33](<GithubPreview/Devlogs (Flavortown)/Screenshot 2026-03-23 201753.png>)
+
+**Devlog34**
+- Added Snake-Delete-Animation witch is really cool when deleting an island
+- Added Socials, Version number to the game (socials like instagram, Revolut,Github)
+
+![d34](<GithubPreview/Devlogs (Flavortown)/d34.png>)
+
+---
+**Devlog35**
+- Aded island analytics: you can see informations about how mutch blocks you placed on the island and layers 
+
+
+
 ---
 End 
 

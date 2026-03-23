@@ -6,7 +6,7 @@
 //     #┼#    #┼#    #┼# #┼#    #┼# #┼#       #┼# #┼#            #┼#     #┼#    #┼#     #┼#    #┼#    #┼#             #┼#    #┼#    #┼# #┼#        #┼#     #┼# #┼#   #┼#┼# #┼#    #┼#        #┼# #┼#    #┼#    #┼#     
 //########### ########   ########  ###       ### ##########     ###     ###    ### ########### ########          ########### ########  ########## ###     ### ###    #### #########          #####      ########       
 
-
+// The version is determinated by the current date and year
 
 if ('serviceWorker' in navigator) {
     window.addEventListener('load', () => {
@@ -1447,12 +1447,17 @@ function clearIsland() {
 }
 
 function deleteIsland() {
-    mapContainer.innerHTML = '';
-    const frag = document.createDocumentFragment();
-    for (let y = 0; y < 8; y++) for (let x = 0; x < 8; x++) createTile(x, y, 0, 'dirt', null, frag);
-    mapContainer.appendChild(frag);
-    saveState(); updateMinimap(); closeSavePopup();
-    showToast('Succesfully Deleted!');
+    map.classList.add('island-shaking');
+    map.addEventListener('animationend', function onShakeDone() {
+        map.classList.remove('island-shaking');
+        map.removeEventListener('animationend', onShakeDone);
+        mapContainer.innerHTML = '';
+        const frag = document.createDocumentFragment();
+        for (let y = 0; y < 8; y++) for (let x = 0; x < 8; x++) createTile(x, y, 0, 'dirt', null, frag);
+        mapContainer.appendChild(frag);
+        saveState(); updateMinimap(); closeSavePopup();
+        showToast('Succesfully Deleted!');
+    }, { once: true });
     hotbarSound.currentTime = 0; hotbarSound.play().catch(e => {});
 }
 
@@ -1460,15 +1465,97 @@ function openConfirmDelete() {
     const overlay = document.getElementById('confirm-delete-overlay');
     overlay.style.display = 'flex';
     requestAnimationFrame(() => overlay.classList.add('popup-visible'));
+    hotbarSound.currentTime = 0; hotbarSound.play().catch(e => {});
 }
 function closeConfirmDelete() {
     const overlay = document.getElementById('confirm-delete-overlay');
     overlay.classList.remove('popup-visible');
+    pclsSound.currentTime = 0; pclsSound.play().catch(e => {});
     setTimeout(() => { overlay.style.display = 'none'; }, 250);
 }
+
+function closeAllPopups() {
+    const ALL_POPUP_IDS = [
+        'confirm-delete-overlay', 'save-popup-overlay', 'music-popup-overlay',
+        'float-popup-overlay', 'settings-popup-overlay', 'gui-settings-overlay',
+        'graphics-settings-overlay', 'about-popup-overlay', 'qr-popup-overlay',
+        'block-search-overlay', 'island-biome-overlay', 'mountain-biome-overlay',
+        'pointer-settings-overlay', 'fill-overlay', 'welcome-overlay',
+    ];
+    ALL_POPUP_IDS.forEach(id => {
+        const el = document.getElementById(id);
+        if (!el) return;
+        el.classList.remove('popup-visible');
+        el.style.display = 'none';
+    });
+}
+
 function confirmDeleteIsland() {
-    closeConfirmDelete();
-    deleteIsland();
+    closeAllPopups();
+    setTimeout(() => { deleteIslandWithSnake(); }, 120);
+}
+
+function deleteIslandWithSnake() {
+    const SIZE = 8;
+    const cx = (SIZE - 1) / 2;
+    const cy = (SIZE - 1) / 2;
+    const maxR = Math.ceil(SIZE / 2);
+    const order = [];
+
+    for (let ring = maxR; ring >= 0; ring--) {
+        const ringCells = [];
+        for (let x = 0; x < SIZE; x++) {
+            for (let y = 0; y < SIZE; y++) {
+                const dist = Math.sqrt((x - cx) ** 2 + (y - cy) ** 2);
+                if (dist >= ring - 0.8 && dist < ring + 0.7) {
+                    ringCells.push({ x, y, angle: Math.atan2(y - cy, x - cx) });
+                }
+            }
+        }
+        ringCells.sort((a, b) => a.angle - b.angle);
+        order.push(...ringCells);
+    }
+
+    const STEP_MS = 18;
+    let idx = 0;
+
+    function popNext() {
+        if (idx >= order.length) {
+            setTimeout(() => {
+                mapContainer.innerHTML = '';
+                const frag = document.createDocumentFragment();
+                for (let y = 0; y < SIZE; y++) {
+                    for (let x = 0; x < SIZE; x++) {
+                        const t = createTile(x, y, 0, 'dirt', null, frag);
+                        t.style.opacity = '0';
+                        t.style.transform = 'scale(0.7)';
+                    }
+                }
+                mapContainer.appendChild(frag);
+                saveState(); updateMinimap();
+                showToast('Succesfully Deleted!');
+                hotbarSound.currentTime = 0; hotbarSound.play().catch(e => {});
+                requestAnimationFrame(() => {
+                    mapContainer.querySelectorAll('.tile').forEach(t => {
+                        t.style.transition = 'opacity 0.45s ease, transform 0.45s cubic-bezier(0.34,1.56,0.64,1)';
+                        t.style.opacity = '1';
+                        t.style.transform = '';
+                    });
+                });
+            }, 80);
+            return;
+        }
+        const { x, y } = order[idx++];
+        mapContainer.querySelectorAll(`.tile[data-x="${x}"][data-y="${y}"]`).forEach(t => {
+            t.style.transition = 'transform 0.12s cubic-bezier(0.55,0,1,0.45), opacity 0.12s';
+            t.style.transform = 'scale(0) rotate(90deg)';
+            t.style.opacity = '0';
+        });
+        setTimeout(popNext, STEP_MS);
+    }
+
+    eraserSound.currentTime = 0; eraserSound.play().catch(e => {});
+    popNext();
 }
 
 function generateRandomIsland(themeIdx) {
@@ -2747,6 +2834,7 @@ function openBlockSearch() {
         wrapper.classList.add('popup-visible');
     });
     buildBlockSearchMenu();
+    hotbarSound.currentTime = 0; hotbarSound.play().catch(e => {});
     setTimeout(() => {
         const input = document.getElementById('block-search-input');
         if (input) { input.value = ''; input.focus(); }
@@ -2761,6 +2849,7 @@ function closeBlockSearch() {
     const popup   = document.getElementById('block-search-popup');
     overlay.classList.remove('popup-visible');
     wrapper.classList.remove('popup-visible');
+    pclsSound.currentTime = 0; pclsSound.play().catch(e => {});
     setTimeout(() => {
         overlay.style.display = 'none';
         wrapper.style.display = 'none';
@@ -2788,6 +2877,7 @@ function closeIslandBiomePopup() {
     const overlay = document.getElementById('island-biome-overlay');
     if (!overlay) return;
     overlay.classList.remove('popup-visible');
+    pclsSound.currentTime = 0; pclsSound.play().catch(e => {});
     setTimeout(() => { overlay.style.display = 'none'; }, 260);
 }
 function selectIslandBiome(idx) {
@@ -2807,6 +2897,7 @@ function closeMountainBiomePopup() {
     const overlay = document.getElementById('mountain-biome-overlay');
     if (!overlay) return;
     overlay.classList.remove('popup-visible');
+    pclsSound.currentTime = 0; pclsSound.play().catch(e => {});
     setTimeout(() => { overlay.style.display = 'none'; }, 260);
 }
 function selectMountainBiome(idx) {
@@ -2952,6 +3043,7 @@ function closePointerSettings() {
     const overlay = document.getElementById('pointer-settings-overlay');
     if (!overlay) return;
     overlay.classList.remove('popup-visible');
+    pclsSound.currentTime = 0; pclsSound.play().catch(e => {});
     setTimeout(() => { overlay.style.display = 'none'; }, 260);
 }
 
@@ -3003,6 +3095,124 @@ function toggleBlockTooltips(btn) {
     hotbarSound.currentTime = 0; hotbarSound.play().catch(e => {});
 }
 
+// ── ISLAND ANALYTICS ────────────────────────────────────────────────────────
+
+const BLOCK_NAMES_RO = {
+    'dirt':         'Grass',
+    'dirt2':        'Dirt',
+    'ShovedDirt':   'Shoveled Dirt',
+    'flovers':      'Flowers',
+    'rock':         'Rock',
+    'crops':        'Crops',
+    'stone':        'Stone',
+    'mossystone':   'Mossy Stone',
+    'sand':         'Sand',
+    'redsand':      'Red Sand',
+    'water':        'Water',
+    'snow':         'Snow',
+    'snowrocks':    'Snow Rocks',
+    'ice':          'Ice',
+    'pumpkin':      'Pumpkin',
+    'Hay':          'Haystack',
+    'melon':        'Melon',
+    'tree':         'Tree',
+    'snowed_tree':  'Snowy Tree',
+    'snowman':      'Snowman',
+    'wood':         'Wood',
+    'leaf':         'Leaves',
+    'snow2':        'Snow Leaves',
+    'snowmanb1':    'Snowman Body',
+    'snowmanb2':    'Snowman Mid',
+    'SnowmanHead':  'Snowman Head',
+    'eraser':       'Eraser',
+};
+
+function getBlockNameRo(src) {
+    const marker = 'Assets/Blocks/';
+    const mi = src.indexOf(marker);
+    const raw = (mi !== -1 ? src.slice(mi + marker.length) : src)
+        .replace(/\.png$/i, '')
+        .split('/')
+        .pop();
+    return BLOCK_NAMES_RO[raw] || (raw.charAt(0).toUpperCase() + raw.slice(1));
+}
+
+function openAnalyticsPopup() {
+    const overlay = document.getElementById('analytics-popup-overlay');
+    if (!overlay) return;
+
+    const tiles = mapContainer.getElementsByClassName('tile');
+    const counts = {};
+    let total = 0;
+    let maxZ = 0;
+
+    for (let i = 0; i < tiles.length; i++) {
+        const t = tiles[i];
+        if (t.style.opacity === '0') continue;
+        const z = parseInt(t.getAttribute('data-z') || '0');
+        if (z > maxZ) maxZ = z;
+        const src = t.src || '';
+        const marker = 'Assets/Blocks/';
+        const mi = src.indexOf(marker);
+        const raw = (mi !== -1 ? src.slice(mi + marker.length) : src)
+            .replace(/\.png$/i, '')
+            .split('/')
+            .pop();
+        // Exclude falling leaves and eraser
+        if (raw.startsWith('falling') || raw === 'eraser') continue;
+        counts[raw] = (counts[raw] || 0) + 1;
+        total++;
+    }
+
+    const sorted = Object.entries(counts).sort((a, b) => b[1] - a[1]);
+
+    document.getElementById('analytics-total').textContent = total;
+    document.getElementById('analytics-types').textContent = sorted.length;
+    document.getElementById('analytics-layers').textContent = maxZ + 1;
+
+    const list = document.getElementById('analytics-list');
+    list.innerHTML = '';
+
+    if (sorted.length === 0) {
+        list.innerHTML = '<div style="color:var(--gui-text-dim);font-size:7px;text-align:center;padding:16px;">No blocks placed yet!</div>';
+    } else {
+        const maxCount = sorted[0][1];
+        sorted.forEach(([raw, count]) => {
+            const name = BLOCK_NAMES_RO[raw] || (raw.charAt(0).toUpperCase() + raw.slice(1));
+            const pct = Math.round((count / total) * 100);
+            const barW = Math.max(4, Math.round((count / maxCount) * 100));
+            const row = document.createElement('div');
+            row.className = 'analytics-row';
+            row.innerHTML = `
+                <img class="analytics-icon" src="./Assets/Blocks/${raw}.png" onerror="this.style.display='none'">
+                <div class="analytics-info">
+                    <div class="analytics-name">${name}</div>
+                    <div class="analytics-bar-wrap">
+                        <div class="analytics-bar" style="width:${barW}%"></div>
+                    </div>
+                </div>
+                <div class="analytics-count">${count}<span class="analytics-pct">&nbsp;(${pct}%)</span></div>
+            `;
+            list.appendChild(row);
+        });
+    }
+
+    if (typeof closeSavePopup === 'function') closeSavePopup();
+    overlay.style.display = 'flex';
+    requestAnimationFrame(() => requestAnimationFrame(() => overlay.classList.add('popup-visible')));
+    hotbarSound.currentTime = 0; hotbarSound.play().catch(e => {});
+}
+
+function closeAnalyticsPopup() {
+    const overlay = document.getElementById('analytics-popup-overlay');
+    if (!overlay) return;
+    overlay.classList.remove('popup-visible');
+    pclsSound.currentTime = 0; pclsSound.play().catch(e => {});
+    setTimeout(() => { overlay.style.display = 'none'; }, 350);
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+
 function openAboutPopup() {
     const overlay = document.getElementById('about-popup-overlay');
     if (!overlay) return;
@@ -3014,6 +3224,7 @@ function closeAboutPopup() {
     const overlay = document.getElementById('about-popup-overlay');
     if (!overlay) return;
     overlay.classList.remove('popup-visible');
+    pclsSound.currentTime = 0; pclsSound.play().catch(e => {});
     setTimeout(() => { overlay.style.display = 'none'; }, 260);
 }
 
@@ -3037,6 +3248,7 @@ function closeGraphicsSettings() {
     const overlay = document.getElementById('graphics-settings-overlay');
     if (!overlay) return;
     overlay.classList.remove('popup-visible');
+    pclsSound.currentTime = 0; pclsSound.play().catch(e => {});
     setTimeout(() => { overlay.style.display = 'none'; }, 260);
 }
 

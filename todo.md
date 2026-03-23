@@ -4,12 +4,10 @@
 
 -MoreBlocks
 -optimization banner
-//(Eyedropper — ții apăsat Alt + click pe un bloc și îl selectează automat. Cel mai util tool care lipsește.
-Click de 10 ori pe TITLU text → confetti explosio)//
 Ctrl+A selectează toată insula
 Cărămidă / brick
 Statistics popup — câte blocuri, ce tip, înălțimea maximă, dimensiunea insulei
-- embed islads show everywere
+- add open devlogs button
 Presentation mode — ascunde tot UI-ul, rămâne doar insula frumos centrată
 "X people building right now" counter live
 Dacă faci o insulă 1x1 → mesaj "really?"
@@ -18,10 +16,13 @@ Filtre Foto (Post-processing): Butoane rapide pentru a schimba aspectul vizual a
 Meniu Radial (Quick Actions): Dacă utilizatorul ține apăsat Click Dreapta, să apară un meniu circular în jurul cursorului cu opțiuni rapide: Șterge, Copiază (Eyedropper), Rotește sau Schimbă stratul.
 advanced brush options
 Shake animație pe insulă când dai delete island
-
+- stamp
+-mirror draw
+- build that island replica game
 
    
 What I added:-
+- embed islads show everywere
 - Minimap moove
 - about menu
 - cursor tooltips

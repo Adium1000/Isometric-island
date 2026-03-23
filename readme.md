@@ -161,6 +161,11 @@ Map publisher
 
 ![EmbedIFrameNow!](GithubPreview/Guide/embed.png)
 
+8. Island Analytics
+- this option lets you see how manny blocks you used building your island
+
+![analitics](GithubPreview/Guide/analitics.png)
+
 
 ![Mouse actions](GithubPreview/Guide/04.png)
 
