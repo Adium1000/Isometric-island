@@ -75,13 +75,13 @@ i hate missspelling
 Devlog Sketch
 
 
-**Devlog 32**
-- This devlog adds the possibility to click on the minimap to zoom the island to a corner or whatever
-- More easter eggs (PS: Dig in game files to fiind something)
-- More keyboard shortcuts
+**
 
 
 
 Release
 
 Release Final
+
+**Devlog33**
+- Added support for Iframe Embed, now you can show your island to other sites, even your personal one :3

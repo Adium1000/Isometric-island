@@ -159,6 +159,7 @@ Map publisher
 - Do you want to show off your map on a website? , we got u!
 - Just Implement it in an IFRAME :D
 
+![EmbedIFrameNow!](GithubPreview/Guide/embed.png)
 
 
 ![Mouse actions](GithubPreview/Guide/04.png)

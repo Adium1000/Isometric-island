@@ -387,6 +387,11 @@ Added more Float modes for your island, just press the island float button and c
 
 ![D30](<GithubPreview/Devlogs (Flavortown)/dev30.png>)
 ---
+**Devlog33**
+- Added support for Iframe Embed, now you can show your island to other sites, even your personal one :3
+
+![d33](<GithubPreview/Devlogs (Flavortown)/Screenshot 2026-03-23 201753.png>)
+---
 End 
 
 ![yayyy](https://emoji.slack-edge.com/T09V59WQY1E/yayayayayay/203666b7424ee7a7.gif)
