@@ -155,6 +155,12 @@ Map publisher
 
 ![publish](GithubPreview/Guide/c_map.png)
 
+7. Embed Map
+- Do you want to show off your map on a website? , we got u!
+- Just Implement it in an IFRAME :D
+
+
+
 ![Mouse actions](GithubPreview/Guide/04.png)
 
 - You can perform more actions with your mouse such as Grabbing island / Select specific Blocks / or the simple block change.

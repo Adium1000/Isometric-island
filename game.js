@@ -2139,14 +2139,10 @@ window.addEventListener('keydown', (e) => {
 });
 
 window.onload = () => {
-    // ── EMBED MODE ────────────────────────────────────────────────────────────
     const urlParams = new URLSearchParams(window.location.search);
     if (urlParams.has('embed')) {
-        // Blue sky background, nothing else
         document.body.style.background = '#aad6ff';
         document.body.style.overflow = 'hidden';
-
-        // Hide EVERY ui element — only #stage/#map stays
         [
             '.game-title-container',
             '#minimap-container',
@@ -2179,18 +2175,12 @@ window.onload = () => {
                 el.style.setProperty('display', 'none', 'important');
             });
         });
-
-        // Stage fills the full viewport
         const stage = document.getElementById('stage');
         if (stage) {
             stage.style.cssText = 'position:fixed;inset:0;width:100vw;height:100vh;overflow:hidden;display:flex;align-items:center;justify-content:center;';
         }
-
-        // Map: no pointer events (view only)
         const map = document.getElementById('map');
         if (map) map.style.pointerEvents = 'none';
-
-        // Kill ALL audio — wrap every audio getter to return a silent stub
         const silent = { play(){ return Promise.resolve(); }, pause(){}, get currentTime(){ return 0; }, set currentTime(_){}, get loop(){ return false; }, set loop(_){}, get src(){ return ''; } };
         window._placeSound = silent;
         window._grassSound = silent;
@@ -2200,27 +2190,19 @@ window.onload = () => {
         if (typeof hotbarSound !== 'undefined') {
             try { hotbarSound.volume = 0; } catch(_){}
         }
-
-        // No weather animation ever
         if (typeof weatherAnimFrame !== 'undefined' && weatherAnimFrame) {
             cancelAnimationFrame(weatherAnimFrame);
         }
-        // Patch setClimate to never start particles/sounds
         window._origSetClimate = window.setClimate;
         window.setClimate = function(mode) {
             currentClimate = mode;
             document.body.style.background = '#aad6ff'; // always blue
         };
-
-        // Init bare minimum
         currentZoomPercent = 0.10;
         applyZoom();
-        // Push island down ~15% of viewport height
         panY = window.innerHeight * 0.15;
         applyZoom();
         saveState();
-
-        // Load island from URL param
         const islandCode = urlParams.get('island');
         if (islandCode) {
             try {
@@ -2228,10 +2210,8 @@ window.onload = () => {
                 updateMinimap();
             } catch(e) { console.warn('Embed load error:', e); }
         }
-        return; // never show welcome popup
+        return;
     }
-
-    // ── NORMAL MODE ───────────────────────────────────────────────────────────
     applyZoom();
     const firstSlot = document.getElementById('slot-eraser');
     lastSelectedSlotP1 = firstSlot;
