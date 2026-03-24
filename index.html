@@ -281,6 +281,11 @@
                     </div>
 
                     <div class="visual-option-row">
+                        <span class="visual-option-label"><img src="./Assets/Icons/video.png" style="width:14px;height:14px;image-rendering:pixelated;vertical-align:middle;margin-right:5px;">Photo Filters</span>
+                        <button class="btn-pointer-settings" onclick="openPhotoFilters()">&#9654;</button>
+                    </div>
+
+                    <div class="visual-option-row">
                         <span class="visual-option-label"><img src="./Assets/Icons/grid.png" style="width:14px;height:14px;image-rendering:pixelated;vertical-align:middle;margin-right:5px;">Grid Overlay</span>
                         <button class="px-switch" id="sw-grid" onclick="toggleVisualOption('gridOverlay', this)">
                             <span class="px-switch-thumb"></span>
@@ -567,6 +572,42 @@
 
                 <div style="display:flex;justify-content:flex-end;margin-top:16px;">
                     <button class="btn-ok" onclick="closeGraphicsSettings()">OK</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="photo-filters-overlay" onclick="if(event.target===this)closePhotoFilters()">
+    <div id="photo-filters-wrapper">
+        <button id="photo-filters-close-btn" onclick="closePhotoFilters()">&#10005;</button>
+        <div id="photo-filters-popup" class="pixel-corners">
+            <h2><img src="./Assets/Icons/video.png" style="width:26px;height:26px;image-rendering:pixelated;vertical-align:middle;margin-right:6px;">PHOTO FILTERS</h2>
+            <div id="photo-filters-body">
+                <div class="photo-filter-grid">
+                    <div class="photo-filter-card" id="pfcard-none" onclick="setPhotoFilter('none')">
+                        <div class="photo-filter-preview pf-preview-none"></div>
+                        <div class="photo-filter-name">NONE</div>
+                    </div>
+                    <div class="photo-filter-card" id="pfcard-gameboy" onclick="setPhotoFilter('gameboy')">
+                        <div class="photo-filter-preview pf-preview-gameboy"></div>
+                        <div class="photo-filter-name">GAME BOY</div>
+                    </div>
+                    <div class="photo-filter-card" id="pfcard-crt" onclick="setPhotoFilter('crt')">
+                        <div class="photo-filter-preview pf-preview-crt"></div>
+                        <div class="photo-filter-name">RETRO CRT</div>
+                    </div>
+                    <div class="photo-filter-card" id="pfcard-sepia" onclick="setPhotoFilter('sepia')">
+                        <div class="photo-filter-preview pf-preview-sepia"></div>
+                        <div class="photo-filter-name">SEPIA</div>
+                    </div>
+                    <div class="photo-filter-card" id="pfcard-hc" onclick="setPhotoFilter('hc')">
+                        <div class="photo-filter-preview pf-preview-hc"></div>
+                        <div class="photo-filter-name">HIGH CONTRAST</div>
+                    </div>
+                </div>
+                <div style="display:flex;justify-content:flex-end;margin-top:16px;">
+                    <button class="btn-ok" onclick="closePhotoFilters()">OK</button>
                 </div>
             </div>
         </div>

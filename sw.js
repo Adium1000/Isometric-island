@@ -60,6 +60,7 @@ const NETWORK_FIRST_PATTERNS = [
 self.addEventListener('install', event => {
     self.skipWaiting();
     event.waitUntil(
+        caches.open(CACHE_NAME).then(cache => {
             return Promise.allSettled(
                 PRECACHE_ASSETS.map(url =>
                     cache.add(url).catch(() => { })

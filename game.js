@@ -686,7 +686,8 @@ function createTile(x, y, z, type, customPath = null, parent = mapContainer) {
             '#welcome-overlay[style*="flex"], #fill-overlay[style*="block"], ' +
             '#block-search-overlay[style*="flex"], #island-biome-overlay[style*="flex"], ' +
             '#mountain-biome-overlay[style*="flex"], #graphics-settings-overlay[style*="flex"], ' +
-            '#pointer-settings-overlay[style*="flex"], #about-popup-overlay[style*="flex"]'
+            '#pointer-settings-overlay[style*="flex"], #about-popup-overlay[style*="flex"], ' +
+            '#photo-filters-overlay[style*="flex"]'
         );
         if (anyPopup) return;
         if (e.touches.length > 1) { clearTimeout(_touchTimer); return; }
@@ -1202,8 +1203,9 @@ function spawnDestroyParticles(tile) {
     if (!tile || tile.style.opacity === '0') return;
     if (window._blockParticlesEnabled === false) return;
     const rect = tile.getBoundingClientRect();
-    const cx = rect.left + rect.width / 2;
-    const cy = rect.top + rect.height / 2;
+    const scale = getBodyScale();
+    const cx = (rect.left + rect.width / 2) / scale;
+    const cy = (rect.top + rect.height / 2) / scale;
     const src = tile.src;
     const count = 6;
     for (let i = 0; i < count; i++) {
@@ -1481,6 +1483,7 @@ function closeAllPopups() {
         'graphics-settings-overlay', 'about-popup-overlay', 'qr-popup-overlay',
         'block-search-overlay', 'island-biome-overlay', 'mountain-biome-overlay',
         'pointer-settings-overlay', 'fill-overlay', 'welcome-overlay',
+        'photo-filters-overlay',
     ];
     ALL_POPUP_IDS.forEach(id => {
         const el = document.getElementById(id);
@@ -1864,6 +1867,8 @@ function getSelectionRect(x1, y1, x2, y2) {
 function updateSelectionRectUI(x1, y1, x2, y2) {}
 
 function getBodyScale() {
+    const z = parseFloat(document.documentElement.style.zoom);
+    if (z && z !== 1) return z;
     const t = document.body.style.transform;
     if (!t) return 1;
     const m = t.match(/scale\(([^)]+)\)/);
@@ -2064,7 +2069,7 @@ document.getElementById('stage').addEventListener('mousedown', (e) => {
             '#fill-panel, #fill-overlay, #block-search-overlay, #island-biome-overlay, ' +
             '#mountain-biome-overlay, #graphics-settings-overlay, #pointer-settings-overlay, ' +
             '#about-popup-overlay, #qr-popup-overlay, #confirm-delete-overlay, ' +
-            '#fill-panel-close-btn, #fill-selected-btn'
+            '#fill-panel-close-btn, #fill-selected-btn, #photo-filters-overlay'
         );
         if (inUI) return;
 
@@ -2254,6 +2259,7 @@ window.onload = () => {
             '#gui-settings-overlay',
             '#pointer-settings-overlay',
             '#graphics-settings-overlay',
+            '#photo-filters-overlay',
             '#block-search-overlay',
             '#block-search-wrapper',
             '#weather-canvas',
@@ -3061,7 +3067,7 @@ window._blockTooltipsEnabled = localStorage.getItem('blockTooltips') !== 'off';
             '#save-popup-overlay, #settings-popup-overlay, #welcome-overlay, ' +
             '#qr-popup-overlay, #confirm-delete-overlay, #block-search-overlay, ' +
             '#island-biome-overlay, #mountain-biome-overlay, #pointer-settings-overlay, ' +
-            '#about-popup-overlay, #fill-overlay, #graphics-settings-overlay'
+            '#about-popup-overlay, #fill-overlay, #graphics-settings-overlay, #photo-filters-overlay'
         );
         for (var i = 0; i < overlays.length; i++) {
             var s = overlays[i].style.display;
@@ -3076,7 +3082,8 @@ window._blockTooltipsEnabled = localStorage.getItem('blockTooltips') !== 'off';
         if (!src) { el.style.display = 'none'; return; }
         if (el.getAttribute('src') !== src) el.setAttribute('src', src);
         el.style.display = 'block';
-        el.style.transform = 'translate(' + (e.clientX + 14) + 'px,' + (e.clientY + 14) + 'px)';
+        var s = getBodyScale();
+        el.style.transform = 'translate(' + (e.clientX / s + 14) + 'px,' + (e.clientY / s + 14) + 'px)';
     }, { passive: true });
 
     document.addEventListener('mouseleave', function() { el.style.display = 'none'; });
@@ -3094,8 +3101,6 @@ function toggleBlockTooltips(btn) {
     }
     hotbarSound.currentTime = 0; hotbarSound.play().catch(e => {});
 }
-
-// ── ISLAND ANALYTICS ────────────────────────────────────────────────────────
 
 const BLOCK_NAMES_RO = {
     'dirt':         'Grass',
@@ -3158,7 +3163,6 @@ function openAnalyticsPopup() {
             .replace(/\.png$/i, '')
             .split('/')
             .pop();
-        // Exclude falling leaves and eraser
         if (raw.startsWith('falling') || raw === 'eraser') continue;
         counts[raw] = (counts[raw] || 0) + 1;
         total++;
@@ -3211,7 +3215,6 @@ function closeAnalyticsPopup() {
     setTimeout(() => { overlay.style.display = 'none'; }, 350);
 }
 
-// ─────────────────────────────────────────────────────────────────────────────
 
 function openAboutPopup() {
     const overlay = document.getElementById('about-popup-overlay');
@@ -3254,6 +3257,100 @@ function closeGraphicsSettings() {
 
 
 window._blockParticlesEnabled = localStorage.getItem('blockParticles') !== 'off';
+
+(function initPhotoFilters() {
+    const FILTERS = {
+        none:    '',
+        gameboy: 'brightness(1.05) contrast(1.1) saturate(0) sepia(0.15) hue-rotate(80deg)',
+        crt:     'contrast(1.25) brightness(0.88) saturate(1.1)',
+        sepia:   'sepia(0.85) brightness(1.05) contrast(1.05)',
+        hc:      'contrast(2.2) brightness(1.1) saturate(1.3)',
+    };
+
+    const TINTS = {
+        none:    '',
+        gameboy: 'rgba(15,56,15,0.18)',
+        crt:     'rgba(0,255,80,0.06)',
+        sepia:   '',
+        hc:      '',
+    };
+
+    let overlay = null;
+
+    function getOverlay() {
+        if (!overlay) {
+            overlay = document.createElement('div');
+            overlay.id = 'photo-filter-tint';
+            overlay.style.cssText = 'position:fixed;inset:0;pointer-events:none;z-index:9998;transition:background 0.3s;';
+            document.body.appendChild(overlay);
+        }
+        return overlay;
+    }
+
+    function getCRTOverlay() {
+        let el = document.getElementById('photo-filter-crt');
+        if (!el) {
+            el = document.createElement('div');
+            el.id = 'photo-filter-crt';
+            document.body.appendChild(el);
+        }
+        return el;
+    }
+
+    function applyFilter(name) {
+        const stage = document.getElementById('stage');
+        const map = document.getElementById('map');
+        const weatherCanvas = document.getElementById('weather-canvas');
+        const f = FILTERS[name] || '';
+        if (stage)  stage.style.filter  = f;
+        if (map)    map.style.filter    = f;
+        if (weatherCanvas) weatherCanvas.style.filter = f;
+        const tintEl = getOverlay();
+        tintEl.style.background = TINTS[name] || '';
+        const crtEl = getCRTOverlay();
+        crtEl.style.display = name === 'crt' ? 'block' : 'none';
+        if (name === 'gameboy') {
+            document.documentElement.style.setProperty('--pf-gameboy', '1');
+        } else {
+            document.documentElement.style.removeProperty('--pf-gameboy');
+        }
+    }
+
+    function syncCards(name) {
+        ['none','gameboy','crt','sepia','hc'].forEach(k => {
+            const c = document.getElementById('pfcard-' + k);
+            if (c) c.classList.toggle('active', k === name);
+        });
+    }
+
+    window._currentPhotoFilter = localStorage.getItem('photoFilter') || 'none';
+    applyFilter(window._currentPhotoFilter);
+
+    window.setPhotoFilter = function(name) {
+        window._currentPhotoFilter = name;
+        localStorage.setItem('photoFilter', name);
+        applyFilter(name);
+        syncCards(name);
+        hotbarSound.currentTime = 0; hotbarSound.play().catch(e => {});
+    };
+
+    window.openPhotoFilters = function() {
+        const ovl = document.getElementById('photo-filters-overlay');
+        if (!ovl) return;
+        syncCards(window._currentPhotoFilter);
+        ovl.style.display = 'flex';
+        requestAnimationFrame(() => ovl.classList.add('popup-visible'));
+        hotbarSound.currentTime = 0; hotbarSound.play().catch(e => {});
+    };
+
+    window.closePhotoFilters = function() {
+        const ovl = document.getElementById('photo-filters-overlay');
+        if (!ovl) return;
+        ovl.classList.remove('popup-visible');
+        pclsSound.currentTime = 0; pclsSound.play().catch(e => {});
+        setTimeout(() => { ovl.style.display = 'none'; }, 260);
+    };
+})();
 
 function toggleBlockParticles(btn) {
     window._blockParticlesEnabled = !window._blockParticlesEnabled;
