@@ -403,8 +403,18 @@ Added more Float modes for your island, just press the island float button and c
 - Aded island analytics: you can see informations about how mutch blocks you placed on the island and layers 
 
 
+![devlog35](<GithubPreview/Devlogs (Flavortown)/dev35.png>)
+
 
 ---
+**Devlog36**
+- Added video effects to simulate a more retro atmosphere
+
+![Devlog36](<GithubPreview/Devlogs (Flavortown)/ddd.png>)
+
+---
+
+
 End 
 
 ![yayyy](https://emoji.slack-edge.com/T09V59WQY1E/yayayayayay/203666b7424ee7a7.gif)
