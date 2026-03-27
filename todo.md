@@ -3,18 +3,21 @@
 
 
 -MoreBlocks
+-recover previous sesion 
 -optimization banner
 Presentation mode — ascunde tot UI-ul, rămâne doar insula frumos centrată
 "X people building right now" counter live
-Dacă faci o insulă 1x1 → mesaj "really?"
-Meniu Radial (Quick Actions): Dacă utilizatorul ține apăsat Click Dreapta, să apară un meniu circular în jurul cursorului cu opțiuni rapide: Șterge, Copiază (Eyedropper), Rotește sau Schimbă stratul.
+Meniu Radial (Quick Actions): Dacă utilizatorul ține apăsat Click Dreapta, să apară un meniu circular pe centrul ecranului de unde poate alege Brush size, mirror mode si cand alege o optiune sa i se deschida popup ul dorit de configurare 
 advanced brush options
-- stamp
+- stamp 
+-Efect de "squash & stretch" (rebound) la plasarea obiectelor.
+
 -mirror draw
 - build that island replica game
 
    
 What I added:-
+- 1x1 → "really?"
 - Statistics popup
 - embed islads show everywere
 - Minimap moove
@@ -77,6 +80,3 @@ Devlog Sketch
 Release
 
 Release Final
-
-**Devlog33**
-- Added support for Iframe Embed, now you can show your island to other sites, even your personal one :3

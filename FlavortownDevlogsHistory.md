@@ -414,7 +414,14 @@ Added more Float modes for your island, just press the island float button and c
 
 ---
 
+**Devlog37**
+- Added a squish block placement
+- more easter eggs :3
+- more bug fixes
 
+![dievloug37](<GithubPreview/Devlogs (Flavortown)/33.png>)
+
+---
 End 
 
 ![yayyy](https://emoji.slack-edge.com/T09V59WQY1E/yayayayayay/203666b7424ee7a7.gif)
