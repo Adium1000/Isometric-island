@@ -1150,6 +1150,110 @@ function copyCode() {
     });
 }
 
+function generateShareURL() {
+    const code = generateIslandCode();
+    const url = window.location.origin + window.location.pathname + '#island=' + encodeURIComponent(code);
+    // Update the browser URL bar without reloading
+    history.replaceState(null, '', '#island=' + encodeURIComponent(code));
+    navigator.clipboard.writeText(url).then(() => {
+        showToast('🔗 Share link copied!');
+        updateOGTags(code);
+    }).catch(() => {
+        showToast('Copy: ' + url);
+    });
+}
+
+function updateOGTags(islandCode) {
+    // Build an OG image from the minimap canvas
+    try {
+        // Create a larger offscreen canvas for OG image (1200x630 standard)
+        const ogCanvas = document.createElement('canvas');
+        ogCanvas.width = 1200;
+        ogCanvas.height = 630;
+        const ctx = ogCanvas.getContext('2d');
+
+        // Background gradient
+        ctx.fillStyle = '#0a1628';
+        ctx.fillRect(0, 0, 1200, 630);
+
+        // Draw gradient overlay
+        const grad = ctx.createRadialGradient(600, 315, 50, 600, 315, 500);
+        grad.addColorStop(0, '#1a3a5c');
+        grad.addColorStop(1, '#050d1a');
+        ctx.fillStyle = grad;
+        ctx.fillRect(0, 0, 1200, 630);
+
+        // Draw minimap tiles scaled up into center
+        const tiles = mapContainer.getElementsByClassName('tile');
+        const centerX = 600;
+        const centerY = 290;
+        const size = 12; // larger pixels for OG image
+
+        // First pass: collect bounds for centering
+        let minIsoX = Infinity, maxIsoX = -Infinity, minIsoY = Infinity, maxIsoY = -Infinity;
+        for (let i = 0; i < tiles.length; i++) {
+            const t = tiles[i];
+            if (t.style.opacity === '0') continue;
+            const x = parseInt(t.getAttribute('data-x'));
+            const y = parseInt(t.getAttribute('data-y'));
+            const z = parseInt(t.getAttribute('data-z'));
+            const isoX = (x - y) * (size * 1.5);
+            const isoY = (x + y) * (size * 0.75) - (z * 1);
+            if (isoX < minIsoX) minIsoX = isoX;
+            if (isoX > maxIsoX) maxIsoX = isoX;
+            if (isoY < minIsoY) minIsoY = isoY;
+            if (isoY > maxIsoY) maxIsoY = isoY;
+        }
+        const offsetX = minIsoX === Infinity ? 0 : -(minIsoX + maxIsoX) / 2;
+        const offsetY = minIsoY === Infinity ? 0 : -(minIsoY + maxIsoY) / 2;
+
+        // Second pass: draw tiles
+        for (let i = 0; i < tiles.length; i++) {
+            const t = tiles[i];
+            if (t.style.opacity === '0') continue;
+            const x = parseInt(t.getAttribute('data-x'));
+            const y = parseInt(t.getAttribute('data-y'));
+            const z = parseInt(t.getAttribute('data-z'));
+            const color = t.getAttribute('data-color') || '#7ec86a';
+            const isoX = (x - y) * (size * 1.5);
+            const isoY = (x + y) * (size * 0.75) - (z * 1);
+            ctx.fillStyle = color;
+            ctx.fillRect(centerX + isoX + offsetX - size/2, centerY + isoY + offsetY - size/2, size, size);
+        }
+
+        // Title text
+        ctx.fillStyle = '#ffdf80';
+        ctx.font = 'bold 48px monospace';
+        ctx.textAlign = 'center';
+        ctx.fillText('🏝 Isometric Island', 600, 580);
+
+        ctx.fillStyle = '#a0d4ff';
+        ctx.font = '22px monospace';
+        ctx.fillText('Click to explore this island!', 600, 610);
+
+        // Set OG image as data URL
+        const dataUrl = ogCanvas.toDataURL('image/png');
+        const ogImg = document.getElementById('og-image');
+        const twImg = document.getElementById('tw-image');
+        if (ogImg) ogImg.setAttribute('content', dataUrl);
+        if (twImg) twImg.setAttribute('content', dataUrl);
+
+        const shareUrl = window.location.href;
+        const ogUrl = document.getElementById('og-url');
+        const ogTitle = document.getElementById('og-title');
+        const twTitle = document.getElementById('tw-title');
+        const ogDesc = document.getElementById('og-description');
+        const twDesc = document.getElementById('tw-description');
+        if (ogUrl) ogUrl.setAttribute('content', shareUrl);
+        if (ogTitle) ogTitle.setAttribute('content', 'My Isometric Island 🏝');
+        if (twTitle) twTitle.setAttribute('content', 'My Isometric Island 🏝');
+        if (ogDesc) ogDesc.setAttribute('content', 'I built an island! Open the link to explore it in Isometric Island.');
+        if (twDesc) twDesc.setAttribute('content', 'I built an island! Open the link to explore it in Isometric Island.');
+    } catch(e) {
+        console.warn('OG image generation failed:', e);
+    }
+}
+
 function saveState() {
     const tiles = mapContainer.getElementsByClassName('tile');
     const state = [];
@@ -2265,6 +2369,17 @@ window.addEventListener('keydown', (e) => {
 
 window.onload = () => {
     const urlParams = new URLSearchParams(window.location.search);
+
+    // --- Shareable URL hash support ---
+    // Check for #island=<code> in the URL hash (set by generateShareURL)
+    const hash = window.location.hash;
+    let hashIslandCode = null;
+    if (hash && hash.startsWith('#island=')) {
+        try {
+            hashIslandCode = decodeURIComponent(hash.slice('#island='.length));
+        } catch(e) { hashIslandCode = null; }
+    }
+
     if (urlParams.has('embed')) {
         document.body.style.background = '#aad6ff';
         document.body.style.overflow = 'hidden';
@@ -2344,6 +2459,22 @@ window.onload = () => {
     selectBlock('eraser', firstSlot, true);
     saveState();
     updateMinimap();
+
+    // Load island from shareable URL hash (#island=<code>)
+    if (hashIslandCode) {
+        try {
+            const loaded = loadIslandCode(hashIslandCode);
+            if (loaded) {
+                updateMinimap();
+                showToast('🔗 Island loaded from link!');
+                // Don't show welcome overlay when loading from shared link
+                return;
+            }
+        } catch(e) {
+            console.warn('Hash island load error:', e);
+        }
+    }
+
     const ov = document.getElementById('welcome-overlay');
     ov.style.display = 'flex';
     requestAnimationFrame(() => requestAnimationFrame(() => ov.classList.add('popup-visible')));

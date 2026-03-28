@@ -23,6 +23,15 @@
     <link rel="apple-touch-icon" sizes="180x180" href="Assets/Icons/apple-touch-icon.png" />
     <meta name="apple-mobile-web-app-title" content="Isometric Island" />
     <link rel="manifest" href="manifest.json" />
+    <meta id="og-title" property="og:title" content="Isometric Island" />
+    <meta id="og-description" property="og:description" content="Check out my island built in Isometric Island!" />
+    <meta id="og-image" property="og:image" content="Assets/Icons/favicon-96x96.png" />
+    <meta id="og-url" property="og:url" content="" />
+    <meta property="og:type" content="website" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta id="tw-title" name="twitter:title" content="Isometric Island" />
+    <meta id="tw-description" name="twitter:description" content="Check out my island built in Isometric Island!" />
+    <meta id="tw-image" name="twitter:image" content="Assets/Icons/favicon-96x96.png" />
     <link rel="stylesheet" href="style.css"/>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -164,6 +173,7 @@
                         <div class="popup-row" style="flex-direction:column;gap:6px;margin-top:8px;">
                             <button class="btn-qr" onclick="showQRCode()" style="width:100%;box-sizing:border-box;"><img src="./Assets/Icons/qr.png" style="width:16px;height:16px;image-rendering:pixelated;vertical-align:middle;margin-right:6px;">SHOW QR CODE</button>
                             <button class="btn-copy" onclick="navigator.clipboard.writeText(document.getElementById('popup-code-output').value).then(()=>showToast('Succesfully copied to clipboard!'))" style="width:100%;box-sizing:border-box;"><img src="./Assets/Icons/todorm.png" style="width:16px;height:16px;image-rendering:pixelated;vertical-align:middle;margin-right:6px;">COPY ISLAND CODE</button>
+                            <button class="btn-share-url" onclick="generateShareURL()" style="width:100%;box-sizing:border-box;background:#1a3a5c;border-color:#2a6a9e;color:#a0d4ff;"><img src="./Assets/Icons/todorm.png" style="width:16px;height:16px;image-rendering:pixelated;vertical-align:middle;margin-right:6px;">&#128279; COPY SHARE LINK</button>
                             <button class="btn-embed" onclick="openEmbedPopup()" style="width:100%;box-sizing:border-box;"><img src="./Assets/Icons/todorm.png" style="width:16px;height:16px;image-rendering:pixelated;vertical-align:middle;margin-right:6px;">&#60;/&#62; EMBED CODE</button>
                         </div>
                     </div>
