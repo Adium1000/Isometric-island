@@ -7,40 +7,43 @@
 -optimization banner
 Presentation mode — ascunde tot UI-ul, rămâne doar insula frumos centrată
 "X people building right now" counter live
-Meniu Radial (Quick Actions): Dacă utilizatorul ține apăsat Click Dreapta, să apară un meniu circular pe centrul ecranului de unde poate alege Brush size, mirror mode si cand alege o optiune sa i se deschida popup ul dorit de configurare 
+
 advanced brush options
 - stamp 
--Efect de "squash & stretch" (rebound) la plasarea obiectelor.
 
--mirror draw
 - build that island replica game
 -Undo/Redo - afișează câte stări mai ai disponibile (ex: "Undo 7/20"), ca să știi când ești aproape de limită.
 -Autosave
 - RECOVER SESION
--Island resolution 16x
+
 -Notificări stacked - acum toast-ul se suprascrie, poți face o coadă verticală cu mai multe toasts simultane
 -Offline indicator
--Shareable URL cu insula encoded - link direct cu save code în URL hash
--OG image autogenerat - când dai share link, preview-ul arată insula ta
+
+// -OG image autogenerat - când dai share link, preview-ul arată insula ta
 -Multi-language support - RO, EN, ES, FR, DE pentru UI
 -RTL support - pentru arabă/ebraică
 Custom keybinds - remapezi orice shortcut
 -island as an emoji (fun)
 -tutorial video
-404 page
--Sound pitch
-- add user icon google show in the comunity maps, logout icon, in popup map preview
-Explicit Warning (explicit icon)
+
+
 
 ((Hotbar reorder - drag & drop între sloturi să-ți aranjezi blocurile preferate
 -Discord Rich Presence - arată pe Discord că eşti pe Isometric Island
--Crop selection
--Timlapses
+
 -Search icon
 - make an exclamation sound!
 - weird sound
    
-What I added:-
+What I added:
+- Efect de "squash & stretch" 
+- Island resolution 16x
+- 404 page
+- add user icon google show in the comunity maps, logout icon, in popup map preview
+Explicit Warning (explicit icon)
+- Meniu Radial (Quick Actions): Dacă utilizatorul ține apăsat Click Dreapta, să apară un meniu circular pe centrul ecranului de unde poate alege Brush size, mirror mode si cand alege o optiune sa i se deschida popup ul dorit de configurare 
+advanced brush options
+- Shareable URL cu insula encoded
 - 1x1 → "really?"
 - Statistics popup
 - embed islads show everywere
@@ -95,6 +98,10 @@ sooo yea gl
 i hate missspelling
 
 Devlog Sketch
+
+Devlog 38
+
+Added Island Links! That is a more convinient way to share islands with others: just load the link in the adreess bar, press enter and you good to go
 
 
 **

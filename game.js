@@ -665,14 +665,14 @@ function createTile(x, y, z, type, customPath = null, parent = mapContainer) {
             return;
         }
         isDrawing = true;
-        handleInteraction(img, x, y, z);
+        handleInteractionBrushed(img, x, y, z);
         if (!slideToPlace) { isDrawing = false; saveState(); updateMinimap(); }
     };
     img.addEventListener('mouseenter', (e) => {
         if (!isDrawing) return;
         if (e.ctrlKey || e.metaKey) return;
         if (!slideToPlace) return;
-        handleInteraction(img, x, y, z);
+        handleInteractionBrushed(img, x, y, z);
     });
 
     let _touchTimer = null;
@@ -737,12 +737,9 @@ function createTile(x, y, z, type, customPath = null, parent = mapContainer) {
         if (_touchMoved) return;
         if (selectedTiles.size > 0) return;
         e.preventDefault();
-        handleInteraction(img, x, y, z);
+        handleInteractionBrushed(img, x, y, z);
         saveState();
         updateMinimap();
-    });
-
-    img.addEventListener('touchcancel', () => {
         clearTimeout(_touchTimer);
         _touchMoved = true;
     });
@@ -1153,7 +1150,6 @@ function copyCode() {
 function generateShareURL() {
     const code = generateIslandCode();
     const url = window.location.origin + window.location.pathname + '#island=' + encodeURIComponent(code);
-    // Update the browser URL bar without reloading
     history.replaceState(null, '', '#island=' + encodeURIComponent(code));
     navigator.clipboard.writeText(url).then(() => {
         showToast('🔗 Share link copied!');
@@ -1164,32 +1160,25 @@ function generateShareURL() {
 }
 
 function updateOGTags(islandCode) {
-    // Build an OG image from the minimap canvas
     try {
-        // Create a larger offscreen canvas for OG image (1200x630 standard)
         const ogCanvas = document.createElement('canvas');
         ogCanvas.width = 1200;
         ogCanvas.height = 630;
         const ctx = ogCanvas.getContext('2d');
 
-        // Background gradient
         ctx.fillStyle = '#0a1628';
         ctx.fillRect(0, 0, 1200, 630);
 
-        // Draw gradient overlay
         const grad = ctx.createRadialGradient(600, 315, 50, 600, 315, 500);
         grad.addColorStop(0, '#1a3a5c');
         grad.addColorStop(1, '#050d1a');
         ctx.fillStyle = grad;
         ctx.fillRect(0, 0, 1200, 630);
 
-        // Draw minimap tiles scaled up into center
         const tiles = mapContainer.getElementsByClassName('tile');
         const centerX = 600;
         const centerY = 290;
-        const size = 12; // larger pixels for OG image
-
-        // First pass: collect bounds for centering
+        const size = 12; 
         let minIsoX = Infinity, maxIsoX = -Infinity, minIsoY = Infinity, maxIsoY = -Infinity;
         for (let i = 0; i < tiles.length; i++) {
             const t = tiles[i];
@@ -1206,8 +1195,6 @@ function updateOGTags(islandCode) {
         }
         const offsetX = minIsoX === Infinity ? 0 : -(minIsoX + maxIsoX) / 2;
         const offsetY = minIsoY === Infinity ? 0 : -(minIsoY + maxIsoY) / 2;
-
-        // Second pass: draw tiles
         for (let i = 0; i < tiles.length; i++) {
             const t = tiles[i];
             if (t.style.opacity === '0') continue;
@@ -1220,8 +1207,6 @@ function updateOGTags(islandCode) {
             ctx.fillStyle = color;
             ctx.fillRect(centerX + isoX + offsetX - size/2, centerY + isoY + offsetY - size/2, size, size);
         }
-
-        // Title text
         ctx.fillStyle = '#ffdf80';
         ctx.font = 'bold 48px monospace';
         ctx.textAlign = 'center';
@@ -1230,8 +1215,6 @@ function updateOGTags(islandCode) {
         ctx.fillStyle = '#a0d4ff';
         ctx.font = '22px monospace';
         ctx.fillText('Click to explore this island!', 600, 610);
-
-        // Set OG image as data URL
         const dataUrl = ogCanvas.toDataURL('image/png');
         const ogImg = document.getElementById('og-image');
         const twImg = document.getElementById('tw-image');
@@ -1353,7 +1336,7 @@ function spawnDestroyParticles(tile) {
 
 function squashStretchTile(tile) {
     tile.classList.remove('tile-place-anim');
-    void tile.offsetWidth; // reflow to restart animation
+    void tile.offsetWidth;
     tile.classList.add('tile-place-anim');
     tile.addEventListener('animationend', () => tile.classList.remove('tile-place-anim'), { once: true });
 }
@@ -2281,7 +2264,16 @@ document.getElementById('stage').addEventListener('mousedown', (e) => {
 })();
 window.addEventListener('mousedown', (e) => {
     if (e.button !== 2) return;
-    if (e.target.closest('#dock-container, #save-popup-overlay, #fill-panel, #fill-overlay, #welcome-overlay, #zoom-ui, #minimap-container, .game-title-container')) return;
+    if (e.target.closest('#dock-container, #save-popup-overlay, #fill-panel, #fill-overlay, #welcome-overlay, #zoom-ui, #minimap-container, .game-title-container, #radial-menu-overlay, #brush-popup-overlay, #mirror-popup-overlay')) return;
+    _radialHoldTimer = setTimeout(() => {
+        _radialHoldTimer = null;
+        _radialMenuActive = true;
+        isRectSelecting = false;
+        const selRect = document.getElementById('selection-rect');
+        if (selRect) selRect.style.display = 'none';
+        showRadialMenu();
+    }, 220);
+
     if (selectedTiles.size > 0) {
         selectedTiles.forEach(t => t.classList.remove('selected-tile'));
         selectedTiles.clear();
@@ -2294,12 +2286,30 @@ window.addEventListener('mousedown', (e) => {
 });
 
 window.addEventListener('mousemove', (e) => {
+    if (_radialMenuActive) {
+        isRectSelecting = false;
+        const selRect = document.getElementById('selection-rect');
+        if (selRect) selRect.style.display = 'none';
+        const idx = _getRadialHovered(e.clientX, e.clientY);
+        if (idx !== _radialHoveredIdx) { _radialHoveredIdx = idx; _buildRadialSVG(idx); }
+        return;
+    }
     if (!isRectSelecting) return;
     updateSelectionRectUI(rectStartX, rectStartY, e.clientX, e.clientY);
 });
 
 window.addEventListener('mouseup', (e) => {
-    if (e.button !== 2 || !isRectSelecting) return;
+    if (e.button !== 2) return;
+    if (_radialHoldTimer) { clearTimeout(_radialHoldTimer); _radialHoldTimer = null; }
+    if (_radialMenuActive) {
+        _radialMenuActive = false;
+        handleRadialSelect();
+        hideRadialMenu();
+        isRectSelecting = false;
+        e.preventDefault();
+        return;
+    }
+    if (!isRectSelecting) return;
     isRectSelecting = false;
     const tilesInRect = getTilesInRect(rectStartX, rectStartY, e.clientX, e.clientY);
     const allSelected = tilesInRect.length > 0 && tilesInRect.every(t => selectedTiles.has(t));
@@ -2369,9 +2379,6 @@ window.addEventListener('keydown', (e) => {
 
 window.onload = () => {
     const urlParams = new URLSearchParams(window.location.search);
-
-    // --- Shareable URL hash support ---
-    // Check for #island=<code> in the URL hash (set by generateShareURL)
     const hash = window.location.hash;
     let hashIslandCode = null;
     if (hash && hash.startsWith('#island=')) {
@@ -2437,7 +2444,7 @@ window.onload = () => {
         window._origSetClimate = window.setClimate;
         window.setClimate = function(mode) {
             currentClimate = mode;
-            document.body.style.background = '#aad6ff'; // always blue
+            document.body.style.background = '#aad6ff'; 
         };
         currentZoomPercent = 0.10;
         applyZoom();
@@ -2459,15 +2466,12 @@ window.onload = () => {
     selectBlock('eraser', firstSlot, true);
     saveState();
     updateMinimap();
-
-    // Load island from shareable URL hash (#island=<code>)
     if (hashIslandCode) {
         try {
             const loaded = loadIslandCode(hashIslandCode);
             if (loaded) {
                 updateMinimap();
-                showToast('🔗 Island loaded from link!');
-                // Don't show welcome overlay when loading from shared link
+                showToast('Island loaded from link!');
                 return;
             }
         } catch(e) {
@@ -3637,3 +3641,296 @@ function toggleBlockParticles(btn) {
         hotbarSound.currentTime = 0; hotbarSound.play().catch(e => {});
     }
 })();
+let _radialHoldTimer = null;
+let _radialMenuActive = false;
+let _radialHoveredIdx = -1;
+let _currentBrushSize = 1;
+let _currentMirrorMode = 'off';
+
+const _RADIAL_ITEMS = [
+    { icon: '', label: ['BRUSH', 'SIZE'],  action: 'brush'  },
+    { icon: '',  label: ['MIRROR', 'MODE'], action: 'mirror' },
+    { icon: '',  label: ['GRID',  'OVERLAY'], action: 'grid' },
+];
+function _getThemeColor(varName, fallback) {
+    return getComputedStyle(document.body).getPropertyValue(varName).trim() || fallback;
+}
+function _buildRadialSVG(hovIdx) {
+    const svg    = document.getElementById('radial-svg');
+    const labels = document.getElementById('radial-labels');
+    if (!svg || !labels) return;
+    labels.innerHTML = '';
+    const clrBg     = _getThemeColor('--gui-bg-dark',  '#1e1006');
+    const clrBorder = _getThemeColor('--gui-border',   '#4a2808');
+    const clrAccent = _getThemeColor('--gui-accent',   '#ffdf80');
+    const clrActive = _getThemeColor('--gui-active',   '#6b4726');
+    const clrAccBrd = _getThemeColor('--gui-shadow',   '#b8860b');
+
+    const cx = 150, cy = 150, outerR = 128, innerR = 60;
+    const n = _RADIAL_ITEMS.length;
+    const gapDeg = 8;
+    const sliceDeg = 360 / n - gapDeg;
+    const PX = 4;
+    let rects = '';
+
+    for (let i = 0; i < n; i++) {
+        const startDeg = i * (360 / n) - 90 + gapDeg / 2;
+        const hov = i === hovIdx;
+        const gridActive = _RADIAL_ITEMS[i].action === 'grid' && gridOverlayEnabled;
+        const fill   = hov ? clrAccent : (gridActive ? clrActive : clrBg);
+        const border = hov ? clrAccBrd : clrBorder;
+
+        const steps = 72;
+        for (let s = 0; s <= steps; s++) {
+            const deg = startDeg + s * (sliceDeg / steps);
+            const rad = deg * Math.PI / 180;
+            const radSteps = Math.ceil((outerR - innerR) / PX);
+            for (let r = 0; r < radSteps; r++) {
+                const radius = innerR + r * PX + PX / 2;
+                const px = cx + Math.cos(rad) * radius;
+                const py = cy + Math.sin(rad) * radius;
+                const sx = Math.round((px - PX / 2) / PX) * PX;
+                const sy = Math.round((py - PX / 2) / PX) * PX;
+                rects += `<rect x="${sx}" y="${sy}" width="${PX}" height="${PX}" fill="${fill}"/>`;
+            }
+        }
+        for (let s = 0; s <= steps; s++) {
+            const deg = startDeg + s * (sliceDeg / steps);
+            const rad = deg * Math.PI / 180;
+            for (const R of [outerR, innerR]) {
+                const px = cx + Math.cos(rad) * R;
+                const py = cy + Math.sin(rad) * R;
+                const sx = Math.round((px - PX / 2) / PX) * PX;
+                const sy = Math.round((py - PX / 2) / PX) * PX;
+                rects += `<rect x="${sx}" y="${sy}" width="${PX}" height="${PX}" fill="${border}"/>`;
+            }
+        }
+        const midRad = (startDeg + sliceDeg / 2) * Math.PI / 180;
+        const lr = (outerR + innerR) / 2;
+        const lx = cx + Math.cos(midRad) * lr;
+        const ly = cy + Math.sin(midRad) * lr;
+
+        const el = document.createElement('div');
+        let labelClass = 'radial-label';
+        if (hov) labelClass += ' radial-label-hov';
+        else if (gridActive) labelClass += ' radial-label-active';
+        el.className = labelClass;
+        el.style.cssText = `left:${lx}px;top:${ly}px;`;
+
+        const ico = document.createElement('span');
+        ico.className = 'radial-ico';
+        ico.textContent = _RADIAL_ITEMS[i].icon;
+        el.appendChild(ico);
+        _RADIAL_ITEMS[i].label.forEach(line => {
+            const s = document.createElement('span');
+            s.style.display = 'block';
+            s.textContent = line;
+            el.appendChild(s);
+        });
+        labels.appendChild(el);
+    }
+    const dotSize = 6;
+    rects += `<rect x="${cx - dotSize}" y="${cy - 1}" width="${dotSize * 2}" height="2" fill="${clrAccent}"/>`;
+    rects += `<rect x="${cx - 1}" y="${cy - dotSize}" width="2" height="${dotSize * 2}" fill="${clrAccent}"/>`;
+
+    svg.innerHTML = rects;
+}
+
+function _getRadialHovered(mx, my) {
+    const menu = document.getElementById('radial-menu');
+    if (!menu) return -1;
+    const rect = menu.getBoundingClientRect();
+    const scale = rect.width / 300;
+    const cx = rect.left + rect.width  / 2;
+    const cy = rect.top  + rect.height / 2;
+    const dx = mx - cx, dy = my - cy;
+    const dist = Math.sqrt(dx * dx + dy * dy);
+    const outerR = 128 * scale, innerR = 60 * scale;
+    if (dist < innerR || dist > outerR) return -1;
+    const n = _RADIAL_ITEMS.length;
+    let ang = Math.atan2(dy, dx) * 180 / Math.PI + 90;
+    if (ang < 0) ang += 360;
+    return Math.min(Math.floor(ang / (360 / n)), n - 1);
+}
+
+function showRadialMenu() {
+    const ov = document.getElementById('radial-menu-overlay');
+    if (!ov) return;
+    _radialHoveredIdx = -1;
+    _buildRadialSVG(-1);
+    ov.style.display = 'block';
+    requestAnimationFrame(() => requestAnimationFrame(() => ov.classList.add('radial-visible')));
+    hotbarSound.currentTime = 0; hotbarSound.play().catch(() => {});
+}
+
+function hideRadialMenu() {
+    const ov = document.getElementById('radial-menu-overlay');
+    if (!ov) return;
+    ov.classList.remove('radial-visible');
+    setTimeout(() => { ov.style.display = 'none'; }, 220);
+}
+
+function handleRadialSelect() {
+    if (_radialHoveredIdx < 0) return;
+    const action = _RADIAL_ITEMS[_radialHoveredIdx].action;
+    if (action === 'brush')  openBrushPopup();
+    if (action === 'mirror') openMirrorPopup();
+    if (action === 'grid')   _toggleRadialGrid();
+}
+
+function _toggleRadialGrid() {
+    const sw = document.getElementById('sw-grid');
+    if (sw) {
+        toggleVisualOption('gridOverlay', sw);
+    } else {
+        gridOverlayEnabled = !gridOverlayEnabled;
+        applyGridOverlay(gridOverlayEnabled);
+    }
+    hotbarSound.currentTime = 0; hotbarSound.play().catch(() => {});
+    showToast(gridOverlayEnabled ? 'Grid ON' : 'Grid OFF');
+}
+const _BRUSH_SIZES = [1, 2, 3, 5, 7];
+
+function openBrushPopup() {
+    const ov = document.getElementById('brush-popup-overlay');
+    if (!ov) return;
+    _buildBrushGrid();
+    _drawBrushPreview();
+    ov.style.display = 'flex';
+    requestAnimationFrame(() => requestAnimationFrame(() => ov.classList.add('popup-visible')));
+    hotbarSound.currentTime = 0; hotbarSound.play().catch(() => {});
+}
+
+window.closeBrushPopup = function () {
+    const ov = document.getElementById('brush-popup-overlay');
+    if (!ov) return;
+    ov.classList.remove('popup-visible');
+    pclsSound.currentTime = 0; pclsSound.play().catch(() => {});
+    setTimeout(() => { ov.style.display = 'none'; }, 300);
+};
+
+function _buildBrushGrid() {
+    const grid = document.getElementById('brush-size-grid');
+    if (!grid) return;
+    grid.innerHTML = '';
+    _BRUSH_SIZES.forEach(sz => {
+        const btn = document.createElement('button');
+        btn.className = 'brush-sz-btn' + (sz === _currentBrushSize ? ' active' : '');
+        btn.textContent = sz + 'x' + sz;
+        btn.onclick = () => {
+            _currentBrushSize = sz;
+            window.RADIAL_BRUSH_SIZE = sz;
+            document.querySelectorAll('.brush-sz-btn').forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+            _drawBrushPreview();
+            hotbarSound.currentTime = 0; hotbarSound.play().catch(() => {});
+        };
+        grid.appendChild(btn);
+    });
+}
+
+function _drawBrushPreview() {
+    const canvas = document.getElementById('brush-preview-canvas');
+    if (!canvas) return;
+    const ctx = canvas.getContext('2d');
+    const W = canvas.width, H = canvas.height;
+    ctx.clearRect(0, 0, W, H);
+    const G = 11;
+    const cw = W / G, ch = H / G;
+    const center = Math.floor(G / 2);
+    ctx.strokeStyle = '#3a1e08'; ctx.lineWidth = 0.5;
+    for (let i = 0; i <= G; i++) {
+        ctx.beginPath(); ctx.moveTo(i * cw, 0); ctx.lineTo(i * cw, H); ctx.stroke();
+        ctx.beginPath(); ctx.moveTo(0, i * ch); ctx.lineTo(W, i * ch); ctx.stroke();
+    }
+    for (let dy = 0; dy < _currentBrushSize; dy++) {
+        for (let dx = 0; dx < _currentBrushSize; dx++) {
+            const gx = center + dx, gy = center + dy;
+            if (gx < 0 || gx >= G || gy < 0 || gy >= G) continue;
+            ctx.fillStyle = (dx === 0 && dy === 0) ? '#ffdf80' : '#8b5e34';
+            ctx.fillRect(gx * cw + 1, gy * ch + 1, cw - 2, ch - 2);
+        }
+    }
+    ctx.strokeStyle = 'rgba(255,223,128,0.5)'; ctx.lineWidth = 1.5;
+    if (_currentMirrorMode === 'x' || _currentMirrorMode === 'xy') {
+        const mx = (G / 2) * cw;
+        ctx.beginPath(); ctx.moveTo(mx, 0); ctx.lineTo(mx, H); ctx.stroke();
+    }
+    if (_currentMirrorMode === 'y' || _currentMirrorMode === 'xy') {
+        const my = (G / 2) * ch;
+        ctx.beginPath(); ctx.moveTo(0, my); ctx.lineTo(W, my); ctx.stroke();
+    }
+}
+
+window.RADIAL_BRUSH_SIZE = _currentBrushSize;
+function openMirrorPopup() {
+    const ov = document.getElementById('mirror-popup-overlay');
+    if (!ov) return;
+    _syncMirrorCards();
+    ov.style.display = 'flex';
+    requestAnimationFrame(() => requestAnimationFrame(() => ov.classList.add('popup-visible')));
+    hotbarSound.currentTime = 0; hotbarSound.play().catch(() => {});
+}
+window.closeMirrorPopup = function () {
+    const ov = document.getElementById('mirror-popup-overlay');
+    if (!ov) return;
+    ov.classList.remove('popup-visible');
+    pclsSound.currentTime = 0; pclsSound.play().catch(() => {});
+    setTimeout(() => { ov.style.display = 'none'; }, 300);
+};
+window.setMirrorMode = function (mode) {
+    _currentMirrorMode = mode;
+    window.RADIAL_MIRROR_MODE = mode;
+    _syncMirrorCards();
+    _drawBrushPreview();
+    hotbarSound.currentTime = 0; hotbarSound.play().catch(() => {});
+};
+function _syncMirrorCards() {
+    ['off','x','y','xy'].forEach(m => {
+        const btn = document.getElementById('mmode-' + m);
+        if (btn) btn.classList.toggle('active', m === _currentMirrorMode);
+    });
+    const nameEl = document.getElementById('mirror-active-name');
+    if (nameEl) nameEl.textContent = { off:'Off', x:'Mirror X', y:'Mirror Y', xy:'Both X+Y' }[_currentMirrorMode] || _currentMirrorMode;
+}
+
+window.RADIAL_MIRROR_MODE = _currentMirrorMode;
+function handleInteractionBrushed(tile, x, y, z) {
+    const bSize = _currentBrushSize;
+    const mMode = _currentMirrorMode;
+    const cols  = currentIslandCols || 8;
+    const rows  = currentIslandRows || 8;
+    if (bSize === 1 && mMode === 'off') {
+        handleInteraction(tile, x, y, z);
+        return;
+    }
+    const offsets = [];
+    for (let dy = 0; dy < bSize; dy++) {
+        for (let dx = 0; dx < bSize; dx++) {
+            offsets.push([dx, dy]);
+        }
+    }
+    const positions = new Set();
+    offsets.forEach(([dx, dy]) => {
+        const bx = x + dx, by = y + dy;
+        if (bx < 0 || by < 0 || bx >= cols || by >= rows) return;
+        positions.add(bx + ',' + by);
+        if (mMode === 'x' || mMode === 'xy') {
+            const mx = (cols - 1) - bx;
+            if (mx >= 0 && mx < cols) positions.add(mx + ',' + by);
+        }
+        if (mMode === 'y' || mMode === 'xy') {
+            const my = (rows - 1) - by;
+            if (my >= 0 && my < rows) positions.add(bx + ',' + my);
+        }
+        if (mMode === 'xy') {
+            const mx2 = (cols - 1) - bx, my2 = (rows - 1) - by;
+            if (mx2 >= 0 && mx2 < cols && my2 >= 0 && my2 < rows) positions.add(mx2 + ',' + my2);
+        }
+    });
+    positions.forEach(key => {
+        const [tx, ty] = key.split(',').map(Number);
+        const t = mapContainer.querySelector(`.tile[data-x="${tx}"][data-y="${ty}"][data-z="${z}"]`);
+        if (t) handleInteraction(t, tx, ty, z);
+    });
+}

@@ -422,6 +422,21 @@ Added more Float modes for your island, just press the island float button and c
 ![dievloug37](<GithubPreview/Devlogs (Flavortown)/33.png>)
 
 ---
+**Devlog 38**
+
+Added Island Links! That is a more convinient way to share islands with others: just load the link in the adreess bar, press enter and you good to go
+
+![d38](<GithubPreview/Devlogs (Flavortown)/d438.png>)
+---
+**Devlog39**
+Added radial menu that adds a lot of functionality like Brush Size, Grid, Mirror mode
+Brush size can be selected from 1x1 to 7x7
+Grid toggle
+Mirror options
+
+![39](<GithubPreview/Devlogs (Flavortown)/39.png>)
+
+---
 End 
 
 ![yayyy](https://emoji.slack-edge.com/T09V59WQY1E/yayayayayay/203666b7424ee7a7.gif)

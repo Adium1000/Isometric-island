@@ -174,7 +174,7 @@ Map publisher
 |Mouse Key    | Action                               |
 |:-----------:|:------------------------------------:|
 | Left Click  | Place Blocks                         |
-| Right Click | Select island specific blocks/fill   |
+| Right Click | Select island specific blocks/fill  /Radial |
 | Middle Click| Pan tool/Grabbing                    |
 
 - Let's break each action down to make it easier to understand.
@@ -343,6 +343,20 @@ And done!
 | ![tree](Assets/Blocks/treehb.png)         | Natural Decoration             |  
 | ![water](Assets/Blocks/water.png)         | Natural                        |   
 | ![snowedtree](Assets/Blocks/treehbh.png)  | Snowy Decoration               | 
+
+![Radial_menu_listing](GithubPreview/Guide/r.png)
+
+- Radial menu is a shortcut manager for some commands like brush size, grid, mirror
+
+![Radial](GithubPreview/Guide/radial.png)
+
+![mirrror](GithubPreview/Guide/mirror.png)
+
+- Mirror popup contains options for mirroring the brush
+
+![Brush](GithubPreview/Guide/bs.png)
+
+- Brush settings contains options about the brush tickness
 
 
 ### Warning!

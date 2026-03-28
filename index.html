@@ -722,6 +722,28 @@
 
     <script src="game.js" defer></script>
 
+<div id="explicit-warning-overlay">
+    <div id="explicit-warning-wrapper" onclick="event.stopPropagation()">
+        <button id="explicit-warning-close-btn" onclick="explicitDecline()">&#10005;</button>
+        <div id="explicit-warning-popup" class="pixel-corners">
+            <div id="explicit-warning-icon-row">
+                <img src="./Assets/Icons/exp.png" id="explicit-warning-icon" style="image-rendering:pixelated;">
+            </div>
+            <h2 id="explicit-warning-title">COMMUNITY MAPS</h2>
+            <div id="explicit-warning-subtitle">CONTENT WARNING</div>
+            <p id="explicit-warning-text">
+                Community maps are created by players and may contain content that some users find inappropriate or offensive.<br><br>
+                By entering, you agree not to upload explicit, offensive, or inappropriate content.<br><br>
+                Violations may result in a permanent ban.
+            </p>
+            <div id="explicit-warning-buttons">
+                <button id="explicit-agree-btn" onclick="explicitAgree()">I AGREE</button>
+                <button id="explicit-decline-btn" onclick="explicitDecline()">GO BACK</button>
+            </div>
+        </div>
+    </div>
+</div>
+
 <div id="community-overlay" onclick="if(event.target===this)closeCommunityPopup()">
     <div id="community-wrapper" onclick="event.stopPropagation()">
         <button id="community-close-btn" onclick="closeCommunityPopup()">&#10005;</button>
@@ -729,7 +751,10 @@
             <h2><img src="./Assets/Icons/Comunitymaps.png" style="width:26px;height:26px;image-rendering:pixelated;vertical-align:middle;margin-right:6px;">COMMUNITY MAPS</h2>
 
             <div id="cm-auth-bar">
-                <span id="cm-user-info"></span>
+                <div id="cm-user-identity">
+                    <img id="cm-user-photo" src="" alt="" style="display:none;width:28px;height:28px;border-radius:50%;border:2px solid #ffb347;image-rendering:auto;flex-shrink:0;">
+                    <span id="cm-user-info"></span>
+                </div>
                 <button id="cm-auth-btn" onclick="cmLogin()"><img src="./Assets/Icons/google.png" style="width:14px;height:14px;image-rendering:pixelated;vertical-align:middle;margin-right:6px;">LOGIN WITH GOOGLE</button>
             </div>
 
@@ -782,15 +807,25 @@ const isAdmin = () => currentUser && currentUser.email === ADMIN_EMAIL;
 
 onAuthStateChanged(auth, user => {
     currentUser = user;
-    const btn  = document.getElementById('cm-auth-btn');
-    const info = document.getElementById('cm-user-info');
+    const btn   = document.getElementById('cm-auth-btn');
+    const info  = document.getElementById('cm-user-info');
+    const photo = document.getElementById('cm-user-photo');
     if (!btn) return;
     if (user) {
         info.textContent = (user.displayName || user.email) + (isAdmin() ? ' [ADMIN]' : '');
-        btn.textContent  = 'LOGOUT';
-        btn.onclick      = () => signOut(auth);
+        if (photo) {
+            if (user.photoURL) {
+                photo.src = user.photoURL;
+                photo.style.display = 'inline-block';
+            } else {
+                photo.style.display = 'none';
+            }
+        }
+        btn.innerHTML = '<img src="./Assets/Icons/logout.png" onerror="this.style.display=\'none\'" style="width:14px;height:14px;image-rendering:pixelated;vertical-align:middle;margin-right:6px;">LOGOUT';
+        btn.onclick   = () => signOut(auth);
     } else {
         info.textContent = '';
+        if (photo) photo.style.display = 'none';
         btn.innerHTML  = '<img src="./Assets/Icons/google.png" style="width:14px;height:14px;image-rendering:pixelated;vertical-align:middle;margin-right:6px;">LOGIN WITH GOOGLE';
         btn.onclick      = cmLogin;
     }
@@ -914,8 +949,6 @@ window.cmDeleteMap = async (id) => {
 
 window.cmLoadMapData = (dataStr) => {
     try {
-        // m.data is already JSON.stringify(islandData), so parse once to get {code:"..."}
-        // If result is still a string (double-encoded), parse again
         let data = JSON.parse(dataStr);
         if (typeof data === 'string') data = JSON.parse(data);
         if (window.loadIslandFromData) {
@@ -929,12 +962,40 @@ window.cmLoadMapData = (dataStr) => {
 };
 
 window.openCommunityPopup = () => {
+    const warnOverlay = document.getElementById('explicit-warning-overlay');
+    if (warnOverlay) {
+        warnOverlay.style.display = 'flex';
+        requestAnimationFrame(() => requestAnimationFrame(() => warnOverlay.classList.add('popup-visible')));
+        if (typeof hotbarSound !== 'undefined') { hotbarSound.currentTime = 0; hotbarSound.play().catch(e => {}); }
+    }
+};
+
+function _doOpenCommunityPopup() {
     const overlay = document.getElementById('community-overlay');
     if (!overlay) return;
     overlay.style.display = 'flex';
     requestAnimationFrame(() => requestAnimationFrame(() => overlay.classList.add('popup-visible')));
     if (typeof hotbarSound !== 'undefined') { hotbarSound.currentTime = 0; hotbarSound.play().catch(e => {}); }
     cmLoadMaps();
+}
+
+window.explicitAgree = () => {
+    const warnOverlay = document.getElementById('explicit-warning-overlay');
+    if (warnOverlay) {
+        warnOverlay.classList.remove('popup-visible');
+        setTimeout(() => { warnOverlay.style.display = 'none'; }, 280);
+    }
+    if (typeof hotbarSound !== 'undefined') { hotbarSound.currentTime = 0; hotbarSound.play().catch(e => {}); }
+    _doOpenCommunityPopup();
+};
+
+window.explicitDecline = () => {
+    const warnOverlay = document.getElementById('explicit-warning-overlay');
+    if (warnOverlay) {
+        warnOverlay.classList.remove('popup-visible');
+        setTimeout(() => { warnOverlay.style.display = 'none'; }, 280);
+    }
+    if (typeof pclsSound !== 'undefined') { pclsSound.currentTime = 0; pclsSound.play().catch(e => {}); }
 };
 
 window.closeCommunityPopup = () => {
@@ -966,18 +1027,12 @@ function esc(s) {
     return String(s || '').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
 }
 
-// ── EMBED POPUP ──────────────────────────────────────────────────────────────
-
 window.openEmbedPopup = () => {
     if (typeof hotbarSound !== 'undefined') { hotbarSound.currentTime = 0; hotbarSound.play().catch(e => {}); }
     const overlay = document.getElementById('embed-popup-overlay');
     if (!overlay) return;
-
-    // Get current island code
     const code = document.getElementById('popup-code-output')?.value || '';
     const baseUrl = window.location.href.split('?')[0].split('#')[0];
-
-    // Build embed URL: ?embed=1 hides UI, island= loads the map
     const params = new URLSearchParams();
     params.set('embed', '1');
     if (code) params.set('island', code);
@@ -996,11 +1051,10 @@ window.openEmbedPopup = () => {
     const ta = document.getElementById('embed-code-output');
     if (ta) ta.value = embedCode;
 
-    // Reset preview area
     const prev = document.getElementById('embed-preview-wrap');
     const hint = document.getElementById('embed-preview-hint');
     if (prev) {
-        // Remove iframe if already previewed
+
         const existing = prev.querySelector('iframe');
         if (existing) existing.remove();
         if (hint) hint.style.display = 'block';
@@ -1024,13 +1078,10 @@ window.showEmbedPreview = () => {
     const prev = document.getElementById('embed-preview-wrap');
     const hint = document.getElementById('embed-preview-hint');
     if (!prev || !code) return;
-
-    // Extract src from the embed code
     const srcMatch = code.match(/src="([^"]+)"/);
     if (!srcMatch) return;
 
     if (hint) hint.style.display = 'none';
-    // Remove old iframe
     const old = prev.querySelector('iframe');
     if (old) old.remove();
 
@@ -1154,12 +1205,62 @@ window.showEmbedPreview = () => {
     </div>
 </div>
 
+<div id="radial-menu-overlay" style="display:none;">
+    <div id="radial-menu">
+        <svg id="radial-svg" viewBox="0 0 300 300" xmlns="http://www.w3.org/2000/svg" width="300" height="300"></svg>
+        <div id="radial-labels"></div>
+    </div>
+</div>
+
+<div id="brush-popup-overlay" onclick="if(event.target===this)closeBrushPopup()" style="display:none;">
+    <div id="brush-popup-wrapper">
+        <button id="brush-popup-close" onclick="closeBrushPopup()">&#10005;</button>
+        <div id="brush-popup" class="pixel-corners">
+            <h2>BRUSH SIZE</h2>
+            <hr class="popup-divider">
+            <div id="brush-size-grid"></div>
+            <div id="brush-preview-wrap">
+                <canvas id="brush-preview-canvas" width="132" height="132"></canvas>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="mirror-popup-overlay" onclick="if(event.target===this)closeMirrorPopup()" style="display:none;">
+    <div id="mirror-popup-wrapper">
+        <button id="mirror-popup-close" onclick="closeMirrorPopup()">&#10005;</button>
+        <div id="mirror-popup" class="pixel-corners">
+            <h2> MIRROR MODE</h2>
+            <hr class="popup-divider">
+            <div id="mirror-mode-grid">
+                <button class="mirror-card" id="mmode-off" onclick="setMirrorMode('off')">
+                    <div class="mirror-card-icon">&#9632;</div>
+                    <div class="mirror-card-label">Off</div>
+                </button>
+                <button class="mirror-card" id="mmode-x" onclick="setMirrorMode('x')">
+                    <div class="mirror-card-icon">&#8596;</div>
+                    <div class="mirror-card-label">X Axis</div>
+                </button>
+                <button class="mirror-card" id="mmode-y" onclick="setMirrorMode('y')">
+                    <div class="mirror-card-icon">&#8597;</div>
+                    <div class="mirror-card-label">Y Axis</div>
+                </button>
+                <button class="mirror-card" id="mmode-xy" onclick="setMirrorMode('xy')">
+                    <div class="mirror-card-icon">&#10021;</div>
+                    <div class="mirror-card-label">Both</div>
+                </button>
+            </div>
+            <div id="mirror-status">Active: <strong id="mirror-active-name">Off</strong></div>
+        </div>
+    </div>
+</div>
+
 <div id="one-by-one-overlay" onclick="if(event.target===this)close1x1Popup()" style="display:none;">
     <div id="one-by-one-wrapper">
         <div id="one-by-one-popup" class="pixel-corners">
             <h2 id="one-by-one-title">1x1 Really?</h2>
             <p id="one-by-one-msg">A 1x1 island is not an island.</p>
-            <button id="one-by-one-ok-btn" onclick="close1x1Popup()">OK</button>
+            <button id="one-by-one-ok-btn" onclick="close1x1Popup()">Ok dude, I don't care!</button>
         </div>
     </div>
 </div>
