@@ -448,6 +448,14 @@ Also presets: a more convinient way to start a new island :3
 ![devlog41](<GithubPreview/Devlogs (Flavortown)/41.png>)
 
 ---
+**Devlog42**
+- Island Cache restore!
+- Now when you visit the website again your old island gets recoverd :3
+
+![d42](<GithubPreview/Devlogs (Flavortown)/WS.png>)
+
+---
+
 
 End 
 
