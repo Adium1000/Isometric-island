@@ -240,8 +240,24 @@
 
                     <div>
                         <div class="popup-section-title">ISLAND SHAPING:</div>
-                        <div id="island-shape-grid"></div>
-                        <div id="shape-size-label">Hover to preview size</div>
+                        <div id="grid-res-row">
+                            <span id="grid-res-label">SIZE: <span id="grid-res-current">8 x 8</span></span>
+                            <button id="grid-res-btn" onclick="openGridResPopup()">
+                                <img src="./Assets/Icons/maintenance.png" style="width:12px;height:12px;image-rendering:pixelated;vertical-align:middle;margin-right:5px;">GRID RESOLUTION
+                            </button>
+                        </div>
+                        <div class="popup-section-title" style="margin-top:10px;">PRESETS:</div>
+                        <div id="shape-presets-col">
+                            <button class="shape-preset-btn" onclick="applyCirclePreset(8)">8x8 CIRCLE</button>
+                            <button class="shape-preset-btn" onclick="applyCirclePreset(16)">16x16 CIRCLE</button>
+                            <button class="shape-preset-btn" onclick="applyDonutPreset(12,3)">DONUT</button>
+                            <button class="shape-preset-btn" onclick="applyDiamondPreset(12)">DIAMOND</button>
+                            <button class="shape-preset-btn" onclick="applyCrossPreset(12)">CROSS</button>
+                            <button class="shape-preset-btn" onclick="applyStarPreset(14)">STAR</button>
+                        </div>
+                        <div id="shape-perf-disclaimer">
+                            <span id="shape-perf-icon">⚠</span> Higher resolution may affect performance
+                        </div>
                     </div>
 
                     <hr class="popup-divider">
@@ -721,7 +737,6 @@
 </div>
 
     <script src="game.js" defer></script>
-
 <div id="explicit-warning-overlay">
     <div id="explicit-warning-wrapper" onclick="event.stopPropagation()">
         <button id="explicit-warning-close-btn" onclick="explicitDecline()">&#10005;</button>
@@ -1050,11 +1065,9 @@ window.openEmbedPopup = () => {
 
     const ta = document.getElementById('embed-code-output');
     if (ta) ta.value = embedCode;
-
     const prev = document.getElementById('embed-preview-wrap');
     const hint = document.getElementById('embed-preview-hint');
     if (prev) {
-
         const existing = prev.querySelector('iframe');
         if (existing) existing.remove();
         if (hint) hint.style.display = 'block';
@@ -1080,7 +1093,6 @@ window.showEmbedPreview = () => {
     if (!prev || !code) return;
     const srcMatch = code.match(/src="([^"]+)"/);
     if (!srcMatch) return;
-
     if (hint) hint.style.display = 'none';
     const old = prev.querySelector('iframe');
     if (old) old.remove();
@@ -1149,7 +1161,60 @@ window.showEmbedPreview = () => {
         </div>
     </div>
 </div>
+<div id="grid-res-overlay" onclick="if(event.target===this)closeGridResPopup()">
+    <div id="grid-res-wrapper" onclick="event.stopPropagation()">
+        <button id="grid-res-close-btn" onclick="closeGridResPopup()">&#10005;</button>
+        <div id="grid-res-popup" class="pixel-corners">
+            <h2><img src="./Assets/Icons/maintenance.png" style="width:22px;height:22px;image-rendering:pixelated;vertical-align:middle;margin-right:8px;">GRID RESOLUTION</h2>
+            <div id="island-shape-grid"></div>
+            <div id="shape-size-label">Hover to preview size</div>
+        </div>
+    </div>
+</div>
+<div id="notfound-overlay">
+    <div id="notfound-wrapper">
+        <div id="notfound-popup" class="pixel-corners">
+            <div id="notfound-code">404</div>
+            <div id="notfound-icon-row">
+                <img src="./Assets/Blocks/dirt.png" class="notfound-block" style="animation-delay:0s">
+                <img src="./Assets/Blocks/rock.png" class="notfound-block" style="animation-delay:0.15s">
+                <img src="./Assets/Blocks/dirt.png" class="notfound-block" style="animation-delay:0.3s">
+            </div>
+            <h2 id="notfound-title">ISLAND NOT FOUND</h2>
+            <p id="notfound-text">This island link is invalid or corrupted.<br>The map data could not be loaded.</p>
+            <div id="notfound-hash-preview"></div>
+            <button id="notfound-btn" onclick="closeNotFound()">START FRESH</button>
+        </div>
+    </div>
+</div>
 
+<script>
+window.showNotFound = function(badHash) {
+    const overlay = document.getElementById('notfound-overlay');
+    const preview = document.getElementById('notfound-hash-preview');
+    if (preview && badHash) {
+        const short = badHash.length > 32 ? badHash.slice(0, 32) + '...' : badHash;
+        preview.textContent = '#' + short;
+    }
+    if (overlay) {
+        overlay.style.display = 'flex';
+        requestAnimationFrame(() => requestAnimationFrame(() => overlay.classList.add('popup-visible')));
+    }
+};
+window.closeNotFound = function() {
+    const overlay = document.getElementById('notfound-overlay');
+    if (!overlay) return;
+    overlay.classList.remove('popup-visible');
+    setTimeout(() => { overlay.style.display = 'none'; }, 280);
+    history.replaceState(null, '', window.location.pathname);
+    const ov = document.getElementById('welcome-overlay');
+    if (ov) {
+        ov.style.display = 'flex';
+        requestAnimationFrame(() => requestAnimationFrame(() => ov.classList.add('popup-visible')));
+        if (typeof fetchReadme === 'function') fetchReadme();
+    }
+};
+</script>
 </body>
 </html>
 <div id="float-popup-overlay" onclick="if(event.target===this)closeFloatPopup()">
@@ -1204,14 +1269,12 @@ window.showEmbedPreview = () => {
         </div>
     </div>
 </div>
-
 <div id="radial-menu-overlay" style="display:none;">
     <div id="radial-menu">
         <svg id="radial-svg" viewBox="0 0 300 300" xmlns="http://www.w3.org/2000/svg" width="300" height="300"></svg>
         <div id="radial-labels"></div>
     </div>
 </div>
-
 <div id="brush-popup-overlay" onclick="if(event.target===this)closeBrushPopup()" style="display:none;">
     <div id="brush-popup-wrapper">
         <button id="brush-popup-close" onclick="closeBrushPopup()">&#10005;</button>
@@ -1225,12 +1288,11 @@ window.showEmbedPreview = () => {
         </div>
     </div>
 </div>
-
 <div id="mirror-popup-overlay" onclick="if(event.target===this)closeMirrorPopup()" style="display:none;">
     <div id="mirror-popup-wrapper">
         <button id="mirror-popup-close" onclick="closeMirrorPopup()">&#10005;</button>
         <div id="mirror-popup" class="pixel-corners">
-            <h2> MIRROR MODE</h2>
+            <h2>MIRROR MODE</h2>
             <hr class="popup-divider">
             <div id="mirror-mode-grid">
                 <button class="mirror-card" id="mmode-off" onclick="setMirrorMode('off')">
@@ -1260,7 +1322,7 @@ window.showEmbedPreview = () => {
         <div id="one-by-one-popup" class="pixel-corners">
             <h2 id="one-by-one-title">1x1 Really?</h2>
             <p id="one-by-one-msg">A 1x1 island is not an island.</p>
-            <button id="one-by-one-ok-btn" onclick="close1x1Popup()">Ok dude, I don't care!</button>
+            <button id="one-by-one-ok-btn" onclick="close1x1Popup()">OK dude, I don't care!</button>
         </div>
     </div>
 </div>

@@ -437,6 +437,18 @@ Mirror options
 ![39](<GithubPreview/Devlogs (Flavortown)/39.png>)
 
 ---
+**Devlog40**
+added a disclaimer for the comunity maps for the stuff is actually here and for the people to agree with the rules! Have fun creating maps!
+![devlog40](<GithubPreview/Devlogs (Flavortown)/40.png>)
+---
+**Devlog41**
+16x16 islands! Now you can extend you island twice more and make it more beautiful! 
+Also presets: a more convinient way to start a new island :3
+
+![devlog41](<GithubPreview/Devlogs (Flavortown)/41.png>)
+
+---
+
 End 
 
 ![yayyy](https://emoji.slack-edge.com/T09V59WQY1E/yayayayayay/203666b7424ee7a7.gif)

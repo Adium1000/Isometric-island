@@ -926,9 +926,10 @@ function generateIslandCode() {
     const timpIdx    = Math.max(0, TIMP_MAP.indexOf(currentTimp));
 
     const bw = makeBitWriter();
-    bw.write(VERSION, 4);
-    bw.write(cols, 4);
-    bw.write(rows, 4);
+    const VERSION3 = 3;
+    bw.write(VERSION3, 4);
+    bw.write(cols, 5);
+    bw.write(rows, 5);
     bw.write(Math.min(overlays.length, 65535), 16);
     bw.write(climateIdx, 2);
     bw.write(timpIdx, 2);
@@ -969,8 +970,8 @@ function _loadIslandCodeV2(b64) {
     const br = makeBitReader(bytes);
 
     const version      = br.read(4); 
-    const cols         = br.read(4);
-    const rows         = br.read(4);
+    const cols         = version >= 3 ? br.read(5) : br.read(4);
+    const rows         = version >= 3 ? br.read(5) : br.read(4);
     const overlayCount = br.read(16);
     const climateIdx   = br.read(2);
     const timpIdx      = br.read(2);
@@ -1152,7 +1153,7 @@ function generateShareURL() {
     const url = window.location.origin + window.location.pathname + '#island=' + encodeURIComponent(code);
     history.replaceState(null, '', '#island=' + encodeURIComponent(code));
     navigator.clipboard.writeText(url).then(() => {
-        showToast('🔗 Share link copied!');
+        showToast('Share link copied!');
         updateOGTags(code);
     }).catch(() => {
         showToast('Copy: ' + url);
@@ -1165,20 +1166,17 @@ function updateOGTags(islandCode) {
         ogCanvas.width = 1200;
         ogCanvas.height = 630;
         const ctx = ogCanvas.getContext('2d');
-
         ctx.fillStyle = '#0a1628';
         ctx.fillRect(0, 0, 1200, 630);
-
         const grad = ctx.createRadialGradient(600, 315, 50, 600, 315, 500);
         grad.addColorStop(0, '#1a3a5c');
         grad.addColorStop(1, '#050d1a');
         ctx.fillStyle = grad;
         ctx.fillRect(0, 0, 1200, 630);
-
         const tiles = mapContainer.getElementsByClassName('tile');
         const centerX = 600;
         const centerY = 290;
-        const size = 12; 
+        const size = 12;
         let minIsoX = Infinity, maxIsoX = -Infinity, minIsoY = Infinity, maxIsoY = -Infinity;
         for (let i = 0; i < tiles.length; i++) {
             const t = tiles[i];
@@ -1210,7 +1208,7 @@ function updateOGTags(islandCode) {
         ctx.fillStyle = '#ffdf80';
         ctx.font = 'bold 48px monospace';
         ctx.textAlign = 'center';
-        ctx.fillText('🏝 Isometric Island', 600, 580);
+        ctx.fillText('Isometric Island', 600, 580);
 
         ctx.fillStyle = '#a0d4ff';
         ctx.font = '22px monospace';
@@ -1228,8 +1226,8 @@ function updateOGTags(islandCode) {
         const ogDesc = document.getElementById('og-description');
         const twDesc = document.getElementById('tw-description');
         if (ogUrl) ogUrl.setAttribute('content', shareUrl);
-        if (ogTitle) ogTitle.setAttribute('content', 'My Isometric Island 🏝');
-        if (twTitle) twTitle.setAttribute('content', 'My Isometric Island 🏝');
+        if (ogTitle) ogTitle.setAttribute('content', 'My Isometric Island');
+        if (twTitle) twTitle.setAttribute('content', 'My Isometric Island');
         if (ogDesc) ogDesc.setAttribute('content', 'I built an island! Open the link to explore it in Isometric Island.');
         if (twDesc) twDesc.setAttribute('content', 'I built an island! Open the link to explore it in Isometric Island.');
     } catch(e) {
@@ -1599,7 +1597,7 @@ function closeConfirmDelete() {
 function closeAllPopups() {
     const ALL_POPUP_IDS = [
         'confirm-delete-overlay', 'save-popup-overlay', 'music-popup-overlay',
-        'float-popup-overlay', 'settings-popup-overlay', 'gui-settings-overlay',
+        'float-popup-overlay', 'settings-popup-overlay', 'gui-settings-overlay', 'grid-res-overlay',
         'graphics-settings-overlay', 'about-popup-overlay', 'qr-popup-overlay',
         'block-search-overlay', 'island-biome-overlay', 'mountain-biome-overlay',
         'pointer-settings-overlay', 'fill-overlay', 'welcome-overlay',
@@ -2473,12 +2471,26 @@ window.onload = () => {
                 updateMinimap();
                 showToast('Island loaded from link!');
                 return;
+            } else {
+                if (typeof window.showNotFound === 'function') {
+                    window.showNotFound(window.location.hash.slice(1));
+                }
+                return;
             }
         } catch(e) {
             console.warn('Hash island load error:', e);
+            if (typeof window.showNotFound === 'function') {
+                window.showNotFound(window.location.hash.slice(1));
+            }
+            return;
         }
     }
-
+    if (window.location.hash && window.location.hash.length > 1 && !window.location.hash.startsWith('#island=')) {
+        if (typeof window.showNotFound === 'function') {
+            window.showNotFound(window.location.hash.slice(1));
+        }
+        return;
+    }
     const ov = document.getElementById('welcome-overlay');
     ov.style.display = 'flex';
     requestAnimationFrame(() => requestAnimationFrame(() => ov.classList.add('popup-visible')));
@@ -2574,17 +2586,19 @@ function parseMarkdown(md) {
 
 let currentIslandCols = 8;
 let currentIslandRows = 8;
+const SHAPE_GRID_MAX = 16;
 
 function buildShapeGrid() {
     const grid = document.getElementById('island-shape-grid');
     grid.innerHTML = '';
-    for (let r = 1; r <= 8; r++) {
-        for (let c = 1; c <= 8; c++) {
+    const cellPx = 22;
+    grid.style.gridTemplateColumns = `repeat(${SHAPE_GRID_MAX}, ${cellPx}px)`;
+    for (let r = 1; r <= SHAPE_GRID_MAX; r++) {
+        for (let c = 1; c <= SHAPE_GRID_MAX; c++) {
             const cell = document.createElement('div');
-            cell.className = 'shape-cell';
+            cell.className = 'shape-cell shape-cell-sm';
             cell.dataset.r = r; cell.dataset.c = c;
             cell.addEventListener('mouseover', () => hoverShapeCell(r, c));
-            cell.addEventListener('mouseleave', () => {});
             cell.addEventListener('click', () => applyIslandShape(r, c));
             grid.appendChild(cell);
         }
@@ -2604,6 +2618,8 @@ function refreshShapeGrid() {
         if (cr <= currentIslandRows && cc <= currentIslandCols) el.classList.add('current-size');
         else el.classList.remove('current-size');
     });
+    const cur = document.getElementById('grid-res-current');
+    if (cur) cur.textContent = currentIslandCols + ' x ' + currentIslandRows;
 }
 
 function hoverShapeCell(rows, cols) {
@@ -2635,9 +2651,195 @@ function applyIslandShape(rows, cols) {
     hotbarSound.currentTime = 0; hotbarSound.play().catch(e => {});
     showToast('Island: ' + cols + 'x' + rows + '!');
     closeSavePopup();
+    closeGridResPopup();
+}
+
+
+function applyCirclePreset(size) {
+    const rows = size, cols = size;
+    const cx = (cols - 1) / 2;
+    const cy = (rows - 1) / 2;
+    const r  = (Math.min(cols, rows) / 2) - 0.5;
+    Array.from(mapContainer.getElementsByClassName('tile')).forEach(t => {
+        const tx = parseInt(t.getAttribute('data-x'));
+        const ty = parseInt(t.getAttribute('data-y'));
+        if (tx >= cols || ty >= rows) { t.remove(); return; }
+        if (parseInt(t.getAttribute('data-z')) === 0) {
+            const dx = tx - cx, dy = ty - cy;
+            if (dx*dx + dy*dy > r*r) t.remove();
+        }
+    });
+    const frag = document.createDocumentFragment();
+    for (let y = 0; y < rows; y++) {
+        for (let x = 0; x < cols; x++) {
+            const dx = x - cx, dy = y - cy;
+            if (dx*dx + dy*dy <= r*r) {
+                if (!mapContainer.querySelector(`.tile[data-x="${x}"][data-y="${y}"][data-z="0"]`))
+                    createTile(x, y, 0, 'dirt', null, frag);
+            }
+        }
+    }
+    mapContainer.appendChild(frag);
+    currentIslandCols = cols; currentIslandRows = rows;
+    saveState(); refreshShapeGrid();
+    hotbarSound.currentTime = 0; hotbarSound.play().catch(e => {});
+    showToast('Circle ' + cols + 'x' + rows + '!');
+    closeSavePopup();
+    closeGridResPopup();
 }
 
 buildShapeGrid();
+function applyDonutPreset(size, holeR) {
+    const rows = size, cols = size;
+    const cx = (cols - 1) / 2;
+    const cy = (rows - 1) / 2;
+    const outerR = (Math.min(cols, rows) / 2) - 0.5;
+    const innerR = holeR;
+
+    Array.from(mapContainer.getElementsByClassName('tile')).forEach(t => {
+        const tx = parseInt(t.getAttribute('data-x'));
+        const ty = parseInt(t.getAttribute('data-y'));
+        if (tx >= cols || ty >= rows) { t.remove(); return; }
+        if (parseInt(t.getAttribute('data-z')) === 0) {
+            const dx = tx - cx, dy = ty - cy;
+            const d2 = dx*dx + dy*dy;
+            if (d2 > outerR*outerR || d2 < innerR*innerR) t.remove();
+        }
+    });
+
+    const frag = document.createDocumentFragment();
+    for (let y = 0; y < rows; y++) {
+        for (let x = 0; x < cols; x++) {
+            const dx = x - cx, dy = y - cy;
+            const d2 = dx*dx + dy*dy;
+            if (d2 <= outerR*outerR && d2 >= innerR*innerR) {
+                if (!mapContainer.querySelector(`.tile[data-x="${x}"][data-y="${y}"][data-z="0"]`))
+                    createTile(x, y, 0, 'dirt', null, frag);
+            }
+        }
+    }
+    mapContainer.appendChild(frag);
+    currentIslandCols = cols; currentIslandRows = rows;
+    saveState(); refreshShapeGrid();
+    hotbarSound.currentTime = 0; hotbarSound.play().catch(e => {});
+    showToast('Donut ' + cols + 'x' + rows + '!');
+    closeSavePopup(); closeGridResPopup(); closeSettingsPopup();
+}
+function applyDiamondPreset(size) {
+    const rows = size, cols = size;
+    const cx = (cols - 1) / 2;
+    const cy = (rows - 1) / 2;
+    const r = cx - 0.5;
+
+    Array.from(mapContainer.getElementsByClassName('tile')).forEach(t => {
+        const tx = parseInt(t.getAttribute('data-x'));
+        const ty = parseInt(t.getAttribute('data-y'));
+        if (tx >= cols || ty >= rows) { t.remove(); return; }
+        if (parseInt(t.getAttribute('data-z')) === 0) {
+            const dx = Math.abs(tx - cx), dy = Math.abs(ty - cy);
+            if (dx + dy > r) t.remove();
+        }
+    });
+
+    const frag = document.createDocumentFragment();
+    for (let y = 0; y < rows; y++) {
+        for (let x = 0; x < cols; x++) {
+            const dx = Math.abs(x - cx), dy = Math.abs(y - cy);
+            if (dx + dy <= r) {
+                if (!mapContainer.querySelector(`.tile[data-x="${x}"][data-y="${y}"][data-z="0"]`))
+                    createTile(x, y, 0, 'dirt', null, frag);
+            }
+        }
+    }
+    mapContainer.appendChild(frag);
+    currentIslandCols = cols; currentIslandRows = rows;
+    saveState(); refreshShapeGrid();
+    hotbarSound.currentTime = 0; hotbarSound.play().catch(e => {});
+    showToast('Diamond ' + cols + 'x' + rows + '!');
+    closeSavePopup(); closeGridResPopup(); closeSettingsPopup();
+}
+function applyCrossPreset(size) {
+    const rows = size, cols = size;
+    const cx = (cols - 1) / 2;
+    const cy = (rows - 1) / 2;
+    const armW = Math.floor(size / 3);
+
+    const inCross = (x, y) => {
+        const dx = Math.abs(x - cx), dy = Math.abs(y - cy);
+        return dx <= armW || dy <= armW;
+    };
+
+    Array.from(mapContainer.getElementsByClassName('tile')).forEach(t => {
+        const tx = parseInt(t.getAttribute('data-x'));
+        const ty = parseInt(t.getAttribute('data-y'));
+        if (tx >= cols || ty >= rows) { t.remove(); return; }
+        if (parseInt(t.getAttribute('data-z')) === 0) {
+            if (!inCross(tx, ty)) t.remove();
+        }
+    });
+
+    const frag = document.createDocumentFragment();
+    for (let y = 0; y < rows; y++) {
+        for (let x = 0; x < cols; x++) {
+            if (inCross(x, y)) {
+                if (!mapContainer.querySelector(`.tile[data-x="${x}"][data-y="${y}"][data-z="0"]`))
+                    createTile(x, y, 0, 'dirt', null, frag);
+            }
+        }
+    }
+    mapContainer.appendChild(frag);
+    currentIslandCols = cols; currentIslandRows = rows;
+    saveState(); refreshShapeGrid();
+    hotbarSound.currentTime = 0; hotbarSound.play().catch(e => {});
+    showToast('Cross ' + cols + 'x' + rows + '!');
+    closeSavePopup(); closeGridResPopup(); closeSettingsPopup();
+}
+
+function applyStarPreset(size) {
+    const rows = size, cols = size;
+    const cx = (cols - 1) / 2;
+    const cy = (rows - 1) / 2;
+    const outerR = cx - 0.2;
+    const innerR = outerR * 0.42;
+    const points = 5;
+
+    const inStar = (x, y) => {
+        const dx = x - cx, dy = y - cy;
+        const dist = Math.sqrt(dx*dx + dy*dy);
+        if (dist > outerR + 0.5) return false;
+        const angle = (Math.atan2(dy, dx) + Math.PI / 2 + Math.PI * 2) % (Math.PI * 2);
+        const sectorAngle = (angle % (Math.PI * 2 / points)) / (Math.PI * 2 / points);
+        const edgeR = sectorAngle < 0.5
+            ? innerR + (outerR - innerR) * (sectorAngle * 2)
+            : innerR + (outerR - innerR) * ((1 - sectorAngle) * 2);
+        return dist <= edgeR + 0.7;
+    };
+
+    Array.from(mapContainer.getElementsByClassName('tile')).forEach(t => {
+        const tx = parseInt(t.getAttribute('data-x'));
+        const ty = parseInt(t.getAttribute('data-y'));
+        if (tx >= cols || ty >= rows) { t.remove(); return; }
+        if (parseInt(t.getAttribute('data-z')) === 0) {
+            if (!inStar(tx, ty)) t.remove();
+        }
+    });
+
+    const frag = document.createDocumentFragment();
+    for (let y = 0; y < rows; y++) {
+        for (let x = 0; x < cols; x++) {
+            if (inStar(x, y)) {
+                if (!mapContainer.querySelector(`.tile[data-x="${x}"][data-y="${y}"][data-z="0"]`))
+                    createTile(x, y, 0, 'dirt', null, frag);
+            }
+        }
+    }
+    mapContainer.appendChild(frag);
+    currentIslandCols = cols; currentIslandRows = rows;
+    saveState(); refreshShapeGrid();
+    hotbarSound.currentTime = 0; hotbarSound.play().catch(e => {});
+    showToast('Star ' + cols + 'x' + rows + '!');
+    closeSavePopup(); closeGridResPopup(); closeSettingsPopup();
+}
 
 let currentClimate = 'off';
 let weatherAnimFrame = null;
@@ -2699,6 +2901,22 @@ function animateWeather(mode) {
         }
     }
     weatherAnimFrame = requestAnimationFrame(() => animateWeather(mode));
+}
+
+function openGridResPopup() {
+    const overlay = document.getElementById('grid-res-overlay');
+    if (!overlay) return;
+    overlay.style.display = 'flex';
+    requestAnimationFrame(() => requestAnimationFrame(() => overlay.classList.add('popup-visible')));
+    hotbarSound.currentTime = 0; hotbarSound.play().catch(e => {});
+    refreshShapeGrid();
+}
+function closeGridResPopup() {
+    const overlay = document.getElementById('grid-res-overlay');
+    if (!overlay) return;
+    overlay.classList.remove('popup-visible');
+    pclsSound.currentTime = 0; pclsSound.play().catch(e => {});
+    setTimeout(() => { overlay.style.display = 'none'; }, 300);
 }
 
 function openSettingsPopup() {
@@ -3670,9 +3888,8 @@ function _buildRadialSVG(hovIdx) {
     const n = _RADIAL_ITEMS.length;
     const gapDeg = 8;
     const sliceDeg = 360 / n - gapDeg;
-    const PX = 4;
+    const PX = 4; 
     let rects = '';
-
     for (let i = 0; i < n; i++) {
         const startDeg = i * (360 / n) - 90 + gapDeg / 2;
         const hov = i === hovIdx;
@@ -3871,6 +4088,7 @@ function openMirrorPopup() {
     requestAnimationFrame(() => requestAnimationFrame(() => ov.classList.add('popup-visible')));
     hotbarSound.currentTime = 0; hotbarSound.play().catch(() => {});
 }
+
 window.closeMirrorPopup = function () {
     const ov = document.getElementById('mirror-popup-overlay');
     if (!ov) return;
@@ -3878,6 +4096,7 @@ window.closeMirrorPopup = function () {
     pclsSound.currentTime = 0; pclsSound.play().catch(() => {});
     setTimeout(() => { ov.style.display = 'none'; }, 300);
 };
+
 window.setMirrorMode = function (mode) {
     _currentMirrorMode = mode;
     window.RADIAL_MIRROR_MODE = mode;
@@ -3885,6 +4104,7 @@ window.setMirrorMode = function (mode) {
     _drawBrushPreview();
     hotbarSound.currentTime = 0; hotbarSound.play().catch(() => {});
 };
+
 function _syncMirrorCards() {
     ['off','x','y','xy'].forEach(m => {
         const btn = document.getElementById('mmode-' + m);
@@ -3910,6 +4130,7 @@ function handleInteractionBrushed(tile, x, y, z) {
             offsets.push([dx, dy]);
         }
     }
+
     const positions = new Set();
     offsets.forEach(([dx, dy]) => {
         const bx = x + dx, by = y + dy;
@@ -3928,6 +4149,7 @@ function handleInteractionBrushed(tile, x, y, z) {
             if (mx2 >= 0 && mx2 < cols && my2 >= 0 && my2 < rows) positions.add(mx2 + ',' + my2);
         }
     });
+
     positions.forEach(key => {
         const [tx, ty] = key.split(',').map(Number);
         const t = mapContainer.querySelector(`.tile[data-x="${tx}"][data-y="${ty}"][data-z="${z}"]`);

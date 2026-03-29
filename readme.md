@@ -412,6 +412,11 @@ And done!
 3. Some Devlogs and Banners use Maagkramp by ficod. This font is used under its Personal Use License! Check out his DeviantArt profile: https://www.deviantart.com/ficod
  - PLEASE NOTE THAT THE PROJECT DOES NOT USE THIS FONT!!
 
+4. AI
+- This project uses ai for debugging and adding small tools/futures!
+
+THE README IS FULLY WRITEN BY ME - a wiki for my game kinda
+
 # ! Anything else you find in my project's Assets folder is purely made by me !
 
 # Optimization
