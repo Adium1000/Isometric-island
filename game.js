@@ -1176,7 +1176,7 @@ function updateOGTags(islandCode) {
         const tiles = mapContainer.getElementsByClassName('tile');
         const centerX = 600;
         const centerY = 290;
-        const size = 12;
+        const size = 12; 
         let minIsoX = Infinity, maxIsoX = -Infinity, minIsoY = Infinity, maxIsoY = -Infinity;
         for (let i = 0; i < tiles.length; i++) {
             const t = tiles[i];
@@ -1226,8 +1226,8 @@ function updateOGTags(islandCode) {
         const ogDesc = document.getElementById('og-description');
         const twDesc = document.getElementById('tw-description');
         if (ogUrl) ogUrl.setAttribute('content', shareUrl);
-        if (ogTitle) ogTitle.setAttribute('content', 'My Isometric Island');
-        if (twTitle) twTitle.setAttribute('content', 'My Isometric Island');
+        if (ogTitle) ogTitle.setAttribute('content', 'My Isometric Island 🏝');
+        if (twTitle) twTitle.setAttribute('content', 'My Isometric Island 🏝');
         if (ogDesc) ogDesc.setAttribute('content', 'I built an island! Open the link to explore it in Isometric Island.');
         if (twDesc) twDesc.setAttribute('content', 'I built an island! Open the link to explore it in Isometric Island.');
     } catch(e) {
@@ -1252,6 +1252,24 @@ function saveState() {
     redoStack = [];
     updateMinimap();
     checkIsland1x1();
+    autoSaveSession();
+}
+const SESSION_ISLAND_KEY = 'ii_session_island';
+let _autoSaveTimer = null;
+function autoSaveSession() {
+    if (_autoSaveTimer) clearTimeout(_autoSaveTimer);
+    _autoSaveTimer = setTimeout(() => {
+        try {
+            const code = generateIslandCode();
+            localStorage.setItem(SESSION_ISLAND_KEY, code);
+        } catch(e) { /* quota full or similar — ignore */ }
+    }, 800);
+}
+function clearSessionIsland() {
+    localStorage.removeItem(SESSION_ISLAND_KEY);
+}
+function getSessionIsland() {
+    try { return localStorage.getItem(SESSION_ISLAND_KEY); } catch(e) { return null; }
 }
 
 function undo() {
@@ -2442,7 +2460,7 @@ window.onload = () => {
         window._origSetClimate = window.setClimate;
         window.setClimate = function(mode) {
             currentClimate = mode;
-            document.body.style.background = '#aad6ff'; 
+            document.body.style.background = '#aad6ff';
         };
         currentZoomPercent = 0.10;
         applyZoom();
@@ -2491,6 +2509,20 @@ window.onload = () => {
         }
         return;
     }
+    const sessionCode = getSessionIsland();
+    if (sessionCode) {
+        try {
+            const restored = loadIslandCode(sessionCode);
+            if (restored) {
+                updateMinimap();
+                showToast('Island Restored from the last sesion.');
+                return; 
+            }
+        } catch(e) {
+            console.warn('Session restore error:', e);
+        }
+    }
+
     const ov = document.getElementById('welcome-overlay');
     ov.style.display = 'flex';
     requestAnimationFrame(() => requestAnimationFrame(() => ov.classList.add('popup-visible')));
@@ -2669,6 +2701,7 @@ function applyCirclePreset(size) {
             if (dx*dx + dy*dy > r*r) t.remove();
         }
     });
+
     const frag = document.createDocumentFragment();
     for (let y = 0; y < rows; y++) {
         for (let x = 0; x < cols; x++) {
@@ -2689,6 +2722,7 @@ function applyCirclePreset(size) {
 }
 
 buildShapeGrid();
+
 function applyDonutPreset(size, holeR) {
     const rows = size, cols = size;
     const cx = (cols - 1) / 2;
@@ -2725,6 +2759,7 @@ function applyDonutPreset(size, holeR) {
     showToast('Donut ' + cols + 'x' + rows + '!');
     closeSavePopup(); closeGridResPopup(); closeSettingsPopup();
 }
+
 function applyDiamondPreset(size) {
     const rows = size, cols = size;
     const cx = (cols - 1) / 2;
@@ -3870,6 +3905,7 @@ const _RADIAL_ITEMS = [
     { icon: '',  label: ['MIRROR', 'MODE'], action: 'mirror' },
     { icon: '',  label: ['GRID',  'OVERLAY'], action: 'grid' },
 ];
+
 function _getThemeColor(varName, fallback) {
     return getComputedStyle(document.body).getPropertyValue(varName).trim() || fallback;
 }
@@ -3888,8 +3924,9 @@ function _buildRadialSVG(hovIdx) {
     const n = _RADIAL_ITEMS.length;
     const gapDeg = 8;
     const sliceDeg = 360 / n - gapDeg;
-    const PX = 4; 
+    const PX = 4;
     let rects = '';
+
     for (let i = 0; i < n; i++) {
         const startDeg = i * (360 / n) - 90 + gapDeg / 2;
         const hov = i === hovIdx;

@@ -2336,7 +2336,6 @@ body { transition: background-color 1.5s ease; }
 #explicit-warning-overlay.popup-visible #explicit-warning-wrapper {
     transform: scale(1.0) translateY(0);
 }
-
 #explicit-warning-close-btn {
     position: absolute;
     cursor: pointer;
@@ -3104,7 +3103,6 @@ body { transition: background-color 1.5s ease; }
     font-size: 6px;
     color: var(--gui-text-dim, #a07850);
 }
-
 @keyframes tile-place-rebound {
     0%   { transform: scaleX(1.0)  scaleY(1.0); }
     18%  { transform: scaleX(1.12) scaleY(0.88); }
@@ -3310,6 +3308,7 @@ body { transition: background-color 1.5s ease; }
     background: var(--gui-bg-dark, #3b2007);
     display: block;
 }
+
 #mirror-popup-overlay {
     display: none; position: fixed; inset: 0;
     background: rgba(0,0,0,0.75); z-index: 10000;

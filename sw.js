@@ -5,7 +5,7 @@
 // `-----'  `----'`--'      `--'   `--' `---' `----'    '--'   '--' `---' `--'   `--'`--'`----'`--'    
                                                                                                     
 
-const CACHE_NAME = 'isometric-island-v1';
+const CACHE_NAME = 'isometric-island-v2';
 const PRECACHE_ASSETS = [
     './',
     './index.html',
