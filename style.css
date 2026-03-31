@@ -3633,3 +3633,24 @@ body { transition: background-color 1.5s ease; }
     font-size: 10px;
     line-height: 1;
 }
+
+body.presentation-mode .game-title-container,
+body.presentation-mode #minimap-container,
+body.presentation-mode #dock-container,
+body.presentation-mode #zoom-ui,
+body.presentation-mode #code-bar,
+body.presentation-mode #block-name-display {
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.4s ease;
+}
+body:not(.presentation-mode) .game-title-container,
+body:not(.presentation-mode) #minimap-container,
+body:not(.presentation-mode) #dock-container,
+body:not(.presentation-mode) #zoom-ui,
+body:not(.presentation-mode) #code-bar,
+body:not(.presentation-mode) #block-name-display {
+    opacity: 1;
+    pointer-events: auto;
+    transition: opacity 0.4s ease;
+}

@@ -455,7 +455,13 @@ Also presets: a more convinient way to start a new island :3
 ![d42](<GithubPreview/Devlogs (Flavortown)/WS.png>)
 
 ---
+**Devlog43**
+Added more radial menu shortcuts for more productivity
+New tools:Settings Shortcut that opens the settings menu faster, Prezentation Mode that hides the GUI menus and shows them when turned off 
 
+![devlog43](<GithubPreview/Devlogs (Flavortown)/devlog43.png>)
+
+---
 
 End 
 

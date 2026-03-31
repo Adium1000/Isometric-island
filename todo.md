@@ -106,6 +106,8 @@ Added Island Links! That is a more convinient way to share islands with others: 
 
 **
 
+**Devlog43**
+Added more options ton
 
 
 Release

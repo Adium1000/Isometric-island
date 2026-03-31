@@ -3899,11 +3899,21 @@ let _radialMenuActive = false;
 let _radialHoveredIdx = -1;
 let _currentBrushSize = 1;
 let _currentMirrorMode = 'off';
+let _presentationMode = false;
+
+function togglePresentationMode() {
+    _presentationMode = !_presentationMode;
+    document.body.classList.toggle('presentation-mode', _presentationMode);
+    showToast(_presentationMode ? 'Presentation ON' : 'Presentation OFF');
+    hotbarSound.currentTime = 0; hotbarSound.play().catch(() => {});
+}
 
 const _RADIAL_ITEMS = [
     { icon: '', label: ['BRUSH', 'SIZE'],  action: 'brush'  },
     { icon: '',  label: ['MIRROR', 'MODE'], action: 'mirror' },
     { icon: '',  label: ['GRID',  'OVERLAY'], action: 'grid' },
+    { icon: '',  label: ['SETTINGS'], action: 'settings' },
+    { icon: '',  label: ['PRESENT', 'MODE'], action: 'presentation' },
 ];
 
 function _getThemeColor(varName, fallback) {
@@ -3931,7 +3941,8 @@ function _buildRadialSVG(hovIdx) {
         const startDeg = i * (360 / n) - 90 + gapDeg / 2;
         const hov = i === hovIdx;
         const gridActive = _RADIAL_ITEMS[i].action === 'grid' && gridOverlayEnabled;
-        const fill   = hov ? clrAccent : (gridActive ? clrActive : clrBg);
+        const presActive = _RADIAL_ITEMS[i].action === 'presentation' && _presentationMode;
+        const fill   = hov ? clrAccent : (gridActive || presActive ? clrActive : clrBg);
         const border = hov ? clrAccBrd : clrBorder;
 
         const steps = 72;
@@ -3967,7 +3978,7 @@ function _buildRadialSVG(hovIdx) {
         const el = document.createElement('div');
         let labelClass = 'radial-label';
         if (hov) labelClass += ' radial-label-hov';
-        else if (gridActive) labelClass += ' radial-label-active';
+        else if (gridActive || presActive) labelClass += ' radial-label-active';
         el.className = labelClass;
         el.style.cssText = `left:${lx}px;top:${ly}px;`;
 
@@ -4027,9 +4038,11 @@ function hideRadialMenu() {
 function handleRadialSelect() {
     if (_radialHoveredIdx < 0) return;
     const action = _RADIAL_ITEMS[_radialHoveredIdx].action;
-    if (action === 'brush')  openBrushPopup();
-    if (action === 'mirror') openMirrorPopup();
-    if (action === 'grid')   _toggleRadialGrid();
+    if (action === 'brush')        openBrushPopup();
+    if (action === 'mirror')       openMirrorPopup();
+    if (action === 'grid')         _toggleRadialGrid();
+    if (action === 'settings')     openSettingsPopup();
+    if (action === 'presentation') togglePresentationMode();
 }
 
 function _toggleRadialGrid() {
