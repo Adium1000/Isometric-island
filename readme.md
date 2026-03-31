@@ -286,6 +286,8 @@ And done!
 - Helpful settings for the mouse.
 9. GUI colors
 - Customize the GUI :3
+10. Key binds
+- Change the key-shortcuts
 
 ![pointer](GithubPreview/Guide/po.png)
 

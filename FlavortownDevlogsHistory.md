@@ -463,6 +463,12 @@ New tools:Settings Shortcut that opens the settings menu faster, Prezentation Mo
 
 ---
 
+# Devlog 44
+Added Keybind menu! Now you can manage the shortcuts as you want :3 Feel free to get creative (hehe)
+
+![dev](<GithubPreview/Devlogs (Flavortown)/d44.png>)
+
+--
 End 
 
 ![yayyy](https://emoji.slack-edge.com/T09V59WQY1E/yayayayayay/203666b7424ee7a7.gif)

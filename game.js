@@ -100,28 +100,187 @@ const musicBtn = document.getElementById('music-toggle');
 const floatBtn = document.getElementById('float-toggle');
 const minimapCanvas = document.getElementById('minimap');
 const mCtx = minimapCanvas.getContext('2d');
+const DEFAULT_KEY_BINDINGS = [
+    { id: 'undo',        label: 'Undo',         desc: 'Ctrl+Z',  key: 'z',  ctrl: true  },
+    { id: 'redo',        label: 'Redo',         desc: 'Ctrl+Y',  key: 'y',  ctrl: true  },
+    { id: 'search',      label: 'Block Search', desc: 'S',       key: 's',  ctrl: false },
+    { id: 'grid',        label: 'Grid Overlay', desc: 'G',       key: 'g',  ctrl: false },
+    { id: 'eraser',      label: 'Eraser',       desc: 'E',       key: 'e',  ctrl: false },
+    { id: 'page',        label: 'Switch Page',  desc: 'P',       key: 'p',  ctrl: false },
+    { id: 'music',       label: 'Music',        desc: 'M',       key: 'm',  ctrl: false },
+    { id: 'float',       label: 'Float Mode',   desc: 'F',       key: 'f',  ctrl: false },
+];
+
+function _loadKeyBindings() {
+    try {
+        const saved = localStorage.getItem('islandKeyBindings');
+        if (saved) {
+            const parsed = JSON.parse(saved);
+            return DEFAULT_KEY_BINDINGS.map(def => {
+                const override = parsed.find(p => p.id === def.id);
+                return override ? { ...def, key: override.key, ctrl: override.ctrl } : { ...def };
+            });
+        }
+    } catch(e) {}
+    return DEFAULT_KEY_BINDINGS.map(d => ({ ...d }));
+}
+
+function _saveKeyBindings() {
+    localStorage.setItem('islandKeyBindings', JSON.stringify(
+        window._keyBindings.map(b => ({ id: b.id, key: b.key, ctrl: b.ctrl }))
+    ));
+}
+
+window._keyBindings = _loadKeyBindings();
 
 window.addEventListener('keydown', (e) => {
     const tag = document.activeElement && document.activeElement.tagName;
     if (tag === 'INPUT' || tag === 'TEXTAREA') return;
+    if (window._kbListening) return;
 
     const key = e.key.toLowerCase();
-    if (e.ctrlKey && key === 'z') { e.preventDefault(); undo(); }
-    else if (e.ctrlKey && key === 'y') { e.preventDefault(); redo(); }
-    else if (key === 's') { e.preventDefault(); toggleBlockSearch(); }
-    else if (key === 'g') {
+    const bindings = window._keyBindings;
+
+    const get = (id) => bindings.find(b => b.id === id);
+
+    const undoB = get('undo');
+    const redoB = get('redo');
+    if (undoB && e.ctrlKey && key === undoB.key) { e.preventDefault(); undo(); return; }
+    if (redoB && e.ctrlKey && key === redoB.key) { e.preventDefault(); redo(); return; }
+
+    if (e.ctrlKey) return; 
+
+    const searchB = get('search');
+    if (searchB && !searchB.ctrl && key === searchB.key) { e.preventDefault(); toggleBlockSearch(); return; }
+
+    const gridB = get('grid');
+    if (gridB && !gridB.ctrl && key === gridB.key) {
         const sw = document.getElementById('sw-grid');
         if (sw) { toggleVisualOption('gridOverlay', sw); hotbarSound.currentTime = 0; hotbarSound.play().catch(e => {}); }
+        return;
     }
-    else if (key === 'e') {
+
+    const eraserB = get('eraser');
+    if (eraserB && !eraserB.ctrl && key === eraserB.key) {
         if (currentPage !== 1) switchPage(1);
         const eraserSlot = document.getElementById('slot-eraser');
         selectBlock('eraser', eraserSlot);
-    } 
-    else if (key === 'p') { switchPage(currentPage === 1 ? 2 : 1); } 
-    else if (key === 'm') { openMusicPopup(); } 
-    else if (key === 'f') { openFloatPopup(); }
+        return;
+    }
+
+    const pageB = get('page');
+    if (pageB && !pageB.ctrl && key === pageB.key) { switchPage(currentPage === 1 ? 2 : 1); return; }
+
+    const musicB = get('music');
+    if (musicB && !musicB.ctrl && key === musicB.key) { openMusicPopup(); return; }
+
+    const floatB = get('float');
+    if (floatB && !floatB.ctrl && key === floatB.key) { openFloatPopup(); return; }
 });
+
+function openKeyBindingsPopup() {
+    const overlay = document.getElementById('keybindings-popup-overlay');
+    if (!overlay) return;
+    overlay.style.display = 'flex';
+    requestAnimationFrame(() => requestAnimationFrame(() => overlay.classList.add('popup-visible')));
+    _renderKeyBindingsList();
+    hotbarSound.currentTime = 0; hotbarSound.play().catch(e => {});
+}
+
+function closeKeyBindingsPopup() {
+    const overlay = document.getElementById('keybindings-popup-overlay');
+    if (!overlay) return;
+    overlay.classList.remove('popup-visible');
+    window._kbListening = null;
+    pclsSound.currentTime = 0; pclsSound.play().catch(e => {});
+    setTimeout(() => { overlay.style.display = 'none'; }, 300);
+}
+
+function _keyDisplayName(key, ctrl) {
+    if (ctrl) return 'Ctrl+' + key.toUpperCase();
+    const special = { ' ': 'Space', 'arrowup': '↑', 'arrowdown': '↓', 'arrowleft': '←', 'arrowright': '→', 'escape': 'Esc', 'tab': 'Tab', 'backspace': 'Bksp', 'delete': 'Del', 'enter': 'Enter' };
+    return special[key] || key.toUpperCase();
+}
+
+function _renderKeyBindingsList() {
+    const list = document.getElementById('keybindings-list');
+    if (!list) return;
+    list.innerHTML = '';
+    window._keyBindings.forEach((binding, idx) => {
+        const conflict = window._keyBindings.find((b, i) => i !== idx && b.key === binding.key && b.ctrl === binding.ctrl);
+
+        const row = document.createElement('div');
+        row.className = 'kb-row';
+        row.innerHTML = `
+            <span class="kb-label">${binding.label}</span>
+            <button class="kb-key-btn${conflict ? ' conflict' : ''}" id="kb-btn-${binding.id}" onclick="startListeningKey('${binding.id}')">${_keyDisplayName(binding.key, binding.ctrl)}</button>
+        `;
+        list.appendChild(row);
+        if (conflict) {
+            const badge = document.createElement('div');
+            badge.className = 'kb-conflict-badge';
+            badge.style.cssText = 'width:100%;text-align:center;';
+            badge.textContent = '⚠ CONFLICT WITH ' + conflict.label.toUpperCase();
+            list.appendChild(badge);
+        }
+    });
+}
+
+window._kbListening = null;
+window._kbKeydownHandler = null;
+
+function startListeningKey(bindingId) {
+    if (window._kbKeydownHandler) {
+        document.removeEventListener('keydown', window._kbKeydownHandler, true);
+        window._kbKeydownHandler = null;
+    }
+
+    window._kbListening = bindingId;
+    const btn = document.getElementById('kb-btn-' + bindingId);
+    if (btn) {
+        btn.classList.add('listening');
+        btn.textContent = '...';
+    }
+
+    const handler = (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+
+        const key = e.key.toLowerCase();
+        if (['control','shift','alt','meta','capslock'].includes(key)) return;
+        if (key === 'escape') {
+            window._kbListening = null;
+            document.removeEventListener('keydown', handler, true);
+            window._kbKeydownHandler = null;
+            _renderKeyBindingsList();
+            return;
+        }
+
+        const ctrl = e.ctrlKey;
+        const binding = window._keyBindings.find(b => b.id === bindingId);
+        if (binding) {
+            binding.key = key;
+            binding.ctrl = ctrl;
+            _saveKeyBindings();
+        }
+
+        window._kbListening = null;
+        document.removeEventListener('keydown', handler, true);
+        window._kbKeydownHandler = null;
+        _renderKeyBindingsList();
+        hotbarSound.currentTime = 0; hotbarSound.play().catch(e => {});
+    };
+
+    window._kbKeydownHandler = handler;
+    document.addEventListener('keydown', handler, true);
+}
+
+function resetKeyBindings() {
+    window._keyBindings = DEFAULT_KEY_BINDINGS.map(d => ({ ...d }));
+    _saveKeyBindings();
+    _renderKeyBindingsList();
+    hotbarSound.currentTime = 0; hotbarSound.play().catch(e => {});
+}
 
 function playMusic() { bgMusic.play().catch(e => {}); }
 window.addEventListener('mousedown', () => { if (isMusicPlaying) playMusic(); }, { once: true });

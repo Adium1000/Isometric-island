@@ -3,29 +3,19 @@
 
 
 -MoreBlocks
--recover previous sesion 
 -optimization banner
-Presentation mode — ascunde tot UI-ul, rămâne doar insula frumos centrată
 "X people building right now" counter live
-
-advanced brush options
 - stamp 
-
-- build that island replica game
+- build that island replica game mini
 -Undo/Redo - afișează câte stări mai ai disponibile (ex: "Undo 7/20"), ca să știi când ești aproape de limită.
--Autosave
-- RECOVER SESION
-
 -Notificări stacked - acum toast-ul se suprascrie, poți face o coadă verticală cu mai multe toasts simultane
 -Offline indicator
-
-// -OG image autogenerat - când dai share link, preview-ul arată insula ta
 -Multi-language support - RO, EN, ES, FR, DE pentru UI
 -RTL support - pentru arabă/ebraică
-Custom keybinds - remapezi orice shortcut
 -island as an emoji (fun)
 -tutorial video
-
+-achivemnt sistem
+Tutorial Non-Intruziv: Mici semne de întrebare care apar doar prima dată când deschizi o secțiune.
 
 
 ((Hotbar reorder - drag & drop între sloturi să-ți aranjezi blocurile preferate
@@ -97,17 +87,12 @@ sooo yea gl
 
 i hate missspelling
 
+
 Devlog Sketch
 
-Devlog 38
+# Devlog 44
+Added Keybind menu! Now you can manage the shortcuts as you want :3 Feel free to get creative (hehe)
 
-Added Island Links! That is a more convinient way to share islands with others: just load the link in the adreess bar, press enter and you good to go
-
-
-**
-
-**Devlog43**
-Added more options ton
 
 
 Release

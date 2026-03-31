@@ -1067,6 +1067,7 @@ body {
 
 
 .grid-overlay-active .tile.grid-cell {
+    /* It is bugged and i can't find out why*/
 }
 
 #grid-canvas {
@@ -3654,3 +3655,123 @@ body:not(.presentation-mode) #block-name-display {
     pointer-events: auto;
     transition: opacity 0.4s ease;
 }
+
+#keybindings-popup-overlay {
+    display: none; position: fixed; inset: 0;
+    background: rgba(0,0,0,0.78); z-index: 5500;
+    justify-content: center; align-items: center;
+    opacity: 0; transition: opacity 0.3s ease;
+}
+#keybindings-popup-overlay.popup-visible { opacity: 1; display: flex; }
+#keybindings-popup-wrapper {
+    position: relative;
+    transform: scale(0.87) translateY(28px);
+    transition: transform 0.35s cubic-bezier(0.18, 0.89, 0.32, 1.28);
+}
+#keybindings-popup-overlay.popup-visible #keybindings-popup-wrapper {
+    transform: scale(1.3) translateY(0);
+}
+#keybindings-close-btn {
+    position: absolute; top: -18px; right: -18px;
+    width: 36px; height: 36px; background: #7a2020;
+    border: 4px solid var(--gui-border); box-shadow: 3px 3px 0 #3b1010;
+    color: #fff; font-family: 'Press Start 2P', cursive; font-size: 12px;
+    display: flex; align-items: center; justify-content: center;
+    transition: transform 0.1s, filter 0.1s; z-index: 10; padding: 0; line-height: 1;
+    clip-path: polygon(0% 3px, 3px 3px, 3px 0%, calc(100% - 3px) 0%, calc(100% - 3px) 3px, 100% 3px, 100% calc(100% - 3px), calc(100% - 3px) calc(100% - 3px), calc(100% - 3px) 100%, 3px 100%, 3px calc(100% - 3px), 0% calc(100% - 3px));
+}
+#keybindings-close-btn:hover { filter: brightness(1.3); transform: scale(1.1); }
+#keybindings-close-btn:active { transform: scale(0.9); }
+#keybindings-popup {
+    background: var(--gui-bg-light);
+    border: 4px solid var(--gui-border);
+    box-shadow: 6px 6px 0 var(--gui-shadow);
+    padding: 16px 18px 14px 18px;
+    display: flex; flex-direction: column; gap: 10px;
+    width: 320px;
+    font-family: 'Press Start 2P', cursive;
+}
+#keybindings-popup h2 {
+    margin: 0; color: var(--gui-text); font-size: 13px;
+    text-shadow: 2px 2px var(--gui-title-sh); text-align: center; letter-spacing: 1px;
+}
+#keybindings-subtitle {
+    color: #a89070; font-size: 6px; text-align: center; letter-spacing: 1px;
+    font-family: 'Press Start 2P', cursive;
+}
+#keybindings-list {
+    display: flex; flex-direction: column; gap: 5px;
+    max-height: 300px; overflow-y: auto;
+    padding-right: 2px;
+}
+#keybindings-list::-webkit-scrollbar { width: 4px; }
+#keybindings-list::-webkit-scrollbar-track { background: var(--gui-bg-dark); }
+#keybindings-list::-webkit-scrollbar-thumb { background: var(--gui-border); }
+
+.kb-row {
+    display: flex; align-items: center;
+    justify-content: space-between;
+    gap: 8px;
+    padding: 5px 6px;
+    background: var(--gui-bg-dark);
+    border: 2px solid var(--gui-border);
+    clip-path: polygon(0% 2px, 2px 2px, 2px 0%, calc(100% - 2px) 0%, calc(100% - 2px) 2px, 100% 2px, 100% calc(100% - 2px), calc(100% - 2px) calc(100% - 2px), calc(100% - 2px) 100%, 2px 100%, 2px calc(100% - 2px), 0% calc(100% - 2px));
+}
+.kb-label {
+    color: #e8d5b0; font-size: 7px; letter-spacing: 1px;
+    font-family: 'Press Start 2P', cursive;
+    flex: 1;
+}
+.kb-desc {
+    color: #a89070; font-size: 6px; letter-spacing: 0.5px;
+    font-family: 'Press Start 2P', cursive;
+    flex: 1; text-align: center;
+}
+.kb-key-btn {
+    font-family: 'Press Start 2P', cursive;
+    font-size: 7px;
+    min-width: 48px;
+    height: 22px;
+    background: var(--gui-bg-light);
+    border: 2px solid var(--gui-accent);
+    color: var(--gui-accent);
+    padding: 0 6px;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: background 0.12s, color 0.12s, border-color 0.12s;
+    clip-path: polygon(0% 2px, 2px 2px, 2px 0%, calc(100% - 2px) 0%, calc(100% - 2px) 2px, 100% 2px, 100% calc(100% - 2px), calc(100% - 2px) calc(100% - 2px), calc(100% - 2px) 100%, 2px 100%, 2px calc(100% - 2px), 0% calc(100% - 2px));
+    display: flex; align-items: center; justify-content: center;
+}
+.kb-key-btn:hover { background: var(--gui-accent); color: #1a1208; }
+.kb-key-btn.listening {
+    background: #7a2020;
+    border-color: #ff6060;
+    color: #fff;
+    animation: kb-blink 0.5s steps(1) infinite;
+}
+@keyframes kb-blink {
+    0%  { border-color: #ff6060; }
+    50% { border-color: #7a2020; }
+}
+.kb-key-btn.conflict {
+    border-color: #ff9900;
+    color: #ff9900;
+}
+.kb-conflict-badge {
+    color: #ff9900; font-size: 6px; font-family: 'Press Start 2P', cursive;
+    text-align: center; letter-spacing: 0.5px; min-height: 9px;
+}
+#keybindings-actions {
+    display: flex; justify-content: space-between; align-items: center; gap: 8px;
+}
+#keybindings-reset-btn {
+    font-family: 'Press Start 2P', cursive;
+    font-size: 7px; letter-spacing: 1px;
+    background: #3a2a10; border: 2px solid var(--gui-border); color: #c8a860;
+    padding: 6px 10px; cursor: pointer;
+    transition: filter 0.1s, transform 0.1s;
+    clip-path: polygon(0% 2px, 2px 2px, 2px 0%, calc(100% - 2px) 0%, calc(100% - 2px) 2px, 100% 2px, 100% calc(100% - 2px), calc(100% - 2px) calc(100% - 2px), calc(100% - 2px) 100%, 2px 100%, 2px calc(100% - 2px), 0% calc(100% - 2px));
+}
+#keybindings-reset-btn:hover { filter: brightness(1.3); transform: scale(1.04); }
+#keybindings-reset-btn:active { transform: scale(0.96); }

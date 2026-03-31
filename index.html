@@ -173,7 +173,7 @@
                         <div class="popup-row" style="flex-direction:column;gap:6px;margin-top:8px;">
                             <button class="btn-qr" onclick="showQRCode()" style="width:100%;box-sizing:border-box;"><img src="./Assets/Icons/qr.png" style="width:16px;height:16px;image-rendering:pixelated;vertical-align:middle;margin-right:6px;">SHOW QR CODE</button>
                             <button class="btn-copy" onclick="navigator.clipboard.writeText(document.getElementById('popup-code-output').value).then(()=>showToast('Succesfully copied to clipboard!'))" style="width:100%;box-sizing:border-box;"><img src="./Assets/Icons/todorm.png" style="width:16px;height:16px;image-rendering:pixelated;vertical-align:middle;margin-right:6px;">COPY ISLAND CODE</button>
-                            <button class="btn-share-url" onclick="generateShareURL()" style="width:100%;box-sizing:border-box;background:#1a3a5c;border-color:#2a6a9e;color:#a0d4ff;"><img src="./Assets/Icons/todorm.png" style="width:16px;height:16px;image-rendering:pixelated;vertical-align:middle;margin-right:6px;">&#128279; COPY SHARE LINK</button>
+                            <button class="btn-share-url" onclick="generateShareURL()" style="width:100%;box-sizing:border-box;background:#1a3a5c;border-color:#2a6a9e;color:#a0d4ff;"><img src="./Assets/Icons/todorm.png" style="width:16px;height:16px;image-rendering:pixelated;vertical-align:middle;margin-right:6px;">COPY SHARE LINK</button>
                             <button class="btn-embed" onclick="openEmbedPopup()" style="width:100%;box-sizing:border-box;"><img src="./Assets/Icons/todorm.png" style="width:16px;height:16px;image-rendering:pixelated;vertical-align:middle;margin-right:6px;">&#60;/&#62; EMBED CODE</button>
                         </div>
                     </div>
@@ -341,6 +341,11 @@
                         <button class="px-switch" id="sw-fps" onclick="toggleVisualOption('fpsCounter', this)">
                             <span class="px-switch-thumb"></span>
                         </button>
+                    </div>
+
+                    <div class="visual-option-row">
+                        <span class="visual-option-label">Key Bindings</span>
+                        <button class="btn-pointer-settings" onclick="openKeyBindingsPopup()">&#9654;</button>
                     </div>
 
                     <hr class="popup-divider" style="margin:10px 0;">
@@ -1168,6 +1173,23 @@ window.showEmbedPreview = () => {
             <h2><img src="./Assets/Icons/maintenance.png" style="width:22px;height:22px;image-rendering:pixelated;vertical-align:middle;margin-right:8px;">GRID RESOLUTION</h2>
             <div id="island-shape-grid"></div>
             <div id="shape-size-label">Hover to preview size</div>
+        </div>
+    </div>
+</div>
+
+<div id="keybindings-popup-overlay" onclick="if(event.target===this)closeKeyBindingsPopup()">
+    <div id="keybindings-popup-wrapper">
+        <button id="keybindings-close-btn" onclick="closeKeyBindingsPopup()">&#10005;</button>
+        <div id="keybindings-popup" class="pixel-corners">
+            <h2>KEY BINDINGS</h2>
+            <div id="keybindings-subtitle">Click a key to rebind it</div>
+            <hr class="popup-divider">
+            <div id="keybindings-list"></div>
+            <hr class="popup-divider" style="margin-top:10px;">
+            <div id="keybindings-actions">
+                <button id="keybindings-reset-btn" onclick="resetKeyBindings()">RESET DEFAULTS</button>
+                <button class="btn-ok" onclick="closeKeyBindingsPopup()">OK</button>
+            </div>
         </div>
     </div>
 </div>
