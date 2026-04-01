@@ -6,8 +6,6 @@
 //     #┼#    #┼#    #┼# #┼#    #┼# #┼#       #┼# #┼#            #┼#     #┼#    #┼#     #┼#    #┼#    #┼#             #┼#    #┼#    #┼# #┼#        #┼#     #┼# #┼#   #┼#┼# #┼#    #┼#        #┼# #┼#    #┼#    #┼#     
 //########### ########   ########  ###       ### ##########     ###     ###    ### ########### ########          ########### ########  ########## ###     ### ###    #### #########          #####      ########       
 
-// The version is determinated by the current date and year
-
 if ('serviceWorker' in navigator) {
     window.addEventListener('load', () => {
         navigator.serviceWorker.register('./sw.js')
@@ -376,6 +374,9 @@ function openMusicPopup() {
     requestAnimationFrame(() => requestAnimationFrame(() => overlay.classList.add('popup-visible')));
     hotbarSound.currentTime = 0; hotbarSound.play().catch(e => {});
     _syncMusicPopupSwitch();
+    const track = document.getElementById('music-volume-track');
+    if (track && !track._volumeInited) _initVolumeBar();
+    else { const dot = document.getElementById('music-volume-dot'); if (dot) dot.style.left = (_musicVolume * 100) + '%'; }
 }
 
 function closeMusicPopup() {
@@ -398,6 +399,51 @@ function _syncMusicPopupSwitch() {
     if (!sw) return;
     sw.classList.toggle('on', isMusicPlaying);
 }
+
+let _musicVolume = 0.8; 
+function _applyMusicVolume(v) {
+    _musicVolume = Math.max(0, Math.min(1, v));
+    getBgMusic().volume = _musicVolume;
+    try { getPlaceSound().volume  = _musicVolume; } catch(_) {}
+    try { getGrassSound().volume  = _musicVolume; } catch(_) {}
+    try { getPclsSound().volume   = _musicVolume; } catch(_) {}
+    try { getEraserSound().volume = _musicVolume; } catch(_) {}
+    try { hotbarSound.volume      = _musicVolume; } catch(_) {}
+    const dot = document.getElementById('music-volume-dot');
+    if (dot) dot.style.left = (_musicVolume * 100) + '%';
+}
+
+function _initVolumeBar() {
+    const track = document.getElementById('music-volume-track');
+    if (!track) return;
+
+    const dot = document.getElementById('music-volume-dot');
+    if (dot) dot.style.left = (_musicVolume * 100) + '%';
+
+    function updateFromX(clientX) {
+        const rect = track.getBoundingClientRect();
+        _applyMusicVolume((clientX - rect.left) / rect.width);
+    }
+
+    track.addEventListener('mousedown', (e) => {
+        updateFromX(e.clientX);
+        const onMove = ev => updateFromX(ev.clientX);
+        const onUp   = () => { window.removeEventListener('mousemove', onMove); window.removeEventListener('mouseup', onUp); };
+        window.addEventListener('mousemove', onMove);
+        window.addEventListener('mouseup', onUp);
+    });
+
+    track.addEventListener('touchstart', (e) => {
+        updateFromX(e.touches[0].clientX);
+        const onMove = ev => updateFromX(ev.touches[0].clientX);
+        const onEnd  = () => { window.removeEventListener('touchmove', onMove); window.removeEventListener('touchend', onEnd); };
+        window.addEventListener('touchmove', onMove, { passive: true });
+        window.addEventListener('touchend', onEnd);
+    }, { passive: true });
+
+    track._volumeInited = true;
+}
+
 
 let currentFloatMode = 'off';
 
@@ -1794,66 +1840,37 @@ function confirmDeleteIsland() {
 }
 
 function deleteIslandWithSnake() {
-    const SIZE = 8;
-    const cx = (SIZE - 1) / 2;
-    const cy = (SIZE - 1) / 2;
-    const maxR = Math.ceil(SIZE / 2);
-    const order = [];
-
-    for (let ring = maxR; ring >= 0; ring--) {
-        const ringCells = [];
-        for (let x = 0; x < SIZE; x++) {
-            for (let y = 0; y < SIZE; y++) {
-                const dist = Math.sqrt((x - cx) ** 2 + (y - cy) ** 2);
-                if (dist >= ring - 0.8 && dist < ring + 0.7) {
-                    ringCells.push({ x, y, angle: Math.atan2(y - cy, x - cx) });
-                }
-            }
-        }
-        ringCells.sort((a, b) => a.angle - b.angle);
-        order.push(...ringCells);
-    }
-
-    const STEP_MS = 18;
-    let idx = 0;
-
-    function popNext() {
-        if (idx >= order.length) {
-            setTimeout(() => {
-                mapContainer.innerHTML = '';
-                const frag = document.createDocumentFragment();
-                for (let y = 0; y < SIZE; y++) {
-                    for (let x = 0; x < SIZE; x++) {
-                        const t = createTile(x, y, 0, 'dirt', null, frag);
-                        t.style.opacity = '0';
-                        t.style.transform = 'scale(0.7)';
-                    }
-                }
-                mapContainer.appendChild(frag);
-                saveState(); updateMinimap();
-                showToast('Succesfully Deleted!');
-                hotbarSound.currentTime = 0; hotbarSound.play().catch(e => {});
-                requestAnimationFrame(() => {
-                    mapContainer.querySelectorAll('.tile').forEach(t => {
-                        t.style.transition = 'opacity 0.45s ease, transform 0.45s cubic-bezier(0.34,1.56,0.64,1)';
-                        t.style.opacity = '1';
-                        t.style.transform = '';
-                    });
-                });
-            }, 80);
-            return;
-        }
-        const { x, y } = order[idx++];
-        mapContainer.querySelectorAll(`.tile[data-x="${x}"][data-y="${y}"]`).forEach(t => {
-            t.style.transition = 'transform 0.12s cubic-bezier(0.55,0,1,0.45), opacity 0.12s';
-            t.style.transform = 'scale(0) rotate(90deg)';
-            t.style.opacity = '0';
-        });
-        setTimeout(popNext, STEP_MS);
-    }
+    const SIZE = currentIslandCols || 8;
+    map.style.transition = 'opacity 0.38s ease, transform 0.38s cubic-bezier(0.4,0,1,1)';
+    map.style.opacity = '0';
+    map.style.transform = (map.style.transform || '').replace(/translateY\([^)]*\)/g, '').trim() + ' translateY(60px)';
 
     eraserSound.currentTime = 0; eraserSound.play().catch(e => {});
-    popNext();
+
+    setTimeout(() => {
+        mapContainer.innerHTML = '';
+        const frag = document.createDocumentFragment();
+        for (let y = 0; y < SIZE; y++) {
+            for (let x = 0; x < SIZE; x++) {
+                createTile(x, y, 0, 'dirt', null, frag);
+            }
+        }
+        mapContainer.appendChild(frag);
+        saveState(); updateMinimap();
+        showToast('Succesfully Deleted!');
+        hotbarSound.currentTime = 0; hotbarSound.play().catch(e => {});
+        map.style.transition = 'none';
+        map.style.transform = (map.style.transform || '').replace(/translateY\([^)]*\)/g, '').trim() + ' translateY(-60px)';
+        map.style.opacity = '0';
+
+        requestAnimationFrame(() => {
+            requestAnimationFrame(() => {
+                map.style.transition = 'opacity 0.42s ease, transform 0.42s cubic-bezier(0.22,1,0.36,1)';
+                map.style.opacity = '1';
+                map.style.transform = (map.style.transform || '').replace(/translateY\([^)]*\)/g, '').trim();
+            });
+        });
+    }, 420);
 }
 
 function generateRandomIsland(themeIdx) {

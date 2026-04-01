@@ -2775,7 +2775,37 @@ body { transition: background-color 1.5s ease; }
     margin: 0; color: var(--gui-text); font-size: 11px;
     text-shadow: 2px 2px var(--gui-title-sh); text-align: center; letter-spacing: 1px;
 }
-
+#volume-bar-row {
+    align-items: center;
+}
+#music-volume-ui {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+#music-volume-track {
+    position: relative;
+    width: 160px;
+    height: 16px;
+    background: url('./Assets/GUI/zoombar.png') no-repeat center;
+    background-size: 100% 100%;
+    image-rendering: pixelated;
+    flex-shrink: 0;
+    cursor: pointer;
+}
+#music-volume-dot {
+    position: absolute;
+    top: 50%;
+    left: 80%;
+    transform: translate(-50%, -50%);
+    width: 20px;
+    height: 20px;
+    background: url('./Assets/GUI/zoomdot.png') no-repeat center;
+    background-size: contain;
+    image-rendering: pixelated;
+    transition: left 0.1s ease-out;
+    pointer-events: none;
+}
 
 .btn-embed {
     display: flex;
