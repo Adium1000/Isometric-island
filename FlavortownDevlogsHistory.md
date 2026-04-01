@@ -469,8 +469,12 @@ Added Keybind menu! Now you can manage the shortcuts as you want :3 Feel free to
 ![dev](<GithubPreview/Devlogs (Flavortown)/d44.png>)
 
 ---
+# Devlog 45
+Bug fix: Delete animation is a slide down instead of a snake effect
+Why? Because it was slow and laggy
 
 
+![dev](<GithubPreview/Devlogs (Flavortown)/45.png>)
 ---
 End 
 

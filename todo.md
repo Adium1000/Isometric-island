@@ -3,6 +3,7 @@
 
 
 -MoreBlocks
+add show air blocks 
 -optimization banner
 "X people building right now" counter live
 - stamp 
