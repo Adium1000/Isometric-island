@@ -113,6 +113,29 @@ body {
     from { transform: rotate(-20deg) scale(1); }
     to { transform: rotate(-20deg) scale(1.1); }
 }
+#offline-indicator {
+    display: none;
+    margin-top: 8px;
+    font-family: 'Press Start 2P', monospace;
+    font-size: 7px;
+    color: #ff4444;
+    background: rgba(0, 0, 0, 0.55);
+    border: 1.5px solid #ff4444;
+    border-radius: 3px;
+    padding: 4px 10px;
+    letter-spacing: 1.5px;
+    text-shadow: 0 0 6px #ff0000;
+    animation: offlinePulse 1.4s ease-in-out infinite;
+    pointer-events: none;
+    white-space: nowrap;
+}
+#offline-indicator.visible {
+    display: inline-block;
+}
+@keyframes offlinePulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.5; }
+}
 .game-title:hover { transform: scale(1.2); }
 #minimap-container {
     position: absolute;
@@ -1067,7 +1090,6 @@ body {
 
 
 .grid-overlay-active .tile.grid-cell {
-    /* It is bugged and i can't find out why*/
 }
 
 #grid-canvas {
@@ -2775,6 +2797,8 @@ body { transition: background-color 1.5s ease; }
     margin: 0; color: var(--gui-text); font-size: 11px;
     text-shadow: 2px 2px var(--gui-title-sh); text-align: center; letter-spacing: 1px;
 }
+
+
 #volume-bar-row {
     align-items: center;
 }

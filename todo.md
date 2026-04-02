@@ -1,6 +1,8 @@
 ![Banner](GithubPreview/Banners/todolist.png)
 # Here is my todo list where I list ideeas to remember them for later, take a look!
 
+-float speed bar
+- Add TUTORIAL 20 S wait time x just a
 
 -MoreBlocks
 add show air blocks 
@@ -10,14 +12,14 @@ add show air blocks
 - build that island replica game mini
 -Undo/Redo - afișează câte stări mai ai disponibile (ex: "Undo 7/20"), ca să știi când ești aproape de limită.
 -Notificări stacked - acum toast-ul se suprascrie, poți face o coadă verticală cu mai multe toasts simultane
--Offline indicator
+
 -Multi-language support - RO, EN, ES, FR, DE pentru UI
 -RTL support - pentru arabă/ebraică
 -island as an emoji (fun)
 -tutorial video
 -achivemnt sistem
 Tutorial Non-Intruziv: Mici semne de întrebare care apar doar prima dată când deschizi o secțiune.
-
+-> Add indicators and stuff
 
 ((Hotbar reorder - drag & drop între sloturi să-ți aranjezi blocurile preferate
 -Discord Rich Presence - arată pe Discord că eşti pe Isometric Island
@@ -27,6 +29,7 @@ Tutorial Non-Intruziv: Mici semne de întrebare care apar doar prima dată când
 - weird sound
    
 What I added:
+- Offline indicator
 - Efect de "squash & stretch" 
 - Island resolution 16x
 - 404 page

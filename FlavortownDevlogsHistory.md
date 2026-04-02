@@ -476,6 +476,11 @@ Why? Because it was slow and laggy
 
 ![dev](<GithubPreview/Devlogs (Flavortown)/45.png>)
 ---
+# Devlog 46
+added a volume slider for the music because it can sometimes be loud, this makes it easy to lower down the volume
+
+![dd](<GithubPreview/Devlogs (Flavortown)/devlog26.png>)
+---
 End 
 
 ![yayyy](https://emoji.slack-edge.com/T09V59WQY1E/yayayayayay/203666b7424ee7a7.gif)

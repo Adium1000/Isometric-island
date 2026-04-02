@@ -80,7 +80,25 @@
 <div class="game-title-container">
     <h1 class="game-title" id="game-title-el" onclick="handleTitleClick()" style="cursor:pointer;user-select:none;">Isometric Island</h1>
     <div id="splash-text">relaxing</div>
+    <div id="offline-indicator">&#x25CF; OFFLINE</div>
 </div>
+
+<script>
+(function() {
+    function updateOffline() {
+        var el = document.getElementById('offline-indicator');
+        if (!el) return;
+        if (!navigator.onLine) {
+            el.classList.add('visible');
+        } else {
+            el.classList.remove('visible');
+        }
+    }
+    window.addEventListener('offline', updateOffline);
+    window.addEventListener('online', updateOffline);
+    document.addEventListener('DOMContentLoaded', updateOffline);
+})();
+</script>
 
 <div id="minimap-container">
     <canvas id="minimap" width="100" height="100"></canvas>

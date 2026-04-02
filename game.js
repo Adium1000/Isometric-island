@@ -6,6 +6,8 @@
 //     #┼#    #┼#    #┼# #┼#    #┼# #┼#       #┼# #┼#            #┼#     #┼#    #┼#     #┼#    #┼#    #┼#             #┼#    #┼#    #┼# #┼#        #┼#     #┼# #┼#   #┼#┼# #┼#    #┼#        #┼# #┼#    #┼#    #┼#     
 //########### ########   ########  ###       ### ##########     ###     ###    ### ########### ########          ########### ########  ########## ###     ### ###    #### #########          #####      ########       
 
+// The version is determinated by the current date and year
+
 if ('serviceWorker' in navigator) {
     window.addEventListener('load', () => {
         navigator.serviceWorker.register('./sw.js')
@@ -399,8 +401,8 @@ function _syncMusicPopupSwitch() {
     if (!sw) return;
     sw.classList.toggle('on', isMusicPlaying);
 }
-
 let _musicVolume = 0.8; 
+
 function _applyMusicVolume(v) {
     _musicVolume = Math.max(0, Math.min(1, v));
     getBgMusic().volume = _musicVolume;
