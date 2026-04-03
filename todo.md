@@ -1,25 +1,40 @@
 ![Banner](GithubPreview/Banners/todolist.png)
 # Here is my todo list where I list ideeas to remember them for later, take a look!
 
--float speed bar
-- Add TUTORIAL 20 S wait time x just a
+- radial menu 
+:Magic Wand
+:Terraforming Brush
+:Line Tool
+:Circle Tool
 
--MoreBlocks
-add show air blocks 
--optimization banner
-"X people building right now" counter live
+- Multi-language support - RO, EN, ES, FR, DE pentru UI
+- RTL support - pentru arabă/ebraică
+- tutorial video
+- Tutorial Non-Intruziv: Mici semne de întrebare care apar doar prima dată când deschizi o secțiune.
+- float speed bar
+- MoreBlocks
+- add show air blocks 
+- optimization banner
+- X people building right now" counter live
 - stamp 
 - build that island replica game mini
--Undo/Redo - afișează câte stări mai ai disponibile (ex: "Undo 7/20"), ca să știi când ești aproape de limită.
--Notificări stacked - acum toast-ul se suprascrie, poți face o coadă verticală cu mai multe toasts simultane
+- Notificări stacked - acum toast-ul se suprascrie, poți face o coadă verticală cu mai multe toasts simultane
+- Timelapse recorder — înregistrezi fiecare acțiune și poți reda construcția de la zero ca un gif/video
+- Undo/Redo Visual History: O listă cu ultimele acțiuni pe care poți da click.
+- Drag & Drop Hotbar: Posibilitatea de a rearanja ordinea blocurilor în hotbar-ul de jos.
+- Animated Hotbar: Icoanele din hotbar să sară (bounce) când treci cu mouse-ul peste ele.
+- Save Slots: Butoane cu "Slot 1", "Slot 2" care să aibă o mică imagine (thumbnail) cu insula salvată.
+- Cursor Trail: Un efect mic de particule care urmărește mouse-ul doar pe spațiul canvas-ului.
+- Replace Tool (Brush): Înlocuiește blocurile sub brush, dar păstrează înălțimea lor Z.
 
--Multi-language support - RO, EN, ES, FR, DE pentru UI
--RTL support - pentru arabă/ebraică
--island as an emoji (fun)
--tutorial video
--achivemnt sistem
-Tutorial Non-Intruziv: Mici semne de întrebare care apar doar prima dată când deschizi o secțiune.
--> Add indicators and stuff
+- Realizaări
+:Primul Copac (plaseaza un copac)
+:Poate iese ceva: Genereaza o insula random
+:Mai avansat: deschide meniul de setari
+:Hopa! Găsește un easter egg (:: cca ::)
+
+
+
 
 ((Hotbar reorder - drag & drop între sloturi să-ți aranjezi blocurile preferate
 -Discord Rich Presence - arată pe Discord că eşti pe Isometric Island
@@ -35,6 +50,7 @@ What I added:
 - 404 page
 - add user icon google show in the comunity maps, logout icon, in popup map preview
 Explicit Warning (explicit icon)
+- island as an emoji (fun)
 - Meniu Radial (Quick Actions): Dacă utilizatorul ține apăsat Click Dreapta, să apară un meniu circular pe centrul ecranului de unde poate alege Brush size, mirror mode si cand alege o optiune sa i se deschida popup ul dorit de configurare 
 advanced brush options
 - Shareable URL cu insula encoded
@@ -94,8 +110,11 @@ i hate missspelling
 
 Devlog Sketch
 
-# Devlog 44
-Added Keybind menu! Now you can manage the shortcuts as you want :3 Feel free to get creative (hehe)
+# Devlog 47
+
+I added a buffer that helps your browser pocesing the data faster (a bit) from the cache, this means that your unsaved island and your settings will load mutch more faster witout doing anything more. Also some bug fixes for some popups like fill that did glitch when clicked on the close button
+
+
 
 
 

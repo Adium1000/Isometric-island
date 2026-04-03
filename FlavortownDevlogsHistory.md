@@ -328,7 +328,7 @@ now firefox users can play witout any problems during gameplay or so hehe :)
 
 - Added custom cursors for actions in the game, they can be disabled/activated in the settings tab
 
-![d](<GithubPreview/Devlogs (Flavortown)/devlog 23.png>)
+![devlog23](<GithubPreview/Devlogs (Flavortown)/devlog 23.png>)
 
 ---
 
@@ -342,7 +342,7 @@ New popups for random island generators such as mountains or biomes, now you can
 **Devlog 25**
 This devlogs adds a new popup in settings for cursor options, also i added cursor tooltips witch show your currentilly block in the right bottom of your cursor
 
-![dev 25](<GithubPreview/Devlogs (Flavortown)/devlog25.png>)
+![devlog25](<GithubPreview/Devlogs (Flavortown)/devlog25.png>)
 
 ---
 
@@ -351,7 +351,7 @@ This devlogs adds a new popup in settings for cursor options, also i added curso
 
 -added graphics menu in the settings and moved some togles from settings in this popup, also updated readme to more info about this project, more to come  :)
 
-![d26](<GithubPreview/Devlogs (Flavortown)/dev26.png>)
+![devlog26](<GithubPreview/Devlogs (Flavortown)/dev26.png>)
 
 ---
 
@@ -359,7 +359,7 @@ This devlogs adds a new popup in settings for cursor options, also i added curso
 - More compatibilty for tablets: Pinch to zoom , hold to select
 - Gui colors :) : Green, Blue , Brown (default) or automatic :3, this setting can be changed in the settings menu via GUI option 
 
-![d](<GithubPreview/Devlogs (Flavortown)/Screenshot 2026-03-20 224647.png>)
+![devlog27](<GithubPreview/Devlogs (Flavortown)/Screenshot 2026-03-20 224647.png>)
 
 ---
 **Devlog 28**
@@ -385,18 +385,18 @@ Added icons to File, Settings, Graphics, and Pointer popups, and optimized GUI c
 Added more Float modes for your island, just press the island float button and choose one maybe make it simple or funny, hehe
 
 
-![D30](<GithubPreview/Devlogs (Flavortown)/dev30.png>)
+![Devlog30](<GithubPreview/Devlogs (Flavortown)/dev30.png>)
 ---
 **Devlog33**
 - Added support for Iframe Embed, now you can show your island to other sites, even your personal one :3
 
-![d33](<GithubPreview/Devlogs (Flavortown)/Screenshot 2026-03-23 201753.png>)
+![devlog33](<GithubPreview/Devlogs (Flavortown)/Screenshot 2026-03-23 201753.png>)
 
 **Devlog34**
 - Added Snake-Delete-Animation witch is really cool when deleting an island
 - Added Socials, Version number to the game (socials like instagram, Revolut,Github)
 
-![d34](<GithubPreview/Devlogs (Flavortown)/d34.png>)
+![devlog34](<GithubPreview/Devlogs (Flavortown)/d34.png>)
 
 ---
 **Devlog35**
@@ -426,7 +426,11 @@ Added more Float modes for your island, just press the island float button and c
 
 Added Island Links! That is a more convinient way to share islands with others: just load the link in the adreess bar, press enter and you good to go
 
-![d38](<GithubPreview/Devlogs (Flavortown)/d438.png>)
+![devlog38](<GithubPreview/Devlogs (Flavortown)/d438.png>)
+---
+Shipped this project!
+Hours: 11.25 Cookies: 🍪 337 Multiplier: 29.92 cookies/hr (24 votes received)
+Added more features and greater control: I’m proud of the Public Islands powered by FIREBASE, and the much more user-friendly design,
 ---
 **Devlog39**
 Added radial menu that adds a lot of functionality like Brush Size, Grid, Mirror mode
@@ -434,7 +438,7 @@ Brush size can be selected from 1x1 to 7x7
 Grid toggle
 Mirror options
 
-![39](<GithubPreview/Devlogs (Flavortown)/39.png>)
+![devlog39](<GithubPreview/Devlogs (Flavortown)/39.png>)
 
 ---
 **Devlog40**
@@ -452,7 +456,7 @@ Also presets: a more convinient way to start a new island :3
 - Island Cache restore!
 - Now when you visit the website again your old island gets recoverd :3
 
-![d42](<GithubPreview/Devlogs (Flavortown)/WS.png>)
+![devlog42](<GithubPreview/Devlogs (Flavortown)/WS.png>)
 
 ---
 **Devlog43**
@@ -466,7 +470,7 @@ New tools:Settings Shortcut that opens the settings menu faster, Prezentation Mo
 # Devlog 44
 Added Keybind menu! Now you can manage the shortcuts as you want :3 Feel free to get creative (hehe)
 
-![dev](<GithubPreview/Devlogs (Flavortown)/d44.png>)
+![devlog44](<GithubPreview/Devlogs (Flavortown)/d44.png>)
 
 ---
 # Devlog 45
@@ -474,12 +478,22 @@ Bug fix: Delete animation is a slide down instead of a snake effect
 Why? Because it was slow and laggy
 
 
-![dev](<GithubPreview/Devlogs (Flavortown)/45.png>)
+![devlog45](<GithubPreview/Devlogs (Flavortown)/45.png>)
+---
+Shipped this project!
+Hours:7.18 Cookies:🍪 212 Multiplier: 29.58 cookies/hr (17 votes received)
+Polish and a lot of bug fixes :>
 ---
 # Devlog 46
 added a volume slider for the music because it can sometimes be loud, this makes it easy to lower down the volume
 
-![dd](<GithubPreview/Devlogs (Flavortown)/devlog26.png>)
+![devlog46](<GithubPreview/Devlogs (Flavortown)/devlog26.png>)
+---
+# Devlog 47
+
+I added a buffer that helps your browser pocesing the data faster (a bit) from the cache, this means that your unsaved island and your settings will load mutch more faster witout doing anything more. Also some bug fixes for some popups like fill that did glitch when clicked on the close button
+
+![devlog47](<GithubPreview/Devlogs (Flavortown)/dev47.png>)
 ---
 End 
 

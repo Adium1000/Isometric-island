@@ -1090,6 +1090,7 @@ body {
 
 
 .grid-overlay-active .tile.grid-cell {
+    /* It is bugged and i can't find out why*/
 }
 
 #grid-canvas {
@@ -2797,7 +2798,6 @@ body { transition: background-color 1.5s ease; }
     margin: 0; color: var(--gui-text); font-size: 11px;
     text-shadow: 2px 2px var(--gui-title-sh); text-align: center; letter-spacing: 1px;
 }
-
 
 #volume-bar-row {
     align-items: center;

@@ -76,6 +76,98 @@
 
 </head>
 <body>
+<div id="cache-loading-overlay">
+    <div id="cache-loading-inner">
+        <canvas id="pixel-spinner" width="64" height="64"></canvas>
+        <div id="cache-loading-text">LOADING</div>
+    </div>
+</div>
+<style>
+    #cache-loading-overlay {
+        position: fixed;
+        inset: 0;
+        z-index: 99999;
+        background: #0d0a05;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition: opacity 0.35s ease;
+    }
+    #cache-loading-overlay.hide {
+        opacity: 0;
+        pointer-events: none;
+    }
+    #cache-loading-inner {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 20px;
+    }
+    #pixel-spinner {
+        image-rendering: pixelated;
+        image-rendering: crisp-edges;
+    }
+    #cache-loading-text {
+        font-family: 'Press Start 2P', monospace;
+        font-size: 11px;
+        color: #ffdf80;
+        letter-spacing: 4px;
+        animation: blink-loading 1s step-start infinite;
+    }
+    @keyframes blink-loading {
+        0%, 100% { opacity: 1; }
+        50%       { opacity: 0.25; }
+    }
+</style>
+<script>
+(function() {
+    var canvas = document.getElementById('pixel-spinner');
+    var ctx = canvas ? canvas.getContext('2d') : null;
+    var angle = 0;
+    var rafId = null;
+
+    var PALETTE = [
+        '#ffdf80', '#ffd060', '#ffc040',
+        '#e8a020', '#c47010', '#804000',
+        null, null
+    ];
+
+    function drawSpinner(a) {
+        if (!ctx) return;
+        ctx.clearRect(0, 0, 64, 64);
+        var cx = 32, cy = 32;
+        var count = PALETTE.length;
+        var step = (Math.PI * 2) / count;
+        var r = 19;
+        var sz = 8;
+        for (var i = 0; i < count; i++) {
+            if (!PALETTE[i]) continue;
+            var theta = a + i * step;
+            var x = Math.round(cx + Math.cos(theta) * r);
+            var y = Math.round(cy + Math.sin(theta) * r);
+            ctx.fillStyle = PALETTE[i];
+            ctx.fillRect(x - Math.floor(sz/2), y - Math.floor(sz/2), sz, sz);
+        }
+    }
+
+    function animate() {
+        angle += 0.10;
+        drawSpinner(angle);
+        rafId = requestAnimationFrame(animate);
+    }
+    animate();
+
+    window.hideCacheLoading = function() {
+        var overlay = document.getElementById('cache-loading-overlay');
+        if (!overlay) return;
+        overlay.classList.add('hide');
+        setTimeout(function() {
+            overlay.style.display = 'none';
+            if (rafId) { cancelAnimationFrame(rafId); rafId = null; }
+        }, 380);
+    };
+})();
+</script>
 
 <div class="game-title-container">
     <h1 class="game-title" id="game-title-el" onclick="handleTitleClick()" style="cursor:pointer;user-select:none;">Isometric Island</h1>

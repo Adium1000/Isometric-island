@@ -401,7 +401,7 @@ function _syncMusicPopupSwitch() {
     if (!sw) return;
     sw.classList.toggle('on', isMusicPlaying);
 }
-let _musicVolume = 0.8; 
+let _musicVolume = 0.8;
 
 function _applyMusicVolume(v) {
     _musicVolume = Math.max(0, Math.min(1, v));
@@ -1864,7 +1864,6 @@ function deleteIslandWithSnake() {
         map.style.transition = 'none';
         map.style.transform = (map.style.transform || '').replace(/translateY\([^)]*\)/g, '').trim() + ' translateY(-60px)';
         map.style.opacity = '0';
-
         requestAnimationFrame(() => {
             requestAnimationFrame(() => {
                 map.style.transition = 'opacity 0.42s ease, transform 0.42s cubic-bezier(0.22,1,0.36,1)';
@@ -2572,6 +2571,8 @@ window.addEventListener('keydown', (e) => {
 });
 
 window.onload = () => {
+    const _hide = () => { if (typeof window.hideCacheLoading === 'function') window.hideCacheLoading(); };
+
     const urlParams = new URLSearchParams(window.location.search);
     const hash = window.location.hash;
     let hashIslandCode = null;
@@ -2652,6 +2653,7 @@ window.onload = () => {
                 updateMinimap();
             } catch(e) { console.warn('Embed load error:', e); }
         }
+        _hide();
         return;
     }
     applyZoom();
@@ -2665,9 +2667,11 @@ window.onload = () => {
             const loaded = loadIslandCode(hashIslandCode);
             if (loaded) {
                 updateMinimap();
+                _hide();
                 showToast('Island loaded from link!');
                 return;
             } else {
+                _hide();
                 if (typeof window.showNotFound === 'function') {
                     window.showNotFound(window.location.hash.slice(1));
                 }
@@ -2675,6 +2679,7 @@ window.onload = () => {
             }
         } catch(e) {
             console.warn('Hash island load error:', e);
+            _hide();
             if (typeof window.showNotFound === 'function') {
                 window.showNotFound(window.location.hash.slice(1));
             }
@@ -2682,6 +2687,7 @@ window.onload = () => {
         }
     }
     if (window.location.hash && window.location.hash.length > 1 && !window.location.hash.startsWith('#island=')) {
+        _hide();
         if (typeof window.showNotFound === 'function') {
             window.showNotFound(window.location.hash.slice(1));
         }
@@ -2693,14 +2699,16 @@ window.onload = () => {
             const restored = loadIslandCode(sessionCode);
             if (restored) {
                 updateMinimap();
+                _hide();
                 showToast('Island Restored from the last sesion.');
-                return; 
+                return;
             }
         } catch(e) {
             console.warn('Session restore error:', e);
         }
     }
 
+    _hide();
     const ov = document.getElementById('welcome-overlay');
     ov.style.display = 'flex';
     requestAnimationFrame(() => requestAnimationFrame(() => ov.classList.add('popup-visible')));
