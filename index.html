@@ -72,6 +72,8 @@
             background: var(--gui-accent, #ffdf80);
             color: #1a1208;
         }
+
+        /* ── Confirm: skip zoom / skip readme ─────────────────────────── */
         #confirm-skip-zoom-overlay,
         #confirm-skip-readme-overlay {
             display: none;
@@ -763,7 +765,7 @@ function tryStartBuilding() {
     <div id="fun-popup-wrapper">
         <button id="fun-popup-close-btn" onclick="closeFunPopup()">&#10005;</button>
         <div id="fun-popup" class="pixel-corners">
-            <h2>FUN :3 </h2>
+            <h2>FUN</h2>
             <div class="biome-grid" id="fun-popup-grid">
                 <div class="biome-card" onclick="closeFunPopup();openIslandBiomePopup()">
                     <div class="biome-icon"></div>
@@ -1597,6 +1599,15 @@ window.closeNotFound = function() {
                     <div class="float-mode-icon">〜</div>
                     <div class="float-mode-label">Jiggle</div>
                 </button>
+            </div>
+            <hr class="popup-divider">
+            <div class="visual-option-row" id="float-speed-bar-row">
+                <span class="visual-option-label">SPEED</span>
+                <div id="float-speed-ui">
+                    <div id="float-speed-track">
+                        <div id="float-speed-dot"></div>
+                    </div>
+                </div>
             </div>
         </div>
     </div>

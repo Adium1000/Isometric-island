@@ -447,6 +447,56 @@ function _initVolumeBar() {
 }
 
 
+let _floatSpeed = 0.5;
+const _floatBaseDurations = { updown: 6, leftright: 8, spin: 12, jiggle: 1.2 };
+function _applyFloatSpeed(v) {
+    _floatSpeed = Math.max(0, Math.min(1, v));
+    const dot = document.getElementById('float-speed-dot');
+    if (dot) dot.style.left = (_floatSpeed * 100) + '%';
+    _applyFloatAnimationDuration();
+    try { localStorage.setItem('floatSpeed', _floatSpeed); } catch(_) {}
+}
+
+function _applyFloatAnimationDuration() {
+    const mode = currentFloatMode;
+    if (!mode || mode === 'off') return;
+    const base = _floatBaseDurations[mode] || 4;
+    const duration = base * (1 - _floatSpeed * 0.75);
+    map.style.animationDuration = duration.toFixed(2) + 's';
+}
+
+function _initFloatSpeedBar() {
+    const track = document.getElementById('float-speed-track');
+    if (!track) return;
+
+    const dot = document.getElementById('float-speed-dot');
+    if (dot) dot.style.left = (_floatSpeed * 100) + '%';
+
+    function updateFromX(clientX) {
+        const rect = track.getBoundingClientRect();
+        _applyFloatSpeed((clientX - rect.left) / rect.width);
+    }
+
+    track.addEventListener('mousedown', (e) => {
+        updateFromX(e.clientX);
+        const onMove = ev => updateFromX(ev.clientX);
+        const onUp   = () => { window.removeEventListener('mousemove', onMove); window.removeEventListener('mouseup', onUp); };
+        window.addEventListener('mousemove', onMove);
+        window.addEventListener('mouseup', onUp);
+    });
+
+    track.addEventListener('touchstart', (e) => {
+        updateFromX(e.touches[0].clientX);
+        const onMove = ev => updateFromX(ev.touches[0].clientX);
+        const onEnd  = () => { window.removeEventListener('touchmove', onMove); window.removeEventListener('touchend', onEnd); };
+        window.addEventListener('touchmove', onMove, { passive: true });
+        window.addEventListener('touchend', onEnd);
+    }, { passive: true });
+
+    track._floatSpeedInited = true;
+}
+
+
 let currentFloatMode = 'off';
 
 function openFloatPopup() {
@@ -455,6 +505,9 @@ function openFloatPopup() {
     _syncFloatPopupCards();
     overlay.style.display = 'flex';
     requestAnimationFrame(() => requestAnimationFrame(() => overlay.classList.add('popup-visible')));
+    const track = document.getElementById('float-speed-track');
+    if (track && !track._floatSpeedInited) _initFloatSpeedBar();
+    else { const dot = document.getElementById('float-speed-dot'); if (dot) dot.style.left = (_floatSpeed * 100) + '%'; }
     hotbarSound.currentTime = 0; hotbarSound.play().catch(e => {});
 }
 
@@ -477,10 +530,12 @@ function setFloatMode(mode) {
     currentFloatMode = mode;
     isFloating = (mode !== 'off');
     map.classList.remove('floating-island', 'floating-island-lr', 'floating-island-spin', 'floating-island-jiggle');
+    map.style.animationDuration = '';
     if (mode === 'updown')         map.classList.add('floating-island');
     else if (mode === 'leftright') map.classList.add('floating-island-lr');
     else if (mode === 'spin')      map.classList.add('floating-island-spin');
     else if (mode === 'jiggle')    map.classList.add('floating-island-jiggle');
+    if (isFloating) _applyFloatAnimationDuration();
     const folder = getGUIFolder(currentGUITheme);
     floatBtn.src = isFloating ? folder + 'floaton.png' : folder + 'floatoff.png';
     _syncFloatPopupCards();
@@ -513,6 +568,8 @@ let gridOverlayEnabled = false;
     if (saved.leaves === false) leavesEnabled = false;
     if (saved.clouds === true) cloudsEnabled = true;
     if (saved.slideToPlace === true) slideToPlace = true;
+    const savedFloatSpeed = localStorage.getItem('floatSpeed');
+    if (savedFloatSpeed !== null) _floatSpeed = parseFloat(savedFloatSpeed);
 
    
     if (saved.scale) {
@@ -3477,7 +3534,6 @@ function toggleBlockSearch() {
 document.addEventListener('keydown', (e) => {
     if (e.key === 'Escape' && bsearchOpen) { e.preventDefault(); closeBlockSearch(); }
 });
-
 function openFunPopup() {
     const ov = document.getElementById('fun-popup-overlay');
     if (!ov) return;
@@ -3524,6 +3580,7 @@ function generateIslandEmoji() {
     const tiles = mapContainer.querySelectorAll('.tile[data-x][data-y][data-z]');
     const gridEl = document.getElementById('island-emoji-grid');
     if (!tiles.length) { gridEl.textContent = '⬛ no tiles'; return; }
+
     function tileType(t) {
         const src = t.getAttribute('src') || '';
         const m = src.match(/\/Blocks\/(?:[^/]+\/)?([^/]+?)\.png/i);

@@ -85,6 +85,7 @@ Here you will find some relevant subjects and explanations about my game, includ
 
 - The island can float, giving it a very cool effect when enabled.
 - Also, you can set different modes for this.
+- You can also change the speed using the seekbar
 
 ![flo](GithubPreview/Guide/float-settings.png)
 
