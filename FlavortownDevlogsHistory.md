@@ -541,6 +541,12 @@ Moved the terrain generators form the file menu to a new popup called "Fun" , in
 ![Devlog49image](<GithubPreview/Devlogs (Flavortown)/dev49.png>)
 
 ---
+# Devlog 50
+Added island float speed (verry usefull ik) , now you can change the speed of the float and make it more radio active
+
+
+![devlog50](<GithubPreview/Devlogs (Flavortown)/devlog50.png>)
+---
 End 
 
 ![yayyy](https://emoji.slack-edge.com/T09V59WQY1E/yayayayayay/203666b7424ee7a7.gif)
