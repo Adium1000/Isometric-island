@@ -11,7 +11,7 @@
 - RTL support - pentru arabă/ebraică
 - tutorial video
 - Tutorial Non-Intruziv: Mici semne de întrebare care apar doar prima dată când deschizi o secțiune.
-- float speed bar
+- float speed bar (NOTED)
 - MoreBlocks
 - add show air blocks 
 - optimization banner
@@ -22,7 +22,7 @@
 - Timelapse recorder — înregistrezi fiecare acțiune și poți reda construcția de la zero ca un gif/video
 - Undo/Redo Visual History: O listă cu ultimele acțiuni pe care poți da click.
 - Drag & Drop Hotbar: Posibilitatea de a rearanja ordinea blocurilor în hotbar-ul de jos.
-- Animated Hotbar: Icoanele din hotbar să sară (bounce) când treci cu mouse-ul peste ele.
+- Animated Hotbar: Icoanele din hotbar să sară (bounce) când treci cu mouse-ul peste ele. (noted)
 - Save Slots: Butoane cu "Slot 1", "Slot 2" care să aibă o mică imagine (thumbnail) cu insula salvată.
 - Cursor Trail: Un efect mic de particule care urmărește mouse-ul doar pe spațiul canvas-ului.
 - Replace Tool (Brush): Înlocuiește blocurile sub brush, dar păstrează înălțimea lor Z.
@@ -110,12 +110,11 @@ i hate missspelling
 
 Devlog Sketch
 
-# Devlog 47
+# Devlog 49
 
-I added a buffer that helps your browser pocesing the data faster (a bit) from the cache, this means that your unsaved island and your settings will load mutch more faster witout doing anything more. Also some bug fixes for some popups like fill that did glitch when clicked on the close button
+Moved the terrain generators form the file menu to a new popup called "Fun" , in  this popup I will store some crazy things that will come in the next devlogs, for exemple for now "Island As An "Emoji". This converst your island top view into an emoji grid, just for fun but sometimes it can look sick :3
 
-
-
+![Devlog49image](<GithubPreview/Devlogs (Flavortown)/dev49.png>)
 
 
 Release

@@ -3829,3 +3829,89 @@ body:not(.presentation-mode) #block-name-display {
 }
 #keybindings-reset-btn:hover { filter: brightness(1.3); transform: scale(1.04); }
 #keybindings-reset-btn:active { transform: scale(0.96); }
+#fun-popup-overlay,
+#island-emoji-overlay {
+    display: none; position: fixed; inset: 0;
+    background: rgba(0,0,0,0.75); z-index: 6000;
+    justify-content: center; align-items: center;
+    opacity: 0; transition: opacity 0.3s ease;
+}
+#fun-popup-overlay.popup-visible,
+#island-emoji-overlay.popup-visible { opacity: 1; display: flex; }
+
+#fun-popup-wrapper,
+#island-emoji-wrapper {
+    position: relative;
+    transform: scale(0.87) translateY(28px);
+    transition: transform 0.35s cubic-bezier(0.18, 0.89, 0.32, 1.28);
+}
+#fun-popup-overlay.popup-visible #fun-popup-wrapper,
+#island-emoji-overlay.popup-visible #island-emoji-wrapper {
+    transform: scale(1.3) translateY(0);
+}
+
+#fun-popup-close-btn,
+#island-emoji-close-btn {
+    position: absolute; top: -18px; right: -18px;
+    width: 36px; height: 36px; background: #7a2020;
+    border: 4px solid var(--gui-border); box-shadow: 3px 3px 0 #3b1010;
+    color: #fff; font-family: 'Press Start 2P', cursive; font-size: 12px;
+    display: flex; align-items: center; justify-content: center;
+    transition: transform 0.1s, filter 0.1s; z-index: 10; padding: 0; line-height: 1;
+    clip-path: polygon(0% 3px, 3px 3px, 3px 0%, calc(100% - 3px) 0%, calc(100% - 3px) 3px, 100% 3px, 100% calc(100% - 3px), calc(100% - 3px) calc(100% - 3px), calc(100% - 3px) 100%, 3px 100%, 3px calc(100% - 3px), 0% calc(100% - 3px));
+    cursor: pointer;
+}
+#fun-popup-close-btn:hover,
+#island-emoji-close-btn:hover { filter: brightness(1.3); transform: scale(1.1); }
+#fun-popup-close-btn:active,
+#island-emoji-close-btn:active { transform: scale(0.9); }
+
+#fun-popup,
+#island-emoji-popup {
+    background: var(--gui-bg-light);
+    border: 4px solid var(--gui-border);
+    box-shadow: 6px 6px 0 var(--gui-shadow);
+    padding: 18px 18px 16px 18px;
+    display: flex; flex-direction: column; gap: 14px;
+    font-family: 'Press Start 2P', cursive;
+    image-rendering: pixelated;
+    clip-path: polygon(0% 6px, 6px 6px, 6px 0%, calc(100% - 6px) 0%, calc(100% - 6px) 6px, 100% 6px, 100% calc(100% - 6px), calc(100% - 6px) calc(100% - 6px), calc(100% - 6px) 100%, 6px 100%, 6px calc(100% - 6px), 0% calc(100% - 6px));
+}
+#fun-popup h2,
+#island-emoji-popup h2 {
+    margin: 0; color: var(--gui-text); font-size: 11px;
+    text-shadow: 2px 2px var(--gui-title-sh); text-align: center; letter-spacing: 1px;
+}
+
+#fun-popup-grid {
+    grid-template-columns: repeat(3, 110px);
+}
+.fun-emoji-card {
+    background: #1a3a1a;
+    border-color: #2a6a2a;
+}
+.fun-emoji-card:hover { border-color: #6aff6a; }
+.fun-emoji-card .biome-name { color: #6aff6a; }
+.fun-emoji-card .biome-desc { color: #4a9a4a; }
+#island-emoji-popup { width: 320px; }
+#island-emoji-body { display: flex; flex-direction: column; gap: 10px; }
+#island-emoji-grid {
+    background: var(--gui-bg-dark);
+    border: 3px solid var(--gui-border);
+    padding: 12px 16px;
+    font-size: 18px; line-height: 1.3;
+    text-align: center;
+    white-space: pre; min-height: 44px;
+    clip-path: polygon(0% 3px, 3px 3px, 3px 0%, calc(100% - 3px) 0%, calc(100% - 3px) 3px, 100% 3px, 100% calc(100% - 3px), calc(100% - 3px) calc(100% - 3px), calc(100% - 3px) 100%, 3px 100%, 3px calc(100% - 3px), 0% calc(100% - 3px));
+    overflow-x: auto;
+}
+#island-emoji-actions {
+    grid-template-columns: repeat(2, 1fr);
+}
+.biome-card-copy {
+    background: #1a2a4a;
+    border-color: #2a4a8a;
+}
+.biome-card-copy:hover { border-color: var(--gui-accent); }
+.biome-card-copy .biome-name { color: var(--gui-accent); }
+.biome-card-copy .biome-desc { color: #5a7aaa; }

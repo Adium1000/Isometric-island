@@ -3,7 +3,9 @@
 // `.  `-. | .-. :|  .--' \  `'  / ,--.| .--'| .-. :    |  |.'.|  || .-. ||  .--'|     /| .-. :|  .--' 
 // .-'    |\   --.|  |     \    /  |  |\ `--.\   --.    |   ,'.   |' '-' '|  |   |  \  \\   --.|  |    
 // `-----'  `----'`--'      `--'   `--' `---' `----'    '--'   '--' `---' `--'   `--'`--'`----'`--'    
-                                                                                                    
+     
+
+// Service worker makes this project run more smoothlly! Take a look!
 
 const CACHE_NAME = 'isometric-island-v2';
 const PRECACHE_ASSETS = [

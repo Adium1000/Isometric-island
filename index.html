@@ -72,6 +72,69 @@
             background: var(--gui-accent, #ffdf80);
             color: #1a1208;
         }
+        #confirm-skip-zoom-overlay,
+        #confirm-skip-readme-overlay {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(0,0,0,0.75);
+            z-index: 100001;
+            justify-content: center;
+            align-items: center;
+            opacity: 0;
+            transition: opacity 0.2s ease;
+        }
+        #confirm-skip-zoom-overlay.popup-visible,
+        #confirm-skip-readme-overlay.popup-visible { opacity: 1; }
+
+        #confirm-skip-zoom-wrapper,
+        #confirm-skip-readme-wrapper {
+            transform: scale(0.88) translateY(20px);
+            transition: transform 0.25s cubic-bezier(0.18, 0.89, 0.32, 1.28);
+        }
+        #confirm-skip-zoom-overlay.popup-visible #confirm-skip-zoom-wrapper,
+        #confirm-skip-readme-overlay.popup-visible #confirm-skip-readme-wrapper {
+            transform: scale(1) translateY(0);
+        }
+
+        #confirm-skip-zoom-popup,
+        #confirm-skip-readme-popup {
+            background: var(--gui-bg, #2a1d0e);
+            border: 4px solid var(--gui-border, #6b4c2a);
+            box-shadow: 6px 6px 0 var(--gui-bg-dark, #1a1208);
+            padding: 28px 30px 22px 30px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 16px;
+            width: 310px;
+            font-family: 'Press Start 2P', cursive;
+        }
+        #confirm-skip-zoom-popup h2,
+        #confirm-skip-readme-popup h2 {
+            margin: 0;
+            color: #ffdf80;
+            font-size: 11px;
+            text-shadow: 2px 2px #1a1208;
+            text-align: center;
+            letter-spacing: 1px;
+        }
+        #confirm-skip-zoom-msg,
+        #confirm-skip-readme-msg {
+            margin: 0;
+            color: #e8d5b0;
+            font-size: 7px;
+            text-align: center;
+            line-height: 2;
+            letter-spacing: 0.5px;
+        }
+        #confirm-skip-zoom-btns,
+        #confirm-skip-readme-btns {
+            display: flex;
+            gap: 12px;
+            width: 100%;
+            margin-top: 4px;
+        }
     </style>
 
 </head>
@@ -206,7 +269,7 @@
 
 <div id="welcome-overlay">
     <div id="welcome-wrapper">
-        <button id="welcome-close-btn" onclick="closeWelcome()">&#10005;</button>
+        <button id="welcome-close-btn" onclick="handleWelcomeClose()">&#10005;</button>
         <div id="welcome-popup" class="pixel-corners">
             <div id="welcome-header">
                 <h2>WELCOME! Read this before playing!</h2>
@@ -259,7 +322,7 @@
                         <div id="welcome-readme" style="display:none;"></div>
                     </div>
                     <div id="welcome-footer" style="margin-top: 14px;">
-                        <button class="btn-welcome-ok" onclick="closeWelcome()">START BUILDING</button>
+                        <button class="btn-welcome-ok" id="start-building-btn" onclick="tryStartBuilding()" disabled style="opacity:0.45;cursor:not-allowed;">START BUILDING <span id="start-countdown">(15)</span></button>
                     </div>
                 </div>
 
@@ -268,6 +331,108 @@
         </div>
     </div>
 </div>
+<div id="confirm-skip-zoom-overlay" onclick="if(event.target===this)cancelSkipZoom()">
+    <div id="confirm-skip-zoom-wrapper">
+        <div id="confirm-skip-zoom-popup" class="pixel-corners">
+            <h2>Are you sure? </h2>
+            <p id="confirm-skip-zoom-msg">If you exit now <strong>scaling options may not be configured</strong> and some UI elements can intercalate creating bugs! <br><br>Also on the next step you will find some <strong>Instructions</strong> that you will not read (README)!</p>
+            <div id="confirm-skip-zoom-btns">
+                <button class="btn-cancel-del" onclick="cancelSkipZoom()">Back to Calibrations</button>
+                <button class="btn-confirm-del" onclick="confirmSkipZoom()">Exit :( </button>
+            </div>
+        </div>
+    </div>
+</div>
+<div id="confirm-skip-readme-overlay" onclick="if(event.target===this)cancelSkipReadme()">
+    <div id="confirm-skip-readme-wrapper">
+        <div id="confirm-skip-readme-popup" class="pixel-corners">
+            <h2>Are you sure?</h2>
+            <p id="confirm-skip-readme-msg">If you exit now witout reading the readme <strong>you revoke all of your rights </strong>to comment on bugs, missing feautres or anything else that is documented here <br><br>Don't say you weren't warned.</p>
+            <div id="confirm-skip-readme-btns">
+                <button class="btn-cancel-del" onclick="cancelSkipReadme()">Back to the guide</button>
+                <button class="btn-confirm-del" onclick="confirmSkipReadme()">Exit :( </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+let _welcomeCurrentStep = 1;
+
+function handleWelcomeClose() {
+    const step2 = document.getElementById('welcome-step-2');
+    const onStep2 = step2 && step2.style.display !== 'none' && !step2.classList.contains('slide-out');
+    if (onStep2) {
+        showConfirmSkipReadme();
+    } else {
+        showConfirmSkipZoom();
+    }
+}
+
+function showConfirmSkipZoom() {
+    const ov = document.getElementById('confirm-skip-zoom-overlay');
+    ov.style.display = 'flex';
+    requestAnimationFrame(() => requestAnimationFrame(() => ov.classList.add('popup-visible')));
+}
+function cancelSkipZoom() {
+    const ov = document.getElementById('confirm-skip-zoom-overlay');
+    ov.classList.remove('popup-visible');
+    setTimeout(() => { ov.style.display = 'none'; }, 220);
+}
+function confirmSkipZoom() {
+    const ov = document.getElementById('confirm-skip-zoom-overlay');
+    ov.classList.remove('popup-visible');
+    setTimeout(() => { ov.style.display = 'none'; closeWelcome(); }, 220);
+}
+
+function showConfirmSkipReadme() {
+    const ov = document.getElementById('confirm-skip-readme-overlay');
+    ov.style.display = 'flex';
+    requestAnimationFrame(() => requestAnimationFrame(() => ov.classList.add('popup-visible')));
+}
+function cancelSkipReadme() {
+    const ov = document.getElementById('confirm-skip-readme-overlay');
+    ov.classList.remove('popup-visible');
+    setTimeout(() => { ov.style.display = 'none'; }, 220);
+}
+function confirmSkipReadme() {
+    const ov = document.getElementById('confirm-skip-readme-overlay');
+    ov.classList.remove('popup-visible');
+    setTimeout(() => { ov.style.display = 'none'; closeWelcome(); }, 220);
+}
+
+function startBuildingCountdown() {
+    const btn = document.getElementById('start-building-btn');
+    const lbl = document.getElementById('start-countdown');
+    if (!btn || !lbl) return;
+    let remaining = 15;
+    lbl.textContent = '(' + remaining + ')';
+    btn.disabled = true;
+    btn.style.opacity = '0.45';
+    btn.style.cursor = 'not-allowed';
+    const iv = setInterval(function() {
+        remaining--;
+        if (remaining <= 0) {
+            clearInterval(iv);
+            lbl.textContent = '';
+            btn.disabled = false;
+            btn.style.opacity = '1';
+            btn.style.cursor = 'pointer';
+        } else {
+            lbl.textContent = '(' + remaining + ')';
+        }
+    }, 1000);
+}
+
+function tryStartBuilding() {
+    const btn = document.getElementById('start-building-btn');
+    if (btn && !btn.disabled) closeWelcome();
+}
+(function() {
+    const orig = window.welcomeNextStep;
+    document.addEventListener('DOMContentLoaded', function() {});
+})();
+</script>
 
 <div id="save-popup-overlay" onclick="if(event.target===this)closeSavePopup()">
     <div id="save-popup-wrapper">
@@ -308,13 +473,9 @@
                     <div style="display:flex;flex-direction:column;gap:14px;flex:1;">
                         <div>
                             <div class="popup-section-title">FUN:</div>
-                            <button class="btn-random" onclick="openIslandBiomePopup()"><img src="./Assets/Icons/delete.png" style="width:16px;height:16px;image-rendering:pixelated;vertical-align:middle;margin-right:6px;"> RANDOM ISLAND</button>
+                            <button class="btn-random" onclick="closeSavePopup();openFunPopup()">FUN</button>
                             <div id="random-island-type" style="color:#ffdf80;font-size:7px;text-align:center;margin-top:6px;min-height:12px;letter-spacing:1px;"></div>
-                        </div>
-
-                        <div>
-                            <button class="btn-random" onclick="openMountainBiomePopup()" style="background:#6b5a3e;border-color:#4a3a28;"><img src="./Assets/Icons/delete.png" style="width:16px;height:16px;image-rendering:pixelated;vertical-align:middle;margin-right:6px;">RANDOM MOUNTAIN ISLAND</button>
-                            <div id="mountain-type" style="color:#ffdf80;font-size:7px;text-align:center;margin-top:6px;min-height:12px;letter-spacing:1px;"></div>
+                            <div id="mountain-type" style="display:none;"></div>
                         </div>
 
                         <div style="display:flex;flex-direction:column;gap:8px;">
@@ -598,6 +759,54 @@
             <div id="block-search-grid"></div>
         </div>
     </div>
+<div id="fun-popup-overlay" onclick="if(event.target===this)closeFunPopup()">
+    <div id="fun-popup-wrapper">
+        <button id="fun-popup-close-btn" onclick="closeFunPopup()">&#10005;</button>
+        <div id="fun-popup" class="pixel-corners">
+            <h2>FUN :3 </h2>
+            <div class="biome-grid" id="fun-popup-grid">
+                <div class="biome-card" onclick="closeFunPopup();openIslandBiomePopup()">
+                    <div class="biome-icon"></div>
+                    <div class="biome-name">RANDOM ISLAND</div>
+                    <div class="biome-desc">Generate a random<br>biome island</div>
+                </div>
+                <div class="biome-card" onclick="closeFunPopup();openMountainBiomePopup()">
+                    <div class="biome-icon"></div>
+                    <div class="biome-name">RANDOM MOUNTAIN</div>
+                    <div class="biome-desc">Generate a random<br>mountain island</div>
+                </div>
+                <div class="biome-card fun-emoji-card" onclick="closeFunPopup();openIslandEmojiPopup()">
+                    <div class="biome-icon"></div>
+                    <div class="biome-name">ISLAND AS EMOJI</div>
+                    <div class="biome-desc">Convert your island<br>to emoji art</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div id="island-emoji-overlay" onclick="if(event.target===this)closeIslandEmojiPopup()">
+    <div id="island-emoji-wrapper">
+        <button id="island-emoji-close-btn" onclick="closeIslandEmojiPopup()">&#10005;</button>
+        <div id="island-emoji-popup" class="pixel-corners">
+            <h2>ISLAND AS EMOJI</h2>
+            <div id="island-emoji-body">
+                <div id="island-emoji-grid"></div>
+                <div class="biome-grid" id="island-emoji-actions">
+                    <div class="biome-card" onclick="generateIslandEmoji()">
+                        <div class="biome-icon"></div>
+                        <div class="biome-name">REGENERATE</div>
+                        <div class="biome-desc">Re-read the<br>current island</div>
+                    </div>
+                    <div class="biome-card biome-card-copy" onclick="copyIslandEmoji()">
+                        <div class="biome-icon"></div>
+                        <div class="biome-name">COPY EMOJI</div>
+                        <div class="biome-desc">Copy to<br>clipboard</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 
 <div id="island-biome-overlay" onclick="if(event.target===this)closeIslandBiomePopup()">
     <div id="island-biome-wrapper">
@@ -852,6 +1061,17 @@
 </div>
 
     <script src="game.js" defer></script>
+<script>
+window.addEventListener('load', function() {
+    var _origNext = window.welcomeNextStep;
+    if (typeof _origNext === 'function') {
+        window.welcomeNextStep = function() {
+            _origNext.apply(this, arguments);
+            setTimeout(startBuildingCountdown, 400);
+        };
+    }
+});
+</script>
 <div id="explicit-warning-overlay">
     <div id="explicit-warning-wrapper" onclick="event.stopPropagation()">
         <button id="explicit-warning-close-btn" onclick="explicitDecline()">&#10005;</button>

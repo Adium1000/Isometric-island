@@ -3478,6 +3478,93 @@ document.addEventListener('keydown', (e) => {
     if (e.key === 'Escape' && bsearchOpen) { e.preventDefault(); closeBlockSearch(); }
 });
 
+function openFunPopup() {
+    const ov = document.getElementById('fun-popup-overlay');
+    if (!ov) return;
+    ov.style.display = 'flex';
+    requestAnimationFrame(() => requestAnimationFrame(() => ov.classList.add('popup-visible')));
+}
+function closeFunPopup() {
+    const ov = document.getElementById('fun-popup-overlay');
+    if (!ov) return;
+    ov.classList.remove('popup-visible');
+    setTimeout(() => { ov.style.display = 'none'; }, 320);
+}
+
+const _EMOJI_BASE = {
+    dirt:'🟫', dirt2:'🟫', ShovedDirt:'🟫',
+    sand:'🟡', redsand:'🟠',
+    stone:'⬜', mossystone:'🟩', rock:'🔘',
+    snow:'❄️', ice:'🧊', snowrocks:'🩶',
+    water:'🌊',
+    flovers:'🌸', crops:'🌾',
+    melon:'🍈', Hay:'🌾', pumpkin:'🎃',
+};
+const _EMOJI_OBJ = {
+    tree:'🌲', snowed_tree:'🎄', leaf:'🍃', snow2:'❄️',
+    wood:'🪵', snowman:'⛄',
+    melon:'🍈', Hay:'🌾', pumpkin:'🎃', crops:'🌾', flovers:'🌸',
+    rock:'🪨', mossystone:'🟩',
+};
+
+function openIslandEmojiPopup() {
+    const ov = document.getElementById('island-emoji-overlay');
+    if (!ov) return;
+    generateIslandEmoji();
+    ov.style.display = 'flex';
+    requestAnimationFrame(() => requestAnimationFrame(() => ov.classList.add('popup-visible')));
+}
+function closeIslandEmojiPopup() {
+    const ov = document.getElementById('island-emoji-overlay');
+    if (!ov) return;
+    ov.classList.remove('popup-visible');
+    setTimeout(() => { ov.style.display = 'none'; }, 320);
+}
+function generateIslandEmoji() {
+    const tiles = mapContainer.querySelectorAll('.tile[data-x][data-y][data-z]');
+    const gridEl = document.getElementById('island-emoji-grid');
+    if (!tiles.length) { gridEl.textContent = '⬛ no tiles'; return; }
+    function tileType(t) {
+        const src = t.getAttribute('src') || '';
+        const m = src.match(/\/Blocks\/(?:[^/]+\/)?([^/]+?)\.png/i);
+        return m ? m[1] : '';
+    }
+
+    let minX = Infinity, maxX = -Infinity, minY = Infinity, maxY = -Infinity;
+    const base = {}, obj = {};
+    tiles.forEach(t => {
+        if (t.style.opacity === '0') return;
+        const x = +t.dataset.x, y = +t.dataset.y, z = +t.dataset.z;
+        const type = tileType(t);
+        if (z === 0) {
+            minX = Math.min(minX, x); maxX = Math.max(maxX, x);
+            minY = Math.min(minY, y); maxY = Math.max(maxY, y);
+            if (!base[y]) base[y] = {};
+            base[y][x] = type;
+        } else {
+            if (!obj[y]) obj[y] = {};
+            if (type) obj[y][x] = type;
+        }
+    });
+    if (minX === Infinity) { gridEl.textContent = '⬛ empty island'; return; }
+
+    const rows = [];
+    for (let y = minY; y <= maxY; y++) {
+        let row = '';
+        for (let x = minX; x <= maxX; x++) {
+            const b = base[y] && base[y][x];
+            const o = obj[y] && obj[y][x];
+            if (!b) { row += '⬛'; continue; }
+            row += (o && _EMOJI_OBJ[o]) ? _EMOJI_OBJ[o] : (_EMOJI_BASE[b] || '🟫');
+        }
+        rows.push(row);
+    }
+    gridEl.textContent = rows.join('\n');
+}
+function copyIslandEmoji() {
+    const text = document.getElementById('island-emoji-grid').textContent;
+    navigator.clipboard.writeText(text).then(() => showToast('Emoji island copied! 🏝️'));
+}
 
 function openIslandBiomePopup() {
     const overlay = document.getElementById('island-biome-overlay');

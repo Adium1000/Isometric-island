@@ -139,8 +139,15 @@ Here you will find some relevant subjects and explanations about my game, includ
 - From here you can clear the island and start over.
 4. Settings
 - Configuration tool for your island.
-5. Random Islands Buttons and popups
+5. Fun
+
+![Fun menu](<GithubPreview/Guide/fun menu.png>)
+
 - Generate random islands.
+- Island as an emoji 
+
+![Island as an emoji](<GithubPreview/Guide/island as an emoji.png>)
+
 6. Community maps
 - Publish a great map.
 RULES
