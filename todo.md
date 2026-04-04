@@ -112,11 +112,6 @@ Devlog Sketch
 
 # Devlog 49
 
-Moved the terrain generators form the file menu to a new popup called "Fun" , in  this popup I will store some crazy things that will come in the next devlogs, for exemple for now "Island As An "Emoji". This converst your island top view into an emoji grid, just for fun but sometimes it can look sick :3
-
-![Devlog49image](<GithubPreview/Devlogs (Flavortown)/dev49.png>)
-
-
 Release
 
 Release Final

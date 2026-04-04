@@ -446,7 +446,6 @@ function _initVolumeBar() {
     track._volumeInited = true;
 }
 
-
 let _floatSpeed = 0.5;
 const _floatBaseDurations = { updown: 6, leftright: 8, spin: 12, jiggle: 1.2 };
 function _applyFloatSpeed(v) {
@@ -3534,6 +3533,7 @@ function toggleBlockSearch() {
 document.addEventListener('keydown', (e) => {
     if (e.key === 'Escape' && bsearchOpen) { e.preventDefault(); closeBlockSearch(); }
 });
+
 function openFunPopup() {
     const ov = document.getElementById('fun-popup-overlay');
     if (!ov) return;
@@ -3580,7 +3580,6 @@ function generateIslandEmoji() {
     const tiles = mapContainer.querySelectorAll('.tile[data-x][data-y][data-z]');
     const gridEl = document.getElementById('island-emoji-grid');
     if (!tiles.length) { gridEl.textContent = '⬛ no tiles'; return; }
-
     function tileType(t) {
         const src = t.getAttribute('src') || '';
         const m = src.match(/\/Blocks\/(?:[^/]+\/)?([^/]+?)\.png/i);

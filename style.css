@@ -336,7 +336,12 @@ body {
 .slot img { 
     width: 34px; 
     height: 34px; 
-    image-rendering: pixelated; 
+    image-rendering: pixelated;
+    transform-origin: bottom center;
+}
+.slot:hover img {
+    animation: tile-place-rebound 0.42s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
+    transform-origin: bottom center;
 }
 .page-2 { display: none; }
 #save-btn, #music-toggle, #float-toggle, #undo-btn, #redo-btn {

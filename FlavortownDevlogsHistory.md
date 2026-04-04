@@ -534,6 +534,11 @@ Seeing votes like that can be frustrating that is why I hope this feautre will p
 ![devlog48](<GithubPreview/Devlogs (Flavortown)/devlog48.png>)
 
 ---
+Shipped this project!
+Hours: 3.45 Cookies: 🍪 102 Multiplier: 29.56 cookies/hr Devlogs:3 Percentile:Top 0.61% Avg stars:★ 7.50/9
+Medians:
+Originality ★8/9 • Technical ★7.50/9 • Usability ★7.50/9 • Storytelling ★7/9
+---
 # Devlog 49
 
 Moved the terrain generators form the file menu to a new popup called "Fun" , in  this popup I will store some crazy things that will come in the next devlogs, for exemple for now "Island As An "Emoji". This converst your island top view into an emoji grid, just for fun but sometimes it can look sick :3
@@ -546,6 +551,12 @@ Added island float speed (verry usefull ik) , now you can change the speed of th
 
 
 ![devlog50](<GithubPreview/Devlogs (Flavortown)/devlog50.png>)
+---
+# Devlog 51
+Hotbar small update: Now the hotbar elements bounce when cursor hold or touch one item for exemple: grass, it sounds so unnecsary but it makes the game POP!
+
+![devlog51pop](<GithubPreview/Devlogs (Flavortown)/devlog51.png>)
+
 ---
 End 
 
