@@ -446,7 +446,7 @@ function _initVolumeBar() {
     track._volumeInited = true;
 }
 
-let _floatSpeed = 0.5;
+let _floatSpeed = 0.5; 
 const _floatBaseDurations = { updown: 6, leftright: 8, spin: 12, jiggle: 1.2 };
 function _applyFloatSpeed(v) {
     _floatSpeed = Math.max(0, Math.min(1, v));
@@ -463,7 +463,6 @@ function _applyFloatAnimationDuration() {
     const duration = base * (1 - _floatSpeed * 0.75);
     map.style.animationDuration = duration.toFixed(2) + 's';
 }
-
 function _initFloatSpeedBar() {
     const track = document.getElementById('float-speed-track');
     if (!track) return;
@@ -509,7 +508,6 @@ function openFloatPopup() {
     else { const dot = document.getElementById('float-speed-dot'); if (dot) dot.style.left = (_floatSpeed * 100) + '%'; }
     hotbarSound.currentTime = 0; hotbarSound.play().catch(e => {});
 }
-
 function closeFloatPopup() {
     const overlay = document.getElementById('float-popup-overlay');
     if (!overlay) return;
@@ -517,14 +515,12 @@ function closeFloatPopup() {
     setTimeout(() => { overlay.style.display = 'none'; }, 300);
     hotbarSound.currentTime = 0; hotbarSound.play().catch(e => {});
 }
-
 function _syncFloatPopupCards() {
     ['off','updown','leftright','spin','jiggle'].forEach(id => {
         const card = document.getElementById('fmode-' + id);
         if (card) card.classList.toggle('active', currentFloatMode === id);
     });
 }
-
 function setFloatMode(mode) {
     currentFloatMode = mode;
     isFloating = (mode !== 'off');
@@ -541,7 +537,6 @@ function setFloatMode(mode) {
     hotbarSound.currentTime = 0; hotbarSound.play().catch(e => {});
     applyZoom();
 }
-
 function toggleFloat() {
     if (currentFloatMode === 'off') {
         openFloatPopup();
@@ -549,7 +544,6 @@ function toggleFloat() {
         setFloatMode('off');
     }
 }
-
 let shadowsEnabled = true;
 let leavesEnabled = true;
 let cloudsEnabled = false;
@@ -560,7 +554,6 @@ let fpsLastTime = performance.now();
 let fpsFrameCount = 0;
 let fpsValue = 0;
 let gridOverlayEnabled = false;
-
 (function loadVisualOptions() {
     const saved = JSON.parse(localStorage.getItem('visualOptions') || '{}');
     if (saved.shadows === false) shadowsEnabled = false;
@@ -4535,3 +4528,278 @@ function handleInteractionBrushed(tile, x, y, z) {
         if (t) handleInteraction(t, tx, ty, z);
     });
 }
+(function() {
+    const ACH_KEY = 'ii_achievements';
+
+    const ACHIEVEMENTS = [
+        {
+            id: 'first_tree',
+            title: 'First Tree',
+            desc: 'Place a tree on the island',
+            icon: './Assets/Blocks/tree.png',
+            group: 'normal',
+            unlocked: false,
+        },
+        {
+            id: 'random_island',
+            title: 'Maybe you can cook',
+            desc: 'Generate a random island',
+            icon: './Assets/Icons/ic.png',
+            group: 'normal',
+            unlocked: false,
+        },
+        {
+            id: 'settings_opened',
+            title: 'Advanced in tehnology',
+            desc: 'Open Settings',
+            icon: './Assets/Icons/maintenance.png',
+            group: 'normal',
+            unlocked: false,
+        },
+        {
+            id: 'easter_confetti',
+            title: 'Clicky',
+            desc: 'Click on the title 10 times for some confeti',
+            icon: './Assets/Blocks/flovers.png',
+            group: 'easter',
+            unlocked: false,
+        },
+        {
+            id: 'easter_flavortown',
+            title: 'FLAVORTOWN',
+            desc: 'Somewere "Flavortown" will still be here',
+            icon: './Assets/Blocks/pumpkin.png',
+            group: 'easter',
+            unlocked: false,
+        },
+        {
+            id: 'easter_1x1',
+            title: 'Not an Island',
+            desc: 'Did you really think a 1x1 grid is an island?',
+            icon: './Assets/Blocks/dirt.png',
+            group: 'easter',
+            unlocked: false,
+        },
+    ];
+    function loadAchievements() {
+        try {
+            const saved = JSON.parse(localStorage.getItem(ACH_KEY) || '{}');
+            ACHIEVEMENTS.forEach(a => { if (saved[a.id]) a.unlocked = true; });
+        } catch(_) {}
+    }
+
+    function saveAchievements() {
+        try {
+            const obj = {};
+            ACHIEVEMENTS.forEach(a => { if (a.unlocked) obj[a.id] = true; });
+            localStorage.setItem(ACH_KEY, JSON.stringify(obj));
+        } catch(_) {}
+    }
+    function unlockAchievement(id) {
+        const ach = ACHIEVEMENTS.find(a => a.id === id);
+        if (!ach || ach.unlocked) return;
+        ach.unlocked = true;
+        saveAchievements();
+        showAchievementToast(ach);
+        const ovl = document.getElementById('achievements-popup-overlay');
+        if (ovl && ovl.style.display !== 'none') renderAchievementsPopup();
+    }
+    let _toastQueue = [];
+    let _toastActive = false;
+
+    function showAchievementToast(ach) {
+        _toastQueue.push(ach);
+        if (!_toastActive) processToastQueue();
+    }
+
+    function processToastQueue() {
+        if (_toastQueue.length === 0) { _toastActive = false; return; }
+        _toastActive = true;
+        const ach = _toastQueue.shift();
+
+        let toast = document.getElementById('ach-toast');
+        if (!toast) {
+            toast = document.createElement('div');
+            toast.id = 'ach-toast';
+
+            const sidebar = document.createElement('div');
+            sidebar.id = 'ach-toast-sidebar';
+            const sideImg = document.createElement('img');
+            sideImg.id = 'ach-toast-icon';
+            sidebar.appendChild(sideImg);
+
+            const body = document.createElement('div');
+            body.id = 'ach-toast-body';
+            const lbl = document.createElement('div');
+            lbl.id = 'ach-toast-label';
+            lbl.textContent = 'Achiveement Unlocked!';
+            const title = document.createElement('div');
+            title.id = 'ach-toast-title';
+            body.appendChild(lbl);
+            body.appendChild(title);
+
+            toast.appendChild(sidebar);
+            toast.appendChild(body);
+            document.body.appendChild(toast);
+        }
+
+        const icon = document.getElementById('ach-toast-icon');
+        const titleEl = document.getElementById('ach-toast-title');
+        if (icon)   icon.src = ach.icon;
+        if (titleEl) titleEl.textContent = ach.title;
+
+        clearTimeout(toast._hideTimer);
+        requestAnimationFrame(() => requestAnimationFrame(() => {
+            toast.classList.add('toast-visible');
+        }));
+
+        toast._hideTimer = setTimeout(() => {
+            toast.classList.remove('toast-visible');
+            setTimeout(() => processToastQueue(), 350);
+        }, 3000);
+
+        if (typeof hotbarSound !== 'undefined') {
+            try { hotbarSound.currentTime = 0; hotbarSound.play().catch(() => {}); } catch(_) {}
+        }
+    }
+    function openAchievementsPopup() {
+        renderAchievementsPopup();
+        const overlay = document.getElementById('achievements-popup-overlay');
+        if (!overlay) return;
+        overlay.style.display = 'flex';
+        requestAnimationFrame(() => requestAnimationFrame(() => overlay.classList.add('popup-visible')));
+        if (typeof hotbarSound !== 'undefined') { hotbarSound.currentTime = 0; hotbarSound.play().catch(() => {}); }
+    }
+
+    function closeAchievementsPopup() {
+        const overlay = document.getElementById('achievements-popup-overlay');
+        if (!overlay) return;
+        overlay.classList.remove('popup-visible');
+        if (typeof pclsSound !== 'undefined') { pclsSound.currentTime = 0; pclsSound.play().catch(() => {}); }
+        setTimeout(() => { overlay.style.display = 'none'; }, 300);
+    }
+
+    function renderAchievementsPopup() {
+        const list    = document.getElementById('ach-list');
+        const fill    = document.getElementById('ach-progress-bar-fill');
+        const progLbl = document.getElementById('ach-progress-label');
+        if (!list) return;
+
+        const total    = ACHIEVEMENTS.length;
+        const unlocked = ACHIEVEMENTS.filter(a => a.unlocked).length;
+        const pct      = total ? Math.round((unlocked / total) * 100) : 0;
+
+        if (fill)    fill.style.width = pct + '%';
+        if (progLbl) progLbl.textContent = unlocked + ' / ' + total + ' Unlocked';
+
+        list.innerHTML = '';
+        const addSection = (label, items) => {
+            const sec = document.createElement('div');
+            sec.style.cssText = 'font-family:"Press Start 2P",monospace;font-size:6px;color:var(--gui-text-dim,#a07850);letter-spacing:1.5px;margin:6px 0 4px;';
+            sec.textContent = label;
+            list.appendChild(sec);
+
+            items.forEach(ach => {
+                const row = document.createElement('div');
+                row.className = 'ach-row ' + (ach.unlocked ? 'unlocked' : 'locked');
+                const iconWrap = document.createElement('div');
+                iconWrap.className = 'ach-icon-wrap';
+                if (ach.unlocked) {
+                    const img = document.createElement('img');
+                    img.src = ach.icon;
+                    img.alt = ach.title;
+                    iconWrap.appendChild(img);
+                } else {
+                    const lockSpan = document.createElement('span');
+                    lockSpan.className = 'ach-lock-icon';
+                    lockSpan.textContent = '?';
+                    lockSpan.style.cssText = 'font-family:"Press Start 2P",monospace;font-size:14px;color:var(--gui-border,#523519);';
+                    iconWrap.appendChild(lockSpan);
+                }
+                const info = document.createElement('div');
+                info.className = 'ach-info';
+                const titleDiv = document.createElement('div');
+                titleDiv.className = 'ach-title';
+                titleDiv.textContent = ach.title;
+                const descDiv = document.createElement('div');
+                descDiv.className = 'ach-desc';
+                descDiv.textContent = ach.unlocked ? ach.desc : '???';
+                info.appendChild(titleDiv);
+                info.appendChild(descDiv);
+                const badge = document.createElement('div');
+                badge.className = 'ach-badge ' + (ach.unlocked ? 'done' : 'pending');
+                badge.textContent = ach.unlocked ? 'UNLOCKED' : '?';
+
+                row.appendChild(iconWrap);
+                row.appendChild(info);
+                row.appendChild(badge);
+                list.appendChild(row);
+            });
+        };
+
+        addSection('Achiveements', ACHIEVEMENTS.filter(a => a.group === 'normal'));
+        addSection('Easter Eggs', ACHIEVEMENTS.filter(a => a.group === 'easter'));
+    }
+    window.openAchievementsPopup  = openAchievementsPopup;
+    window.closeAchievementsPopup = closeAchievementsPopup;
+    window._unlockAchievement     = unlockAchievement;
+    const _origHandleInteraction = handleInteraction;
+    window.handleInteraction = function(tile, x, y, z) {
+        const prevCount = treeCounter;
+        _origHandleInteraction.apply(this, arguments);
+        if ((selectedBlockType === 'tree' || selectedBlockType === 'snowed_tree') && treeCounter > prevCount) {
+            unlockAchievement('first_tree');
+        }
+    };
+    const _origGenRand = generateRandomIsland;
+    window.generateRandomIsland = function() {
+        _origGenRand.apply(this, arguments);
+        unlockAchievement('random_island');
+    };
+    const _origOpenSettings = openSettingsPopup;
+    window.openSettingsPopup = function() {
+        _origOpenSettings.apply(this, arguments);
+        unlockAchievement('settings_opened');
+    };
+
+    
+    const _origTitleClick = window.handleTitleClick;
+    let _achClickCount = 0, _achClickTimer = null;
+    window.handleTitleClick = function() {
+        if (_origTitleClick) _origTitleClick.apply(this, arguments);
+        _achClickCount++;
+        clearTimeout(_achClickTimer);
+        _achClickTimer = setTimeout(() => { _achClickCount = 0; }, 2500);
+        if (_achClickCount >= 10) {
+            _achClickCount = 0;
+            clearTimeout(_achClickTimer);
+            unlockAchievement('easter_confetti');
+        }
+    };
+
+    
+    const _origOpenLoadPopup = window.openLoadPopup;
+    window.openLoadPopup = function() {
+        const input = document.getElementById('popup-code-input');
+        if (input && input.value.trim().toUpperCase() === 'FLAVORTOWN') {
+            unlockAchievement('easter_flavortown');
+        }
+        if (_origOpenLoadPopup) _origOpenLoadPopup.apply(this, arguments);
+        else {
+            const val = input ? input.value.trim() : '';
+            if (!val) return;
+            if (val.toUpperCase() === 'FLAVORTOWN') { showToast('Flavortown is the best :3'); return; }
+            const ok = loadIslandCode(val);
+            if (!ok) showToast('Invalid Code!');
+            else { closeSavePopup(); showToast('Succesfully Loaded!'); }
+        }
+    };
+
+    
+    const _origShow1x1 = window.show1x1Popup;
+    window.show1x1Popup = function() {
+        unlockAchievement('easter_1x1');
+        if (_origShow1x1) _origShow1x1.apply(this, arguments);
+    };
+    loadAchievements();
+})();

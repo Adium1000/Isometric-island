@@ -7,25 +7,40 @@
 :Line Tool
 :Circle Tool
 
+ignore the cluter :) no time to sort the most heh
+also placing on the side of a block is not possible rn right?
+-a proper way to retrigger it would be nice tuto
+- Account delete system
 - Multi-language support - RO, EN, ES, FR, DE pentru UI
 - RTL support - pentru arabă/ebraică
 - tutorial video
 - Tutorial Non-Intruziv: Mici semne de întrebare care apar doar prima dată când deschizi o secțiune.
 - float speed bar (NOTED)
 - MoreBlocks
-- add show air blocks 
+- add show air blocks (noted)
 - optimization banner
 - X people building right now" counter live
 - stamp 
 - build that island replica game mini
-- Notificări stacked - acum toast-ul se suprascrie, poți face o coadă verticală cu mai multe toasts simultane
+- Notificări stacked - acum toast-ul se suprascrie, poți face o coadă verticală cu mai multe toasts simultane // 
 - Timelapse recorder — înregistrezi fiecare acțiune și poți reda construcția de la zero ca un gif/video
 - Undo/Redo Visual History: O listă cu ultimele acțiuni pe care poți da click.
-- Drag & Drop Hotbar: Posibilitatea de a rearanja ordinea blocurilor în hotbar-ul de jos.
+- Drag & Drop Hotbar: Posibilitatea de a rearanja ordinea blocurilor în hotbar-ul de jos.(noted)
 - Animated Hotbar: Icoanele din hotbar să sară (bounce) când treci cu mouse-ul peste ele. (noted)
-- Save Slots: Butoane cu "Slot 1", "Slot 2" care să aibă o mică imagine (thumbnail) cu insula salvată.
-- Cursor Trail: Un efect mic de particule care urmărește mouse-ul doar pe spațiul canvas-ului.
+- Save Slots: Butoane cu "Slot 1", "Slot 2" care să aibă o mică imagine (thumbnail) cu insula salvată. (now)
+- Cursor Trail: Un efect mic de particule care urmărește mouse-ul doar pe spațiul canvas-ului. (now)
 - Replace Tool (Brush): Înlocuiește blocurile sub brush, dar păstrează înălțimea lor Z.
+- mai multe realizari
+plutește!
+Fă insula sa plutească
+Nebunie
+Dechide tabul de island as an emoji
+E bine să împarți
+Copiaza linkul unei insule (buton din file)
+Modul cartof
+dezactivezi totul din graphics
+
+
 
 - Realizaări
 :Primul Copac (plaseaza un copac)
@@ -115,3 +130,6 @@ Devlog Sketch
 Release
 
 Release Final
+# Devlog 52
+Added Achiveements system: Now you can unlock some fun achivements and see easter eggs in this menu, i find this really fun and POP!
+Also I need to design more icons and stuff for this popup but I love how it looks until now :3

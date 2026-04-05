@@ -3952,3 +3952,245 @@ body:not(.presentation-mode) #block-name-display {
 .biome-card-copy:hover { border-color: var(--gui-accent); }
 .biome-card-copy .biome-name { color: var(--gui-accent); }
 .biome-card-copy .biome-desc { color: #5a7aaa; }
+#achievements-popup-overlay {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.75);
+    z-index: 10002;
+    justify-content: center;
+    align-items: center;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+#achievements-popup-overlay.popup-visible { opacity: 1; display: flex; }
+
+#achievements-popup-wrapper {
+    position: relative;
+    transform: scale(0.87) translateY(28px);
+    transition: transform 0.35s cubic-bezier(0.18, 0.89, 0.32, 1.28);
+}
+#achievements-popup-overlay.popup-visible #achievements-popup-wrapper {
+    transform: scale(1.3) translateY(0);
+}
+
+#achievements-close-btn {
+    position: absolute;
+    top: -18px;
+    right: -18px;
+    z-index: 10;
+    background: var(--gui-close-bg, #7a2020);
+    color: var(--gui-text, #fff8e1);
+    border: 4px solid var(--gui-border, #523519);
+    box-shadow: 3px 3px 0 var(--gui-close-sh, #3b1010);
+    font-family: 'Press Start 2P', monospace;
+    font-size: 12px;
+    width: 36px;
+    height: 36px;
+    cursor: pointer;
+    padding: 0;
+    line-height: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    clip-path: polygon(0% 3px, 3px 3px, 3px 0%, calc(100% - 3px) 0%, calc(100% - 3px) 3px, 100% 3px, 100% calc(100% - 3px), calc(100% - 3px) calc(100% - 3px), calc(100% - 3px) 100%, 3px 100%, 3px calc(100% - 3px), 0% calc(100% - 3px));
+    transition: filter 0.1s, transform 0.1s;
+}
+#achievements-close-btn:hover  { filter: brightness(1.3); transform: scale(1.1); }
+#achievements-close-btn:active { transform: scale(0.9); }
+
+#achievements-popup {
+    background: var(--gui-bg, #8b5e34);
+    border: 3px solid var(--gui-border, #523519);
+    padding: 20px 22px 18px;
+    min-width: 340px;
+    max-width: 480px;
+    width: 90vw;
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+    box-shadow: 4px 4px 0 var(--gui-shadow, #523519);
+    overflow: hidden;
+    clip-path: polygon(0% 6px, 6px 6px, 6px 0%, calc(100% - 6px) 0%, calc(100% - 6px) 6px, 100% 6px, 100% calc(100% - 6px), calc(100% - 6px) calc(100% - 6px), calc(100% - 6px) 100%, 6px 100%, 6px calc(100% - 6px), 0% calc(100% - 6px));
+}
+
+#achievements-popup h2 {
+    font-family: 'Press Start 2P', monospace;
+    font-size: 11px;
+    color: var(--gui-text, #fff8e1);
+    margin: 0 0 10px 0;
+    text-shadow: 2px 2px 0 var(--gui-title-sh, #523519);
+    letter-spacing: 1px;
+}
+#ach-progress-bar-wrap {
+    position: relative;
+    background: var(--gui-bg-dark, #3b2007);
+    border: 2px solid var(--gui-border, #523519);
+    height: 18px;
+    margin: 8px 0 6px;
+    overflow: hidden;
+    clip-path: polygon(0% 3px, 3px 3px, 3px 0%, calc(100% - 3px) 0%, calc(100% - 3px) 3px, 100% 3px, 100% calc(100% - 3px), calc(100% - 3px) calc(100% - 3px), calc(100% - 3px) 100%, 3px 100%, 3px calc(100% - 3px), 0% calc(100% - 3px));
+}
+#ach-progress-bar-fill {
+    position: absolute;
+    left: 0; top: 0; bottom: 0;
+    width: 0%;
+    background: linear-gradient(90deg, var(--gui-accent, #ffdf80) 0%, #ffa040 100%);
+    transition: width 0.6s cubic-bezier(0.18, 0.89, 0.32, 1.28);
+}
+#ach-progress-label {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'Press Start 2P', monospace;
+    font-size: 6px;
+    color: var(--gui-bg-dark, #3b2007);
+    mix-blend-mode: difference;
+    letter-spacing: 1px;
+    filter: invert(1);
+}
+#ach-list {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    margin-top: 10px;
+    max-height: 55vh;
+    overflow-y: auto;
+    padding-right: 4px;
+}
+#ach-list::-webkit-scrollbar { width: 6px; }
+#ach-list::-webkit-scrollbar-track { background: var(--gui-bg-dark, #3b2007); }
+#ach-list::-webkit-scrollbar-thumb { background: var(--gui-border, #523519); border: 1px solid var(--gui-accent, #ffdf80); }
+
+.ach-row {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 11px 13px;
+    background: var(--gui-bg-dark, #3b2007);
+    border: 2px solid var(--gui-border, #523519);
+    clip-path: polygon(0% 3px, 3px 3px, 3px 0%, calc(100% - 3px) 0%, calc(100% - 3px) 3px, 100% 3px, 100% calc(100% - 3px), calc(100% - 3px) calc(100% - 3px), calc(100% - 3px) 100%, 3px 100%, 3px calc(100% - 3px), 0% calc(100% - 3px));
+    transition: filter 0.15s;
+}
+.ach-row.unlocked {
+    border-color: var(--gui-accent, #ffdf80);
+    background: var(--gui-bg, #8b5e34);
+    box-shadow: 0 0 0 1px var(--gui-accent, #ffdf80) inset;
+}
+.ach-row.locked {
+    opacity: 0.48;
+    filter: saturate(0.3);
+}
+.ach-icon-wrap {
+    min-width: 36px;
+    width: 36px;
+    height: 36px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--gui-bg-dark, #3b2007);
+    border: 2px solid var(--gui-border, #523519);
+    clip-path: polygon(0% 3px, 3px 3px, 3px 0%, calc(100% - 3px) 0%, calc(100% - 3px) 3px, 100% 3px, 100% calc(100% - 3px), calc(100% - 3px) calc(100% - 3px), calc(100% - 3px) 100%, 3px 100%, 3px calc(100% - 3px), 0% calc(100% - 3px));
+}
+.ach-icon-wrap img {
+    width: 22px;
+    height: 22px;
+    image-rendering: pixelated;
+}
+.ach-icon-wrap .ach-lock-icon {
+    font-size: 18px;
+    filter: grayscale(1) brightness(0.5);
+}
+.ach-info { flex: 1; min-width: 0; }
+.ach-title {
+    font-family: 'Press Start 2P', monospace;
+    font-size: 7.5px;
+    color: var(--gui-accent, #ffdf80);
+    letter-spacing: 0.5px;
+    margin-bottom: 5px;
+    text-shadow: 1px 1px 0 var(--gui-title-sh, #523519);
+}
+.ach-row.locked .ach-title { color: var(--gui-text-dim, #a07850); }
+.ach-desc {
+    font-family: 'Press Start 2P', monospace;
+    font-size: 5.5px;
+    color: var(--gui-text-dim, #a07850);
+    line-height: 1.7;
+}
+.ach-badge {
+    font-family: 'Press Start 2P', monospace;
+    font-size: 7px;
+    white-space: nowrap;
+    padding: 4px 7px;
+    clip-path: polygon(0% 3px, 3px 3px, 3px 0%, calc(100% - 3px) 0%, calc(100% - 3px) 3px, 100% 3px, 100% calc(100% - 3px), calc(100% - 3px) calc(100% - 3px), calc(100% - 3px) 100%, 3px 100%, 3px calc(100% - 3px), 0% calc(100% - 3px));
+}
+.ach-badge.done {
+    background: #1a3a10;
+    border: 2px solid #4aaa20;
+    color: #8aff40;
+}
+.ach-badge.pending {
+    background: var(--gui-bg-dark, #3b2007);
+    border: 2px solid var(--gui-border, #523519);
+    color: var(--gui-border, #523519);
+}
+#ach-toast {
+    position: fixed;
+    bottom: 100px;
+    left: 50%;
+    transform: translateX(-50%) translateY(30px);
+    z-index: 99999;
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity 0.3s ease, transform 0.35s cubic-bezier(0.18, 0.89, 0.32, 1.28);
+    display: flex;
+    align-items: stretch;
+    gap: 0;
+    clip-path: polygon(0% 5px, 5px 5px, 5px 0%, calc(100% - 5px) 0%, calc(100% - 5px) 5px, 100% 5px, 100% calc(100% - 5px), calc(100% - 5px) calc(100% - 5px), calc(100% - 5px) 100%, 5px 100%, 5px calc(100% - 5px), 0% calc(100% - 5px));
+    box-shadow: 4px 4px 0 rgba(0,0,0,0.5);
+    min-width: 240px;
+    max-width: 88vw;
+}
+#ach-toast.toast-visible {
+    opacity: 1;
+    transform: translateX(-50%) translateY(0);
+}
+#ach-toast-sidebar {
+    background: var(--gui-accent, #ffdf80);
+    padding: 0 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 52px;
+}
+#ach-toast-sidebar img {
+    width: 28px;
+    height: 28px;
+    image-rendering: pixelated;
+}
+#ach-toast-body {
+    background: var(--gui-bg-dark, #1e1006);
+    border: 3px solid var(--gui-accent, #ffdf80);
+    border-left: none;
+    padding: 10px 16px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 5px;
+    flex: 1;
+}
+#ach-toast-label {
+    font-family: 'Press Start 2P', monospace;
+    font-size: 5.5px;
+    color: var(--gui-text-dim, #a07840);
+    letter-spacing: 1.5px;
+}
+#ach-toast-title {
+    font-family: 'Press Start 2P', monospace;
+    font-size: 8px;
+    color: var(--gui-accent, #ffdf80);
+    letter-spacing: 0.5px;
+    text-shadow: 1px 1px 0 #3b2007;
+}

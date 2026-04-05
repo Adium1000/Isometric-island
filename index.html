@@ -481,6 +481,7 @@ function tryStartBuilding() {
                         <div style="display:flex;flex-direction:column;gap:8px;">
                             <button class="btn-settings" onclick="openSettingsPopup()"><img src="./Assets/Icons/maintenance.png" style="width:16px;height:16px;image-rendering:pixelated;vertical-align:middle;margin-right:6px;"> SETTINGS</button>
                             <button class="btn-settings" onclick="openAnalyticsPopup()" style="background:#2a4a2e;border-color:#1a3020;color:#a8ffb8;"> ISLAND ANALYTICS</button>
+                            <button class="btn-settings" onclick="openAchievementsPopup()" style="background:#2a1a4a;border-color:#4a2880;color:#c8a8ff;"><img src="./Assets/Icons/book.png" style="width:16px;height:16px;image-rendering:pixelated;vertical-align:middle;margin-right:6px;">Achiveements</button>
                             <button class="btn-settings" onclick="closeSavePopup();openCommunityPopup()" style="background:#1a3a5c;border-color:#2a6a9e;color:#a0d4ff;"><img src="./Assets/Icons/Comunitymaps.png" style="width:16px;height:16px;image-rendering:pixelated;vertical-align:middle;margin-right:6px;">COMMUNITY MAPS</button>
                         </div>
 
@@ -763,7 +764,7 @@ function tryStartBuilding() {
     <div id="fun-popup-wrapper">
         <button id="fun-popup-close-btn" onclick="closeFunPopup()">&#10005;</button>
         <div id="fun-popup" class="pixel-corners">
-            <h2>&#127922; FUN</h2>
+            <h2>FUN</h2>
             <div class="biome-grid" id="fun-popup-grid">
                 <div class="biome-card" onclick="closeFunPopup();openIslandBiomePopup()">
                     <div class="biome-icon"></div>
@@ -1568,6 +1569,22 @@ window.closeNotFound = function() {
     }
 };
 </script>
+
+<div id="achievements-popup-overlay" onclick="if(event.target===this)closeAchievementsPopup()">
+    <div id="achievements-popup-wrapper">
+        <button id="achievements-close-btn" onclick="closeAchievementsPopup()">&#10005;</button>
+        <div id="achievements-popup" class="pixel-corners">
+            <h2><img src="./Assets/Icons/book.png" style="width:22px;height:22px;image-rendering:pixelated;vertical-align:middle;margin-right:8px;">Achiveements</h2>
+            <hr class="popup-divider">
+            <div id="ach-progress-bar-wrap">
+                <div id="ach-progress-bar-fill"></div>
+                <div id="ach-progress-label"></div>
+            </div>
+            <hr class="popup-divider">
+            <div id="ach-list"></div>
+        </div>
+    </div>
+</div>
 </body>
 </html>
 <div id="float-popup-overlay" onclick="if(event.target===this)closeFloatPopup()">

@@ -368,6 +368,12 @@ And done!
 
 - Brush settings contains options about the brush tickness
 
+![Achivements](GithubPreview/Guide/achivements_banner.png)
+
+Achivements are a fun way to discover new things about this game :3
+You can acces it via the file menu
+
+![Achivements windwow](GithubPreview/Guide/achivements.png)
 
 ### Warning!
 ![WarnBanner](GithubPreview/Banners/warningb.png)

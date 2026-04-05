@@ -558,6 +558,14 @@ Hotbar small update: Now the hotbar elements bounce when cursor hold or touch on
 ![devlog51pop](<GithubPreview/Devlogs (Flavortown)/devlog51.png>)
 
 ---
+# Devlog 52
+Added Achiveements system: Now you can unlock some fun achivements and see easter eggs in this menu, i find this really fun and POP!
+Also I need to design more icons and stuff for this popup but I love how it looks until now :3
+
+![devlog52](<GithubPreview/Devlogs (Flavortown)/devlog52.png>)
+
+
+---
 End 
 
 ![yayyy](https://emoji.slack-edge.com/T09V59WQY1E/yayayayayay/203666b7424ee7a7.gif)
