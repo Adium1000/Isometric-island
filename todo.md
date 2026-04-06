@@ -124,12 +124,28 @@ i hate missspelling
 
 
 Devlog Sketch
-
-# Devlog 49
-
+    const COLORS = ['', '#ffd060', '#ffc040', '#e8a020', '#c47010'];
 Release
 
 Release Final
-# Devlog 52
-Added Achiveements system: Now you can unlock some fun achivements and see easter eggs in this menu, i find this really fun and POP!
-Also I need to design more icons and stuff for this popup but I love how it looks until now :3
+# Devlog 53
+
+1. Added cursor trails option avalabile in the settings and Cursor settings, when turned on the cursor will make trails 
+- Trails are like small particles of colors that go in small random directions, go transparent and lose size and then that particle is deleted for the best perofrmance when this option is turned on this happening on a loop :3  
+
+---
+
+### Here are the colors that Mouse Trail uses when turned on and you move your cursors 
+
+1. Light Color: `#ffdf80`  
+2. Medium Light `#ffd060` 
+3. Low Light `#e8a020` 
+4. Darker `#c47010`
+
+- you can get really creative changing this values to anything :)
+---
+- The option svaes up so the game will remember you haved turned on next time you load the page 
+- Also it can be verry small if the Scale option is not configured corectlly so be sure to configure the scale properlly before turning this option on :3
+- In my opinion it looks the best when the cursor is on the cross form :orpheus-explode: 
+---
+What do you think?

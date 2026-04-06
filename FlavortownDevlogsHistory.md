@@ -566,6 +566,32 @@ Also I need to design more icons and stuff for this popup but I love how it look
 
 
 ---
+# Devlog 53
+
+1. Added cursor trails option avalabile in the settings and Cursor settings, when turned on the cursor will make trails 
+- Trails are like small particles of colors that go in small random directions, go transparent and lose size and then that particle is deleted for the best perofrmance when this option is turned on this happening on a loop :3  
+
+---
+
+### Here are the colors that Mouse Trail uses when turned on and you move your cursors 
+
+1. Light Color: `#ffdf80`  
+2. Medium Light `#ffd060` 
+3. Low Light `#e8a020` 
+4. Darker `#c47010`
+
+- you can get really creative changing this values to anything :)
+---
+- The option svaes up so the game will remember you haved turned on next time you load the page 
+- Also it can be verry small if the Scale option is not configured corectlly so be sure to configure the scale properlly before turning this option on :3
+- In my opinion it looks the best when the cursor is on the cross form :orpheus-explode: 
+---
+What do you think?
+
+![Devlog53](<GithubPreview/Devlogs (Flavortown)/Screenshot 2026-04-06 170021.png>)
+
+
+---
 End 
 
 ![yayyy](https://emoji.slack-edge.com/T09V59WQY1E/yayayayayay/203666b7424ee7a7.gif)

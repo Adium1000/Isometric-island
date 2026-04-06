@@ -3784,6 +3784,8 @@ function openPointerSettings() {
     if (swCursor) swCursor.classList.toggle('on', !!window._customCursorEnabled);
     const swTip = document.getElementById('sw-block-tooltips');
     if (swTip) swTip.classList.toggle('on', window._blockTooltipsEnabled !== false);
+    const swTrail = document.getElementById('sw-cursor-trail');
+    if (swTrail) swTrail.classList.toggle('on', !!window._cursorTrailEnabled);
     overlay.style.display = 'flex';
     requestAnimationFrame(() => overlay.classList.add('popup-visible'));
     hotbarSound.currentTime = 0; hotbarSound.play().catch(e => {});
@@ -3844,6 +3846,88 @@ function toggleBlockTooltips(btn) {
     }
     hotbarSound.currentTime = 0; hotbarSound.play().catch(e => {});
 }
+
+(function initCursorTrail() {
+    const COLORS = ['#ffdf80', '#ffd060', '#ffc040', '#e8a020', '#c47010'];
+    const MAX_PARTICLES = 28;
+    let particles = [];
+    let animId = null;
+    let mouseX = 0, mouseY = 0;
+    let isOverStage = false;
+    const trailCanvas = document.createElement('canvas');
+    trailCanvas.id = 'cursor-trail-canvas';
+    trailCanvas.style.cssText = 'position:fixed;inset:0;width:100%;height:100%;pointer-events:none;z-index:2147483640;';
+    document.body.appendChild(trailCanvas);
+    const ctx = trailCanvas.getContext('2d');
+
+    function resize() {
+        trailCanvas.width  = window.innerWidth;
+        trailCanvas.height = window.innerHeight;
+    }
+    window.addEventListener('resize', resize, { passive: true });
+    resize();
+
+    function spawnParticle(x, y) {
+        const angle = Math.random() * Math.PI * 2;
+        const speed = 0.4 + Math.random() * 1.2;
+        particles.push({
+            x, y,
+            vx: Math.cos(angle) * speed,
+            vy: Math.sin(angle) * speed - 0.6,
+            size: 2 + Math.random() * 3,
+            life: 1,
+            decay: 0.045 + Math.random() * 0.035,
+            color: COLORS[Math.floor(Math.random() * COLORS.length)]
+        });
+        if (particles.length > MAX_PARTICLES) particles.shift();
+    }
+
+    function loop() {
+        ctx.clearRect(0, 0, trailCanvas.width, trailCanvas.height);
+        for (let i = particles.length - 1; i >= 0; i--) {
+            const p = particles[i];
+            p.life -= p.decay;
+            if (p.life <= 0) { particles.splice(i, 1); continue; }
+            p.x += p.vx;
+            p.y += p.vy;
+            p.vy += 0.04; 
+            ctx.globalAlpha = p.life * p.life;
+            ctx.fillStyle = p.color;
+            const s = p.size * p.life;
+            ctx.fillRect(Math.round(p.x - s / 2), Math.round(p.y - s / 2), Math.round(s), Math.round(s));
+        }
+        ctx.globalAlpha = 1;
+        if (particles.length > 0) {
+            animId = requestAnimationFrame(loop);
+        } else {
+            animId = null;
+        }
+    }
+
+    let spawnThrottle = 0;
+    document.addEventListener('mousemove', function(e) {
+        if (!window._cursorTrailEnabled) return;
+        const stage = document.getElementById('stage');
+        if (!stage) return;
+        const r = stage.getBoundingClientRect();
+        isOverStage = e.clientX >= r.left && e.clientX <= r.right && e.clientY >= r.top && e.clientY <= r.bottom;
+        if (!isOverStage) return;
+        mouseX = e.clientX;
+        mouseY = e.clientY;
+        spawnThrottle++;
+        if (spawnThrottle % 2 !== 0) return; 
+        spawnParticle(mouseX, mouseY);
+        if (!animId) animId = requestAnimationFrame(loop);
+    }, { passive: true });
+    window._cursorTrailEnabled = localStorage.getItem('cursorTrail') === 'on';
+})();
+
+function toggleCursorTrail(btn) {
+    window._cursorTrailEnabled = !window._cursorTrailEnabled;
+    btn.classList.toggle('on', window._cursorTrailEnabled);
+    localStorage.setItem('cursorTrail', window._cursorTrailEnabled ? 'on' : 'off');
+    hotbarSound.currentTime = 0; hotbarSound.play().catch(e => {});
+} 
 
 const BLOCK_NAMES_RO = {
     'dirt':         'Grass',
@@ -4728,7 +4812,7 @@ function handleInteractionBrushed(tile, x, y, z) {
                 info.appendChild(descDiv);
                 const badge = document.createElement('div');
                 badge.className = 'ach-badge ' + (ach.unlocked ? 'done' : 'pending');
-                badge.textContent = ach.unlocked ? 'UNLOCKED' : '?';
+                badge.textContent = ach.unlocked ? 'UNLOKED' : '?';
 
                 row.appendChild(iconWrap);
                 row.appendChild(info);
