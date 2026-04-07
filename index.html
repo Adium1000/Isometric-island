@@ -10,7 +10,7 @@
      | |   ; '._,' '  '  `-' /  | |  | |  | | '  `-' /  ' `-' ;   | |         | |  '  `-' |           | |   ; '._,' '   | |  ' `-'  |  | |  | |  ' `-'  /    
     (___)   '.___.'    `.__.'  (___)(___)(___) `.__.'    `.__.   (___)       (___)  `.__,'           (___)   '.___.'   (___) `.__.'_. (___)(___)  `.__,'  -->   
 
-<!-- Isometric island HTML Source code 54.26 BUILD 1 -->
+<!-- Isometric island HTML Source code 233.26 BUILD 8 -->
 <!DOCTYPE html>
 <html lang="ro">
 <head>
@@ -471,6 +471,11 @@ function tryStartBuilding() {
                 <div id="save-popup-right">
 
                     <div style="display:flex;flex-direction:column;gap:14px;flex:1;">
+                        <div>
+                            <div class="popup-section-title">SAVE SLOTS:</div>
+                            <button class="btn-save-slots" onclick="openSaveSlotsPopup()" style="width:100%;box-sizing:border-box;"><img src="./Assets/Icons/load.png" style="width:16px;height:16px;image-rendering:pixelated;vertical-align:middle;margin-right:6px;">MANAGE SAVE SLOTS</button>
+                        </div>
+
                         <div>
                             <div class="popup-section-title">FUN:</div>
                             <button class="btn-random" onclick="closeSavePopup();openFunPopup()">FUN</button>
@@ -1576,6 +1581,56 @@ window.closeNotFound = function() {
     }
 };
 </script>
+<div id="save-slots-overlay" onclick="if(event.target===this)closeSaveSlotsPopup()">
+    <div id="save-slots-wrapper">
+        <button id="save-slots-close-btn" onclick="closeSaveSlotsPopup()">&#10005;</button>
+        <div id="save-slots-popup" class="pixel-corners">
+            <h2><img src="./Assets/Icons/load.png" style="width:22px;height:22px;image-rendering:pixelated;vertical-align:middle;margin-right:8px;">SAVE SLOTS</h2>
+            <hr class="popup-divider">
+            <div id="save-slots-grid">
+                <div class="save-slot-card" id="save-slot-0">
+                    <div class="save-slot-thumb-wrap">
+                        <canvas class="save-slot-thumb" id="save-slot-thumb-0" width="120" height="80"></canvas>
+                        <div class="save-slot-empty-label" id="save-slot-empty-0">EMPTY</div>
+                    </div>
+                    <div class="save-slot-label">SLOT 1</div>
+                    <div class="save-slot-meta" id="save-slot-meta-0">—</div>
+                    <div class="save-slot-btns">
+                        <button class="save-slot-btn save" onclick="saveToSlot(0)">SAVE</button>
+                        <button class="save-slot-btn load" id="save-slot-load-0" onclick="loadFromSlot(0)" disabled>LOAD</button>
+                        <button class="save-slot-btn del" id="save-slot-del-0" onclick="deleteSlot(0)" disabled>Delete</button>
+                    </div>
+                </div>
+                <div class="save-slot-card" id="save-slot-1">
+                    <div class="save-slot-thumb-wrap">
+                        <canvas class="save-slot-thumb" id="save-slot-thumb-1" width="120" height="80"></canvas>
+                        <div class="save-slot-empty-label" id="save-slot-empty-1">EMPTY</div>
+                    </div>
+                    <div class="save-slot-label">SLOT 2</div>
+                    <div class="save-slot-meta" id="save-slot-meta-1">—</div>
+                    <div class="save-slot-btns">
+                        <button class="save-slot-btn save" onclick="saveToSlot(1)">SAVE</button>
+                        <button class="save-slot-btn load" id="save-slot-load-1" onclick="loadFromSlot(1)" disabled>LOAD</button>
+                        <button class="save-slot-btn del" id="save-slot-del-1" onclick="deleteSlot(1)" disabled>Delete</button>
+                    </div>
+                </div>
+                <div class="save-slot-card" id="save-slot-2">
+                    <div class="save-slot-thumb-wrap">
+                        <canvas class="save-slot-thumb" id="save-slot-thumb-2" width="120" height="80"></canvas>
+                        <div class="save-slot-empty-label" id="save-slot-empty-2">EMPTY</div>
+                    </div>
+                    <div class="save-slot-label">SLOT 3</div>
+                    <div class="save-slot-meta" id="save-slot-meta-2">—</div>
+                    <div class="save-slot-btns">
+                        <button class="save-slot-btn save" onclick="saveToSlot(2)">SAVE</button>
+                        <button class="save-slot-btn load" id="save-slot-load-2" onclick="loadFromSlot(2)" disabled>LOAD</button>
+                        <button class="save-slot-btn del" id="save-slot-del-2" onclick="deleteSlot(2)" disabled>Delete</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 
 <div id="achievements-popup-overlay" onclick="if(event.target===this)closeAchievementsPopup()">
     <div id="achievements-popup-wrapper">

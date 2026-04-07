@@ -6,7 +6,6 @@
 //     #┼#    #┼#    #┼# #┼#    #┼# #┼#       #┼# #┼#            #┼#     #┼#    #┼#     #┼#    #┼#    #┼#             #┼#    #┼#    #┼# #┼#        #┼#     #┼# #┼#   #┼#┼# #┼#    #┼#        #┼# #┼#    #┼#    #┼#     
 //########### ########   ########  ###       ### ##########     ###     ###    ### ########### ########          ########### ########  ########## ###     ### ###    #### #########          #####      ########       
 
-// The version is determinated by the current date and year
 
 if ('serviceWorker' in navigator) {
     window.addEventListener('load', () => {
@@ -3915,7 +3914,7 @@ function toggleBlockTooltips(btn) {
         mouseX = e.clientX;
         mouseY = e.clientY;
         spawnThrottle++;
-        if (spawnThrottle % 2 !== 0) return; 
+        if (spawnThrottle % 2 !== 0) return;
         spawnParticle(mouseX, mouseY);
         if (!animId) animId = requestAnimationFrame(loop);
     }, { passive: true });
@@ -3927,8 +3926,7 @@ function toggleCursorTrail(btn) {
     btn.classList.toggle('on', window._cursorTrailEnabled);
     localStorage.setItem('cursorTrail', window._cursorTrailEnabled ? 'on' : 'off');
     hotbarSound.currentTime = 0; hotbarSound.play().catch(e => {});
-} 
-
+}
 const BLOCK_NAMES_RO = {
     'dirt':         'Grass',
     'dirt2':        'Dirt',
@@ -4887,3 +4885,104 @@ function handleInteractionBrushed(tile, x, y, z) {
     };
     loadAchievements();
 })();
+const SAVE_SLOT_KEY = 'islandSaveSlot_';
+const SAVE_SLOT_COUNT = 3;
+
+function openSaveSlotsPopup() {
+    const overlay = document.getElementById('save-slots-overlay');
+    if (!overlay) return;
+    overlay.style.display = 'flex';
+    requestAnimationFrame(() => requestAnimationFrame(() => overlay.classList.add('popup-visible')));
+    renderSaveSlots();
+}
+
+function closeSaveSlotsPopup() {
+    const overlay = document.getElementById('save-slots-overlay');
+    if (!overlay) return;
+    overlay.classList.remove('popup-visible');
+    setTimeout(() => { overlay.style.display = 'none'; }, 270);
+}
+
+function _getSlotData(idx) {
+    try {
+        const raw = localStorage.getItem(SAVE_SLOT_KEY + idx);
+        return raw ? JSON.parse(raw) : null;
+    } catch(e) { return null; }
+}
+
+function _setSlotData(idx, data) {
+    try { localStorage.setItem(SAVE_SLOT_KEY + idx, JSON.stringify(data)); } catch(e) {}
+}
+
+function _deleteSlotData(idx) {
+    try { localStorage.removeItem(SAVE_SLOT_KEY + idx); } catch(e) {}
+}
+
+function _renderSlotThumb(canvas, thumbData) {
+    const ctx = canvas.getContext('2d');
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    if (!thumbData) return;
+    const img = new Image();
+    img.onload = () => { ctx.drawImage(img, 0, 0, canvas.width, canvas.height); };
+    img.src = thumbData;
+}
+
+function _captureMinimap() {
+    const mm = document.getElementById('minimap');
+    if (!mm) return null;
+    try { return mm.toDataURL('image/png'); } catch(e) { return null; }
+}
+
+function renderSaveSlots() {
+    for (let i = 0; i < SAVE_SLOT_COUNT; i++) {
+        const data = _getSlotData(i);
+        const emptyEl = document.getElementById('save-slot-empty-' + i);
+        const metaEl  = document.getElementById('save-slot-meta-' + i);
+        const loadBtn = document.getElementById('save-slot-load-' + i);
+        const delBtn  = document.getElementById('save-slot-del-' + i);
+        const thumb   = document.getElementById('save-slot-thumb-' + i);
+
+        if (data) {
+            if (emptyEl) emptyEl.style.display = 'none';
+            if (metaEl)  metaEl.textContent = data.date || '—';
+            if (loadBtn) loadBtn.disabled = false;
+            if (delBtn)  delBtn.disabled = false;
+            if (thumb)   _renderSlotThumb(thumb, data.thumb || null);
+        } else {
+            if (emptyEl) emptyEl.style.display = 'flex';
+            if (metaEl)  metaEl.textContent = '—';
+            if (loadBtn) loadBtn.disabled = true;
+            if (delBtn)  delBtn.disabled = true;
+            if (thumb) {
+                const ctx = thumb.getContext('2d');
+                ctx.clearRect(0, 0, thumb.width, thumb.height);
+            }
+        }
+    }
+}
+
+function saveToSlot(idx) {
+    const code = generateIslandCode();
+    const thumb = _captureMinimap();
+    const now = new Date();
+    const date = now.toLocaleDateString() + ' ' + now.toLocaleTimeString([], {hour:'2-digit',minute:'2-digit'});
+    _setSlotData(idx, { code, thumb, date });
+    renderSaveSlots();
+    showToast('Saved to Slot ' + (idx + 1) + '!');
+}
+
+function loadFromSlot(idx) {
+    const data = _getSlotData(idx);
+    if (!data || !data.code) { showToast('Slot ' + (idx + 1) + ' is empty!'); return; }
+    const ok = loadIslandCode(data.code);
+    if (!ok) { showToast('Error loading slot ' + (idx + 1) + '!'); return; }
+    closeSaveSlotsPopup();
+    closeSavePopup();
+    showToast('Loaded Slot ' + (idx + 1) + '!');
+}
+
+function deleteSlot(idx) {
+    _deleteSlotData(idx);
+    renderSaveSlots();
+    showToast('Slot ' + (idx + 1) + ' deleted!');
+}

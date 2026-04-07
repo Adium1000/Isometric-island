@@ -179,6 +179,12 @@ Map publisher
 
 - You can perform more actions with your mouse such as Grabbing island / Select specific Blocks / or the simple block change.
 
+9. Island save slots
+- contains a menu with saved islands with a maximum of 3 slots :3
+
+
+
+
 |Mouse Key    | Action                               |
 |:-----------:|:------------------------------------:|
 | Left Click  | Place Blocks                         |

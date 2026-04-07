@@ -128,24 +128,25 @@ Devlog Sketch
 Release
 
 Release Final
-# Devlog 53
 
-1. Added cursor trails option avalabile in the settings and Cursor settings, when turned on the cursor will make trails 
-- Trails are like small particles of colors that go in small random directions, go transparent and lose size and then that particle is deleted for the best perofrmance when this option is turned on this happening on a loop :3  
+# Devlog 54
+
+Added save slots
+
+
+- Now you can save up to 3 island on the in-game project storage using localStorage
+- The popup contais all 3 slots even when unused with the "empty" label (cuze I was so lazy to hide them )
+- You can save in any slot regarding of the order so for exemple you can save in slot 3 but slot 1 and slot 2 to be empty, very weird but it works :orpheus-explode: 
+- Each save slot contains the following buttons : save, delete, load
 
 ---
 
-### Here are the colors that Mouse Trail uses when turned on and you move your cursors 
+### When you choose to save your island in a slot the folowing things will happen:
 
-1. Light Color: `#ffdf80`  
-2. Medium Light `#ffd060` 
-3. Low Light `#e8a020` 
-4. Darker `#c47010`
+- The game transforms your island into a load code (just like the island save code from the file menu)
+- The minimap saves and loads as a thumbnail in the menu for showing how the  island will look (kinda)
+- Data is stored in localStorage ready for the next visit on the website :D
 
-- you can get really creative changing this values to anything :)
 ---
-- The option svaes up so the game will remember you haved turned on next time you load the page 
-- Also it can be verry small if the Scale option is not configured corectlly so be sure to configure the scale properlly before turning this option on :3
-- In my opinion it looks the best when the cursor is on the cross form :orpheus-explode: 
----
-What do you think?
+
+That is all about the save slots, what do you think about this ? :D
