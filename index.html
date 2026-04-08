@@ -854,7 +854,6 @@ function tryStartBuilding() {
         </div>
     </div>
 </div>
-
 <div id="mountain-biome-overlay" onclick="if(event.target===this)closeMountainBiomePopup()">
     <div id="mountain-biome-wrapper">
         <button id="mountain-biome-close-btn" onclick="closeMountainBiomePopup()">&#10005</button>
@@ -890,7 +889,6 @@ function tryStartBuilding() {
         </div>
     </div>
 </div>
-
 <div id="graphics-settings-overlay" onclick="if(event.target===this)closeGraphicsSettings()">
     <div id="graphics-settings-wrapper">
         <button id="graphics-settings-close-btn" onclick="closeGraphicsSettings()">&#10005;</button>
@@ -911,17 +909,21 @@ function tryStartBuilding() {
                         <span class="px-switch-thumb"></span>
                     </button>
                 </div>
-
                 <div class="visual-option-row">
                     <span class="visual-option-label"><img src="./Assets/Icons/rainrr.png" style="width:14px;height:14px;image-rendering:pixelated;vertical-align:middle;margin-right:5px;">Clouds</span>
                     <button class="px-switch" id="sw-clouds" onclick="toggleVisualOption('clouds', this)">
                         <span class="px-switch-thumb"></span>
                     </button>
                 </div>
-
                 <div class="visual-option-row">
                     <span class="visual-option-label"><img src="./Assets/Blocks/dirt.png" style="width:14px;height:14px;image-rendering:pixelated;vertical-align:middle;margin-right:5px;">Block Particles</span>
                     <button class="px-switch on" id="sw-block-particles" onclick="toggleBlockParticles(this)">
+                        <span class="px-switch-thumb"></span>
+                    </button>
+                </div>
+                <div class="visual-option-row">
+                    <span class="visual-option-label"><img src="./Assets/Blocks/air.png" style="width:14px;height:14px;image-rendering:pixelated;vertical-align:middle;margin-right:5px;">Show Air Blocks</span>
+                    <button class="px-switch" id="sw-show-air" onclick="toggleVisualOption('showAir', this)">
                         <span class="px-switch-thumb"></span>
                     </button>
                 </div>
@@ -933,7 +935,6 @@ function tryStartBuilding() {
         </div>
     </div>
 </div>
-
 <div id="photo-filters-overlay" onclick="if(event.target===this)closePhotoFilters()">
     <div id="photo-filters-wrapper">
         <button id="photo-filters-close-btn" onclick="closePhotoFilters()">&#10005;</button>
@@ -969,35 +970,30 @@ function tryStartBuilding() {
         </div>
     </div>
 </div>
-
 <div id="pointer-settings-overlay" onclick="if(event.target===this)closePointerSettings()">
     <div id="pointer-settings-wrapper">
         <button id="pointer-settings-close-btn" onclick="closePointerSettings()">&#10005;</button>
         <div id="pointer-settings-popup" class="pixel-corners">
             <h2><img src="./Assets/Cursors/pointer.png" style="width:26px;height:26px;image-rendering:pixelated;vertical-align:middle;margin-right:6px;">POINTER SETTINGS</h2>
             <div id="pointer-settings-body">
-
                 <div class="visual-option-row">
                     <span class="visual-option-label"><img src="./Assets/Cursors/pointer.png" style="width:14px;height:14px;image-rendering:pixelated;vertical-align:middle;margin-right:5px;">Custom Cursors</span>
                     <button class="px-switch" id="sw-custom-cursor" onclick="toggleCustomCursor(this)">
                         <span class="px-switch-thumb"></span>
                     </button>
                 </div>
-
                 <div class="visual-option-row">
                     <span class="visual-option-label"><img src="./Assets/Blocks/dirt.png" style="width:14px;height:14px;image-rendering:pixelated;vertical-align:middle;margin-right:5px;">Block Tooltips</span>
                     <button class="px-switch on" id="sw-block-tooltips" onclick="toggleBlockTooltips(this)">
                         <span class="px-switch-thumb"></span>
                     </button>
                 </div>
-
                 <div class="visual-option-row">
                     <span class="visual-option-label">✦ Cursor Trail</span>
                     <button class="px-switch" id="sw-cursor-trail" onclick="toggleCursorTrail(this)">
                         <span class="px-switch-thumb"></span>
                     </button>
                 </div>
-
                 <div style="display:flex;justify-content:flex-end;margin-top:16px;">
                     <button class="btn-ok" onclick="closePointerSettings()">OK</button>
                 </div>
@@ -1005,8 +1001,6 @@ function tryStartBuilding() {
         </div>
     </div>
 </div>
-
-
 <div id="gui-settings-overlay" onclick="if(event.target===this)closeGUISettings()">
     <div id="gui-settings-wrapper">
         <button id="gui-settings-close-btn" onclick="closeGUISettings()">&#10005;</button>
@@ -1050,7 +1044,6 @@ function tryStartBuilding() {
         </div>
     </div>
 </div>
-
 <div id="about-popup-overlay" onclick="if(event.target===this)closeAboutPopup()">
     <div id="about-popup-wrapper">
         <button id="about-close-btn" onclick="closeAboutPopup()">&#10005;</button>
@@ -1072,7 +1065,6 @@ function tryStartBuilding() {
         </div>
     </div>
 </div>
-
     <script src="game.js" defer></script>
 <script>
 window.addEventListener('load', function() {
@@ -1106,7 +1098,6 @@ window.addEventListener('load', function() {
         </div>
     </div>
 </div>
-
 <div id="community-overlay" onclick="if(event.target===this)closeCommunityPopup()">
     <div id="community-wrapper" onclick="event.stopPropagation()">
         <button id="community-close-btn" onclick="closeCommunityPopup()">&#10005;</button>
@@ -1120,18 +1111,15 @@ window.addEventListener('load', function() {
                 </div>
                 <button id="cm-auth-btn" onclick="cmLogin()"><img src="./Assets/Icons/google.png" style="width:14px;height:14px;image-rendering:pixelated;vertical-align:middle;margin-right:6px;">LOGIN WITH GOOGLE</button>
             </div>
-
             <div id="cm-tabs">
                 <button id="cm-tab-browse-btn" class="cm-tab cm-tab-active" onclick="cmSwitchTab('browse')">BROWSE</button>
                 <button id="cm-tab-upload-btn" class="cm-tab" onclick="cmSwitchTab('upload')">UPLOAD</button>
             </div>
-
             <div id="cm-tab-browse" class="cm-tab-content">
                 <div id="cm-maps-list">
                     <div class="cm-loading">LOADING...</div>
                 </div>
             </div>
-
             <div id="cm-tab-upload" class="cm-tab-content" style="display:none;">
                 <div class="popup-section-title">MAP NAME:</div>
                 <input id="cm-map-name" type="text" maxlength="40" placeholder="ex: My cool island...">
@@ -1581,6 +1569,7 @@ window.closeNotFound = function() {
     }
 };
 </script>
+
 <div id="save-slots-overlay" onclick="if(event.target===this)closeSaveSlotsPopup()">
     <div id="save-slots-wrapper">
         <button id="save-slots-close-btn" onclick="closeSaveSlotsPopup()">&#10005;</button>
@@ -1591,7 +1580,7 @@ window.closeNotFound = function() {
                 <div class="save-slot-card" id="save-slot-0">
                     <div class="save-slot-thumb-wrap">
                         <canvas class="save-slot-thumb" id="save-slot-thumb-0" width="120" height="80"></canvas>
-                        <div class="save-slot-empty-label" id="save-slot-empty-0">EMPTY</div>
+                        <div class="save-slot-empty-label" id="save-slot-empty-0">EMPTY SLOT</div>
                     </div>
                     <div class="save-slot-label">SLOT 1</div>
                     <div class="save-slot-meta" id="save-slot-meta-0">—</div>
@@ -1604,7 +1593,7 @@ window.closeNotFound = function() {
                 <div class="save-slot-card" id="save-slot-1">
                     <div class="save-slot-thumb-wrap">
                         <canvas class="save-slot-thumb" id="save-slot-thumb-1" width="120" height="80"></canvas>
-                        <div class="save-slot-empty-label" id="save-slot-empty-1">EMPTY</div>
+                        <div class="save-slot-empty-label" id="save-slot-empty-1">EMPTY SLOT</div>
                     </div>
                     <div class="save-slot-label">SLOT 2</div>
                     <div class="save-slot-meta" id="save-slot-meta-1">—</div>
@@ -1617,7 +1606,7 @@ window.closeNotFound = function() {
                 <div class="save-slot-card" id="save-slot-2">
                     <div class="save-slot-thumb-wrap">
                         <canvas class="save-slot-thumb" id="save-slot-thumb-2" width="120" height="80"></canvas>
-                        <div class="save-slot-empty-label" id="save-slot-empty-2">EMPTY</div>
+                        <div class="save-slot-empty-label" id="save-slot-empty-2">EMPTY SLOT</div>
                     </div>
                     <div class="save-slot-label">SLOT 3</div>
                     <div class="save-slot-meta" id="save-slot-meta-2">—</div>

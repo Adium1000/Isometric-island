@@ -617,6 +617,36 @@ That is all about the save slots, what do you think about this ? :D
 ![devlog54](<GithubPreview/Devlogs (Flavortown)/devlog54.png>)
 
 ---
+
+# Devlog 55
+Inventory/Hotbar items sort
+- this feauture helps with the item sort on each page of the hotbar
+- In order to sort an item you need to drag the item with the cursor, until you see a yellow line (#FFDF80) then drag your item until you see the line in front of the item you want to place
+- I consider it preatty useless but maybe someone will apreciate it
+---
+- you can really get creative with the hotbar arrangement but for me is gtg anyway
+- a big down fall is that you cant move items for the page 2 or 1 on the next page or vice versa so yea blame me c:
+---
+What do you guys think?
+
+![devlog55](<GithubPreview/Devlogs (Flavortown)/d55.png>)
+
+---
+# Devlog 56
+
+- added show air block, this will now show a outlined black block that is considered "air"
+- this option can be turned on from the graphics settings when the user wants :menhera-point:
+---
+- this actually shows the grid when the user does do a more gridy island or double islands, this makes the things more easely for the user
+- and when erased the air block this will make some pop effects :3p:
+- this is a simple option yet an usefull one 
+---
+- that is all what do you think?  :drgn_hidden: 
+
+![devlog56](<GithubPreview/Devlogs (Flavortown)/devlog56.png>)
+
+
+---
 End 
 
 ![yayyy](https://emoji.slack-edge.com/T09V59WQY1E/yayayayayay/203666b7424ee7a7.gif)

@@ -600,6 +600,11 @@ let gridOverlayEnabled = false;
             if (sw) sw.classList.add('on');
             applyGridOverlay(true);
         }
+        if (saved.showAir === true) {
+            const sw = document.getElementById('sw-show-air');
+            if (sw) sw.classList.add('on');
+            setTimeout(() => applyShowAir(true), 500);
+        }
         const saved2 = JSON.parse(localStorage.getItem('visualOptions') || '{}');
         const scale = saved2.scale || Math.round(window.devicePixelRatio * 100);
         const clamped = Math.max(30, Math.min(150, Math.round(scale / 10) * 10));
@@ -609,7 +614,6 @@ let gridOverlayEnabled = false;
         if (sl) sl.textContent = clamped + '%';
     });
 })();
-
 function toggleFullscreen(btn) {
     if (!document.fullscreenElement) {
         document.documentElement.requestFullscreen().then(() => {
@@ -655,11 +659,36 @@ function toggleVisualOption(option, btn) {
     } else if (option === 'gridOverlay') {
         gridOverlayEnabled = isOn;
         applyGridOverlay(isOn);
+    } else if (option === 'showAir') {
+        applyShowAir(isOn);
     }
 
     const saved = JSON.parse(localStorage.getItem('visualOptions') || '{}');
     saved[option] = isOn;
     localStorage.setItem('visualOptions', JSON.stringify(saved));
+}
+
+let showAirEnabled = false;
+
+function applyShowAir(isOn) {
+    showAirEnabled = isOn;
+    document.querySelectorAll('#map .tile').forEach(t => {
+        if (isOn) {
+            if (t.style.opacity === '0') {
+                t.style.opacity = '1';
+                t._airSrcBackup = t.src;
+                t.src = './Assets/Blocks/air.png';
+                t._isAirVisible = true;
+            }
+        } else {
+            if (t._isAirVisible) {
+                t.style.opacity = '0';
+                if (t._airSrcBackup) t.src = t._airSrcBackup;
+                t._isAirVisible = false;
+                delete t._airSrcBackup;
+            }
+        }
+    });
 }
 
 function stepZoom(context, delta) {
@@ -1651,11 +1680,28 @@ function handleInteraction(tile, x, y, z) {
             mapContainer.querySelectorAll(`[data-terraform-group="${tfId}"]`).forEach(t => {
                 spawnDestroyParticles(t);
                 if (parseInt(t.getAttribute('data-z')) > 0) t.remove();
-                else { t.style.opacity = '0'; t.removeAttribute('data-terraform-group'); }
+                else {
+                    t.removeAttribute('data-terraform-group');
+                    if (showAirEnabled) {
+                        t._airSrcBackup = t.src;
+                        t.src = './Assets/Blocks/air.png';
+                        t.style.opacity = '1';
+                        t._isAirVisible = true;
+                    } else {
+                        t.style.opacity = '0';
+                    }
+                }
             });
         } else if (!objId) {
             spawnDestroyParticles(tile);
-            tile.style.opacity = '0';
+            if (showAirEnabled) {
+                tile._airSrcBackup = tile.src;
+                tile.src = './Assets/Blocks/air.png';
+                tile.style.opacity = '1';
+                tile._isAirVisible = true;
+            } else {
+                tile.style.opacity = '0';
+            }
         }
     } else if (['tree', 'snowed_tree', 'melon', 'Hay', 'snowman', 'pumpkin'].includes(selectedBlockType)) {
         if(tile.style.opacity === "0" || isPartOfObject) return;
@@ -1686,6 +1732,10 @@ function handleInteraction(tile, x, y, z) {
         } else { createTile(x, y, baseZ, selectedBlockType).setAttribute('data-obj-id', currentId); }
     } else {
         if(isPartOfObject) return;
+        if (tile._isAirVisible) {
+            tile._isAirVisible = false;
+            delete tile._airSrcBackup;
+        }
         tile.src = `./Assets/Blocks/${selectedBlockType}.png`;
         tile.style.opacity = "1";
         tile.setAttribute('data-color', getBlockColor(selectedBlockType));
@@ -1697,7 +1747,6 @@ function handleInteraction(tile, x, y, z) {
     soundToPlay.currentTime = 0; soundToPlay.play().catch(e => {});
     if (!isDrawing) { saveState(); }
 }
-
 function createFallingLeaf(startX, startY, objId) {
     if (!mapContainer.querySelector(`[data-obj-id="${objId}"]`)) return;
     const leaf = document.createElement("img");
@@ -3887,7 +3936,7 @@ function toggleBlockTooltips(btn) {
             if (p.life <= 0) { particles.splice(i, 1); continue; }
             p.x += p.vx;
             p.y += p.vy;
-            p.vy += 0.04; 
+            p.vy += 0.04;
             ctx.globalAlpha = p.life * p.life;
             ctx.fillStyle = p.color;
             const s = p.size * p.life;
@@ -3900,6 +3949,7 @@ function toggleBlockTooltips(btn) {
             animId = null;
         }
     }
+
     let spawnThrottle = 0;
     document.addEventListener('mousemove', function(e) {
         if (!window._cursorTrailEnabled) return;
@@ -3911,7 +3961,7 @@ function toggleBlockTooltips(btn) {
         mouseX = e.clientX;
         mouseY = e.clientY;
         spawnThrottle++;
-        if (spawnThrottle % 2 !== 0) return;
+        if (spawnThrottle % 2 !== 0) return; 
         spawnParticle(mouseX, mouseY);
         if (!animId) animId = requestAnimationFrame(loop);
     }, { passive: true });
@@ -3924,7 +3974,6 @@ function toggleCursorTrail(btn) {
     localStorage.setItem('cursorTrail', window._cursorTrailEnabled ? 'on' : 'off');
     hotbarSound.currentTime = 0; hotbarSound.play().catch(e => {});
 }
-
 const BLOCK_NAMES_RO = {
     'dirt':         'Grass',
     'dirt2':        'Dirt',
@@ -4066,6 +4115,8 @@ function openGraphicsSettings() {
     if (swL) swL.classList.toggle('on', saved.leaves !== false);
     if (swC) swC.classList.toggle('on', !!saved.clouds);
     if (swP) swP.classList.toggle('on', window._blockParticlesEnabled !== false);
+    const swA = document.getElementById('sw-show-air');
+    if (swA) swA.classList.toggle('on', !!saved.showAir);
     overlay.style.display = 'flex';
     requestAnimationFrame(() => overlay.classList.add('popup-visible'));
     hotbarSound.currentTime = 0; hotbarSound.play().catch(e => {});
@@ -4808,7 +4859,7 @@ function handleInteractionBrushed(tile, x, y, z) {
                 info.appendChild(descDiv);
                 const badge = document.createElement('div');
                 badge.className = 'ach-badge ' + (ach.unlocked ? 'done' : 'pending');
-                badge.textContent = ach.unlocked ? 'UNLOCKED' : '?';
+                badge.textContent = ach.unlocked ? 'OK' : '?';
 
                 row.appendChild(iconWrap);
                 row.appendChild(info);
@@ -4893,18 +4944,21 @@ function openSaveSlotsPopup() {
     requestAnimationFrame(() => requestAnimationFrame(() => overlay.classList.add('popup-visible')));
     renderSaveSlots();
 }
+
 function closeSaveSlotsPopup() {
     const overlay = document.getElementById('save-slots-overlay');
     if (!overlay) return;
     overlay.classList.remove('popup-visible');
     setTimeout(() => { overlay.style.display = 'none'; }, 270);
 }
+
 function _getSlotData(idx) {
     try {
         const raw = localStorage.getItem(SAVE_SLOT_KEY + idx);
         return raw ? JSON.parse(raw) : null;
     } catch(e) { return null; }
 }
+
 function _setSlotData(idx, data) {
     try { localStorage.setItem(SAVE_SLOT_KEY + idx, JSON.stringify(data)); } catch(e) {}
 }
@@ -4912,6 +4966,7 @@ function _setSlotData(idx, data) {
 function _deleteSlotData(idx) {
     try { localStorage.removeItem(SAVE_SLOT_KEY + idx); } catch(e) {}
 }
+
 function _renderSlotThumb(canvas, thumbData) {
     const ctx = canvas.getContext('2d');
     ctx.clearRect(0, 0, canvas.width, canvas.height);
@@ -4926,6 +4981,7 @@ function _captureMinimap() {
     if (!mm) return null;
     try { return mm.toDataURL('image/png'); } catch(e) { return null; }
 }
+
 function renderSaveSlots() {
     for (let i = 0; i < SAVE_SLOT_COUNT; i++) {
         const data = _getSlotData(i);
@@ -4979,280 +5035,3 @@ function deleteSlot(idx) {
     renderSaveSlots();
     showToast('Slot ' + (idx + 1) + ' deleted!');
 }
-(function() {
-    const HOTBAR_ORDER_KEY = 'islandHotbarOrder';
-
-    function _getSlots(page) {
-        const pageClass = 'page-' + page;
-        return Array.from(document.querySelectorAll('#dock .slot.' + pageClass))
-            .filter(s => s.id !== 'btn-next-page' && s.id !== 'btn-prev-page');
-    }
-
-    function _saveOrder() {
-        try {
-            const order = { p1: [], p2: [] };
-            _getSlots(1).forEach(s => {
-                order.p1.push({
-                    type: s.dataset.type || s.getAttribute('onclick')?.match(/selectBlock\('([^']+)'/)?.[1] || '',
-                    outerHTML: s.outerHTML
-                });
-            });
-            _getSlots(2).forEach(s => {
-                order.p2.push({
-                    type: s.dataset.type || s.getAttribute('onclick')?.match(/selectBlock\('([^']+)'/)?.[1] || '',
-                    outerHTML: s.outerHTML
-                });
-            });
-            localStorage.setItem(HOTBAR_ORDER_KEY, JSON.stringify(order));
-        } catch(e) {}
-    }
-
-    function _loadOrder() {
-        try {
-            const raw = localStorage.getItem(HOTBAR_ORDER_KEY);
-            return raw ? JSON.parse(raw) : null;
-        } catch(e) { return null; }
-    }
-
-    function _applyOrder(savedOrder) {
-        if (!savedOrder) return;
-        ['p1', 'p2'].forEach((key, i) => {
-            const page = i + 1;
-            const slots = _getSlots(page);
-            const saved = savedOrder[key];
-            if (!saved || saved.length !== slots.length) return;
-
-            const dock = document.getElementById('dock');
-            const nextBtn = document.getElementById('btn-next-page');
-            const prevBtn = document.getElementById('btn-prev-page');
-            const byType = {};
-            slots.forEach(s => {
-                const type = s.dataset.type || s.getAttribute('onclick')?.match(/selectBlock\('([^']+)'/)?.[1] || '';
-                byType[type] = s;
-            });
-            slots.forEach(s => s.remove());
-            saved.forEach(item => {
-                const el = byType[item.type];
-                if (!el) return;
-                if (page === 1 && nextBtn) {
-                    dock.insertBefore(el, nextBtn);
-                } else if (page === 2 && prevBtn) {
-                    if (prevBtn.nextSibling) dock.insertBefore(el, prevBtn.nextSibling);
-                    else dock.appendChild(el);
-                } else {
-                    dock.appendChild(el);
-                }
-            });
-        });
-    }
-
-    let _dragSrc = null;
-    let _dragGhost = null;
-    let _dropIndicator = null;
-    let _dropTarget = null;
-    function _createDropIndicator() {
-        if (_dropIndicator) return;
-        const el = document.createElement('div');
-        el.id = 'hotbar-drop-indicator';
-        el.style.cssText = 'position:absolute;width:3px;height:70%;background:var(--gui-accent,#ffdf80);border-radius:2px;pointer-events:none;z-index:999;display:none;top:50%;transform:translateY(-50%);box-shadow:0 0 6px var(--gui-accent,#ffdf80);';
-        document.getElementById('dock').appendChild(el);
-        _dropIndicator = el;
-    }
-
-    function _showIndicator(refSlot, before) {
-        if (!_dropIndicator) return;
-        const dock = document.getElementById('dock');
-        const dockRect = dock.getBoundingClientRect();
-        const slotRect = refSlot.getBoundingClientRect();
-        const x = before
-            ? (slotRect.left - dockRect.left - 3)
-            : (slotRect.right - dockRect.left);
-        _dropIndicator.style.left = x + 'px';
-        _dropIndicator.style.display = 'block';
-    }
-
-    function _hideIndicator() {
-        if (_dropIndicator) _dropIndicator.style.display = 'none';
-    }
-    function _initSlotDrag(slot) {
-        if (slot._dndInited) return;
-        slot._dndInited = true;
-        let _touchLongPress = null;
-        let _touchDragging = false;
-        let _touchStartX = 0, _touchStartY = 0;
-        slot.addEventListener('mousedown', (e) => {
-            if (e.button !== 0) return;
-            if (e.altKey || e.ctrlKey || e.metaKey) return;
-            let _moved = false;
-            const startX = e.clientX, startY = e.clientY;
-
-            const onMove = (mv) => {
-                const dx = mv.clientX - startX, dy = mv.clientY - startY;
-                if (!_moved && Math.sqrt(dx*dx + dy*dy) > 6) {
-                    _moved = true;
-                    _startDrag(slot, mv.clientX, mv.clientY);
-                }
-                if (_moved && _dragSrc) {
-                    _updateDrag(mv.clientX, mv.clientY);
-                    e.preventDefault();
-                }
-            };
-            const onUp = () => {
-                window.removeEventListener('mousemove', onMove);
-                window.removeEventListener('mouseup', onUp);
-                if (_moved) _endDrag();
-            };
-            window.addEventListener('mousemove', onMove);
-            window.addEventListener('mouseup', onUp);
-        });
-        slot.addEventListener('touchstart', (ev) => {
-            _touchStartX = ev.touches[0].clientX;
-            _touchStartY = ev.touches[0].clientY;
-            _touchDragging = false;
-            _touchLongPress = setTimeout(() => {
-                _touchDragging = true;
-                _startDrag(slot, _touchStartX, _touchStartY);
-                if (navigator.vibrate) navigator.vibrate(30);
-            }, 350);
-        }, { passive: true });
-        slot.addEventListener('touchmove', (ev) => {
-            const t = ev.touches[0];
-            const dx = t.clientX - _touchStartX, dy = t.clientY - _touchStartY;
-            if (!_touchDragging && Math.sqrt(dx*dx + dy*dy) > 8) {
-                clearTimeout(_touchLongPress);
-            }
-            if (_touchDragging && _dragSrc) {
-                ev.preventDefault();
-                _updateDrag(t.clientX, t.clientY);
-            }
-        }, { passive: false });
-        slot.addEventListener('touchend', () => {
-            clearTimeout(_touchLongPress);
-            if (_touchDragging) _endDrag();
-            _touchDragging = false;
-        });
-        slot.addEventListener('touchcancel', () => {
-            clearTimeout(_touchLongPress);
-            if (_touchDragging) _endDrag();
-            _touchDragging = false;
-        });
-    }
-
-    function _startDrag(slot, clientX, clientY) {
-        _dragSrc = slot;
-        const ghost = document.createElement('div');
-        ghost.id = 'hotbar-drag-ghost';
-        const img = slot.querySelector('img');
-        if (img) {
-            const clone = img.cloneNode(true);
-            clone.style.cssText = 'width:40px;height:40px;image-rendering:pixelated;display:block;';
-            ghost.appendChild(clone);
-        }
-        ghost.style.cssText = `
-            position:fixed;
-            pointer-events:none;
-            z-index:99999;
-            background:rgba(0,0,0,0.45);
-            border:2px solid var(--gui-accent,#ffdf80);
-            border-radius:4px;
-            padding:4px;
-            display:flex;align-items:center;justify-content:center;
-            box-shadow:0 4px 16px rgba(0,0,0,0.5);
-            width:48px;height:48px;
-            transform:translate(-50%,-50%) scale(1.15);
-            transition:transform 0.1s;
-        `;
-        ghost.style.left = clientX + 'px';
-        ghost.style.top = clientY + 'px';
-        document.body.appendChild(ghost);
-        _dragGhost = ghost;
-        slot.style.opacity = '0.35';
-        _createDropIndicator();
-    }
-    function _updateDrag(clientX, clientY) {
-        if (_dragGhost) {
-            _dragGhost.style.left = clientX + 'px';
-            _dragGhost.style.top = clientY + 'px';
-        }
-        const page = _dragSrc.classList.contains('page-1') ? 1 : 2;
-        const slots = _getSlots(page);
-        const dockRect = document.getElementById('dock').getBoundingClientRect();
-        if (clientY < dockRect.top - 60 || clientY > dockRect.bottom + 60) {
-            _hideIndicator();
-            return;
-        }
-        let best = null, bestBefore = true, bestDist = Infinity;
-        slots.forEach(s => {
-            if (s === _dragSrc) return;
-            const r = s.getBoundingClientRect();
-            const midX = (r.left + r.right) / 2;
-            const dist = Math.abs(clientX - midX);
-            if (dist < bestDist) {
-                bestDist = dist;
-                best = s;
-                bestBefore = clientX < midX;
-            }
-        });
-        if (best) {
-            _dropTarget = { slot: best, before: bestBefore };
-            _showIndicator(best, bestBefore);
-        } else {
-            _dropTarget = null;
-            _hideIndicator();
-        }
-    }
-    function _endDrag() {
-        if (!_dragSrc) return;
-        if (_dragGhost) { _dragGhost.remove(); _dragGhost = null; }
-        _hideIndicator();
-        _dragSrc.style.opacity = '';
-        const target = _dropTarget;
-        _dropTarget = null;
-        if (target && target.slot && target.slot !== _dragSrc) {
-            const dock = document.getElementById('dock');
-            if (target.before) {
-                target.slot.parentNode.insertBefore(_dragSrc, target.slot);
-            } else {
-                const after = target.slot.nextSibling;
-                if (after) target.slot.parentNode.insertBefore(_dragSrc, after);
-                else dock.appendChild(_dragSrc);
-            }
-            const page = _dragSrc.classList.contains('page-1') ? 1 : 2;
-            if (page === 1) {
-                const nextBtn = document.getElementById('btn-next-page');
-                if (nextBtn) {
-                    const p1slots = _getSlots(1);
-                    const lastP1 = p1slots[p1slots.length - 1];
-                    if (lastP1 && lastP1.nextSibling !== nextBtn) {
-                        dock.insertBefore(nextBtn, lastP1.nextSibling);
-                    }
-                }
-            }
-            _saveOrder();
-            hotbarSound.currentTime = 0; hotbarSound.play().catch(e => {});
-            const sel = currentPage === 1 ? lastSelectedSlotP1 : lastSelectedSlotP2;
-            if (sel && document.contains(sel)) {
-                highlight.style.left = sel.offsetLeft + 'px';
-                highlight.style.top = sel.offsetTop + 'px';
-            }
-        }
-        _dragSrc = null;
-    }
-    function initHotbarDnD() {
-        const saved = _loadOrder();
-        if (saved) _applyOrder(saved);
-        document.querySelectorAll('#dock .slot').forEach(s => {
-            if (s.id === 'btn-next-page' || s.id === 'btn-prev-page') return;
-            _initSlotDrag(s);
-        });
-    }
-    if (document.readyState === 'loading') {
-        document.addEventListener('DOMContentLoaded', initHotbarDnD);
-    } else {
-        initHotbarDnD();
-    }
-    window.resetHotbarOrder = function() {
-        try { localStorage.removeItem(HOTBAR_ORDER_KEY); } catch(e) {}
-        location.reload();
-    };
-})();
