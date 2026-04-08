@@ -4195,7 +4195,6 @@ body:not(.presentation-mode) #block-name-display {
     letter-spacing: 0.5px;
     text-shadow: 1px 1px 0 #3b2007;
 }
-
 #save-slots-overlay {
     display: none;
     position: fixed;

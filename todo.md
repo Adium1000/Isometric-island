@@ -129,24 +129,13 @@ Release
 
 Release Final
 
-# Devlog 54
-
-Added save slots
-
-
-- Now you can save up to 3 island on the in-game project storage using localStorage
-- The popup contais all 3 slots even when unused with the "empty" label (cuze I was so lazy to hide them )
-- You can save in any slot regarding of the order so for exemple you can save in slot 3 but slot 1 and slot 2 to be empty, very weird but it works :orpheus-explode: 
-- Each save slot contains the following buttons : save, delete, load
-
+# Devlog 55
+Inventory/Hotbar items sort
+- this feauture helps with the item sort on each page of the hotbar
+- In order to sort an item you need to drag the item with the cursor, until you see a yellow line (#FFDF80) then drag your item until you see the line in front of the item you want to place
+- I consider it preatty useless but maybe someone will apreciate it
 ---
-
-### When you choose to save your island in a slot the folowing things will happen:
-
-- The game transforms your island into a load code (just like the island save code from the file menu)
-- The minimap saves and loads as a thumbnail in the menu for showing how the  island will look (kinda)
-- Data is stored in localStorage ready for the next visit on the website :D
-
+- you can really get creative with the hotbar arrangement but for me is gtg anyway
+- a big down fall is that you cant move items for the page 2 or 1 on the next page or vice versa so yea blame me c:
 ---
-
-That is all about the save slots, what do you think about this ? :D
+What do you guys think?
