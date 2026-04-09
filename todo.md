@@ -129,3 +129,10 @@ Release
 
 Release Final
 
+# Devlog 59
+- Delete Account System!
+You don't play my game anymore? (you won't do that did you) Now you can delete your shared islands and account linked in my firebase!
+- When you delete your account you will not be able to post maps anymore unless (ofc) you log again to your google account witch will store your data again (ofc)
+---
+Why I added that?
+I was forced by GDPR, they said that they will find me and they will give me a fine if I don t implement that :3 so yea I have to respect the user (you) 

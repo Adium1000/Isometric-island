@@ -1773,21 +1773,19 @@ window.cmLoadMapData = (dataStr) => {
 window.cmDeleteAccount = async () => {
     if (!currentUser) return;
     const name = currentUser.displayName || currentUser.email;
-    if (!confirm(`Ești sigur că vrei să ștergi contul "${name}"?\nAceastă acțiune va șterge toate mapurile tale și nu poate fi anulată!`)) return;
+    if (!confirm(`Are you sure you delete the account : "${name}"?\n This action will delete all data colected and it is not reversible`)) return;
     const status = document.getElementById('cm-save-status');
     const uid = currentUser.uid;
-    if (status) { status.style.color = '#aaa'; status.textContent = 'Se șterge contul...'; }
+    if (status) { status.style.color = '#aaa'; status.textContent = 'One moment we are deleting your account from database...'; }
     try {
-        // Sterge toate mapurile utilizatorului
         const q = query(collection(db, 'community_maps'), where('authorUID', '==', uid));
         const snap = await getDocs(q);
         await Promise.all(snap.docs.map(d => deleteDoc(doc(db, 'community_maps', d.id))));
-        // Sterge contul (reautentificare inline)
         const user = auth.currentUser;
         await reauthenticateWithPopup(user, provider);
         await deleteUser(user);
         closeCommunityPopup();
-        showToast('Cont șters cu succes!');
+        showToast('Succesfully deleted your account from the server!');
     } catch(e) {
         console.error(e);
         if (e.code === 'auth/popup-closed-by-user') return;
