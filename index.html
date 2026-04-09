@@ -270,7 +270,7 @@
     <div id="agreement-wrapper">
         <div id="agreement-popup" class="pixel-corners">
             <div id="agreement-header">
-                <h2>Before You Play:</h2>
+                <h2>Before You Play</h2>
                 <div class="sub" style="margin-top:10px;">Please read and accept our policies to continue</div>
             </div>
             <hr class="wdivider">
@@ -429,7 +429,6 @@
         cursor: pointer;
         accent-color: #ffdf80;
     }
-    /* pixel-art custom checkbox */
     .agreement-check-row input[type="checkbox"] {
         appearance: none;
         -webkit-appearance: none;
@@ -458,7 +457,6 @@
         clip-path: polygon(0% 50%, 30% 80%, 100% 10%, 80% 0%, 30% 55%, 15% 35%);
         image-rendering: pixelated;
     }
-    /* pixelart scrollbar for agreement content */
     .agreement-content::-webkit-scrollbar { width: 8px; height: 8px; }
     .agreement-content::-webkit-scrollbar-track { background: var(--gui-bg-dark, #1a1208); border: 1px solid var(--gui-border, #6b4c2a); }
     .agreement-content::-webkit-scrollbar-thumb { background: var(--gui-bg, #2a1d0e); border: 1px solid var(--gui-accent, #ffdf80); image-rendering: pixelated; }
@@ -538,6 +536,7 @@
         try { return localStorage.getItem(AGREEMENT_KEY) === '1'; } catch(_) { return false; }
     }
 </script>
+
 <div id="welcome-overlay">
     <div id="welcome-wrapper">
         <button id="welcome-close-btn" onclick="handleWelcomeClose()">&#10005;</button>
@@ -907,6 +906,7 @@ function tryStartBuilding() {
                     </div>
 
                     <div style="display:flex;justify-content:flex-end;gap:8px;margin-top:auto;padding-top:10px;">
+                        <button class="btn-info-about" id="btn-menu-settings" onclick="openSettingsMenuPopup()" title="Menu"><img src="./Assets/Icons/todorm.png" style="width:14px;height:14px;image-rendering:pixelated;vertical-align:middle;"></button>
                         <button class="btn-info-about" onclick="openAboutPopup()">i</button>
                         <button class="btn-ok" onclick="closeSettingsPopup()">OK</button>
                     </div>
@@ -1321,7 +1321,7 @@ function tryStartBuilding() {
         <div id="about-popup" class="pixel-corners">
             <img src="./Assets/Icons/icon.png" id="about-icon">
             <h2 id="about-title">Isometric Island</h2>
-            <div id="about-version">Version: 233.26</div>
+            <div id="about-version">Version: 94.26</div>
             <div id="about-divider"></div>
             <div id="about-author">By <span style="color:var(--accent,#ffdf80);">Adium1000</span></div>
             <div id="about-links">
@@ -1336,6 +1336,187 @@ function tryStartBuilding() {
         </div>
     </div>
 </div>
+<div id="settings-menu-overlay" onclick="if(event.target===this)closeSettingsMenuPopup()">
+    <div id="settings-menu-wrapper">
+        <button id="settings-menu-close-btn" onclick="closeSettingsMenuPopup()">&#10005;</button>
+        <div id="settings-menu-popup" class="pixel-corners">
+            <h2><img src="./Assets/Icons/todorm.png" style="width:26px;height:26px;image-rendering:pixelated;vertical-align:middle;margin-right:8px;">Files and Legal Docs</h2>
+            <hr class="popup-divider">
+            <div id="settings-menu-list">
+                <button class="settings-menu-item" onclick="closeSettingsMenuPopup();openLicensesView()">
+                    <img src="./Assets/Icons/book.png" style="width:16px;height:16px;image-rendering:pixelated;vertical-align:middle;margin-right:10px;">
+                    Legal documents
+                </button>
+                <button class="settings-menu-item" onclick="closeSettingsMenuPopup();openTutorialFromMenu()">
+                    <img src="./Assets/Icons/book.png" style="width:16px;height:16px;image-rendering:pixelated;vertical-align:middle;margin-right:10px;">
+                    Tutorial
+                </button>
+            </div>
+            <div style="display:flex;justify-content:flex-end;margin-top:14px;">
+                <button class="btn-ok" onclick="closeSettingsMenuPopup()">OK</button>
+            </div>
+        </div>
+    </div>
+</div>
+<style>
+    #settings-menu-overlay {
+        display: none;
+        position: fixed;
+        inset: 0;
+        background: rgba(0,0,0,0.75);
+        z-index: 4500;
+        justify-content: center;
+        align-items: center;
+        opacity: 0;
+        transition: opacity 0.3s ease;
+    }
+    #settings-menu-overlay.popup-visible { opacity: 1; display: flex; }
+    #settings-menu-wrapper {
+        position: relative;
+        transform: scale(0.87) translateY(28px);
+        transition: transform 0.35s cubic-bezier(0.18, 0.89, 0.32, 1.28);
+    }
+    #settings-menu-overlay.popup-visible #settings-menu-wrapper { transform: scale(1.2) translateY(0); }
+    #settings-menu-close-btn {
+        position: absolute;
+        top: -18px; right: -18px;
+        width: 36px; height: 36px;
+        background: #7a2020;
+        border: 4px solid var(--gui-border, #6b4c2a);
+        box-shadow: 3px 3px 0 #3b1010;
+        color: #fff;
+        font-family: 'Press Start 2P', cursive;
+        font-size: 12px;
+        display: flex; align-items: center; justify-content: center;
+        transition: transform 0.1s, filter 0.1s;
+        z-index: 10; padding: 0; line-height: 1; cursor: pointer;
+        clip-path: polygon(0% 3px, 3px 3px, 3px 0%, calc(100% - 3px) 0%, calc(100% - 3px) 3px, 100% 3px, 100% calc(100% - 3px), calc(100% - 3px) calc(100% - 3px), calc(100% - 3px) 100%, 3px 100%, 3px calc(100% - 3px), 0% calc(100% - 3px));
+    }
+    #settings-menu-close-btn:hover { filter: brightness(1.3); transform: scale(1.1); }
+    #settings-menu-close-btn:active { transform: scale(0.9); }
+    #settings-menu-popup {
+        background: var(--gui-bg-light, #2a1d0e);
+        border: 4px solid var(--gui-border, #6b4c2a);
+        box-shadow: 6px 6px 0 var(--gui-shadow, #1a1208);
+        padding: 16px 18px 14px 18px;
+        display: flex;
+        flex-direction: column;
+        gap: 14px;
+        min-width: 240px;
+        font-family: 'Press Start 2P', cursive;
+    }
+    #settings-menu-popup h2 {
+        margin: 0;
+        color: var(--gui-text, #ffdf80);
+        font-size: 13px;
+        text-shadow: 2px 2px var(--gui-title-sh, #1a1208);
+        text-align: center;
+        letter-spacing: 1px;
+    }
+    #settings-menu-list {
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+    }
+    .settings-menu-item {
+        font-family: 'Press Start 2P', cursive;
+        font-size: 8px;
+        color: #fff;
+        background: var(--gui-border, #6b4c2a);
+        border: 3px solid var(--gui-bg, #2a1d0e) !important;
+        padding: 10px 16px;
+        cursor: pointer;
+        text-align: left;
+        letter-spacing: 1px;
+        line-height: 1.6;
+        width: 100%;
+        box-sizing: border-box;
+        transition: transform 0.1s, filter 0.1s;
+        clip-path: polygon(0% 3px, 3px 3px, 3px 0%, calc(100% - 3px) 0%, calc(100% - 3px) 3px, 100% 3px, 100% calc(100% - 3px), calc(100% - 3px) calc(100% - 3px), calc(100% - 3px) 100%, 3px 100%, 3px calc(100% - 3px), 0% calc(100% - 3px));
+    }
+    .settings-menu-item:hover { filter: brightness(1.3); }
+    .settings-menu-item:active { transform: scale(0.93); }
+</style>
+<script>
+function openSettingsMenuPopup() {
+    if (typeof hotbarSound !== 'undefined') { hotbarSound.currentTime = 0; hotbarSound.play().catch(e => {}); }
+    const ov = document.getElementById('settings-menu-overlay');
+    ov.style.display = 'flex';
+    requestAnimationFrame(() => requestAnimationFrame(() => ov.classList.add('popup-visible')));
+}
+function closeSettingsMenuPopup() {
+    const ov = document.getElementById('settings-menu-overlay');
+    ov.classList.remove('popup-visible');
+    if (typeof pclsSound !== 'undefined') { pclsSound.currentTime = 0; pclsSound.play().catch(e => {}); }
+    setTimeout(() => { ov.style.display = 'none'; }, 280);
+}
+function openLicensesView() {
+    if (typeof hotbarSound !== 'undefined') { hotbarSound.currentTime = 0; hotbarSound.play().catch(e => {}); }
+    const ov = document.getElementById('agreement-overlay');
+    const checks = document.getElementById('agreement-checks');
+    const footer = document.getElementById('agreement-footer');
+    const header = document.getElementById('agreement-header');
+    if (checks) checks.style.display = 'none';
+    if (footer) footer.style.display = 'none';
+    let okBtn = document.getElementById('licenses-ok-btn');
+    if (!okBtn) {
+        okBtn = document.createElement('div');
+        okBtn.id = 'licenses-ok-btn';
+        okBtn.style.cssText = 'display:flex;justify-content:flex-end;margin-top:12px;';
+        okBtn.innerHTML = '<button class="btn-ok" onclick="closeLicensesView()">OK</button>';
+        ov.querySelector('#agreement-popup').appendChild(okBtn);
+    } else {
+        okBtn.style.display = 'flex';
+    }
+    const h2 = header ? header.querySelector('h2') : null;
+    if (h2 && !h2.dataset.origText) { h2.dataset.origText = h2.innerHTML; h2.innerHTML = '&#128220; Licenses'; }
+    const sub = header ? header.querySelector('.sub') : null;
+    if (sub && !sub.dataset.origText) { sub.dataset.origText = sub.innerHTML; sub.innerHTML = 'Privacy Policy &amp; Terms of Service'; }
+    ov.style.display = 'flex';
+    requestAnimationFrame(() => requestAnimationFrame(() => ov.classList.add('popup-visible')));
+    if (typeof fetchAgreementDoc === 'function') fetchAgreementDoc('privacy');
+}
+function closeLicensesView() {
+    const ov = document.getElementById('agreement-overlay');
+    ov.classList.remove('popup-visible');
+    if (typeof pclsSound !== 'undefined') { pclsSound.currentTime = 0; pclsSound.play().catch(e => {}); }
+    const checks = document.getElementById('agreement-checks');
+    const footer = document.getElementById('agreement-footer');
+    const header = document.getElementById('agreement-header');
+    if (checks) checks.style.display = '';
+    if (footer) footer.style.display = '';
+    const okBtn = document.getElementById('licenses-ok-btn');
+    if (okBtn) okBtn.style.display = 'none';
+    const h2 = header ? header.querySelector('h2') : null;
+    if (h2 && h2.dataset.origText) { h2.innerHTML = h2.dataset.origText; delete h2.dataset.origText; }
+    const sub = header ? header.querySelector('.sub') : null;
+    if (sub && sub.dataset.origText) { sub.innerHTML = sub.dataset.origText; delete sub.dataset.origText; }
+    setTimeout(() => { ov.style.display = 'none'; }, 320);
+}
+function openTutorialFromMenu() {
+    if (typeof hotbarSound !== 'undefined') { hotbarSound.currentTime = 0; hotbarSound.play().catch(e => {}); }
+    if (typeof closeSettingsPopup === 'function') closeSettingsPopup();
+    const step1 = document.getElementById('welcome-step-1');
+    const step2 = document.getElementById('welcome-step-2');
+    if (step1) { step1.style.display = ''; step1.classList.remove('slide-out','slide-in'); }
+    if (step2) { step2.style.display = 'none'; step2.classList.remove('slide-out','slide-in'); }
+    const ov = document.getElementById('welcome-overlay');
+    if (ov) {
+        ov.style.zIndex = '9000';
+        ov.style.display = 'flex';
+        requestAnimationFrame(() => requestAnimationFrame(() => ov.classList.add('popup-visible')));
+    }
+    if (typeof fetchReadme === 'function') fetchReadme();
+}
+(function() {
+    var _origCloseWelcome = window.closeWelcome;
+    window.closeWelcome = function() {
+        if (_origCloseWelcome) _origCloseWelcome.apply(this, arguments);
+        var ov = document.getElementById('welcome-overlay');
+        if (ov) setTimeout(function() { ov.style.zIndex = ''; }, 400);
+    };
+})();
+</script>
     <script src="game.js" defer></script>
 <script>
 window.addEventListener('load', function() {

@@ -2680,9 +2680,7 @@ window.onload = () => {
         return;
     }
     _runInit(false);
-
     function _runInit(skipSessionRestore) {
-
     const urlParams = new URLSearchParams(window.location.search);
     const hash = window.location.hash;
     let hashIslandCode = null;
@@ -2691,7 +2689,6 @@ window.onload = () => {
             hashIslandCode = decodeURIComponent(hash.slice('#island='.length));
         } catch(e) { hashIslandCode = null; }
     }
-
     if (urlParams.has('embed')) {
         document.body.style.background = '#aad6ff';
         document.body.style.overflow = 'hidden';
@@ -2826,7 +2823,7 @@ window.onload = () => {
         fetchReadme();
     }
     _showWelcome();
-    } 
+    }
 };
 
 const REPO_RAW = 'https://raw.githubusercontent.com/Adium1000/Isometric-island/main/';

@@ -129,14 +129,3 @@ Release
 
 Release Final
 
-# Devlog 57
- 
-(you surely will enjoy this devlog :skull:)
-- Added Terms of Service :menhera-happy-wave: 
-- Added Privacy Policy  :menhera-happy-wave: 
----
-- Now in order to continue to play the game you need to accept this, else you will be blocked by the popup :ban: 
-- You have to accept Terms of Service and Privacy Policy! 
-- This docs contains esential information about the data colected by my project (not too mutch anyway :3 but you gotta read that)
----
-That is all :3 :menhera-huh: 

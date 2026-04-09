@@ -663,6 +663,23 @@ That is all :3 :menhera-huh:
 ![devlog57](<GithubPreview/Devlogs (Flavortown)/d57.png>)
 
 ---
+# Devlog 58
+(More content that you will enjoy)
+
+- Added Licenses Button in thes settings :menhera-happy-wave: 
+- Now you can see the privacy policy and the terms of service again from the game :menhera-happy-wave: 
+- Also now you can see the tutorial again via Licenses Button :menhera-happy-wave: 
+--- 
+- New repo folder!  
+- Legal Documents includes a PDF version of Privacy Policy and the Terms Of Service because MarkDown may sound confusing for some of you :3 :menhera-huh: 
+---
+Anyway that is all what do you think about :drgn_hidden: 
+
+
+
+---
+
+
 End 
 
 ![yayyy](https://emoji.slack-edge.com/T09V59WQY1E/yayayayayay/203666b7424ee7a7.gif)
