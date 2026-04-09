@@ -1775,29 +1775,23 @@ window.cmDeleteAccount = async () => {
     const name = currentUser.displayName || currentUser.email;
     if (!confirm(`Ești sigur că vrei să ștergi contul "${name}"?\nAceastă acțiune va șterge toate mapurile tale și nu poate fi anulată!`)) return;
     const status = document.getElementById('cm-save-status');
+    const uid = currentUser.uid;
+    if (status) { status.style.color = '#aaa'; status.textContent = 'Se șterge contul...'; }
     try {
-        // Reautentificare necesară pentru deleteUser
-        await reauthenticateWithPopup(currentUser, provider);
-    } catch(e) {
-        if (e.code !== 'auth/popup-closed-by-user') {
-            if (status) { status.style.color = '#ff8888'; status.textContent = 'Reautentificare eșuată: ' + e.code; }
-        }
-        return;
-    }
-    try {
-        if (status) { status.style.color = '#aaa'; status.textContent = 'Se șterge contul...'; }
         // Sterge toate mapurile utilizatorului
-        const q = query(collection(db, 'community_maps'), where('authorUID', '==', currentUser.uid));
+        const q = query(collection(db, 'community_maps'), where('authorUID', '==', uid));
         const snap = await getDocs(q);
-        const deletes = snap.docs.map(d => deleteDoc(doc(db, 'community_maps', d.id)));
-        await Promise.all(deletes);
-        // Sterge contul
-        await deleteUser(currentUser);
+        await Promise.all(snap.docs.map(d => deleteDoc(doc(db, 'community_maps', d.id))));
+        // Sterge contul (reautentificare inline)
+        const user = auth.currentUser;
+        await reauthenticateWithPopup(user, provider);
+        await deleteUser(user);
         closeCommunityPopup();
         showToast('Cont șters cu succes!');
     } catch(e) {
-        if (status) { status.style.color = '#ff8888'; status.textContent = 'Eroare: ' + e.message; }
         console.error(e);
+        if (e.code === 'auth/popup-closed-by-user') return;
+        if (status) { status.style.color = '#ff8888'; status.textContent = 'Eroare: ' + (e.code || e.message); }
     }
 };
 
