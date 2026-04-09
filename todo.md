@@ -129,13 +129,14 @@ Release
 
 Release Final
 
-# Devlog 56
-
-- added show air block, this will now show a outlined black block that is considered "air"
-- this option can be turned on from the graphics settings when the user wants :menhera-point:
+# Devlog 57
+ 
+(you surely will enjoy this devlog :skull:)
+- Added Terms of Service :menhera-happy-wave: 
+- Added Privacy Policy  :menhera-happy-wave: 
 ---
-- this actually shows the grid when the user does do a more gridy island or double islands, this makes the things more easely for the user
-- and when erased the air block this will make some pop effects :3p:
-- this is a simple option yet an usefull one 
+- Now in order to continue to play the game you need to accept this, else you will be blocked by the popup :ban: 
+- You have to accept Terms of Service and Privacy Policy! 
+- This docs contains esential information about the data colected by my project (not too mutch anyway :3 but you gotta read that)
 ---
-- that is all what do you think?  :drgn_hidden: 
+That is all :3 :menhera-huh: 

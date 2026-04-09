@@ -2668,6 +2668,20 @@ window.addEventListener('keydown', (e) => {
 
 window.onload = () => {
     const _hide = () => { if (typeof window.hideCacheLoading === 'function') window.hideCacheLoading(); };
+    const _agreedAlready = (function() {
+        try { return localStorage.getItem('ii_agreed_v2') === '1'; } catch(_) { return false; }
+    })();
+    if (!_agreedAlready) {
+        if (typeof showAgreementOverlay === 'function') {
+            showAgreementOverlay(() => _runInit(true));
+        } else {
+            _runInit(false);
+        }
+        return;
+    }
+    _runInit(false);
+
+    function _runInit(skipSessionRestore) {
 
     const urlParams = new URLSearchParams(window.location.search);
     const hash = window.location.hash;
@@ -2789,7 +2803,7 @@ window.onload = () => {
         }
         return;
     }
-    const sessionCode = getSessionIsland();
+    const sessionCode = !skipSessionRestore && getSessionIsland();
     if (sessionCode) {
         try {
             const restored = loadIslandCode(sessionCode);
@@ -2805,10 +2819,14 @@ window.onload = () => {
     }
 
     _hide();
-    const ov = document.getElementById('welcome-overlay');
-    ov.style.display = 'flex';
-    requestAnimationFrame(() => requestAnimationFrame(() => ov.classList.add('popup-visible')));
-    fetchReadme();
+    function _showWelcome() {
+        const ov = document.getElementById('welcome-overlay');
+        ov.style.display = 'flex';
+        requestAnimationFrame(() => requestAnimationFrame(() => ov.classList.add('popup-visible')));
+        fetchReadme();
+    }
+    _showWelcome();
+    } 
 };
 
 const REPO_RAW = 'https://raw.githubusercontent.com/Adium1000/Isometric-island/main/';
