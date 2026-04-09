@@ -675,7 +675,7 @@ That is all :3 :menhera-huh:
 ---
 Anyway that is all what do you think about :drgn_hidden: 
 
-
+![devlog58](<GithubPreview/Devlogs (Flavortown)/devlog58.png>)
 
 ---
 

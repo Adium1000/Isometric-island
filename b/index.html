@@ -1562,7 +1562,6 @@ window.addEventListener('load', function() {
                     <span id="cm-user-info"></span>
                 </div>
                 <button id="cm-auth-btn" onclick="cmLogin()"><img src="./Assets/Icons/google.png" style="width:14px;height:14px;image-rendering:pixelated;vertical-align:middle;margin-right:6px;">LOGIN WITH GOOGLE</button>
-                <button id="cm-delete-account-btn" onclick="cmDeleteAccount()" style="display:none;background:#3a1010;border-color:#aa2222;color:#ff8888;font-size:7px;padding:5px 8px;margin-left:6px;cursor:pointer;">🗑 STERGE CONT</button>
             </div>
             <div id="cm-tabs">
                 <button id="cm-tab-browse-btn" class="cm-tab cm-tab-active" onclick="cmSwitchTab('browse')">BROWSE</button>
@@ -1586,7 +1585,7 @@ window.addEventListener('load', function() {
 
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
-import { getAuth, signInWithPopup, GoogleAuthProvider, signOut, onAuthStateChanged, deleteUser, reauthenticateWithPopup }
+import { getAuth, signInWithPopup, GoogleAuthProvider, signOut, onAuthStateChanged }
     from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
 import { getFirestore, collection, addDoc, getDocs, deleteDoc, doc,
          query, orderBy, where, serverTimestamp, getDoc }
@@ -1627,15 +1626,11 @@ onAuthStateChanged(auth, user => {
         }
         btn.innerHTML = '<img src="./Assets/Icons/logout.png" onerror="this.style.display=\'none\'" style="width:14px;height:14px;image-rendering:pixelated;vertical-align:middle;margin-right:6px;">LOGOUT';
         btn.onclick   = () => signOut(auth);
-        const delBtn = document.getElementById('cm-delete-account-btn');
-        if (delBtn) delBtn.style.display = 'inline-block';
     } else {
         info.textContent = '';
         if (photo) photo.style.display = 'none';
         btn.innerHTML  = '<img src="./Assets/Icons/google.png" style="width:14px;height:14px;image-rendering:pixelated;vertical-align:middle;margin-right:6px;">LOGIN WITH GOOGLE';
         btn.onclick      = cmLogin;
-        const delBtn = document.getElementById('cm-delete-account-btn');
-        if (delBtn) delBtn.style.display = 'none';
     }
 });
 
@@ -1767,38 +1762,6 @@ window.cmLoadMapData = (dataStr) => {
             alert('loadIslandFromData() not connected in game.js!');
         }
     } catch(e) { alert('Load error: ' + e.message); }
-};
-
-
-window.cmDeleteAccount = async () => {
-    if (!currentUser) return;
-    const name = currentUser.displayName || currentUser.email;
-    if (!confirm(`Ești sigur că vrei să ștergi contul "${name}"?\nAceastă acțiune va șterge toate mapurile tale și nu poate fi anulată!`)) return;
-    const status = document.getElementById('cm-save-status');
-    try {
-        // Reautentificare necesară pentru deleteUser
-        await reauthenticateWithPopup(currentUser, provider);
-    } catch(e) {
-        if (e.code !== 'auth/popup-closed-by-user') {
-            if (status) { status.style.color = '#ff8888'; status.textContent = 'Reautentificare eșuată: ' + e.code; }
-        }
-        return;
-    }
-    try {
-        if (status) { status.style.color = '#aaa'; status.textContent = 'Se șterge contul...'; }
-        // Sterge toate mapurile utilizatorului
-        const q = query(collection(db, 'community_maps'), where('authorUID', '==', currentUser.uid));
-        const snap = await getDocs(q);
-        const deletes = snap.docs.map(d => deleteDoc(doc(db, 'community_maps', d.id)));
-        await Promise.all(deletes);
-        // Sterge contul
-        await deleteUser(currentUser);
-        closeCommunityPopup();
-        showToast('Cont șters cu succes!');
-    } catch(e) {
-        if (status) { status.style.color = '#ff8888'; status.textContent = 'Eroare: ' + e.message; }
-        console.error(e);
-    }
 };
 
 window.openCommunityPopup = () => {
