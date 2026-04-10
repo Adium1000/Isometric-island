@@ -118,7 +118,9 @@ Devlog Sketch
 Release
 Release Final
 
-# Devlog 60
+# Devlog 60 
+[dcbcf9d](https://github.com/Adium1000/Isometric-island/commit/dcbcf9dc208e8c73b0cf29d3bf86c3418d999d13)
+
 - Added more Achievements :yay:
 - Because I need to keep the game silly i will push some useless verry cool updates
 ---
