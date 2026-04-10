@@ -10,14 +10,10 @@
 ignore the cluter :) no time to sort the most heh
 also placing on the side of a block is not possible rn right?
 -a proper way to retrigger it would be nice tuto
-- Account delete system
 - Multi-language support - RO, EN, ES, FR, DE pentru UI
 - RTL support - pentru arabă/ebraică
 - tutorial video
-- Tutorial Non-Intruziv: Mici semne de întrebare care apar doar prima dată când deschizi o secțiune.
-- float speed bar (NOTED)
 - MoreBlocks
-- add show air blocks (noted)
 - optimization banner
 - X people building right now" counter live
 - stamp 
@@ -25,12 +21,25 @@ also placing on the side of a block is not possible rn right?
 - Notificări stacked - acum toast-ul se suprascrie, poți face o coadă verticală cu mai multe toasts simultane // 
 - Timelapse recorder — înregistrezi fiecare acțiune și poți reda construcția de la zero ca un gif/video
 - Undo/Redo Visual History: O listă cu ultimele acțiuni pe care poți da click.
+- Replace Tool (Brush): Înlocuiește blocurile sub brush, dar păstrează înălțimea lor Z.
+- Search icon
+- make an exclamation sound!
+- weird sound
+   
+What I added:
+- Realizaări
+:Primul Copac (plaseaza un copac)
+:Poate iese ceva: Genereaza o insula random
+:Mai avansat: deschide meniul de setari
+:Hopa! Găsește un easter egg (:: cca ::)
+- add show air blocks (noted)
+- float speed bar (NOTED)
+- Account delete system
 - Drag & Drop Hotbar: Posibilitatea de a rearanja ordinea blocurilor în hotbar-ul de jos.(noted)
 - Animated Hotbar: Icoanele din hotbar să sară (bounce) când treci cu mouse-ul peste ele. (noted)
 - Save Slots: Butoane cu "Slot 1", "Slot 2" care să aibă o mică imagine (thumbnail) cu insula salvată. (now)
 - Cursor Trail: Un efect mic de particule care urmărește mouse-ul doar pe spațiul canvas-ului. (now)
-- Replace Tool (Brush): Înlocuiește blocurile sub brush, dar păstrează înălțimea lor Z.
-- mai multe realizari
+- mai multe realizari (done)
 plutește!
 Fă insula sa plutească
 Nebunie
@@ -39,26 +48,7 @@ E bine să împarți
 Copiaza linkul unei insule (buton din file)
 Modul cartof
 dezactivezi totul din graphics
-
-
-
-- Realizaări
-:Primul Copac (plaseaza un copac)
-:Poate iese ceva: Genereaza o insula random
-:Mai avansat: deschide meniul de setari
-:Hopa! Găsește un easter egg (:: cca ::)
-
-
-
-
-((Hotbar reorder - drag & drop între sloturi să-ți aranjezi blocurile preferate
--Discord Rich Presence - arată pe Discord că eşti pe Isometric Island
-
--Search icon
-- make an exclamation sound!
-- weird sound
-   
-What I added:
+- Tutorial Non-Intruziv: Mici semne de întrebare care apar doar prima dată când deschizi o secțiune.
 - Offline indicator
 - Efect de "squash & stretch" 
 - Island resolution 16x
@@ -117,16 +107,15 @@ advanced brush options
 - add music and music switch on off
 - add a float on off switch
 - minimap 
+
+
 todo may varryy idk what else it can varry lol
 sooo yea gl
-
 i hate missspelling
 
 
 Devlog Sketch
-    const COLORS = ['', '#ffd060', '#ffc040', '#e8a020', '#c47010'];
 Release
-
 Release Final
 
 # Devlog 59
@@ -136,3 +125,5 @@ You don't play my game anymore? (you won't do that did you) Now you can delete y
 ---
 Why I added that?
 I was forced by GDPR, they said that they will find me and they will give me a fine if I don t implement that :3 so yea I have to respect the user (you) 
+
+
