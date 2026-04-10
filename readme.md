@@ -1,5 +1,5 @@
 ![intro](GithubPreview/Banners/thumb.png)
-# Welcome to the Isometric Island Project!
+# Welcome to the Isometric Island Project! [![Static Badge](https://img.shields.io/badge/Adrian-blue?style=flat&logo=Revolut&logoColor=%23FFFFFF&logoSize=3000&label=Revolut&labelColor=%23000000&color=%23d4ff00)](https://revolut.me/adrianu8cv)
 Here you will find some relevant subjects and explanations about my game, including CREDITS, a quick guide, and much more!
 
 # About Isometric Island
