@@ -4690,7 +4690,7 @@ function handleInteractionBrushed(tile, x, y, z) {
             id: 'random_island',
             title: 'Maybe you can cook',
             desc: 'Generate a random island',
-            icon: './Assets/Icons/ic.png',
+            icon: './Assets/Icons/hotbar.png',
             group: 'normal',
             unlocked: false,
         },
@@ -4722,6 +4722,38 @@ function handleInteractionBrushed(tile, x, y, z) {
             id: 'easter_1x1',
             title: 'Not an Island',
             desc: 'Did you really think a 1x1 grid is an island?',
+            icon: './Assets/Blocks/dirt.png',
+            group: 'easter',
+            unlocked: false,
+        },
+        {
+            id: 'float_mode',
+            title: 'It floats!',
+            desc: 'Make your island float',
+            icon: './Assets/GUI/floaton.png',
+            group: 'normal',
+            unlocked: false,
+        },
+        {
+            id: 'emoji_tab',
+            title: 'You are crazyy stop!',
+            desc: 'Open the Island as Emoji tab',
+            icon: './Assets/Blocks/flovers.png',
+            group: 'easter',
+            unlocked: false,
+        },
+        {
+            id: 'share_link',
+            title: "It's good to share",
+            desc: 'Share your island link',
+            icon: './Assets/Icons/share.png',
+            group: 'normal',
+            unlocked: false,
+        },
+        {
+            id: 'potato_mode',
+            title: 'Potato Mode ON',
+            desc: 'Turn off al graphics settings',
             icon: './Assets/Blocks/dirt.png',
             group: 'easter',
             unlocked: false,
@@ -4947,6 +4979,39 @@ function handleInteractionBrushed(tile, x, y, z) {
         unlockAchievement('easter_1x1');
         if (_origShow1x1) _origShow1x1.apply(this, arguments);
     };
+    const _origSetFloatMode = window.setFloatMode || setFloatMode;
+    window.setFloatMode = function(mode) {
+        _origSetFloatMode.apply(this, arguments);
+        if (mode && mode !== 'off') unlockAchievement('float_mode');
+    };
+    const _origOpenEmojiPopup = window.openIslandEmojiPopup;
+    window.openIslandEmojiPopup = function() {
+        unlockAchievement('emoji_tab');
+        if (_origOpenEmojiPopup) _origOpenEmojiPopup.apply(this, arguments);
+        else {
+            const ov = document.getElementById('island-emoji-overlay');
+            if (!ov) return;
+            if (typeof generateIslandEmoji === 'function') generateIslandEmoji();
+            ov.style.display = 'flex';
+            requestAnimationFrame(() => requestAnimationFrame(() => ov.classList.add('popup-visible')));
+        }
+    };
+    const _origGenerateShareURL = window.generateShareURL || generateShareURL;
+    window.generateShareURL = function() {
+        unlockAchievement('share_link');
+        _origGenerateShareURL.apply(this, arguments);
+    };
+    const _origToggleVisual = window.toggleVisualOption || toggleVisualOption;
+    window.toggleVisualOption = function(option, btn) {
+        _origToggleVisual.apply(this, arguments);
+        const graphicsIds = ['sw-shadows', 'sw-leaves', 'sw-clouds', 'sw-fps', 'sw-grid', 'sw-slide-place'];
+        const allOff = graphicsIds.every(id => {
+            const el = document.getElementById(id);
+            return el && !el.classList.contains('on');
+        });
+        if (allOff) unlockAchievement('potato_mode');
+    };
+
     loadAchievements();
 })();
 const SAVE_SLOT_KEY = 'islandSaveSlot_';

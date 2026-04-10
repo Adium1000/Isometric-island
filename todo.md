@@ -118,12 +118,26 @@ Devlog Sketch
 Release
 Release Final
 
-# Devlog 59
-- Delete Account System!
-You don't play my game anymore? (you won't do that did you) Now you can delete your shared islands and account linked in my firebase!
-- When you delete your account you will not be able to post maps anymore unless (ofc) you log again to your google account which will store your data again (ofc)
+# Devlog 60
+- Added more Achievements :yay:
+- Because I need to keep the game silly i will push some useless verry cool updates
 ---
-Why I added that?
-I was forced by GDPR, they said that they will find me and they will give me a fine if I don t implement that :3 so yea I have to respect the user (you) 
+### New Achievements list:
 
+1. It floats! :flying_money_with_wings: 
+- Make your island float
 
+2. You are crazyy stop! :prayer: 
+- Open the Island as Emoji tab
+
+3. It's good to share :bro-visited-his-friend: 
+- Share your island link
+
+4. Potato Mode ON :sorry-my-ai-api-got-rate-limited: 
+- Turn off al graphics settings
+
+---
+
+- Achievements are a way of exploring the menus so this will keep you entertained for a time :3 because I love my users ofc ofc 
+---
+Anyway this is all about the new stuff in my game what do you think  :menhera-point: 
