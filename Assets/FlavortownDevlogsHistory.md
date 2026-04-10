@@ -9,7 +9,7 @@ I started rendering the “Isometric Island” using PNGs like assets with a 24x
 You have up/down some reference (depends if you use a extension a preview kinda)
 What do you think?
 
-![1st devlog picture](<.github/Devlogs (Flavortown)/Devlog1.png>)
+![1st devlog picture](<GithubPreview/Devlogs (Flavortown)/Devlog1.png>)
 
 ---
 
@@ -22,7 +22,7 @@ and also the cursor is a cross when touchin island
 What do you think?
 Down here you have some previews!
 
-![2nd Devlog Picture](<.github/Devlogs (Flavortown)/Devlog2.png>)
+![2nd Devlog Picture](<GithubPreview/Devlogs (Flavortown)/Devlog2.png>)
 
 ---
 
@@ -35,7 +35,7 @@ I redesigned the stone texture
 What do you tink?
 above this you fiind some of my working footage
 
-![3rd Devlog Picture](<.github/Devlogs (Flavortown)/Devlog3.png>)
+![3rd Devlog Picture](<GithubPreview/Devlogs (Flavortown)/Devlog3.png>)
 
 ---
 
@@ -46,7 +46,7 @@ added title text
 Cursor changes depending on what you select
 thst’s all! What do you think?
 
-![4th Devlog Picture](<.github/Devlogs (Flavortown)/Devlog4.png>)
+![4th Devlog Picture](<GithubPreview/Devlogs (Flavortown)/Devlog4.png>)
 
 ---
 
@@ -56,7 +56,7 @@ Finally the “game” is avalabile for testing on github pages
 Did a github documentation and shared all assets ATM with a short guide about the “game” and how to use it, and my todo list
 What do you think?
 
-![5th Devlog Picture](<.github/Devlogs (Flavortown)/Devlog5.png>)
+![5th Devlog Picture](<GithubPreview/Devlogs (Flavortown)/Devlog5.png>)
 
 ---
 
@@ -66,7 +66,7 @@ Added shadows to the Island
 Added the font license for the title
 That’s All, What do you think?
 
-![6th Devlog Picture](<.github/Devlogs (Flavortown)/Devlog6.png>)
+![6th Devlog Picture](<GithubPreview/Devlogs (Flavortown)/Devlog6.png>)
 
 ---
 
@@ -92,7 +92,7 @@ Trees can be removed by clicking with eraser on one of the blocks that represent
 Smoothed out the taskbar animations
 What do you Think?
 
-![8th Devlog Image](<.github/Devlogs (Flavortown)/Devlog8.png>)
+![8th Devlog Image](<GithubPreview/Devlogs (Flavortown)/Devlog8.png>)
 
 ---
 
@@ -104,7 +104,7 @@ Some code optimizations
 That’s All!
 What do you think?
 
-![9th Devlog Image](<.github/Devlogs (Flavortown)/Devlog9image.png>)
+![9th Devlog Image](<GithubPreview/Devlogs (Flavortown)/Devlog9image.png>)
 
 ---
 
@@ -114,7 +114,7 @@ Added some new assets to the game: Hay, GrassStone, Sand, RedSand, Raindrops eff
 I did the assets in Paint.net
 That is all what do you think?
 
-![10 Devlog Image](<.github/Devlogs (Flavortown)/Devlog10.png>)
+![10 Devlog Image](<GithubPreview/Devlogs (Flavortown)/Devlog10.png>)
 
 ---
 
@@ -133,7 +133,7 @@ Melon
 
 That’s all what do you think
 
-![11 Devlog Image](<.github/Devlogs (Flavortown)/devlog11.png>)
+![11 Devlog Image](<GithubPreview/Devlogs (Flavortown)/devlog11.png>)
 
 ---
 
@@ -147,7 +147,7 @@ Added new assets:
 -MultilayerSowman Assets
 That’s All, What do you think
 
-![12 Devlog Image](<.github/Devlogs (Flavortown)/thumb13.png>)
+![12 Devlog Image](<GithubPreview/Devlogs (Flavortown)/thumb13.png>)
 
 ---
 
@@ -165,7 +165,7 @@ Atmosphere: For an added “chill” feel, a new Island Float button and a BG Mu
 README Revamp: Significant changes have been made to the VS Code documentation, including the addition of a new visual “How-to” guide
 What do you think?
 
-![13 Devlog Image](<.github/Devlogs (Flavortown)/Devlog13.png>)
+![13 Devlog Image](<GithubPreview/Devlogs (Flavortown)/Devlog13.png>)
 
 ---
 
@@ -197,7 +197,7 @@ Added more visual banners for better readability.
 General formatting improvements.
 What do you think?\
 
-![14 Devlog image](<.github/Devlogs (Flavortown)/devlog14.png>)
+![14 Devlog image](<GithubPreview/Devlogs (Flavortown)/devlog14.png>)
 
 ---
 
@@ -219,7 +219,7 @@ More readme polish
 Updates to banner designs & new banners
 That is all
 
-![15 Devlog image](<.github/Devlogs (Flavortown)/Devlog 15.png>)
+![15 Devlog image](<GithubPreview/Devlogs (Flavortown)/Devlog 15.png>)
 
 ---
 
@@ -235,7 +235,7 @@ My plan for small screens (glassy ui) (PS: This will NOT be in the same repo or 
 I’m moving away from the classic look for mobile in favor of a modern “Glassmorphism” interface built in HTML. This will provide a sleek, translucent aesthetic that feels native to modern iOS and Android devices. To speed up this transition, I’ll be utilizing AI-assisted design to generate the CSS layouts and component structures. *
 That’s all!
 
-![16 Devlog Image](<.github/Devlogs (Flavortown)/devlog 16.png>)
+![16 Devlog Image](<GithubPreview/Devlogs (Flavortown)/devlog 16.png>)
 
 ---
 
@@ -251,7 +251,7 @@ Aw and btw, the glassy version will be delayed
 And more to come, I still have some ideas but we are almost to the end of the project
 That’s All, what do you think?
 
-![17 Devlog Image](<.github/Devlogs (Flavortown)/Devlog17.png>)
+![17 Devlog Image](<GithubPreview/Devlogs (Flavortown)/Devlog17.png>)
 
 ---
 
@@ -259,7 +259,7 @@ That’s All, what do you think?
 
 With this release, you can now pick the island grid size right from the File Menu, up to 8×8, so you have way more control over how big and shaped your world is. There's also a new button that lets you create a random island by using seed generation. Block editing got easier too: just right-click or Ctrl + left click to pick a group of blocks. Then you can fill the whole area with any block you want in one go or delete the selected blocks all at once without needing the eraser. When you close a popup now, it plays a sound, and after finishing an action, a small confirmation toast pops up. The layout and touch controls have been updated to work better for tablet users, and now you can install the game straight from Chrome as a standalone PWA or APK (BETA) for tablets!!
 
-![18 Devlog Image](<.github/Devlogs (Flavortown)/devlog18.png>)
+![18 Devlog Image](<GithubPreview/Devlogs (Flavortown)/devlog18.png>)
 
 ---
 
@@ -269,7 +269,7 @@ Separated the Settings from the File menu, it never really made sense to have it
 
 ![heh](https://emoji.slack-edge.com/T09V59WQY1E/blob_bounce/08065e62349fc5a2.gif)
 
-![devlog 18 image](.github/Devlogs%20(Flavortown)/devlog19.png)
+![devlog 18 image](GithubPreview/Devlogs%20(Flavortown)/devlog19.png)
 
 ---
 
@@ -279,7 +279,7 @@ Devlog 20
 - Bug fixes
 - In-game scale option (welcome screen & settings)
 
-![devlog 20 image](<.github/Devlogs (Flavortown)/devlog20.png>)
+![devlog 20 image](<GithubPreview/Devlogs (Flavortown)/devlog20.png>)
 
 ---
 Ship Event
@@ -310,7 +310,7 @@ Devlog 21
 Fixed the game bugs that exist in firefox (zoom, island blur)
 now firefox users can play witout any problems during gameplay or so hehe :)
 
-![devlog 21 image](<.github/Devlogs (Flavortown)/devlog21.png>)
+![devlog 21 image](<GithubPreview/Devlogs (Flavortown)/devlog21.png>)
 
 
 
@@ -321,7 +321,7 @@ now firefox users can play witout any problems during gameplay or so hehe :)
  Fixed some bugs for terraforming and made the selection grid better to see, also added a white grid that can be toggled. Now you can build or generate mountains and make your island more cooler!
  also I added a search popup, just press "S" and you can search blocks  :)
 
-![devlog 22 art :)](<.github/Devlogs (Flavortown)/Devlog22.png>)
+![devlog 22 art :)](<GithubPreview/Devlogs (Flavortown)/Devlog22.png>)
 
 ---
 
@@ -329,7 +329,7 @@ now firefox users can play witout any problems during gameplay or so hehe :)
 
 - Added custom cursors for actions in the game, they can be disabled/activated in the settings tab
 
-![devlog23](<.github/Devlogs (Flavortown)/devlog 23.png>)
+![devlog23](<GithubPreview/Devlogs (Flavortown)/devlog 23.png>)
 
 ---
 
@@ -338,14 +338,14 @@ now firefox users can play witout any problems during gameplay or so hehe :)
 
 New popups for random island generators such as mountains or biomes, now you can choose what type of biome you want to generate/the type of mountain you want to generate thanks to the new popups added for more flexibility :3
 
-![devlog 24](<.github/Devlogs (Flavortown)/devlog24.png>)
+![devlog 24](<GithubPreview/Devlogs (Flavortown)/devlog24.png>)
 
 ---
 **Devlog 25**
 
 This devlogs adds a new popup in settings for cursor options, also i added cursor tooltips witch show your currentilly block in the right bottom of your cursor
 
-![devlog25](<.github/Devlogs (Flavortown)/devlog25.png>)
+![devlog25](<GithubPreview/Devlogs (Flavortown)/devlog25.png>)
 
 ---
 
@@ -354,7 +354,7 @@ This devlogs adds a new popup in settings for cursor options, also i added curso
 
 -added graphics menu in the settings and moved some togles from settings in this popup, also updated readme to more info about this project, more to come  :)
 
-![devlog26](<.github/Devlogs (Flavortown)/dev26.png>)
+![devlog26](<GithubPreview/Devlogs (Flavortown)/dev26.png>)
 
 ---
 
@@ -364,7 +364,7 @@ This devlogs adds a new popup in settings for cursor options, also i added curso
 - More compatibilty for tablets: Pinch to zoom , hold to select
 - Gui colors :) : Green, Blue , Brown (default) or automatic :3, this setting can be changed in the settings menu via GUI option 
 
-![devlog27](<.github/Devlogs (Flavortown)/Screenshot 2026-03-20 224647.png>)
+![devlog27](<GithubPreview/Devlogs (Flavortown)/Screenshot 2026-03-20 224647.png>)
 
 ---
 **Devlog 28**
@@ -376,13 +376,13 @@ Here are a few rule quoted from readme before publishing maps
 - Do not replicate EXPLICIT content (when you login I have acces to your username, gmail so it will be a shame to do that)
 - Do not make bad maps or empty maps
 
-![devlog28](<.github/Devlogs (Flavortown)/Screenshot 2026-03-22 154051.png>)
+![devlog28](<GithubPreview/Devlogs (Flavortown)/Screenshot 2026-03-22 154051.png>)
 
 ---
 **Devlog 29**
 Added icons to File, Settings, Graphics, and Pointer popups, and optimized GUI colors
 
-![Devlog 29](<.github/Devlogs (Flavortown)/Screenshot 2026-03-22 180338.png>)
+![Devlog 29](<GithubPreview/Devlogs (Flavortown)/Screenshot 2026-03-22 180338.png>)
 
 ---
 
@@ -390,20 +390,20 @@ Added icons to File, Settings, Graphics, and Pointer popups, and optimized GUI c
 Added more Float modes for your island, just press the island float button and choose one maybe make it simple or funny, hehe
 
 
-![Devlog30](<.github/Devlogs (Flavortown)/dev30.png>)
+![Devlog30](<GithubPreview/Devlogs (Flavortown)/dev30.png>)
 ---
 **Devlog33**
 
 - Added support for Iframe Embed, now you can show your island to other sites, even your personal one :3
 
-![devlog33](<.github/Devlogs (Flavortown)/Screenshot 2026-03-23 201753.png>)
+![devlog33](<GithubPreview/Devlogs (Flavortown)/Screenshot 2026-03-23 201753.png>)
 
 **Devlog34**
 
 - Added Snake-Delete-Animation witch is really cool when deleting an island
 - Added Socials, Version number to the game (socials like instagram, Revolut,Github)
 
-![devlog34](<.github/Devlogs (Flavortown)/d34.png>)
+![devlog34](<GithubPreview/Devlogs (Flavortown)/d34.png>)
 
 ---
 **Devlog35**
@@ -412,7 +412,7 @@ Added more Float modes for your island, just press the island float button and c
 
 
 
-![devlog35](<.github/Devlogs (Flavortown)/dev35.png>)
+![devlog35](<GithubPreview/Devlogs (Flavortown)/dev35.png>)
 
 
 ---
@@ -420,7 +420,7 @@ Added more Float modes for your island, just press the island float button and c
 
 - Added video effects to simulate a more retro atmosphere
 
-![Devlog36](<.github/Devlogs (Flavortown)/ddd.png>)
+![Devlog36](<GithubPreview/Devlogs (Flavortown)/ddd.png>)
 
 ---
 
@@ -430,14 +430,14 @@ Added more Float modes for your island, just press the island float button and c
 - more easter eggs :3
 - more bug fixes
 
-![dievloug37](<.github/Devlogs (Flavortown)/33.png>)
+![dievloug37](<GithubPreview/Devlogs (Flavortown)/33.png>)
 
 ---
 **Devlog 38**
 
 Added Island Links! That is a more convinient way to share islands with others: just load the link in the adreess bar, press enter and you good to go
 
-![devlog38](<.github/Devlogs (Flavortown)/d438.png>)
+![devlog38](<GithubPreview/Devlogs (Flavortown)/d438.png>)
 ---
 Shipped this project!
 Hours: 11.25 Cookies: 🍪 337 Multiplier: 29.92 cookies/hr (24 votes received)
@@ -450,20 +450,20 @@ Brush size can be selected from 1x1 to 7x7
 Grid toggle
 Mirror options
 
-![devlog39](<.github/Devlogs (Flavortown)/39.png>)
+![devlog39](<GithubPreview/Devlogs (Flavortown)/39.png>)
 
 ---
 **Devlog40**
 
 added a disclaimer for the comunity maps for the stuff is actually here and for the people to agree with the rules! Have fun creating maps!
-![devlog40](<.github/Devlogs (Flavortown)/40.png>)
+![devlog40](<GithubPreview/Devlogs (Flavortown)/40.png>)
 ---
 **Devlog41**
 
 16x16 islands! Now you can extend you island twice more and make it more beautiful! 
 Also presets: a more convinient way to start a new island :3
 
-![devlog41](<.github/Devlogs (Flavortown)/41.png>)
+![devlog41](<GithubPreview/Devlogs (Flavortown)/41.png>)
 
 ---
 **Devlog42**
@@ -471,7 +471,7 @@ Also presets: a more convinient way to start a new island :3
 - Island Cache restore!
 - Now when you visit the website again your old island gets recoverd :3
 
-![devlog42](<.github/Devlogs (Flavortown)/WS.png>)
+![devlog42](<GithubPreview/Devlogs (Flavortown)/WS.png>)
 
 ---
 **Devlog43**
@@ -479,7 +479,7 @@ Also presets: a more convinient way to start a new island :3
 Added more radial menu shortcuts for more productivity
 New tools:Settings Shortcut that opens the settings menu faster, Prezentation Mode that hides the GUI menus and shows them when turned off 
 
-![devlog43](<.github/Devlogs (Flavortown)/devlog43.png>)
+![devlog43](<GithubPreview/Devlogs (Flavortown)/devlog43.png>)
 
 ---
 
@@ -487,7 +487,7 @@ New tools:Settings Shortcut that opens the settings menu faster, Prezentation Mo
 
 Added Keybind menu! Now you can manage the shortcuts as you want :3 Feel free to get creative (hehe)
 
-![devlog44](<.github/Devlogs (Flavortown)/d44.png>)
+![devlog44](<GithubPreview/Devlogs (Flavortown)/d44.png>)
 
 ---
 # Devlog 45
@@ -496,7 +496,7 @@ Bug fix: Delete animation is a slide down instead of a snake effect
 Why? Because it was slow and laggy
 
 
-![devlog45](<.github/Devlogs (Flavortown)/45.png>)
+![devlog45](<GithubPreview/Devlogs (Flavortown)/45.png>)
 ---
 Shipped this project!
 Hours:7.18 Cookies:🍪 212 Multiplier: 29.58 cookies/hr (17 votes received)
@@ -506,13 +506,13 @@ Polish and a lot of bug fixes :>
 
 added a volume slider for the music because it can sometimes be loud, this makes it easy to lower down the volume
 
-![devlog46](<.github/Devlogs (Flavortown)/devlog26.png>)
+![devlog46](<GithubPreview/Devlogs (Flavortown)/devlog26.png>)
 ---
 # Devlog 47
 
 I added a buffer that helps your browser pocesing the data faster (a bit) from the cache, this means that your unsaved island and your settings will load mutch more faster witout doing anything more. Also some bug fixes for some popups like fill that did glitch when clicked on the close button
 
-![devlog47](<.github/Devlogs (Flavortown)/dev47.png>)
+![devlog47](<GithubPreview/Devlogs (Flavortown)/dev47.png>)
 
 ---
 # Devlog 48
@@ -531,7 +531,7 @@ Here are some votes that lead to this change (no offense)
 
 Seeing votes like that can be frustrating that is why I hope this feautre will prevent it in some cases :3
 
-![devlog48](<.github/Devlogs (Flavortown)/devlog48.png>)
+![devlog48](<GithubPreview/Devlogs (Flavortown)/devlog48.png>)
 
 ---
 Shipped this project!
@@ -543,26 +543,26 @@ Originality ★8/9 • Technical ★7.50/9 • Usability ★7.50/9 • Storytell
 
 Moved the terrain generators form the file menu to a new popup called "Fun" , in  this popup I will store some crazy things that will come in the next devlogs, for exemple for now "Island As An "Emoji". This converst your island top view into an emoji grid, just for fun but sometimes it can look sick :3
 
-![Devlog49image](<.github/Devlogs (Flavortown)/dev49.png>)
+![Devlog49image](<GithubPreview/Devlogs (Flavortown)/dev49.png>)
 
 ---
 # Devlog 50
 Added island float speed (verry usefull ik) , now you can change the speed of the float and make it more radio active
 
 
-![devlog50](<.github/Devlogs (Flavortown)/devlog50.png>)
+![devlog50](<GithubPreview/Devlogs (Flavortown)/devlog50.png>)
 ---
 # Devlog 51
 Hotbar small update: Now the hotbar elements bounce when cursor hold or touch one item for exemple: grass, it sounds so unnecsary but it makes the game POP!
 
-![devlog51pop](<.github/Devlogs (Flavortown)/devlog51.png>)
+![devlog51pop](<GithubPreview/Devlogs (Flavortown)/devlog51.png>)
 
 ---
 # Devlog 52
 Added Achiveements system: Now you can unlock some fun achivements and see easter eggs in this menu, i find this really fun and POP!
 Also I need to design more icons and stuff for this popup but I love how it looks until now :3
 
-![devlog52](<.github/Devlogs (Flavortown)/devlog52.png>)
+![devlog52](<GithubPreview/Devlogs (Flavortown)/devlog52.png>)
 
 
 ---
@@ -588,7 +588,7 @@ Also I need to design more icons and stuff for this popup but I love how it look
 ---
 What do you think?
 
-![Devlog53](<.github/Devlogs (Flavortown)/Screenshot 2026-04-06 170021.png>)
+![Devlog53](<GithubPreview/Devlogs (Flavortown)/Screenshot 2026-04-06 170021.png>)
 
 
 ---
@@ -614,7 +614,7 @@ Added save slots
 
 That is all about the save slots, what do you think about this ? :D
 
-![devlog54](<.github/Devlogs (Flavortown)/devlog54.png>)
+![devlog54](<GithubPreview/Devlogs (Flavortown)/devlog54.png>)
 
 ---
 
@@ -629,7 +629,7 @@ Inventory/Hotbar items sort
 ---
 What do you guys think?
 
-![devlog55](<.github/Devlogs (Flavortown)/d55.png>)
+![devlog55](<GithubPreview/Devlogs (Flavortown)/d55.png>)
 
 ---
 # Devlog 56
@@ -643,7 +643,7 @@ What do you guys think?
 ---
 - that is all what do you think?  :drgn_hidden: 
 
-![devlog56](<.github/Devlogs (Flavortown)/devlog56.png>)
+![devlog56](<GithubPreview/Devlogs (Flavortown)/devlog56.png>)
 
 
 ---
@@ -660,7 +660,7 @@ What do you guys think?
 ---
 That is all :3 :menhera-huh: 
 
-![devlog57](<.github/Devlogs (Flavortown)/d57.png>)
+![devlog57](<GithubPreview/Devlogs (Flavortown)/d57.png>)
 
 ---
 # Devlog 58
@@ -675,7 +675,7 @@ That is all :3 :menhera-huh:
 ---
 Anyway that is all what do you think about :drgn_hidden: 
 
-![devlog58](<.github/Devlogs (Flavortown)/devlog58.png>)
+![devlog58](<GithubPreview/Devlogs (Flavortown)/devlog58.png>)
 
 ---
 # Devlog 59
@@ -686,7 +686,7 @@ You don't play my game anymore? (you won't do that did you) Now you can delete y
 Why I added that?
 I was forced by GDPR, they said that they will find me and they will give me a fine if I don t implement that :3 so yea I have to respect the user (you) 
 
-![devlog59](<.github/Devlogs (Flavortown)/d59.png>)
+![devlog59](<GithubPreview/Devlogs (Flavortown)/d59.png>)
 
 ---
 # Devlog 60
@@ -713,7 +713,7 @@ I was forced by GDPR, they said that they will find me and they will give me a f
 ---
 Anyway this is all about the new stuff in my game what do you think  :menhera-point: 
 
-![Devlog60](<.github/Devlogs (Flavortown)/d60.png>)
+![Devlog60](<GithubPreview/Devlogs (Flavortown)/d60.png>)
 
 
 ---
