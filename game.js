@@ -897,6 +897,31 @@ function createTile(x, y, z, type, customPath = null, parent = mapContainer) {
     img.onmousedown = (e) => { 
         if (e.button === 1 || e.button === 2) return; 
         e.preventDefault();
+        if (window._activeRadialTool) {
+            const tool = window._activeRadialTool;
+            const tx = parseInt(img.getAttribute('data-x'));
+            const ty = parseInt(img.getAttribute('data-y'));
+            if (tool === 'magic_wand') {
+                _magicWandSelect(img);
+                return;
+            }
+            if (tool === 'line_tool') {
+                _lineToolClick(img);
+                return;
+            }
+            if (tool === 'circle_tool') {
+                _circleToolClick(img);
+                return;
+            }
+            if (tool === 'terraform') {
+                _terraformStart(img, e.clientY);
+                const onMove = (ev) => _terraformMove(ev.clientY);
+                const onUp   = () => { _terraformEnd(); window.removeEventListener('mousemove', onMove); window.removeEventListener('mouseup', onUp); };
+                window.addEventListener('mousemove', onMove);
+                window.addEventListener('mouseup', onUp);
+                return;
+            }
+        }
         if (e.altKey) {
             const tileSrc = img.src || '';
             if (tileSrc && img.style.opacity !== '0') {
@@ -3719,6 +3744,12 @@ function selectMountainBiome(idx) {
 
 document.addEventListener('keydown', (e) => {
     if (e.key === 'Escape') {
+        if (window._activeRadialTool) {
+            _radialToolCleanup();
+            window._activeRadialTool = null;
+            showToast('Tool disabled');
+            return;
+        }
         closeIslandBiomePopup();
         closeMountainBiomePopup();
         closeMusicPopup();
@@ -4382,6 +4413,10 @@ const _RADIAL_ITEMS = [
     { icon: '',  label: ['GRID',  'OVERLAY'], action: 'grid' },
     { icon: '',  label: ['SETTINGS'], action: 'settings' },
     { icon: '',  label: ['PRESENT', 'MODE'], action: 'presentation' },
+    { icon: '', label: ['MAGIC', 'WAND'],   action: 'magic_wand'   },
+    { icon: '', label: ['TERRA', 'FORM'],   action: 'terraform'    },
+    { icon: '', label: ['LINE', 'TOOL'],    action: 'line_tool'    },
+    { icon: '', label: ['CIRCLE', 'TOOL'],  action: 'circle_tool'  },
 ];
 
 function _getThemeColor(varName, fallback) {
@@ -4410,7 +4445,8 @@ function _buildRadialSVG(hovIdx) {
         const hov = i === hovIdx;
         const gridActive = _RADIAL_ITEMS[i].action === 'grid' && gridOverlayEnabled;
         const presActive = _RADIAL_ITEMS[i].action === 'presentation' && _presentationMode;
-        const fill   = hov ? clrAccent : (gridActive || presActive ? clrActive : clrBg);
+        const toolActive = ['magic_wand','terraform','line_tool','circle_tool'].includes(_RADIAL_ITEMS[i].action) && window._activeRadialTool === _RADIAL_ITEMS[i].action;
+        const fill   = hov ? clrAccent : (gridActive || presActive || toolActive ? clrActive : clrBg);
         const border = hov ? clrAccBrd : clrBorder;
 
         const steps = 72;
@@ -4446,7 +4482,7 @@ function _buildRadialSVG(hovIdx) {
         const el = document.createElement('div');
         let labelClass = 'radial-label';
         if (hov) labelClass += ' radial-label-hov';
-        else if (gridActive || presActive) labelClass += ' radial-label-active';
+        else if (gridActive || presActive || toolActive) labelClass += ' radial-label-active';
         el.className = labelClass;
         el.style.cssText = `left:${lx}px;top:${ly}px;`;
 
@@ -4511,6 +4547,10 @@ function handleRadialSelect() {
     if (action === 'grid')         _toggleRadialGrid();
     if (action === 'settings')     openSettingsPopup();
     if (action === 'presentation') togglePresentationMode();
+    if (action === 'magic_wand')   _activateRadialTool('magic_wand');
+    if (action === 'terraform')    _activateRadialTool('terraform');
+    if (action === 'line_tool')    _activateRadialTool('line_tool');
+    if (action === 'circle_tool')  _activateRadialTool('circle_tool');
 }
 
 function _toggleRadialGrid() {
@@ -4523,6 +4563,199 @@ function _toggleRadialGrid() {
     }
     hotbarSound.currentTime = 0; hotbarSound.play().catch(() => {});
     showToast(gridOverlayEnabled ? 'Grid ON' : 'Grid OFF');
+}
+window._activeRadialTool = null;
+
+function _activateRadialTool(tool) {
+    if (window._activeRadialTool === tool) {
+        window._activeRadialTool = null;
+        _radialToolCleanup();
+        showToast('Tool disabled');
+        return;
+    }
+    _radialToolCleanup();
+    window._activeRadialTool = tool;
+    hotbarSound.currentTime = 0; hotbarSound.play().catch(() => {});
+    const names = { magic_wand: 'Magic Wand', terraform: 'Terraforming', line_tool: 'Line Tool', circle_tool: 'Circle Tool' };
+    showToast(names[tool] + ' active');
+    _radialToolSetup(tool);
+}
+
+function _radialToolCleanup() {
+    document.body.classList.remove('tool-line-active','tool-circle-active','tool-magic-active','tool-terraform-active');
+    window._lineToolStart = null;
+    window._circleToolStart = null;
+    const prev = document.getElementById('_tool-preview');
+    if (prev) prev.remove();
+}
+
+function _radialToolSetup(tool) {
+    if (tool === 'magic_wand')  document.body.classList.add('tool-magic-active');
+    if (tool === 'terraform')   document.body.classList.add('tool-terraform-active');
+    if (tool === 'line_tool')   document.body.classList.add('tool-line-active');
+    if (tool === 'circle_tool') document.body.classList.add('tool-circle-active');
+}
+function _magicWandSelect(startTile) {
+    const sx = parseInt(startTile.getAttribute('data-x'));
+    const sy = parseInt(startTile.getAttribute('data-y'));
+    const sz = parseInt(startTile.getAttribute('data-z'));
+    const targetSrc = startTile.src;
+    if (!targetSrc || startTile.style.opacity === '0') return;
+    const cols = currentIslandCols || 8;
+    const rows = currentIslandRows || 8;
+    const visited = new Set();
+    const queue = [[sx, sy]];
+    visited.add(sx + ',' + sy);
+
+    while (queue.length) {
+        const [cx, cy] = queue.shift();
+        const t = mapContainer.querySelector(`.tile[data-x="${cx}"][data-y="${cy}"][data-z="${sz}"]`);
+        if (!t || t.style.opacity === '0') continue;
+        const tBase = t.src.split('/').pop();
+        const sBase = targetSrc.split('/').pop();
+        if (tBase !== sBase) continue;
+        selectedTiles.add(t);
+        t.classList.add('selected-tile');
+        for (const [dx, dy] of [[1,0],[-1,0],[0,1],[0,-1]]) {
+            const nx = cx + dx, ny = cy + dy;
+            if (nx >= 0 && ny >= 0 && nx < cols && ny < rows && !visited.has(nx+','+ny)) {
+                visited.add(nx+','+ny);
+                queue.push([nx, ny]);
+            }
+        }
+    }
+    if (typeof drawSelectionCanvas === 'function') drawSelectionCanvas();
+    if (typeof updateFillButton === 'function') updateFillButton();
+    showToast('Selected: ' + selectedTiles.size + ' tiles');
+    hotbarSound.currentTime = 0; hotbarSound.play().catch(() => {});
+}
+let _terraformStartY = null;
+let _terraformTile   = null;
+let _terraformLastDelta = 0;
+
+function _terraformStart(tile, clientY) {
+    _terraformTile = tile;
+    _terraformStartY = clientY;
+    _terraformLastDelta = 0;
+}
+
+function _terraformMove(clientY) {
+    if (!_terraformTile || _terraformStartY === null) return;
+    const dy = _terraformStartY - clientY; 
+    const steps = Math.floor(dy / 20);
+    if (steps === _terraformLastDelta) return;
+    const diff = steps - _terraformLastDelta;
+    _terraformLastDelta = steps;
+    _terraformApply(_terraformTile, diff);
+}
+
+function _terraformEnd() {
+    if (_terraformTile) { saveState(); updateMinimap(); }
+    _terraformTile = null;
+    _terraformStartY = null;
+    _terraformLastDelta = 0;
+}
+
+function _terraformApply(tile, delta) {
+    const x = parseInt(tile.getAttribute('data-x'));
+    const y = parseInt(tile.getAttribute('data-y'));
+    const z = parseInt(tile.getAttribute('data-z'));
+    const newZ = Math.max(0, z + delta);
+    if (newZ === z) return;
+    const col = Array.from(mapContainer.querySelectorAll(`.tile[data-x="${x}"][data-y="${y}"]`));
+    col.forEach(t => {
+        const tz = parseInt(t.getAttribute('data-z'));
+        const nz = Math.max(0, tz + delta);
+        t.setAttribute('data-z', nz);
+        const posTop = (x + y) * (TILE_H / 2) - (nz * TILE_H);
+        t.style.top  = posTop + 'px';
+        t.setAttribute('data-pos-top', posTop);
+        t.style.zIndex = (x + y) + nz;
+    });
+    showToast('Z: ' + (z + delta));
+}
+window._lineToolStart = null;
+
+function _lineToolClick(tile) {
+    const x = parseInt(tile.getAttribute('data-x'));
+    const y = parseInt(tile.getAttribute('data-y'));
+    const z = parseInt(tile.getAttribute('data-z'));
+
+    if (!window._lineToolStart) {
+        window._lineToolStart = { x, y, z };
+        showToast('Line point started');
+        tile.classList.add('selected-tile');
+        return;
+    }
+    const { x: x0, y: y0, z: z0 } = window._lineToolStart;
+    const pts = _bresenham(x0, y0, x, y);
+    saveState();
+    pts.forEach(([px, py]) => {
+        const t = mapContainer.querySelector(`.tile[data-x="${px}"][data-y="${py}"][data-z="${z0}"]`);
+        if (t) handleInteraction(t, px, py, z0);
+    });
+    window._lineToolStart = null;
+    updateMinimap();
+    showToast('Line Placed! (' + pts.length + ' tile-uri)');
+    selectedTiles.forEach(t => t.classList.remove('selected-tile'));
+    selectedTiles.clear();
+}
+
+function _bresenham(x0, y0, x1, y1) {
+    const pts = [];
+    let dx = Math.abs(x1 - x0), dy = Math.abs(y1 - y0);
+    let sx = x0 < x1 ? 1 : -1, sy = y0 < y1 ? 1 : -1;
+    let err = dx - dy;
+    let cx = x0, cy = y0;
+    while (true) {
+        pts.push([cx, cy]);
+        if (cx === x1 && cy === y1) break;
+        const e2 = 2 * err;
+        if (e2 > -dy) { err -= dy; cx += sx; }
+        if (e2 <  dx) { err += dx; cy += sy; }
+    }
+    return pts;
+}
+
+window._circleToolStart = null;
+function _circleToolClick(tile) {
+    const x = parseInt(tile.getAttribute('data-x'));
+    const y = parseInt(tile.getAttribute('data-y'));
+    const z = parseInt(tile.getAttribute('data-z'));
+
+    if (!window._circleToolStart) {
+        window._circleToolStart = { x, y, z };
+        showToast('Started Circle');
+        tile.classList.add('selected-tile');
+        return;
+    }
+    const { x: cx, y: cy, z: z0 } = window._circleToolStart;
+    const rx = Math.abs(x - cx);
+    const ry = Math.abs(y - cy);
+    const pts = _ellipsePoints(cx, cy, rx, ry);
+    saveState();
+    pts.forEach(([px, py]) => {
+        const t = mapContainer.querySelector(`.tile[data-x="${px}"][data-y="${py}"][data-z="${z0}"]`);
+        if (t) handleInteraction(t, px, py, z0);
+    });
+    window._circleToolStart = null;
+    updateMinimap();
+    showToast('Pasted Circle (' + pts.length + ' tile-uri)');
+    selectedTiles.forEach(t => t.classList.remove('selected-tile'));
+    selectedTiles.clear();
+}
+
+function _ellipsePoints(cx, cy, rx, ry) {
+    const pts = new Map();
+    if (rx === 0 && ry === 0) return [[cx, cy]];
+    const steps = Math.max(rx, ry) * 8 + 16;
+    for (let i = 0; i < steps; i++) {
+        const angle = (2 * Math.PI * i) / steps;
+        const px = Math.round(cx + rx * Math.cos(angle));
+        const py = Math.round(cy + ry * Math.sin(angle));
+        pts.set(px + ',' + py, [px, py]);
+    }
+    return Array.from(pts.values());
 }
 const _BRUSH_SIZES = [1, 2, 3, 5, 7];
 

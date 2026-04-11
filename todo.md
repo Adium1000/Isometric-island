@@ -1,12 +1,6 @@
 ![Banner](GithubPreview/Banners/todolist.png)
 # Here is my todo list where I list ideeas to remember them for later, take a look!
 
-- radial menu 
-:Magic Wand
-:Terraforming Brush
-:Line Tool
-:Circle Tool
-
 ignore the cluter :) no time to sort the most heh
 also placing on the side of a block is not possible rn right?
 -a proper way to retrigger it would be nice tuto
@@ -15,8 +9,7 @@ also placing on the side of a block is not possible rn right?
 - tutorial video
 - MoreBlocks
 - optimization banner
-- X people building right now" counter live
-- stamp 
+- X people building right now" counter live (discarded)
 - build that island replica game mini
 - Notificări stacked - acum toast-ul se suprascrie, poți face o coadă verticală cu mai multe toasts simultane // 
 - Timelapse recorder — înregistrezi fiecare acțiune și poți reda construcția de la zero ca un gif/video
@@ -27,6 +20,11 @@ also placing on the side of a block is not possible rn right?
 - weird sound
    
 What I added:
+- radial menu 
+:Magic Wand
+:Terraforming Brush
+:Line Tool
+:Circle Tool
 - Realizaări
 :Primul Copac (plaseaza un copac)
 :Poate iese ceva: Genereaza o insula random
@@ -118,30 +116,24 @@ Devlog Sketch
 Release
 Release Final
 
-# Devlog 61
+# Devlog 62 
+- More radial tools for efficiency creating and editing islands
 ---
+New Radial Tools:
+1. Circle Tool
+- Place circles on the islands/Cut island in circle form
+- Place materials in a circle way or top layers stuff
 
-### Comit [(8206825)](https://github.com/Adium1000/Isometric-island/commit/8206825688d0f2f355bdf965ce6fe9976b17eb47) :new: 
+2. Line Tool
+- Place lines on the island/Cut island into multiple islands
+- Place items in a line shape like melons , trees , and more
 
-- Added Founding option to the game's repository, now you can give me your $ :3
-- I also added Contributions, but I did not done the tab yeet 
+3. Magic Wand
+- Select Blocks with advamced pathfinding  for selecting and modifying blocks
+- Does not work with multi layer stuff like trees 
+
+4. Terraforming Brush
+- Make mountains and increase Y level
+- Gotta be buggy
 ---
-
-### Comit [(b9585fc)](https://github.com/Adium1000/Isometric-island/commit/b9585fc7c63330e3cc681f71a40c1001e4189ba6) :new: 
-
-- Added Revolut button in the readme descriptios so you can donate using that too 
----
-
-### Comit [(eb8d784)](https://github.com/Adium1000/Isometric-island/commit/eb8d7843f559e3d19780da7622d4d80bdded5c4b) :new: 
-
-- Moved all content from `GithubPreview` to `.Github` so the repo is lookin clean
-
----
-
-### Comit [0eaaea5](https://github.com/Adium1000/Isometric-island/commit/0eaaea57ace59a10aae595f0dc8132f34de67774) :menhera-point:  
-- Popup Help tooltips
-- This "Helps" people to understand what the popup does when oppened
-- Popups legible for this tooltip have a [?] button nex to the [x] button, this will help some users with the confusion
----
-This is all about what is new, what do you think? :osh-mmm: 
-
+That is all the new stuff for this devlog, what do you say ?
