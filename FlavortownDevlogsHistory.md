@@ -715,6 +715,40 @@ Anyway this is all about the new stuff in my game what do you think  :menhera-po
 
 ![Devlog60](<.github/Devlogs (Flavortown)/d60.png>)
 
+---
+# Devlog 61
+---
+
+### Comit [(8206825)](https://github.com/Adium1000/Isometric-island/commit/8206825688d0f2f355bdf965ce6fe9976b17eb47) 
+
+- Added Founding option to the game's repository, now you can give me your $ :3
+- I also added Contributions, but I did not done the tab yeet 
+---
+
+### Comit [(b9585fc)](https://github.com/Adium1000/Isometric-island/commit/b9585fc7c63330e3cc681f71a40c1001e4189ba6) :new: 
+
+- Added Revolut button in the readme descriptios so you can donate using that too 
+---
+
+### Comit [(eb8d784)](https://github.com/Adium1000/Isometric-island/commit/eb8d7843f559e3d19780da7622d4d80bdded5c4b) 
+
+- Moved all content from `GithubPreview` to `.Github` so the repo is lookin clean
+
+---
+
+### Comit [(0eaaea5)](https://github.com/Adium1000/Isometric-island/commit/0eaaea57ace59a10aae595f0dc8132f34de67774) :menhera-point:  
+- Popup Help tooltips
+- This "Helps" people to understand what the popup does when oppened
+- Popups legible for this tooltip have a [?] button nex to the [x] button, this will help some users with the confusion
+---
+This is all about what is new, what do you think? :osh-mmm: 
+
+![Devlog61](<.github/Devlogs (Flavortown)/devlog61.png>)
+
+
+
+
+
 
 ---
 End 

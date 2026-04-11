@@ -243,8 +243,6 @@ body {
 }
 #float-popup-close-btn:hover { filter: brightness(1.3); transform: scale(1.1); }
 #float-popup-close-btn:active { transform: scale(0.9); }
-
-/* ── Popup Help Button (?) ─────────────────────────────── */
 .popup-help-btn {
     position: absolute;
     top: -18px;
@@ -270,8 +268,6 @@ body {
 }
 .popup-help-btn:hover { filter: brightness(1.3); transform: scale(1.1); }
 .popup-help-btn:active { transform: scale(0.9); }
-
-/* ── Help Info Popup ───────────────────────────────────── */
 #help-info-overlay {
     display: none;
     position: fixed;
