@@ -22,8 +22,8 @@
     --gui-active:    #6b4726;
     --gui-divider:   #523519;
     --gui-input-bg:  #3b2007;
-    --gui-close-bg:  #7a2020;
-    --gui-close-sh:  #3b1010;
+    --gui-close-bg:  #555555;
+    --gui-close-sh:  #333333;
     --gui-title-sh:  #523519;
     --gui-section-c: #ffdf80;
 }
@@ -40,8 +40,8 @@ body.gui-theme-blue {
     --gui-active:    #1e4f8a;
     --gui-divider:   #0a1830;
     --gui-input-bg:  #0d2040;
-    --gui-close-bg:  #7a2020;
-    --gui-close-sh:  #3b1010;
+    --gui-close-bg:  #555555;
+    --gui-close-sh:  #333333;
     --gui-title-sh:  #0a1830;
     --gui-section-c: #80c8ff;
 }
@@ -58,8 +58,8 @@ body.gui-theme-green {
     --gui-active:    #3a7020;
     --gui-divider:   #091f04;
     --gui-input-bg:  #0d3007;
-    --gui-close-bg:  #7a2020;
-    --gui-close-sh:  #3b1010;
+    --gui-close-bg:  #555555;
+    --gui-close-sh:  #333333;
     --gui-title-sh:  #091f04;
     --gui-section-c: #a0e060;
 }
@@ -227,7 +227,7 @@ body {
 #float-popup-overlay.popup-visible { opacity: 1; display: flex; }
 #float-popup-wrapper {
     position: relative;
-    transform: scale(0.87) translateY(28px);
+    transform: scale(0.88) translateY(24px);
     transition: transform 0.35s cubic-bezier(0.18, 0.89, 0.32, 1.28);
 }
 #float-popup-overlay.popup-visible #float-popup-wrapper { transform: scale(1.3) translateY(0); }
@@ -243,6 +243,102 @@ body {
 }
 #float-popup-close-btn:hover { filter: brightness(1.3); transform: scale(1.1); }
 #float-popup-close-btn:active { transform: scale(0.9); }
+
+/* ── Popup Help Button (?) ─────────────────────────────── */
+.popup-help-btn {
+    position: absolute;
+    top: -18px;
+    right: 26px;
+    width: 36px;
+    height: 36px;
+    background: #555555;
+    border: 4px solid var(--gui-border);
+    box-shadow: 3px 3px 0 #333333;
+    color: #fff;
+    font-family: Arial, sans-serif;
+    font-size: 16px;
+    font-weight: 400;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: transform 0.1s, filter 0.1s;
+    z-index: 10;
+    padding: 0;
+    line-height: 1;
+    clip-path: polygon(0% 3px, 3px 3px, 3px 0%, calc(100% - 3px) 0%, calc(100% - 3px) 3px, 100% 3px, 100% calc(100% - 3px), calc(100% - 3px) calc(100% - 3px), calc(100% - 3px) 100%, 3px 100%, 3px calc(100% - 3px), 0% calc(100% - 3px));
+    cursor: pointer;
+}
+.popup-help-btn:hover { filter: brightness(1.3); transform: scale(1.1); }
+.popup-help-btn:active { transform: scale(0.9); }
+
+/* ── Help Info Popup ───────────────────────────────────── */
+#help-info-overlay {
+    display: none;
+    position: fixed;
+    inset: 0;
+    z-index: 99999;
+    pointer-events: all;
+    background: rgba(0,0,0,0.45);
+    align-items: center;
+    justify-content: center;
+}
+#help-info-wrapper {
+    position: relative;
+    transform: scale(0.88) translateY(24px);
+    transition: transform 0.25s cubic-bezier(0.18, 0.89, 0.32, 1.28);
+}
+#help-info-overlay.popup-visible #help-info-wrapper {
+    transform: scale(1.3) translateY(0);
+}
+#help-info-close-btn {
+    position: absolute;
+    top: -18px;
+    right: -18px;
+    width: 36px;
+    height: 36px;
+    background: #7a2020;
+    border: 4px solid var(--gui-border);
+    box-shadow: 3px 3px 0 #3b1010;
+    color: #fff;
+    font-family: 'Press Start 2P', cursive;
+    font-size: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: transform 0.1s, filter 0.1s;
+    z-index: 10;
+    padding: 0;
+    line-height: 1;
+    clip-path: polygon(0% 3px, 3px 3px, 3px 0%, calc(100% - 3px) 0%, calc(100% - 3px) 3px, 100% 3px, 100% calc(100% - 3px), calc(100% - 3px) calc(100% - 3px), calc(100% - 3px) 100%, 3px 100%, 3px calc(100% - 3px), 0% calc(100% - 3px));
+    cursor: pointer;
+}
+#help-info-close-btn:hover { filter: brightness(1.3); transform: scale(1.1); }
+#help-info-close-btn:active { transform: scale(0.9); }
+#help-info-popup {
+    background: var(--gui-bg-light, #8b5e34);
+    border: 4px solid var(--gui-border, #523519);
+    box-shadow: 6px 6px 0 var(--gui-shadow, #523519);
+    padding: 18px 20px 16px;
+    width: 260px;
+    font-family: 'Press Start 2P', monospace;
+}
+#help-info-title {
+    font-size: 9px;
+    color: var(--gui-accent, #ffdf80);
+    text-shadow: 2px 2px 0 var(--gui-title-sh, #523519);
+    margin: 0 0 12px 0;
+    padding-bottom: 8px;
+    border-bottom: 3px solid var(--gui-divider, #523519);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+#help-info-text {
+    font-size: 6px;
+    color: var(--gui-text, #fff8e1);
+    line-height: 2.2;
+    margin-bottom: 14px;
+}
+
 #float-popup {
     background: var(--gui-bg-light);
     border: 4px solid var(--gui-border);
@@ -469,7 +565,7 @@ body {
 #save-popup-overlay.popup-visible { opacity: 1; }
 #save-popup-wrapper {
     position: relative;
-    transform: scale(1.0) translateY(20px);
+    transform: scale(0.88) translateY(24px);
     transition: transform 0.25s cubic-bezier(0.18, 0.89, 0.32, 1.28);
     
 }
@@ -636,7 +732,7 @@ body {
 #settings-popup-overlay.popup-visible { opacity: 1; display: flex; }
 #settings-popup-wrapper {
     position: relative;
-    transform: scale(0.87) translateY(28px);
+    transform: scale(0.88) translateY(24px);
     transition: transform 0.35s cubic-bezier(0.18, 0.89, 0.32, 1.28);
 }
 #settings-popup-overlay.popup-visible #settings-popup-wrapper { transform: scale(1.3) translateY(0); }
@@ -729,10 +825,10 @@ body {
 #qr-popup-overlay.popup-visible { opacity: 1; display: flex; }
 #qr-popup-wrapper {
     position: relative;
-    transform: scale(0.85) translateY(28px);
+    transform: scale(0.88) translateY(24px);
     transition: transform 0.35s cubic-bezier(0.18, 0.89, 0.32, 1.28);
 }
-#qr-popup-overlay.popup-visible #qr-popup-wrapper { transform: scale(1.0) translateY(0); }
+#qr-popup-overlay.popup-visible #qr-popup-wrapper { transform: scale(1.3) translateY(0); }
 #qr-close-btn {
     position: absolute; top: -18px; right: -18px;
     width: 36px; height: 36px; background: #7a2020;
@@ -958,7 +1054,7 @@ body {
 #welcome-overlay.popup-visible { opacity: 1; }
 #welcome-wrapper {
     position: relative;
-    transform: scale(0.87) translateY(28px);
+    transform: scale(0.88) translateY(24px);
     transition: transform 0.35s cubic-bezier(0.18, 0.89, 0.32, 1.28);
 }
 #welcome-overlay.popup-visible #welcome-wrapper { transform: scale(1.3) translateY(0); }
@@ -1292,7 +1388,7 @@ body {
 }
 #confirm-delete-overlay.popup-visible { opacity: 1; }
 #confirm-delete-wrapper {
-    transform: scale(0.88) translateY(20px);
+    transform: scale(0.88) translateY(24px);
     transition: transform 0.25s cubic-bezier(0.18, 0.89, 0.32, 1.28);
 }
 #confirm-delete-overlay.popup-visible #confirm-delete-wrapper {
@@ -1776,7 +1872,7 @@ body {
     transition: transform 0.28s cubic-bezier(0.18, 0.89, 0.32, 1.28);
 }
 #pointer-settings-overlay.popup-visible #pointer-settings-wrapper {
-    transform: scale(1.15) translateY(0);
+    transform: scale(1.3) translateY(0);
 }
 
 #pointer-settings-close-btn {
@@ -1913,7 +2009,7 @@ body {
     transition: transform 0.28s cubic-bezier(0.18, 0.89, 0.32, 1.28);
 }
 #about-popup-overlay.popup-visible #about-popup-wrapper {
-    transform: scale(1.1) translateY(0);
+    transform: scale(1.3) translateY(0);
 }
 
 #about-close-btn {
@@ -2013,7 +2109,7 @@ body {
     transition: transform 0.28s cubic-bezier(0.18, 0.89, 0.32, 1.28);
 }
 #graphics-settings-overlay.popup-visible #graphics-settings-wrapper {
-    transform: scale(1.15) translateY(0);
+    transform: scale(1.3) translateY(0);
 }
 
 #graphics-settings-close-btn {
@@ -2083,7 +2179,7 @@ body {
     transition: transform 0.28s cubic-bezier(0.18, 0.89, 0.32, 1.28);
 }
 #photo-filters-overlay.popup-visible #photo-filters-wrapper {
-    transform: scale(1.15) translateY(0);
+    transform: scale(1.3) translateY(0);
 }
 
 #photo-filters-close-btn {
@@ -2237,7 +2333,7 @@ body {
     transition: transform 0.28s cubic-bezier(0.18, 0.89, 0.32, 1.28);
 }
 #gui-settings-overlay.popup-visible #gui-settings-wrapper {
-    transform: scale(1.15) translateY(0);
+    transform: scale(1.3) translateY(0);
 }
 
 #gui-settings-close-btn {
@@ -2360,11 +2456,11 @@ body { transition: background-color 1.5s ease; }
 
 #explicit-warning-wrapper {
     position: relative;
-    transform: scale(1.0) translateY(30px);
+    transform: scale(0.88) translateY(24px);
     transition: transform 0.28s cubic-bezier(0.34,1.56,0.64,1);
 }
 #explicit-warning-overlay.popup-visible #explicit-warning-wrapper {
-    transform: scale(1.0) translateY(0);
+    transform: scale(1.3) translateY(0);
 }
 #explicit-warning-close-btn {
     position: absolute;
@@ -2504,11 +2600,11 @@ body { transition: background-color 1.5s ease; }
 
 #community-wrapper {
     position: relative;
-    transform: scale(1.0) translateY(30px);
+    transform: scale(0.88) translateY(24px);
     transition: transform 0.28s cubic-bezier(0.34,1.56,0.64,1);
 }
 #community-overlay.popup-visible #community-wrapper {
-    transform: scale(1.0) translateY(0);
+    transform: scale(1.3) translateY(0);
 }
 
 #community-close-btn {
@@ -2772,7 +2868,7 @@ body { transition: background-color 1.5s ease; }
 #music-popup-overlay.popup-visible { opacity: 1; display: flex; }
 #music-popup-wrapper {
     position: relative;
-    transform: scale(0.87) translateY(28px);
+    transform: scale(0.88) translateY(24px);
     transition: transform 0.35s cubic-bezier(0.18, 0.89, 0.32, 1.28);
 }
 #music-popup-overlay.popup-visible #music-popup-wrapper { transform: scale(1.3) translateY(0); }
@@ -2898,11 +2994,11 @@ body { transition: background-color 1.5s ease; }
 
 #embed-popup-wrapper {
     position: relative;
-    transform: scale(0.87) translateY(28px);
+    transform: scale(0.88) translateY(24px);
     transition: transform 0.35s cubic-bezier(0.18, 0.89, 0.32, 1.28);
 }
 #embed-popup-overlay.popup-visible #embed-popup-wrapper {
-    transform: scale(1.0) translateY(0);
+    transform: scale(1.3) translateY(0);
 }
 
 #embed-popup-close-btn {
@@ -3023,7 +3119,7 @@ body { transition: background-color 1.5s ease; }
 
 #analytics-popup-wrapper {
     position: relative;
-    transform: scale(0.87) translateY(28px);
+    transform: scale(0.88) translateY(24px);
     transition: transform 0.35s cubic-bezier(0.18, 0.89, 0.32, 1.28);
 }
 #analytics-popup-overlay.popup-visible #analytics-popup-wrapper {
@@ -3035,10 +3131,10 @@ body { transition: background-color 1.5s ease; }
     top: -18px;
     right: -18px;
     z-index: 10;
-    background: var(--gui-close-bg, #7a2020);
+    background: #7a2020;
     color: var(--gui-text, #fff8e1);
     border: 4px solid var(--gui-border, #523519);
-    box-shadow: 3px 3px 0 var(--gui-close-sh, #3b1010);
+    box-shadow: 3px 3px 0 #3b1010;
     font-family: 'Press Start 2P', monospace;
     font-size: 12px;
     width: 36px;
@@ -3223,11 +3319,11 @@ body { transition: background-color 1.5s ease; }
 #one-by-one-overlay.popup-visible { opacity: 1; }
 
 #one-by-one-wrapper {
-    transform: scale(0.82) translateY(30px);
+    transform: scale(0.88) translateY(24px);
     transition: transform 0.32s cubic-bezier(0.18, 0.89, 0.32, 1.28);
 }
 #one-by-one-overlay.popup-visible #one-by-one-wrapper {
-    transform: scale(1) translateY(0);
+    transform: scale(1.3) translateY(0);
 }
 
 #one-by-one-popup {
@@ -3338,19 +3434,19 @@ body { transition: background-color 1.5s ease; }
 
 #brush-popup-wrapper {
     position: relative;
-    transform: scale(0.87) translateY(28px);
+    transform: scale(0.88) translateY(24px);
     transition: transform 0.35s cubic-bezier(0.18, 0.89, 0.32, 1.28);
 }
 #brush-popup-overlay.popup-visible #brush-popup-wrapper {
-    transform: scale(1) translateY(0);
+    transform: scale(1.3) translateY(0);
 }
 
 #brush-popup-close {
     position: absolute; top: -18px; right: -18px;
     width: 36px; height: 36px;
-    background: var(--gui-close-bg, #7a2020);
+    background: #7a2020;
     border: 4px solid var(--gui-border, #523519);
-    box-shadow: 3px 3px 0 var(--gui-close-sh, #3b1010);
+    box-shadow: 3px 3px 0 #3b1010;
     color: #fff; font-family: 'Press Start 2P', cursive; font-size: 12px;
     display: flex; align-items: center; justify-content: center;
     transition: transform 0.1s, filter 0.1s; z-index: 10; padding: 0; line-height: 1;
@@ -3412,19 +3508,19 @@ body { transition: background-color 1.5s ease; }
 
 #mirror-popup-wrapper {
     position: relative;
-    transform: scale(0.87) translateY(28px);
+    transform: scale(0.88) translateY(24px);
     transition: transform 0.35s cubic-bezier(0.18, 0.89, 0.32, 1.28);
 }
 #mirror-popup-overlay.popup-visible #mirror-popup-wrapper {
-    transform: scale(1) translateY(0);
+    transform: scale(1.3) translateY(0);
 }
 
 #mirror-popup-close {
     position: absolute; top: -18px; right: -18px;
     width: 36px; height: 36px;
-    background: var(--gui-close-bg, #7a2020);
+    background: #7a2020;
     border: 4px solid var(--gui-border, #523519);
-    box-shadow: 3px 3px 0 var(--gui-close-sh, #3b1010);
+    box-shadow: 3px 3px 0 #3b1010;
     color: #fff; font-family: 'Press Start 2P', cursive; font-size: 12px;
     display: flex; align-items: center; justify-content: center;
     transition: transform 0.1s, filter 0.1s; z-index: 10; padding: 0; line-height: 1;
@@ -3489,11 +3585,11 @@ body { transition: background-color 1.5s ease; }
 
 #notfound-wrapper {
     position: relative;
-    transform: scale(1.0) translateY(30px);
+    transform: scale(0.88) translateY(24px);
     transition: transform 0.28s cubic-bezier(0.34,1.56,0.64,1);
 }
 #notfound-overlay.popup-visible #notfound-wrapper {
-    transform: scale(1.0) translateY(0);
+    transform: scale(1.3) translateY(0);
 }
 
 #notfound-popup {
@@ -3595,11 +3691,11 @@ body { transition: background-color 1.5s ease; }
 
 #grid-res-wrapper {
     position: relative;
-    transform: scale(1.0) translateY(30px);
+    transform: scale(0.88) translateY(24px);
     transition: transform 0.28s cubic-bezier(0.34,1.56,0.64,1);
 }
 #grid-res-overlay.popup-visible #grid-res-wrapper {
-    transform: scale(1.0) translateY(0);
+    transform: scale(1.3) translateY(0);
 }
 
 #grid-res-close-btn {
@@ -3757,7 +3853,7 @@ body:not(.presentation-mode) #block-name-display {
 #keybindings-popup-overlay.popup-visible { opacity: 1; display: flex; }
 #keybindings-popup-wrapper {
     position: relative;
-    transform: scale(0.87) translateY(28px);
+    transform: scale(0.88) translateY(24px);
     transition: transform 0.35s cubic-bezier(0.18, 0.89, 0.32, 1.28);
 }
 #keybindings-popup-overlay.popup-visible #keybindings-popup-wrapper {
@@ -3880,7 +3976,7 @@ body:not(.presentation-mode) #block-name-display {
 #fun-popup-wrapper,
 #island-emoji-wrapper {
     position: relative;
-    transform: scale(0.87) translateY(28px);
+    transform: scale(0.88) translateY(24px);
     transition: transform 0.35s cubic-bezier(0.18, 0.89, 0.32, 1.28);
 }
 #fun-popup-overlay.popup-visible #fun-popup-wrapper,
@@ -3968,7 +4064,7 @@ body:not(.presentation-mode) #block-name-display {
 
 #achievements-popup-wrapper {
     position: relative;
-    transform: scale(0.87) translateY(28px);
+    transform: scale(0.88) translateY(24px);
     transition: transform 0.35s cubic-bezier(0.18, 0.89, 0.32, 1.28);
 }
 #achievements-popup-overlay.popup-visible #achievements-popup-wrapper {
@@ -3980,10 +4076,10 @@ body:not(.presentation-mode) #block-name-display {
     top: -18px;
     right: -18px;
     z-index: 10;
-    background: var(--gui-close-bg, #7a2020);
+    background: #7a2020;
     color: var(--gui-text, #fff8e1);
     border: 4px solid var(--gui-border, #523519);
-    box-shadow: 3px 3px 0 var(--gui-close-sh, #3b1010);
+    box-shadow: 3px 3px 0 #3b1010;
     font-family: 'Press Start 2P', monospace;
     font-size: 12px;
     width: 36px;
@@ -4209,10 +4305,10 @@ body:not(.presentation-mode) #block-name-display {
 #save-slots-overlay.popup-visible { opacity: 1; display: flex; }
 #save-slots-wrapper {
     position: relative;
-    transform: scale(0.74) translateY(28px);
+    transform: scale(0.88) translateY(24px);
     transition: transform 0.28s cubic-bezier(0.18, 0.89, 0.32, 1.28);
 }
-#save-slots-overlay.popup-visible #save-slots-wrapper { transform: scale(1.35) translateY(0); }
+#save-slots-overlay.popup-visible #save-slots-wrapper { transform: scale(1.3) translateY(0); }
 #save-slots-close-btn {
     position: absolute;
     top: -18px;

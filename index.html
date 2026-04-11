@@ -706,6 +706,7 @@ function tryStartBuilding() {
 
 <div id="save-popup-overlay" onclick="if(event.target===this)closeSavePopup()">
     <div id="save-popup-wrapper">
+        <button class="popup-help-btn" onclick="showHelpInfo('file')">?</button>
         <button id="popup-close-btn" onclick="closeSavePopup()">&#10005;</button>
         <div id="save-popup" class="pixel-corners">
             <h2><img src="./Assets/Icons/todorm.png" style="width:48px;height:48px;image-rendering:pixelated;vertical-align:middle;margin-right:10px;">FILE</h2>
@@ -756,7 +757,7 @@ function tryStartBuilding() {
                         <div style="display:flex;flex-direction:column;gap:8px;">
                             <button class="btn-settings" onclick="openSettingsPopup()"><img src="./Assets/Icons/maintenance.png" style="width:16px;height:16px;image-rendering:pixelated;vertical-align:middle;margin-right:6px;"> SETTINGS</button>
                             <button class="btn-settings" onclick="openAnalyticsPopup()" style="background:#2a4a2e;border-color:#1a3020;color:#a8ffb8;"> ISLAND ANALYTICS</button>
-                            <button class="btn-settings" onclick="openAchievementsPopup()" style="background:#2a1a4a;border-color:#4a2880;color:#c8a8ff;"><img src="./Assets/Icons/book.png" style="width:16px;height:16px;image-rendering:pixelated;vertical-align:middle;margin-right:6px;">Achiveements</button>
+                            <button class="btn-settings" onclick="openAchievementsPopup()" style="background:#2a1a4a;border-color:#4a2880;color:#c8a8ff;"><img src="./Assets/Icons/book.png" style="width:16px;height:16px;image-rendering:pixelated;vertical-align:middle;margin-right:6px;">Achievements</button>
                             <button class="btn-settings" onclick="closeSavePopup();openCommunityPopup()" style="background:#1a3a5c;border-color:#2a6a9e;color:#a0d4ff;"><img src="./Assets/Icons/Comunitymaps.png" style="width:16px;height:16px;image-rendering:pixelated;vertical-align:middle;margin-right:6px;">COMMUNITY MAPS</button>
                         </div>
 
@@ -778,6 +779,7 @@ function tryStartBuilding() {
 
 <div id="settings-popup-overlay" onclick="if(event.target===this)closeSettingsPopup()">
     <div id="settings-popup-wrapper">
+        <button class="popup-help-btn" onclick="showHelpInfo('settings')">?</button>
         <button id="settings-close-btn" onclick="closeSettingsPopup()">&#10005;</button>
         <div id="settings-popup" class="pixel-corners">
             <h2><img src="./Assets/Icons/maintenance.png" style="width:26px;height:26px;image-rendering:pixelated;vertical-align:middle;margin-right:6px;"> SETTINGS</h2>
@@ -906,7 +908,7 @@ function tryStartBuilding() {
                     </div>
 
                     <div style="display:flex;justify-content:flex-end;gap:8px;margin-top:auto;padding-top:10px;">
-                        <button class="btn-info-about" id="btn-menu-settings" onclick="openSettingsMenuPopup()" title="Menu"><img src="./Assets/Icons/todorm.png" style="width:14px;height:14px;image-rendering:pixelated;vertical-align:middle;"></button>
+                        <button class="btn-info-about" id="btn-menu-settings" onclick="openSettingsMenuPopup()"><img src="./Assets/Icons/todorm.png" style="width:14px;height:14px;image-rendering:pixelated;vertical-align:middle;"></button>
                         <button class="btn-info-about" onclick="openAboutPopup()">i</button>
                         <button class="btn-ok" onclick="closeSettingsPopup()">OK</button>
                     </div>
@@ -982,11 +984,11 @@ function tryStartBuilding() {
 <div id="dock-container">
     <div id="dock">
         <div id="block-name-display">Eraser</div>
-        <img id="save-btn" src="./Assets/GUI/save.png" onclick="saveIslandAsPNG()" title="File">
-        <img id="undo-btn" src="./Assets/GUI/undo.png" onclick="undo()" title="Undo (Ctrl+Z)">
-        <img id="redo-btn" src="./Assets/GUI/redo.png" onclick="redo()" title="Redo (Ctrl+Y)">
-        <img id="float-toggle" src="./Assets/GUI/floatoff.png" onclick="openFloatPopup()" title="Float (F)">
-        <img id="music-toggle" src="./Assets/GUI/bgoff.png" onclick="openMusicPopup()" title="Music (M)">
+        <img id="save-btn" src="./Assets/GUI/save.png" onclick="saveIslandAsPNG()">
+        <img id="undo-btn" src="./Assets/GUI/undo.png" onclick="undo()">
+        <img id="redo-btn" src="./Assets/GUI/redo.png" onclick="redo()">
+        <img id="float-toggle" src="./Assets/GUI/floatoff.png" onclick="openFloatPopup()">
+        <img id="music-toggle" src="./Assets/GUI/bgoff.png" onclick="openMusicPopup()">
         <div id="selection-highlight"></div>
         <div class="slot page-1" id="slot-eraser" onmouseover="showName('Eraser: Good for shaping and removing blocks ')" onmouseout="hideName()" onclick="selectBlock('eraser', this)"><img src="./Assets/Blocks/eraser.png"></div>
         <div class="slot page-1" onmouseover="showName('Grass: Natural block')" onmouseout="hideName()" onclick="selectBlock('dirt', this)"><img src="./Assets/Blocks/dirt.png"></div>
@@ -1162,6 +1164,7 @@ function tryStartBuilding() {
 </div>
 <div id="graphics-settings-overlay" onclick="if(event.target===this)closeGraphicsSettings()">
     <div id="graphics-settings-wrapper">
+        <button class="popup-help-btn" onclick="showHelpInfo('graphics')">?</button>
         <button id="graphics-settings-close-btn" onclick="closeGraphicsSettings()">&#10005;</button>
         <div id="graphics-settings-popup" class="pixel-corners">
             <h2><img src="./Assets/Icons/video.png" style="width:26px;height:26px;image-rendering:pixelated;vertical-align:middle;margin-right:6px;"> GRAPHICS SETTINGS</h2>
@@ -1243,6 +1246,7 @@ function tryStartBuilding() {
 </div>
 <div id="pointer-settings-overlay" onclick="if(event.target===this)closePointerSettings()">
     <div id="pointer-settings-wrapper">
+        <button class="popup-help-btn" onclick="showHelpInfo('pointer')">?</button>
         <button id="pointer-settings-close-btn" onclick="closePointerSettings()">&#10005;</button>
         <div id="pointer-settings-popup" class="pixel-corners">
             <h2><img src="./Assets/Cursors/pointer.png" style="width:26px;height:26px;image-rendering:pixelated;vertical-align:middle;margin-right:6px;">POINTER SETTINGS</h2>
@@ -1274,6 +1278,7 @@ function tryStartBuilding() {
 </div>
 <div id="gui-settings-overlay" onclick="if(event.target===this)closeGUISettings()">
     <div id="gui-settings-wrapper">
+        <button class="popup-help-btn" onclick="showHelpInfo('gui')">?</button>
         <button id="gui-settings-close-btn" onclick="closeGUISettings()">&#10005;</button>
         <div id="gui-settings-popup" class="pixel-corners">
             <h2><img src="./Assets/Icons/hotbar.png" style="width:26px;height:26px;image-rendering:pixelated;vertical-align:middle;margin-right:6px;">GUI THEME</h2>
@@ -1338,6 +1343,7 @@ function tryStartBuilding() {
 </div>
 <div id="settings-menu-overlay" onclick="if(event.target===this)closeSettingsMenuPopup()">
     <div id="settings-menu-wrapper">
+        <button class="popup-help-btn" onclick="showHelpInfo('settings-menu')">?</button>
         <button id="settings-menu-close-btn" onclick="closeSettingsMenuPopup()">&#10005;</button>
         <div id="settings-menu-popup" class="pixel-corners">
             <h2><img src="./Assets/Icons/todorm.png" style="width:26px;height:26px;image-rendering:pixelated;vertical-align:middle;margin-right:8px;">Files and Legal Docs</h2>
@@ -1552,6 +1558,7 @@ window.addEventListener('load', function() {
 </div>
 <div id="community-overlay" onclick="if(event.target===this)closeCommunityPopup()">
     <div id="community-wrapper" onclick="event.stopPropagation()">
+        <button class="popup-help-btn" onclick="showHelpInfo('community')">?</button>
         <button id="community-close-btn" onclick="closeCommunityPopup()">&#10005;</button>
         <div id="community-popup" class="pixel-corners">
             <h2><img src="./Assets/Icons/Comunitymaps.png" style="width:26px;height:26px;image-rendering:pixelated;vertical-align:middle;margin-right:6px;">COMMUNITY MAPS</h2>
@@ -1991,6 +1998,7 @@ window.showEmbedPreview = () => {
 
 <div id="keybindings-popup-overlay" onclick="if(event.target===this)closeKeyBindingsPopup()">
     <div id="keybindings-popup-wrapper">
+        <button class="popup-help-btn" onclick="showHelpInfo('keybindings')">?</button>
         <button id="keybindings-close-btn" onclick="closeKeyBindingsPopup()">&#10005;</button>
         <div id="keybindings-popup" class="pixel-corners">
             <h2>KEY BINDINGS</h2>
@@ -2053,6 +2061,7 @@ window.closeNotFound = function() {
 
 <div id="save-slots-overlay" onclick="if(event.target===this)closeSaveSlotsPopup()">
     <div id="save-slots-wrapper">
+        <button class="popup-help-btn" onclick="showHelpInfo('save-slots')">?</button>
         <button id="save-slots-close-btn" onclick="closeSaveSlotsPopup()">&#10005;</button>
         <div id="save-slots-popup" class="pixel-corners">
             <h2><img src="./Assets/Icons/load.png" style="width:22px;height:22px;image-rendering:pixelated;vertical-align:middle;margin-right:8px;">SAVE SLOTS</h2>
@@ -2104,9 +2113,10 @@ window.closeNotFound = function() {
 
 <div id="achievements-popup-overlay" onclick="if(event.target===this)closeAchievementsPopup()">
     <div id="achievements-popup-wrapper">
+        <button class="popup-help-btn" onclick="showHelpInfo('achievements')">?</button>
         <button id="achievements-close-btn" onclick="closeAchievementsPopup()">&#10005;</button>
         <div id="achievements-popup" class="pixel-corners">
-            <h2><img src="./Assets/Icons/book.png" style="width:22px;height:22px;image-rendering:pixelated;vertical-align:middle;margin-right:8px;">Achiveements</h2>
+            <h2><img src="./Assets/Icons/book.png" style="width:22px;height:22px;image-rendering:pixelated;vertical-align:middle;margin-right:8px;">Achievements</h2>
             <hr class="popup-divider">
             <div id="ach-progress-bar-wrap">
                 <div id="ach-progress-bar-fill"></div>
@@ -2121,6 +2131,7 @@ window.closeNotFound = function() {
 </html>
 <div id="float-popup-overlay" onclick="if(event.target===this)closeFloatPopup()">
     <div id="float-popup-wrapper">
+        <button class="popup-help-btn" onclick="showHelpInfo('float')">?</button>
         <button id="float-popup-close-btn" onclick="closeFloatPopup()">×</button>
         <div id="float-popup">
             <h2>✦ Float Mode</h2>
@@ -2162,6 +2173,7 @@ window.closeNotFound = function() {
 
 <div id="music-popup-overlay" onclick="if(event.target===this)closeMusicPopup()">
     <div id="music-popup-wrapper">
+        <button class="popup-help-btn" onclick="showHelpInfo('music')">?</button>
         <button id="music-popup-close-btn" onclick="closeMusicPopup()">×</button>
         <div id="music-popup">
             <h2>♪ Music & Chill Vibes!</h2>
@@ -2235,6 +2247,91 @@ window.closeNotFound = function() {
         </div>
     </div>
 </div>
+
+<!-- Help Info Popup -->
+<div id="help-info-overlay" onclick="if(event.target===this)closeHelpInfo()">
+    <div id="help-info-wrapper">
+        <button id="help-info-close-btn" onclick="closeHelpInfo()">&#10005;</button>
+        <div id="help-info-popup" class="pixel-corners">
+            <h2 id="help-info-title"></h2>
+            <div id="help-info-text"></div>
+        </div>
+    </div>
+</div>
+
+<script>
+const HELP_INFO = {
+    'file': {
+        title: 'File',
+        text: 'Save, Load, Export, Change settings and Fun options are here'
+    },
+    'settings': {
+        title: 'Settings',
+        text: 'Settings Menu let you change preferances and island settings.'
+    },
+    'settings-menu': {
+        title: 'Legal docs and tutorial',
+        text: 'Here you can see the legal docs this game uses.'
+    },
+    'graphics': {
+        title: 'Graphics',
+        text: 'Change graphics and make the game run more smoother if it does not .'
+    },
+    'pointer': {
+        title: 'Pointer',
+        text: 'Configure the pointer options and its behave as you like .'
+    },
+    'gui': {
+        title: 'GUI Theme',
+        text: 'Change the GUI accent color between brown/blue/green or let if change automatic'
+    },
+    'keybindings': {
+        title: 'Key Bindings',
+        text: 'Customize shortcut keys as you like using this menu, you can always go back to default if you change your mind'
+    },
+    'achievements': {
+        title: 'Achievements',
+        text: 'Explore the game and unlock silly achievements, see your progress on the bar '
+    },
+    'float': {
+        title: 'Float Mode',
+        text: "Make your island float using the presets, don't forget to change the speed."
+    },
+    'music': {
+        title: 'Music',
+        text: 'Listen to background noise or a special Spotify Playlist designed for island builders, just like you!.'
+    },
+    'community': {
+        title: 'Community Maps',
+        text: 'Explore or Upload you favorite maps on the Isometric Island Server, Need a Google account OAuth.'
+    },
+    'save-slots': {
+        title: 'Save Slots',
+        text: "You can save up to 3 islands in your browser's local storage by using this menu, Verry helpfull for sketches."
+    },
+};
+
+function showHelpInfo(key) {
+    const data = HELP_INFO[key];
+    if (!data) return;
+    document.getElementById('help-info-title').textContent = data.title;
+    document.getElementById('help-info-text').textContent = data.text;
+    const overlay = document.getElementById('help-info-overlay');
+    overlay.style.display = 'flex';
+    requestAnimationFrame(() => requestAnimationFrame(() => overlay.classList.add('popup-visible')));
+    if (typeof hotbarSound !== 'undefined') { hotbarSound.currentTime = 0; hotbarSound.play().catch(() => {}); }
+}
+
+function closeHelpInfo() {
+    const overlay = document.getElementById('help-info-overlay');
+    overlay.classList.remove('popup-visible');
+    if (typeof pclsSound !== 'undefined') { pclsSound.currentTime = 0; pclsSound.play().catch(() => {}); }
+    setTimeout(() => { overlay.style.display = 'none'; }, 300);
+}
+
+window.showHelpInfo  = showHelpInfo;
+window.closeHelpInfo = closeHelpInfo;
+</script>
 
 <div id="one-by-one-overlay" onclick="if(event.target===this)close1x1Popup()" style="display:none;">
     <div id="one-by-one-wrapper">

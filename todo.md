@@ -118,28 +118,5 @@ Devlog Sketch
 Release
 Release Final
 
-# Devlog 60 
-[dcbcf9d](https://github.com/Adium1000/Isometric-island/commit/dcbcf9dc208e8c73b0cf29d3bf86c3418d999d13)
-
-- Added more Achievements :yay:
-- Because I need to keep the game silly i will push some useless verry cool updates
----
-### New Achievements list:
-
-1. It floats! :flying_money_with_wings: 
-- Make your island float
-
-2. You are crazyy stop! :prayer: 
-- Open the Island as Emoji tab
-
-3. It's good to share :bro-visited-his-friend: 
-- Share your island link
-
-4. Potato Mode ON :sorry-my-ai-api-got-rate-limited: 
-- Turn off al graphics settings
-
----
-
-- Achievements are a way of exploring the menus so this will keep you entertained for a time :3 because I love my users ofc ofc 
----
-Anyway this is all about the new stuff in my game what do you think  :menhera-point: 
+# Devlog 61
+- Popup Help tooltips

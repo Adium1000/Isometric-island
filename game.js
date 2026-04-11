@@ -4678,7 +4678,7 @@ function handleInteractionBrushed(tile, x, y, z) {
     const ACH_KEY = 'ii_achievements';
 
     const ACHIEVEMENTS = [
-        {
+              {
             id: 'first_tree',
             title: 'First Tree',
             desc: 'Place a tree on the island',
@@ -4810,7 +4810,7 @@ function handleInteractionBrushed(tile, x, y, z) {
             body.id = 'ach-toast-body';
             const lbl = document.createElement('div');
             lbl.id = 'ach-toast-label';
-            lbl.textContent = 'Achiveement Unlocked!';
+            lbl.textContent = 'Achievement Unlocked!';
             const title = document.createElement('div');
             title.id = 'ach-toast-title';
             body.appendChild(lbl);
@@ -4915,7 +4915,7 @@ function handleInteractionBrushed(tile, x, y, z) {
             });
         };
 
-        addSection('Achiveements', ACHIEVEMENTS.filter(a => a.group === 'normal'));
+        addSection('Achievements', ACHIEVEMENTS.filter(a => a.group === 'normal'));
         addSection('Easter Eggs', ACHIEVEMENTS.filter(a => a.group === 'easter'));
     }
     window.openAchievementsPopup  = openAchievementsPopup;
@@ -4979,39 +4979,6 @@ function handleInteractionBrushed(tile, x, y, z) {
         unlockAchievement('easter_1x1');
         if (_origShow1x1) _origShow1x1.apply(this, arguments);
     };
-    const _origSetFloatMode = window.setFloatMode || setFloatMode;
-    window.setFloatMode = function(mode) {
-        _origSetFloatMode.apply(this, arguments);
-        if (mode && mode !== 'off') unlockAchievement('float_mode');
-    };
-    const _origOpenEmojiPopup = window.openIslandEmojiPopup;
-    window.openIslandEmojiPopup = function() {
-        unlockAchievement('emoji_tab');
-        if (_origOpenEmojiPopup) _origOpenEmojiPopup.apply(this, arguments);
-        else {
-            const ov = document.getElementById('island-emoji-overlay');
-            if (!ov) return;
-            if (typeof generateIslandEmoji === 'function') generateIslandEmoji();
-            ov.style.display = 'flex';
-            requestAnimationFrame(() => requestAnimationFrame(() => ov.classList.add('popup-visible')));
-        }
-    };
-    const _origGenerateShareURL = window.generateShareURL || generateShareURL;
-    window.generateShareURL = function() {
-        unlockAchievement('share_link');
-        _origGenerateShareURL.apply(this, arguments);
-    };
-    const _origToggleVisual = window.toggleVisualOption || toggleVisualOption;
-    window.toggleVisualOption = function(option, btn) {
-        _origToggleVisual.apply(this, arguments);
-        const graphicsIds = ['sw-shadows', 'sw-leaves', 'sw-clouds', 'sw-fps', 'sw-grid', 'sw-slide-place'];
-        const allOff = graphicsIds.every(id => {
-            const el = document.getElementById(id);
-            return el && !el.classList.contains('on');
-        });
-        if (allOff) unlockAchievement('potato_mode');
-    };
-
     loadAchievements();
 })();
 const SAVE_SLOT_KEY = 'islandSaveSlot_';
@@ -5115,3 +5082,157 @@ function deleteSlot(idx) {
     renderSaveSlots();
     showToast('Slot ' + (idx + 1) + ' deleted!');
 }
+
+// ── Tutorial Tips System ─────────────────────────────────────────────────────
+(function() {
+    const TIPS_KEY = 'ii_tips_seen';
+    const TIPS_HIDDEN_KEY = 'ii_tips_hidden';
+
+    const TIPS = {
+        'save-btn':       'Apasă pentru a salva, exporta sau încărca insula ta.',
+        'undo-btn':       'Anulează ultima acțiune (Ctrl+Z).',
+        'redo-btn':       'Refă ultima acțiune anulată (Ctrl+Y).',
+        'float-toggle':   'Fă insula să plutească. Apasă pentru a alege stilul.',
+        'music-toggle':   'Pornește / oprește muzica de fundal.',
+        'zoom-ui':        'Schimbă zoom-ul insulei. Scroll pe hartă funcționează și el.',
+        'minimap-container': 'Mini-hartă. Apasă pe ea pentru a te teleporta.',
+        'settings-popup': 'Grafică, keybind-uri, pointer și temă GUI — totul e aici.',
+        'achievements-popup-overlay': 'Urmărește realizările deblocate și secretele ascunse.',
+        'float-popup':    'Alege stilul de plutire: bounce, sine sau drift.',
+        'music-popup':    'Ascultă playlistul de pe Spotify integrat.',
+        'community-popup': 'Explorează și publică insule create de alți jucători.',
+    };
+
+    function isHidden() {
+        return localStorage.getItem(TIPS_HIDDEN_KEY) === '1';
+    }
+
+    function markSeen(id) {
+        try {
+            const seen = JSON.parse(localStorage.getItem(TIPS_KEY) || '{}');
+            seen[id] = 1;
+            localStorage.setItem(TIPS_KEY, JSON.stringify(seen));
+        } catch(_) {}
+    }
+
+    function isSeen(id) {
+        try {
+            const seen = JSON.parse(localStorage.getItem(TIPS_KEY) || '{}');
+            return !!seen[id];
+        } catch(_) { return false; }
+    }
+
+    function allSeen() {
+        return Object.keys(TIPS).every(id => isSeen(id));
+    }
+
+    function updateCloseTipsBtn() {
+        const btn = document.getElementById('close-tips-btn');
+        if (!btn) return;
+        const hide = isHidden() || allSeen();
+        btn.style.display = hide ? 'none' : '';
+    }
+
+    function showTip(anchorId, text) {
+        if (isHidden() || isSeen(anchorId)) return;
+
+        // Remove any existing tip for this anchor
+        const existing = document.getElementById('tip-' + anchorId);
+        if (existing) existing.remove();
+
+        const anchor = document.getElementById(anchorId);
+        if (!anchor) { markSeen(anchorId); updateCloseTipsBtn(); return; }
+
+        const bubble = document.createElement('div');
+        bubble.className = 'tip-bubble';
+        bubble.id = 'tip-' + anchorId;
+        bubble.textContent = text;
+        // Remove the ::before pseudo by just prepending the ? inline
+        bubble.innerHTML = '<span style="color:var(--gui-accent,#ffdf80);font-size:9px;margin-right:4px;">?</span>' + text;
+
+        // Position relative to anchor
+        const rect = anchor.getBoundingClientRect();
+        bubble.style.cssText = `
+            position:fixed;
+            top:${rect.bottom + 6}px;
+            left:${rect.left + rect.width/2}px;
+            transform:translateX(-50%);
+            pointer-events:none;
+        `;
+        document.body.appendChild(bubble);
+
+        // Auto-dismiss after 5s, or on next interaction with anchor
+        const dismiss = () => {
+            markSeen(anchorId);
+            bubble.remove();
+            updateCloseTipsBtn();
+            anchor.removeEventListener('click', dismiss);
+            anchor.removeEventListener('mousedown', dismiss);
+        };
+
+        anchor.addEventListener('click', dismiss, {once: true});
+        anchor.addEventListener('mousedown', dismiss, {once: true});
+        setTimeout(dismiss, 5000);
+    }
+
+    // Hook into popup openers to show the tip the first time
+    const hooks = [
+        { fn: 'openSavePopup',         id: 'save-btn',                  tip: TIPS['save-btn'] },
+        { fn: 'openFloatPopup',         id: 'float-toggle',              tip: TIPS['float-toggle'] },
+        { fn: 'openMusicPopup',         id: 'music-toggle',              tip: TIPS['music-toggle'] },
+        { fn: 'openSettingsPopup',      id: 'settings-popup',            tip: TIPS['settings-popup'] },
+        { fn: 'openAchievementsPopup',  id: 'achievements-popup-overlay',tip: TIPS['achievements-popup-overlay'] },
+        { fn: 'openCommunityPopup',     id: 'community-popup',           tip: TIPS['community-popup'] },
+    ];
+
+    hooks.forEach(({fn, id, tip}) => {
+        const orig = window[fn];
+        window[fn] = function() {
+            const ret = orig ? orig.apply(this, arguments) : undefined;
+            // Show tip anchored to related dock button or fallback to save-btn
+            const anchorMap = {
+                'save-btn': 'save-btn',
+                'float-toggle': 'float-toggle',
+                'music-toggle': 'music-toggle',
+                'settings-popup': 'save-btn',
+                'achievements-popup-overlay': 'save-btn',
+                'community-popup': 'save-btn',
+            };
+            showTip(anchorMap[id] || 'save-btn', tip);
+            return ret;
+        };
+    });
+
+    // Also show tips on hover for dock icons (only first time)
+    document.addEventListener('DOMContentLoaded', () => {
+        const dockTips = [
+            { id: 'save-btn',     tip: TIPS['save-btn'] },
+            { id: 'undo-btn',     tip: TIPS['undo-btn'] },
+            { id: 'redo-btn',     tip: TIPS['redo-btn'] },
+            { id: 'float-toggle', tip: TIPS['float-toggle'] },
+            { id: 'music-toggle', tip: TIPS['music-toggle'] },
+            { id: 'zoom-ui',      tip: TIPS['zoom-ui'] },
+            { id: 'minimap-container', tip: TIPS['minimap-container'] },
+        ];
+
+        dockTips.forEach(({id, tip}) => {
+            const el = document.getElementById(id);
+            if (!el) return;
+            el.addEventListener('mouseenter', () => showTip(id, tip), {passive: true});
+        });
+
+        updateCloseTipsBtn();
+    });
+
+    window._closeTips = function() {
+        localStorage.setItem(TIPS_HIDDEN_KEY, '1');
+        // Remove all visible bubbles
+        document.querySelectorAll('.tip-bubble').forEach(b => b.remove());
+        updateCloseTipsBtn();
+        if (typeof hotbarSound !== 'undefined') { hotbarSound.currentTime = 0; hotbarSound.play().catch(()=>{}); }
+    };
+
+    // Show the close-tips button whenever a tip appears
+    const origShowTip = showTip;
+    window._showTip = showTip;
+})();
