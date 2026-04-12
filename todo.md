@@ -117,3 +117,24 @@ Release
 Release Final
 
 # Devlog 63
+
+### Comit [(9aba978)](https://github.com/Adium1000/Isometric-island/commit/9aba978d650f3c727cbd19bc548fc2f51a76cc3d)
+
+- Fixed ToDo banner
+- Issue caused by the folder `GithubAssets` migrated `.github`
+
+### Comit [(206642c)](https://github.com/Adium1000/Isometric-island/commit/206642ca499071ff3898af806d7bfd101eb0cd81)
+
+- Added Semi-Banners for the Contributing options for astetic look!
+
+### Comit [(77289c7)](https://github.com/Adium1000/Isometric-island/commit/77289c74fe8b9edf4e9a7fcdc9dfe6c194e1b89f)
+
+- Fixed the paths for the banners in the contribute tab because in the visual studio code it looked fine but when I pushed the update it did not find the banners
+- It was because I used to drag'n'shift on the MarkDown file and because of that it did not include `.github` in the file path
+
+### Comit [(6579604)](https://github.com/Adium1000/Isometric-island/commit/6579604c96d81ba8aeb3a9ff8a8d9edda76b397a)
+
+- Added banners for optimization in Readme and translate in Contributions
+
+---
+That is all, what do you think?
