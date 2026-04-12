@@ -442,6 +442,7 @@ THE README IS FULLY WRITEN BY ME - a wiki for my game kinda
 # ! Anything else you find in my project's Assets folder is purely made by me !
 
 # Optimization
+![optimization-banner](.github/Banners/optimization.png)
 
 1. Service Worker (sw.js). This is a file that catches all the requests the browser makes to the network. The first time you visit, it saves important things like the hotbar, blocks, and audio in a special place so they load fast. The next time you visit, it gets these things from that special place on your computer instead of asking the server for them.
 

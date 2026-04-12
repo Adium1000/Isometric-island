@@ -1,4 +1,6 @@
 # Help Translate the Isometric Island game
+![translate](.github/Banners/translate_the_game.png)
+
 - Here you will find information how to do it:
 
 ![1. Obtain the JS canvas](.github/Guide/Contribute.png)
