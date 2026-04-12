@@ -1,4 +1,4 @@
-![Banner](GithubPreview/Banners/todolist.png)
+![Banner](.github/Banners/todolist.png)
 # Here is my todo list where I list ideeas to remember them for later, take a look!
 
 ignore the cluter :) no time to sort the most heh
@@ -13,7 +13,7 @@ also placing on the side of a block is not possible rn right?
 - build that island replica game mini
 - Notificări stacked - acum toast-ul se suprascrie, poți face o coadă verticală cu mai multe toasts simultane // 
 - Timelapse recorder — înregistrezi fiecare acțiune și poți reda construcția de la zero ca un gif/video
-- Undo/Redo Visual History: O listă cu ultimele acțiuni pe care poți da click.
+- Undo/Redo Visual History: O listă cu ultimele acțiuni pe care poți da click. (depricat)
 - Replace Tool (Brush): Înlocuiește blocurile sub brush, dar păstrează înălțimea lor Z.
 - Search icon
 - make an exclamation sound!
@@ -116,10 +116,11 @@ Devlog Sketch
 Release
 Release Final
 
-# Devlog 62 
+# Devlog 62  [(3029862)](https://github.com/Adium1000/Isometric-island/commits/main/) :menhera-point:
 - More radial tools for efficiency creating and editing islands
 ---
-New Radial Tools:
+### New Radial Tools:
+
 1. Circle Tool
 - Place circles on the islands/Cut island in circle form
 - Place materials in a circle way or top layers stuff
@@ -132,8 +133,17 @@ New Radial Tools:
 - Select Blocks with advamced pathfinding  for selecting and modifying blocks
 - Does not work with multi layer stuff like trees 
 
-4. Terraforming Brush
+4. Terraforming Brush 
 - Make mountains and increase Y level
 - Gotta be buggy
 ---
-That is all the new stuff for this devlog, what do you say ?
+### Typical use
+
+1. Circle tool: Make a circle island or a circle outline for the island more easily
+2. Line tool: You can make paths more easily
+3. Magic Wand: Select staked blocked more easily
+4. Trraformig: Make mountains witout using the fill options more easily
+
+- You can always find more uses for this tools this are just a few exemples
+---
+That is all the new stuff for this devlog, what do you say ? :menhera-huh: 
