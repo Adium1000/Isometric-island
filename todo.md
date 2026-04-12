@@ -116,34 +116,4 @@ Devlog Sketch
 Release
 Release Final
 
-# Devlog 62  [(3029862)](https://github.com/Adium1000/Isometric-island/commits/main/) :menhera-point:
-- More radial tools for efficiency creating and editing islands
----
-### New Radial Tools:
-
-1. Circle Tool
-- Place circles on the islands/Cut island in circle form
-- Place materials in a circle way or top layers stuff
-
-2. Line Tool
-- Place lines on the island/Cut island into multiple islands
-- Place items in a line shape like melons , trees , and more
-
-3. Magic Wand
-- Select Blocks with advamced pathfinding  for selecting and modifying blocks
-- Does not work with multi layer stuff like trees 
-
-4. Terraforming Brush 
-- Make mountains and increase Y level
-- Gotta be buggy
----
-### Typical use
-
-1. Circle tool: Make a circle island or a circle outline for the island more easily
-2. Line tool: You can make paths more easily
-3. Magic Wand: Select staked blocked more easily
-4. Trraformig: Make mountains witout using the fill options more easily
-
-- You can always find more uses for this tools this are just a few exemples
----
-That is all the new stuff for this devlog, what do you say ? :menhera-huh: 
+# Devlog 63
