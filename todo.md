@@ -4,23 +4,44 @@
 ignore the cluter :) no time to sort the most heh
 also placing on the side of a block is not possible rn right?
 -a proper way to retrigger it would be nice tuto
-- Multi-language support - RO, EN, ES, FR, DE pentru UI
-- RTL support - pentru arabă/ebraică
+
 - tutorial video
 - MoreBlocks
-- optimization banner
 - X people building right now" counter live (discarded)
 - build that island replica game mini
 - Notificări stacked - acum toast-ul se suprascrie, poți face o coadă verticală cu mai multe toasts simultane // 
 - Timelapse recorder — înregistrezi fiecare acțiune și poți reda construcția de la zero ca un gif/video
 - Undo/Redo Visual History: O listă cu ultimele acțiuni pe care poți da click. (depricat)
 - Replace Tool (Brush): Înlocuiește blocurile sub brush, dar păstrează înălțimea lor Z.
-- Search icon
+
+
+
+edit layer mode
+choose Y layers to edit for exemple if  we choose all we can edit all, but if we chooose Y=2 this layer is focused , the rest of them use a ghoast effect of 50%
+
+Language Update
+Wave 1
+- Multi-language support - RO, EN, ES, FR, DE pentru UI
+Wave 2
+- RTL support - pentru arabă/ebraică
+
+
+Island Comunity update
+- Search icon, Bar
+- Tabs down of the windows 
+- Account Icon in the right Up: when clicked appears another popup with info about : Maps shared , delete button
+
+
+More sounds
 - make an exclamation sound!
 - weird sound
+
+
+
    
 What I added:
 - radial menu 
+- optimization banner
 :Magic Wand
 :Terraforming Brush
 :Line Tool
@@ -115,26 +136,3 @@ i hate missspelling
 Devlog Sketch
 Release
 Release Final
-
-# Devlog 63
-
-### Comit [(9aba978)](https://github.com/Adium1000/Isometric-island/commit/9aba978d650f3c727cbd19bc548fc2f51a76cc3d)
-
-- Fixed ToDo banner
-- Issue caused by the folder `GithubAssets` migrated `.github`
-
-### Comit [(206642c)](https://github.com/Adium1000/Isometric-island/commit/206642ca499071ff3898af806d7bfd101eb0cd81)
-
-- Added Semi-Banners for the Contributing options for astetic look!
-
-### Comit [(77289c7)](https://github.com/Adium1000/Isometric-island/commit/77289c74fe8b9edf4e9a7fcdc9dfe6c194e1b89f)
-
-- Fixed the paths for the banners in the contribute tab because in the visual studio code it looked fine but when I pushed the update it did not find the banners
-- It was because I used to drag'n'shift on the MarkDown file and because of that it did not include `.github` in the file path
-
-### Comit [(6579604)](https://github.com/Adium1000/Isometric-island/commit/6579604c96d81ba8aeb3a9ff8a8d9edda76b397a)
-
-- Added banners for optimization in Readme and translate in Contributions
-
----
-That is all, what do you think?

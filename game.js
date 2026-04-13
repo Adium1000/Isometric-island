@@ -5315,8 +5315,6 @@ function deleteSlot(idx) {
     renderSaveSlots();
     showToast('Slot ' + (idx + 1) + ' deleted!');
 }
-
-// Tips 
 (function() {
     const TIPS_KEY = 'ii_tips_seen';
     const TIPS_HIDDEN_KEY = 'ii_tips_hidden';
