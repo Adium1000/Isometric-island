@@ -1571,31 +1571,6 @@ window.addEventListener('load', function() {
                 <input id="cm-search-input" type="text" placeholder="Search maps or authors..." oninput="cmFilterMaps(this.value)" autocomplete="off">
                 <button id="cm-search-clear" onclick="cmClearSearch()" style="display:none;">&#10005;</button>
             </div>
-            <div id="cm-tab-account" class="cm-tab-content" style="display:none;">
-                <div id="cm-acct-tab-inner">
-                    <div id="cm-acct-tab-header">
-                        <div id="cm-acct-tab-avatar-wrap">
-                            <img id="cm-acct-photo" src="" alt="" style="display:none;width:64px;height:64px;border-radius:50%;border:3px solid #ffb347;object-fit:cover;image-rendering:auto;">
-                            <div id="cm-acct-tab-avatar-placeholder">
-                                <img src="./Assets/Icons/account.png" style="width:32px;height:32px;image-rendering:pixelated;opacity:0.6;">
-                            </div>
-                        </div>
-                        <div id="cm-acct-name">NOT LOGGED IN</div>
-                    </div>
-                    <div class="cm-acct-dash-divider"></div>
-                    <div id="cm-acct-tab-maps-row">
-                        <span id="cm-acct-tab-maps-label">MY MAPS SHARED:</span>
-                        <span id="cm-acct-maps-count">—</span>
-                    </div>
-                    <div class="cm-acct-dash-divider"></div>
-                    <div id="cm-acct-tab-actions">
-                        <button id="cm-delete-account-btn" onclick="cmDeleteAccount()" style="display:none;">🗑 DELETE ACCOUNT</button>
-                        <button id="cm-auth-btn" onclick="cmLogin()">
-                            <img src="./Assets/Icons/google.png" style="width:12px;height:12px;image-rendering:pixelated;vertical-align:middle;margin-right:5px;">LOGIN WITH GOOGLE
-                        </button>
-                    </div>
-                </div>
-            </div>
             <div id="cm-content-area">
                 <div id="cm-tab-browse" class="cm-tab-content">
                     <div id="cm-maps-list">
@@ -1608,6 +1583,31 @@ window.addEventListener('load', function() {
                     <div class="cm-hint">Share your current island with the community</div>
                     <button class="btn-qr" onclick="cmSaveMap()">PUBLISH TO COMMUNITY</button>
                     <div id="cm-save-status"></div>
+                </div>
+                <div id="cm-tab-account" class="cm-tab-content" style="display:none;">
+                    <div id="cm-acct-tab-inner">
+                        <div id="cm-acct-tab-header">
+                            <div id="cm-acct-tab-avatar-wrap">
+                                <img id="cm-acct-photo" src="" alt="" style="display:none;width:64px;height:64px;border-radius:50%;border:3px solid #ffb347;object-fit:cover;image-rendering:auto;">
+                                <div id="cm-acct-tab-avatar-placeholder">
+                                    <img src="./Assets/Icons/account.png" style="width:32px;height:32px;image-rendering:pixelated;opacity:0.6;">
+                                </div>
+                            </div>
+                            <div id="cm-acct-name">NOT LOGGED IN</div>
+                        </div>
+                        <div class="cm-acct-dash-divider"></div>
+                        <div id="cm-acct-tab-maps-row">
+                            <span id="cm-acct-tab-maps-label">MY MAPS SHARED:</span>
+                            <span id="cm-acct-maps-count">—</span>
+                        </div>
+                        <div class="cm-acct-dash-divider"></div>
+                        <div id="cm-acct-tab-actions">
+                            <button id="cm-delete-account-btn" onclick="cmDeleteAccount()" style="display:none;">🗑 DELETE ACCOUNT</button>
+                            <button id="cm-auth-btn" onclick="cmLogin()">
+                                <img src="./Assets/Icons/google.png" style="width:12px;height:12px;image-rendering:pixelated;vertical-align:middle;margin-right:5px;">LOGIN WITH GOOGLE
+                            </button>
+                        </div>
+                    </div>
                 </div>
             </div>
             <div id="cm-tabs">
@@ -1935,7 +1935,12 @@ window.closeCommunityPopup = () => {
     setTimeout(() => { overlay.style.display = 'none'; }, 280);
 };
 
+const _cmTabOrder = ['browse', 'upload', 'account'];
+let _cmCurrentTab = 'browse';
+
 window.cmSwitchTab = (tab) => {
+    if (tab === _cmCurrentTab) return;
+
     const browse  = document.getElementById('cm-tab-browse');
     const upload  = document.getElementById('cm-tab-upload');
     const account = document.getElementById('cm-tab-account');
@@ -1943,21 +1948,59 @@ window.cmSwitchTab = (tab) => {
     const btnU    = document.getElementById('cm-tab-upload-btn');
     const btnA    = document.getElementById('cm-tab-account-btn');
     const searchBar = document.getElementById('cm-search-bar');
+
+    const tabEls = { browse, upload, account };
+    const btnEls = { browse: btnB, upload: btnU, account: btnA };
+
+    const oldIdx = _cmTabOrder.indexOf(_cmCurrentTab);
+    const newIdx = _cmTabOrder.indexOf(tab);
+    const dir = newIdx > oldIdx ? 1 : -1;
+    const outgoing = tabEls[_cmCurrentTab];
+    const incoming = tabEls[tab];
+
+    if (!outgoing || !incoming) return;
     [btnB, btnU, btnA].forEach(b => b && b.classList.remove('cm-tab-active'));
-    if (tab === 'browse') {
-        browse.style.display = 'flex'; upload.style.display = 'none'; account.style.display = 'none';
-        btnB.classList.add('cm-tab-active');
-        if (searchBar) searchBar.style.display = 'flex';
-    } else if (tab === 'upload') {
-        browse.style.display = 'none'; upload.style.display = 'flex'; account.style.display = 'none';
-        btnU.classList.add('cm-tab-active');
-        if (searchBar) searchBar.style.display = 'none';
-    } else {
-        browse.style.display = 'none'; upload.style.display = 'none'; account.style.display = 'flex';
-        btnA.classList.add('cm-tab-active');
-        if (searchBar) searchBar.style.display = 'none';
-        cmLoadAccountMapsCount();
-    }
+    if (btnEls[tab]) btnEls[tab].classList.add('cm-tab-active');
+    if (searchBar) searchBar.style.display = tab === 'browse' ? 'flex' : 'none';
+    if (tab === 'account') cmLoadAccountMapsCount();
+    incoming.style.display = outgoing.style.display || 'flex';
+    incoming.style.position = 'absolute';
+    incoming.style.top = outgoing.offsetTop + 'px';
+    incoming.style.left = outgoing.offsetLeft + 'px';
+    incoming.style.width = outgoing.offsetWidth + 'px';
+    incoming.style.transform = `translateX(${dir * 100}%)`;
+    incoming.style.opacity = '0';
+    incoming.style.transition = 'none';
+    incoming.style.pointerEvents = 'none';
+    outgoing.style.position = 'relative';
+    outgoing.style.transition = 'none';
+
+    requestAnimationFrame(() => requestAnimationFrame(() => {
+        outgoing.style.transition = 'transform 220ms cubic-bezier(.4,0,.2,1), opacity 180ms ease';
+        outgoing.style.transform = `translateX(${-dir * 100}%)`;
+        outgoing.style.opacity = '0';
+
+        incoming.style.transition = 'transform 220ms cubic-bezier(.4,0,.2,1), opacity 180ms ease';
+        incoming.style.transform = 'translateX(0)';
+        incoming.style.opacity = '1';
+
+        setTimeout(() => {
+            outgoing.style.display = 'none';
+            outgoing.style.transform = '';
+            outgoing.style.opacity = '';
+            outgoing.style.transition = '';
+            outgoing.style.position = '';
+
+            incoming.style.position = '';
+            incoming.style.top = '';
+            incoming.style.left = '';
+            incoming.style.width = '';
+            incoming.style.transition = '';
+            incoming.style.pointerEvents = '';
+        }, 230);
+    }));
+
+    _cmCurrentTab = tab;
 };
 
 function esc(s) {

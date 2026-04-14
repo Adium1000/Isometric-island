@@ -2825,6 +2825,7 @@ body { transition: background-color 1.5s ease; }
     padding: 0 22px 12px 22px;
     display: flex;
     flex-direction: column;
+    position: relative;
 }
 #cm-tab-browse.cm-tab-content {
     flex: 1;
