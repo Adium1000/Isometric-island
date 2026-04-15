@@ -37,6 +37,18 @@ More sounds
 - weird sound
 
 
+Plan B
+
+Add more legal documents
+
+-Acceptable User Policy AUP
+-Imprint or legal Notice
+-Dmca and Copyright policy for comunity maps
+
+---
+
+Maybe cookies policy
+
 
    
 What I added:
@@ -137,88 +149,16 @@ Devlog Sketch
 Release
 Release Fin#al
 
-# Devlog 64
+CLONE YOUR REPO BEFORE COMIT!
 
-- Remodel of the Comunity Maps menu
+# Devlog 65
+
+Comit [(10f372a)](https://github.com/Adium1000/Isometric-island/commit/10f372a356b3585668b9aaddd4b9728cc9626531)
+
+- Added animations when switching in tabs in comumnity maps
+- If you switch between a tab that is in the right of the current one, the popup slide will go on the right to make it pop
+- If you switch between a tab that is in the left of the current one, the popup slide will go on the left to make it pop (again)
+- Added devlog thumbnail for the FLAVORTOWN :3
+
 ---
-# What is new here?
-
-- Here is the list of the comits 
-
-# Comit [(e029eb5)](https://github.com/Adium1000/Isometric-island/commit/e029eb50a7c360799e1c34d052fe1abcf7f71089)
-
-### 1. Tabs 
-- Now the tab have 3 main tabs: Browse, Publish, Account
-  - Browse: Now the islands have a Low Quality preview in the Left of it, Search bar for finding maps faster
-  - Publish: this tab kinda remained the same 
-  - Account: Here the user can log in using a Google or a HackClub account in the future, here you will also find how manny maps you published, a delete account button and a log out button button
-
-### 2. Map Preview 
-- Let's take a closer look at the map preview
-
-- Here you will find the colors used 
-
-1. `null` - eraser
-
-2. `#8B6340` - dirt
-
-3. `#9B7350` - dirt2
-
-4. `#7a5530` - ShovedDirt
-
-5. `#5a9e3a` - flovers
-
-6. `#787878` - rock
-
-7. `#c8a040` - crops
-
-8. `#909090` - stone
-
-9. `#607060` - mossystone
-
-10. `#d4c080` - sand
-
-11. `#c08050` - redsand
-
-12. `#3060c0` - water
-
-13. `#e8f0ff` - snow
-
-14. `#9eb0c0` - snowrocks
-
-15. `#a0d0e8` - ice
-
-16. `#e07020` - pumpkin
-
-17. `#d4a830` - Hay
-
-18. `#50a830` - melon
-
-19. `#2a7a20` - tree
-
-20. `#8ab0c8` - snowed_tree
-
-21. `#f0f8ff` - snowman
-
-22. `#8B5E3C` - wood
-
-23. `#3a8a28` - leaf
-
-24. `#d8eaf8` - snow2
-
-25. `#d0e8f8` - snowmanb1
-
-26. `#c8e0f0` - snowmanb2
-
-27. `#e8f4ff` - SnowmanHead
-
-- also some elements like trees and snow mans does not render correct
-
-### 3. Account login with HC OAuth
-- As I said I would like to implement this tipe of signin/login I just need to get aproved, and maybe move from github pages
-
-# Comit [(68cf688)](https://github.com/Adium1000/Isometric-island/commit/68cf68831f3c823e07dd8a20880fce0fe6981117)
-
-- Now the accounts tab uses the icon `account.png` instead of `google.png` finded in `./Assets/Icons/`
----
-This is all about the new Comunity Maps menu, what do you think? 
+Anyway that is all what is new so far, what do you think?  

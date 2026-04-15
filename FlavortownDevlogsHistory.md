@@ -898,6 +898,23 @@ This is all about the new Comunity Maps menu, what do you think?
 
 
 
+---
+
+
+
+# Devlog 65
+
+Comit [(10f372a)](https://github.com/Adium1000/Isometric-island/commit/10f372a356b3585668b9aaddd4b9728cc9626531)
+
+- Added animations when switching in tabs in comumnity maps
+- If you switch between a tab that is in the right of the current one, the popup slide will go on the right to make it pop
+- If you switch between a tab that is in the left of the current one, the popup slide will go on the left to make it pop (again)
+- Added devlog thumbnail for the FLAVORTOWN :3
+
+---
+Anyway that is all what is new so far, what do you think?  
+
+![devlog65](<.github/Devlogs (Flavortown)/comunity maps animation.png>)
 
 ---
 End 
