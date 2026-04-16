@@ -917,6 +917,25 @@ Anyway that is all what is new so far, what do you think?
 ![devlog65](<.github/Devlogs (Flavortown)/comunity maps animation.png>)
 
 ---
+
+# Devlog 66
+
+- Added more legal documents Like
+ - DMCA: Project & Maps © 
+ - imprint: For contacting me
+ - AUP: Most of this file contains rules of use
+
+ ---
+
+ I added them in Markdown and PDF format
+
+ ---
+
+That is all what do you think?
+
+![devlog66](<.github/Devlogs (Flavortown)/devlog66.png>)
+
+---
 End 
 
 ![yayyy](https://emoji.slack-edge.com/T09V59WQY1E/yayayayayay/203666b7424ee7a7.gif)

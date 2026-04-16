@@ -37,14 +37,6 @@ More sounds
 - weird sound
 
 
-Plan B
-
-Add more legal documents
-
--Acceptable User Policy AUP
-(-Imprint or legal Notice)
--Dmca and Copyright policy for comunity maps
-
 ---
 
 Maybe cookies policy
@@ -52,6 +44,12 @@ Maybe cookies policy
 
    
 What I added:
+
+Plan B
+Add more legal documents
+-Acceptable User Policy AUP
+(-Imprint or legal Notice)
+-Dmca and Copyright policy for comunity maps
 - radial menu 
 - optimization banner
 :Magic Wand
@@ -151,14 +149,17 @@ Release Fin#al
 
 CLONE YOUR REPO BEFORE COMIT!
 
-# Devlog 65
+# Devlog 66
 
-Comit [(10f372a)](https://github.com/Adium1000/Isometric-island/commit/10f372a356b3585668b9aaddd4b9728cc9626531)
+- Added more legal documents Like
+ - DMCA: Project & Maps © 
+ - imprint: For contacting me
+ - AUP: Most of this file contains rules of use
 
-- Added animations when switching in tabs in comumnity maps
-- If you switch between a tab that is in the right of the current one, the popup slide will go on the right to make it pop
-- If you switch between a tab that is in the left of the current one, the popup slide will go on the left to make it pop (again)
-- Added devlog thumbnail for the FLAVORTOWN :3
+ ---
 
----
-Anyway that is all what is new so far, what do you think?  
+ I added them in Markdown and PDF format
+
+ ---
+
+That is all what do you think?
