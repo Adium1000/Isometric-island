@@ -1,4 +1,4 @@
-# Privacy Policy
+# Privacy Policy - Isometric Island
 Last Updated: April 2026
 
 ### 1. Introduction

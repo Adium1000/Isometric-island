@@ -1,4 +1,4 @@
-# Terms of Service
+# Terms of Service - Isometric Island
 Last Updated: April 2026
 
 ### 1. Acceptance of Terms

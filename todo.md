@@ -42,7 +42,7 @@ Plan B
 Add more legal documents
 
 -Acceptable User Policy AUP
--Imprint or legal Notice
+(-Imprint or legal Notice)
 -Dmca and Copyright policy for comunity maps
 
 ---
