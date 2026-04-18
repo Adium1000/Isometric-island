@@ -277,12 +277,28 @@
             <div id="agreement-tabs">
                 <button class="agreement-tab active" id="tab-privacy" onclick="switchAgreementTab('privacy')">Privacy Policy</button>
                 <button class="agreement-tab" id="tab-terms" onclick="switchAgreementTab('terms')">Terms of Service</button>
+                <button class="agreement-tab agreement-tab-info" id="tab-imprint" onclick="switchAgreementTab('imprint')">Imprint</button>
+                <button class="agreement-tab agreement-tab-info" id="tab-aup" onclick="switchAgreementTab('aup')">AUP</button>
+                <button class="agreement-tab agreement-tab-info" id="tab-dmca" onclick="switchAgreementTab('dmca')">DMCA</button>
             </div>
             <div id="agreement-doc-wrap">
                 <div id="agreement-loading-privacy" class="agreement-loading">Loading...</div>
                 <div id="agreement-loading-terms" class="agreement-loading" style="display:none;">Loading...</div>
+                <div id="agreement-loading-imprint" class="agreement-loading" style="display:none;">Loading...</div>
+                <div id="agreement-loading-aup" class="agreement-loading" style="display:none;">Loading...</div>
+                <div id="agreement-loading-dmca" class="agreement-loading" style="display:none;">Loading...</div>
                 <div id="agreement-content-privacy" class="agreement-content" style="display:none;"></div>
                 <div id="agreement-content-terms" class="agreement-content" style="display:none;"></div>
+                <div id="agreement-content-imprint" class="agreement-content" style="display:none;"></div>
+                <div id="agreement-content-aup" class="agreement-content" style="display:none;"></div>
+                <div id="agreement-content-dmca" class="agreement-content" style="display:none;"></div>
+            </div>
+            <div id="agreement-pdf-bar">
+                <button class="btn-open-pdf" id="pdf-btn-privacy" onclick="openDocPdf('privacy')" title="Open as PDF">&#128196; Open as PDF</button>
+                <button class="btn-open-pdf" id="pdf-btn-terms" onclick="openDocPdf('terms')" title="Open as PDF" style="display:none;">&#128196; Open as PDF</button>
+                <button class="btn-open-pdf" id="pdf-btn-imprint" onclick="openDocPdf('imprint')" title="Open as PDF" style="display:none;">&#128196; Open as PDF</button>
+                <button class="btn-open-pdf" id="pdf-btn-aup" onclick="openDocPdf('aup')" title="Open as PDF" style="display:none;">&#128196; Open as PDF</button>
+                <button class="btn-open-pdf" id="pdf-btn-dmca" onclick="openDocPdf('dmca')" title="Open as PDF" style="display:none;">&#128196; Open as PDF</button>
             </div>
             <hr class="wdivider" style="margin: 10px 0 12px;">
             <div id="agreement-checks">
@@ -466,44 +482,90 @@
         display: flex;
         justify-content: center;
     }
+    #agreement-pdf-bar {
+        display: flex;
+        justify-content: flex-end;
+        padding: 5px 0 2px;
+    }
+    .btn-open-pdf {
+        font-family: 'Press Start 2P', cursive;
+        font-size: 6px;
+        padding: 5px 10px;
+        background: rgba(0,0,0,0.3);
+        border: 2px solid var(--gui-border, #6b4c2a);
+        color: #adffa8;
+        cursor: pointer;
+        letter-spacing: 0.4px;
+        transition: background 0.15s, border-color 0.15s;
+    }
+    .btn-open-pdf:hover {
+        background: rgba(173,255,168,0.12);
+        border-color: #adffa8;
+    }
+    .agreement-tab-info {
+        opacity: 0.75;
+    }
+    .agreement-tab-info.active {
+        opacity: 1;
+    }
 </style>
 <script>
     const AGREEMENT_KEY = 'ii_agreed_v2';
     const REPO_RAW_AGR = 'https://raw.githubusercontent.com/Adium1000/Isometric-island/main/';
 
+    const AGR_DOCS = {
+        privacy:  { md: 'PrivacyPolicy.md',   pdf: 'https://github.com/Adium1000/Isometric-island/blob/main/Legal%20Documents/Privacy%20Policy.pdf' },
+        terms:    { md: 'TermsOfService.md',  pdf: 'https://github.com/Adium1000/Isometric-island/blob/main/Legal%20Documents/Terms%20of%20Service.pdf' },
+        imprint:  { md: 'Imprint.md',         pdf: 'https://github.com/Adium1000/Isometric-island/blob/main/Legal%20Documents/Imprint.pdf' },
+        aup:      { md: 'AUP.md',             pdf: 'https://github.com/Adium1000/Isometric-island/blob/main/Legal%20Documents/Acceptable%20Use%20Policy.pdf' },
+        dmca:     { md: 'DMCA.md',            pdf: 'https://github.com/Adium1000/Isometric-island/blob/main/Legal%20Documents/DMCA.pdf' },
+    };
+
+    const _agrLoaded = { privacy: false, terms: false, imprint: false, aup: false, dmca: false };
     let _agrPrivacyLoaded = false;
     let _agrTermsLoaded = false;
 
+    let _currentAgrTab = 'privacy';
+
     function fetchAgreementDoc(type) {
-        const file = type === 'privacy' ? 'PrivacyPolicy.md' : 'TermsOfService.md';
+        if (!AGR_DOCS[type]) return;
         const loadingEl = document.getElementById('agreement-loading-' + type);
         const contentEl = document.getElementById('agreement-content-' + type);
-        fetch(REPO_RAW_AGR + file)
+        if (!loadingEl || !contentEl) return;
+        fetch(REPO_RAW_AGR + AGR_DOCS[type].md)
             .then(r => { if (!r.ok) throw new Error(); return r.text(); })
             .then(md => {
                 const html = typeof parseMarkdown === 'function' ? parseMarkdown(md) : md.replace(/\n/g, '<br>');
                 loadingEl.style.display = 'none';
                 contentEl.innerHTML = html;
                 contentEl.style.display = 'block';
+                _agrLoaded[type] = true;
                 if (type === 'privacy') _agrPrivacyLoaded = true;
-                else _agrTermsLoaded = true;
+                if (type === 'terms') _agrTermsLoaded = true;
             })
             .catch(() => {
-                loadingEl.innerHTML = 'Failed to load. <a href="https://github.com/Adium1000/Isometric-island/blob/main/' + file + '" target="_blank" style="color:#adffa8;">Open on GitHub &#8599;</a>';
+                loadingEl.innerHTML = 'Failed to load. <a href="' + AGR_DOCS[type].pdf + '" target="_blank" style="color:#adffa8;">Open on GitHub &#8599;</a>';
             });
     }
 
+    function openDocPdf(type) {
+        if (AGR_DOCS[type]) window.open(AGR_DOCS[type].pdf, '_blank');
+    }
+
     function switchAgreementTab(type) {
-        const other = type === 'privacy' ? 'terms' : 'privacy';
-        document.getElementById('tab-' + type).classList.add('active');
-        document.getElementById('tab-' + other).classList.remove('active');
-        document.getElementById('agreement-loading-' + type).style.display =
-            (type === 'privacy' ? !_agrPrivacyLoaded : !_agrTermsLoaded) ? 'block' : 'none';
-        document.getElementById('agreement-loading-' + other).style.display = 'none';
-        document.getElementById('agreement-content-' + type).style.display =
-            (type === 'privacy' ? _agrPrivacyLoaded : _agrTermsLoaded) ? 'block' : 'none';
-        document.getElementById('agreement-content-' + other).style.display = 'none';
-        if (type === 'terms' && !_agrTermsLoaded) fetchAgreementDoc('terms');
+        const allTypes = Object.keys(AGR_DOCS);
+        allTypes.forEach(t => {
+            const tab = document.getElementById('tab-' + t);
+            const loading = document.getElementById('agreement-loading-' + t);
+            const content = document.getElementById('agreement-content-' + t);
+            const pdfBtn = document.getElementById('pdf-btn-' + t);
+            if (tab) tab.classList.toggle('active', t === type);
+            if (loading) loading.style.display = (t === type && !_agrLoaded[t]) ? 'block' : 'none';
+            if (content) content.style.display = (t === type && _agrLoaded[t]) ? 'block' : 'none';
+            if (pdfBtn) pdfBtn.style.display = t === type ? '' : 'none';
+        });
+        _currentAgrTab = type;
+        if (!_agrLoaded[type]) fetchAgreementDoc(type);
     }
 
     function updateAgreementBtn() {
@@ -529,7 +591,7 @@
         const ov = document.getElementById('agreement-overlay');
         ov.style.display = 'flex';
         requestAnimationFrame(() => requestAnimationFrame(() => ov.classList.add('popup-visible')));
-        fetchAgreementDoc('privacy');
+        switchAgreementTab('privacy');
     }
 
     function hasAgreed() {
@@ -1475,12 +1537,12 @@ function openLicensesView() {
         okBtn.style.display = 'flex';
     }
     const h2 = header ? header.querySelector('h2') : null;
-    if (h2 && !h2.dataset.origText) { h2.dataset.origText = h2.innerHTML; h2.innerHTML = '&#128220; Licenses'; }
+    if (h2 && !h2.dataset.origText) { h2.dataset.origText = h2.innerHTML; h2.innerHTML = '&#128220; Legal Documents'; }
     const sub = header ? header.querySelector('.sub') : null;
-    if (sub && !sub.dataset.origText) { sub.dataset.origText = sub.innerHTML; sub.innerHTML = 'Privacy Policy &amp; Terms of Service'; }
+    if (sub && !sub.dataset.origText) { sub.dataset.origText = sub.innerHTML; sub.innerHTML = 'Privacy Policy &amp; Terms of Service &amp; more'; }
     ov.style.display = 'flex';
     requestAnimationFrame(() => requestAnimationFrame(() => ov.classList.add('popup-visible')));
-    if (typeof fetchAgreementDoc === 'function') fetchAgreementDoc('privacy');
+    if (typeof switchAgreementTab === 'function') switchAgreementTab('privacy');
 }
 function closeLicensesView() {
     const ov = document.getElementById('agreement-overlay');

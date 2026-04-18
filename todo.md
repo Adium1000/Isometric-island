@@ -149,17 +149,5 @@ Release Fin#al
 
 CLONE YOUR REPO BEFORE COMIT!
 
-# Devlog 66
-
-- Added more legal documents Like
- - DMCA: Project & Maps © 
- - imprint: For contacting me
- - AUP: Most of this file contains rules of use
-
- ---
-
- I added them in Markdown and PDF format
-
- ---
-
-That is all what do you think?
+# Devlog 67
+Overall
