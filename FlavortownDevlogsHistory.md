@@ -935,6 +935,33 @@ That is all what do you think?
 
 ![devlog66](<.github/Devlogs (Flavortown)/devlog66.png>)
 
+
+
+---
+
+# Devlog 67
+### Overall devlog : PDF redirect 
+---
+
+# Comit [(9a5bc2f)](https://github.com/Adium1000/Isometric-island/commit/9a5bc2f40ba01d5f6ab0458addc918b94cca9c4e)
+
+- Added the 'Open PDF' button in the UA (user agreements) popup
+
+[![PDF-Open-button](https://i.postimg.cc/wvDFBBKs/image.png)](https://postimg.cc/VrLXGmkY)
+
+- I added this because the popup font or the text may be too small for some ppl , or may found the popup text unconfortable so the pdf version is more good at a poin
+
+[![github-PDF](https://i.postimg.cc/c4vg7bH7/image.png)](https://postimg.cc/56M2bp8j)
+
+---
+
+- Added devlog image and devlog text
+
+---
+That is all, what do you think??  :menhera-point: 
+
+![Devlog67thub](<.github/Devlogs (Flavortown)/Devlog67.png>)
+
 ---
 End 
 
