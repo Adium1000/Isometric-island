@@ -136,7 +136,7 @@ body {
     0%, 100% { opacity: 1; }
     50% { opacity: 0.5; }
 }
-.game-title:hover { transform: scale(1.2); }
+.game-title:hover { }
 #minimap-container {
     position: absolute;
     top: 100px;
@@ -241,7 +241,7 @@ body {
     clip-path: polygon(0% 3px, 3px 3px, 3px 0%, calc(100% - 3px) 0%, calc(100% - 3px) 3px, 100% 3px, 100% calc(100% - 3px), calc(100% - 3px) calc(100% - 3px), calc(100% - 3px) 100%, 3px 100%, 3px calc(100% - 3px), 0% calc(100% - 3px));
     cursor: pointer;
 }
-#float-popup-close-btn:hover { filter: brightness(1.3); transform: scale(1.1); }
+#float-popup-close-btn:hover { filter: brightness(1.3); }
 #float-popup-close-btn:active { transform: scale(0.9); }
 .popup-help-btn {
     position: absolute;
@@ -266,7 +266,7 @@ body {
     clip-path: polygon(0% 3px, 3px 3px, 3px 0%, calc(100% - 3px) 0%, calc(100% - 3px) 3px, 100% 3px, 100% calc(100% - 3px), calc(100% - 3px) calc(100% - 3px), calc(100% - 3px) 100%, 3px 100%, 3px calc(100% - 3px), 0% calc(100% - 3px));
     cursor: pointer;
 }
-.popup-help-btn:hover { filter: brightness(1.3); transform: scale(1.1); }
+.popup-help-btn:hover { filter: brightness(1.3); }
 .popup-help-btn:active { transform: scale(0.9); }
 #help-info-overlay {
     display: none;
@@ -308,7 +308,7 @@ body {
     clip-path: polygon(0% 3px, 3px 3px, 3px 0%, calc(100% - 3px) 0%, calc(100% - 3px) 3px, 100% 3px, 100% calc(100% - 3px), calc(100% - 3px) calc(100% - 3px), calc(100% - 3px) 100%, 3px 100%, 3px calc(100% - 3px), 0% calc(100% - 3px));
     cursor: pointer;
 }
-#help-info-close-btn:hover { filter: brightness(1.3); transform: scale(1.1); }
+#help-info-close-btn:hover { filter: brightness(1.3); }
 #help-info-close-btn:active { transform: scale(0.9); }
 #help-info-popup {
     background: var(--gui-bg-light, #8b5e34);
@@ -363,7 +363,7 @@ body {
     transition: transform 0.1s, filter 0.1s, border-color 0.1s, color 0.1s;
     clip-path: polygon(0% 3px, 3px 3px, 3px 0%, calc(100% - 3px) 0%, calc(100% - 3px) 3px, 100% 3px, 100% calc(100% - 3px), calc(100% - 3px) calc(100% - 3px), calc(100% - 3px) 100%, 3px 100%, 3px calc(100% - 3px), 0% calc(100% - 3px));
 }
-.float-mode-card:hover  { filter: brightness(1.25); transform: scale(1.06); }
+.float-mode-card:hover  { filter: brightness(1.25); }
 .float-mode-card:active { transform: scale(0.93); }
 .float-mode-card.active { border-color: var(--gui-accent); color: var(--gui-accent); background: var(--gui-active); }
 .float-mode-icon  { font-size: 16px; line-height: 1; }
@@ -450,7 +450,7 @@ body {
 #redo-btn { left: -215px; }
 #undo-btn { left: -285px; }
 #save-btn { left: -355px; }
-#save-btn:hover, #music-toggle:hover, #float-toggle:hover, #undo-btn:hover, #redo-btn:hover { transform: scale(1.1); filter: brightness(1.1); }
+#save-btn:hover, #music-toggle:hover, #float-toggle:hover, #undo-btn:hover, #redo-btn:hover { filter: brightness(1.1); }
 #save-btn:active, #music-toggle:active, #float-toggle:active, #undo-btn:active, #redo-btn:active { transform: scale(0.9); }
 #climate-menu {
     position: absolute;
@@ -481,7 +481,7 @@ body {
     transition: filter 0.1s, transform 0.1s;
     clip-path: polygon(0% 3px, 3px 3px, 3px 0%, calc(100% - 3px) 0%, calc(100% - 3px) 3px, 100% 3px, 100% calc(100% - 3px), calc(100% - 3px) calc(100% - 3px), calc(100% - 3px) 100%, 3px 100%, 3px calc(100% - 3px), 0% calc(100% - 3px));
 }
-.climate-btn:hover { filter: brightness(1.4); transform: scale(1.04); }
+.climate-btn:hover { filter: brightness(1.4); }
 .climate-btn.active { background: var(--gui-active); border-color: var(--gui-accent); color: #fff; }
 #weather-canvas {
     position: fixed;
@@ -587,7 +587,7 @@ body {
     padding: 0;
     line-height: 1;
 }
-#popup-close-btn:hover { filter: brightness(1.3); transform: scale(1.1); }
+#popup-close-btn:hover { filter: brightness(1.3); }
 #popup-close-btn:active { transform: scale(0.9); }
 #save-popup {
     background: var(--gui-bg-light);
@@ -741,7 +741,7 @@ body {
     transition: transform 0.1s, filter 0.1s; z-index: 10; padding: 0; line-height: 1;
     clip-path: polygon(0% 3px, 3px 3px, 3px 0%, calc(100% - 3px) 0%, calc(100% - 3px) 3px, 100% 3px, 100% calc(100% - 3px), calc(100% - 3px) calc(100% - 3px), calc(100% - 3px) 100%, 3px 100%, 3px calc(100% - 3px), 0% calc(100% - 3px));
 }
-#settings-close-btn:hover { filter: brightness(1.3); transform: scale(1.1); }
+#settings-close-btn:hover { filter: brightness(1.3); }
 #settings-close-btn:active { transform: scale(0.9); }
 #settings-popup {
     background: var(--gui-bg-light);
@@ -833,7 +833,7 @@ body {
      display: flex; align-items: center; justify-content: center;
     transition: transform 0.1s, filter 0.1s; z-index: 10; padding: 0; line-height: 1;
 }
-#qr-close-btn:hover { filter: brightness(1.3); transform: scale(1.1); }
+#qr-close-btn:hover { filter: brightness(1.3); }
 #qr-close-btn:active { transform: scale(0.9); }
 #qr-popup {
     background: var(--gui-bg-light);
@@ -1062,7 +1062,7 @@ body {
      display: flex; align-items: center; justify-content: center;
     transition: transform 0.1s, filter 0.1s; z-index: 10; padding: 0;
 }
-#welcome-close-btn:hover { filter: brightness(1.3); transform: scale(1.1); }
+#welcome-close-btn:hover { filter: brightness(1.3); }
 #welcome-close-btn:active { transform: scale(0.9); }
 #welcome-popup {
     background: var(--gui-bg-light); border: 4px solid var(--gui-border); box-shadow: 6px 6px 0 var(--gui-shadow);
@@ -1261,7 +1261,7 @@ body {
      display: flex; align-items: center; justify-content: center;
     transition: filter 0.1s, border-color 0.1s, transform 0.1s; position: relative;
 }
-.fill-block-btn:hover { filter: brightness(1.4); border-color: var(--gui-accent); transform: scale(1.1); z-index: 1; }
+.fill-block-btn:hover { filter: brightness(1.4); border-color: var(--gui-accent); z-index: 1; }
 .fill-block-btn:active { transform: scale(0.9); }
 .fill-block-btn img { width: 32px; height: 32px; image-rendering: pixelated; }
 .fill-block-btn span { position: absolute; bottom: -18px; left: 50%; transform: translateX(-50%); color: var(--gui-accent); font-size: 5px; white-space: nowrap; display: none; }
@@ -1568,7 +1568,7 @@ body {
     line-height: 1;
     clip-path: polygon(0% 4px, 4px 4px, 4px 0%, calc(100% - 4px) 0%, calc(100% - 4px) 4px, 100% 4px, 100% calc(100% - 4px), calc(100% - 4px) calc(100% - 4px), calc(100% - 4px) 100%, 4px 100%, 4px calc(100% - 4px), 0% calc(100% - 4px));
 }
-#block-search-close-btn:hover { filter: brightness(1.3); transform: scale(1.1); }
+#block-search-close-btn:hover { filter: brightness(1.3); }
 #block-search-close-btn:active { transform: scale(0.9); }
 
 #block-search-header {
@@ -1653,7 +1653,7 @@ body {
     transition: filter 0.1s, transform 0.1s, border-color 0.1s;
     clip-path: polygon(0% 4px, 4px 4px, 4px 0%, calc(100% - 4px) 0%, calc(100% - 4px) 4px, 100% 4px, 100% calc(100% - 4px), calc(100% - 4px) calc(100% - 4px), calc(100% - 4px) 100%, 4px 100%, 4px calc(100% - 4px), 0% calc(100% - 4px));
 }
-.bsearch-item:hover { filter: brightness(1.3); transform: scale(1.04); border-color: var(--gui-accent); }
+.bsearch-item:hover { filter: brightness(1.3); border-color: var(--gui-accent); }
 .bsearch-item:active { transform: scale(0.95); }
 .bsearch-item.selected { background: var(--gui-active); border-color: var(--gui-accent); }
 .bsearch-item img {
@@ -1750,7 +1750,7 @@ body {
     clip-path: polygon(0% 4px, 4px 4px, 4px 0%, calc(100% - 4px) 0%, calc(100% - 4px) 4px, 100% 4px, 100% calc(100% - 4px), calc(100% - 4px) calc(100% - 4px), calc(100% - 4px) 100%, 4px 100%, 4px calc(100% - 4px), 0% calc(100% - 4px));
 }
 #island-biome-close-btn:hover,
-#mountain-biome-close-btn:hover { filter: brightness(1.3); transform: scale(1.1); }
+#mountain-biome-close-btn:hover { filter: brightness(1.3); }
 #island-biome-close-btn:active,
 #mountain-biome-close-btn:active { transform: scale(0.9); }
 
@@ -1797,7 +1797,7 @@ body {
 }
 .biome-card:hover {
     filter: brightness(1.35);
-    transform: scale(1.04);
+    
     border-color: var(--gui-accent);
 }
 .biome-card:active {
@@ -1892,7 +1892,7 @@ body {
     line-height: 1;
     clip-path: polygon(0% 4px, 4px 4px, 4px 0%, calc(100% - 4px) 0%, calc(100% - 4px) 4px, 100% 4px, 100% calc(100% - 4px), calc(100% - 4px) calc(100% - 4px), calc(100% - 4px) 100%, 4px 100%, 4px calc(100% - 4px), 0% calc(100% - 4px));
 }
-#pointer-settings-close-btn:hover { filter: brightness(1.3); transform: scale(1.1); }
+#pointer-settings-close-btn:hover { filter: brightness(1.3); }
 #pointer-settings-close-btn:active { transform: scale(0.9); }
 
 
@@ -1932,7 +1932,7 @@ body {
     transition: filter 0.1s, transform 0.1s;
     clip-path: polygon(0% 3px, 3px 3px, 3px 0%, calc(100% - 3px) 0%, calc(100% - 3px) 3px, 100% 3px, 100% calc(100% - 3px), calc(100% - 3px) calc(100% - 3px), calc(100% - 3px) 100%, 3px 100%, 3px calc(100% - 3px), 0% calc(100% - 3px));
 }
-.btn-pointer-settings:hover { filter: brightness(1.4); transform: scale(1.08); }
+.btn-pointer-settings:hover { filter: brightness(1.4); }
 .btn-pointer-settings:active { transform: scale(0.92); }
 
 
@@ -1964,7 +1964,7 @@ body {
     transition: filter 0.1s, transform 0.1s;
     clip-path: polygon(0% 3px, 3px 3px, 3px 0%, calc(100% - 3px) 0%, calc(100% - 3px) 3px, 100% 3px, 100% calc(100% - 3px), calc(100% - 3px) calc(100% - 3px), calc(100% - 3px) 100%, 3px 100%, 3px calc(100% - 3px), 0% calc(100% - 3px));
 }
-.btn-info-settings:hover { filter: brightness(1.4); transform: scale(1.08); }
+.btn-info-settings:hover { filter: brightness(1.4); }
 .btn-info-settings:active { transform: scale(0.92); }
 
 .btn-info-about {
@@ -1983,7 +1983,7 @@ body {
     transition: filter 0.1s, transform 0.1s;
     clip-path: polygon(0% 3px, 3px 3px, 3px 0%, calc(100% - 3px) 0%, calc(100% - 3px) 3px, 100% 3px, 100% calc(100% - 3px), calc(100% - 3px) calc(100% - 3px), calc(100% - 3px) 100%, 3px 100%, 3px calc(100% - 3px), 0% calc(100% - 3px));
 }
-.btn-info-about:hover { filter: brightness(1.4); transform: scale(1.08); }
+.btn-info-about:hover { filter: brightness(1.4); }
 .btn-info-about:active { transform: scale(0.92); }
 
 #about-popup-overlay {
@@ -2029,7 +2029,7 @@ body {
     line-height: 1;
     clip-path: polygon(0% 4px, 4px 4px, 4px 0%, calc(100% - 4px) 0%, calc(100% - 4px) 4px, 100% 4px, 100% calc(100% - 4px), calc(100% - 4px) calc(100% - 4px), calc(100% - 4px) 100%, 4px 100%, 4px calc(100% - 4px), 0% calc(100% - 4px));
 }
-#about-close-btn:hover { filter: brightness(1.3); transform: scale(1.1); }
+#about-close-btn:hover { filter: brightness(1.3); }
 #about-close-btn:active { transform: scale(0.9); }
 
 #about-popup {
@@ -2129,7 +2129,7 @@ body {
     line-height: 1;
     clip-path: polygon(0% 4px, 4px 4px, 4px 0%, calc(100% - 4px) 0%, calc(100% - 4px) 4px, 100% 4px, 100% calc(100% - 4px), calc(100% - 4px) calc(100% - 4px), calc(100% - 4px) 100%, 4px 100%, 4px calc(100% - 4px), 0% calc(100% - 4px));
 }
-#graphics-settings-close-btn:hover { filter: brightness(1.3); transform: scale(1.1); }
+#graphics-settings-close-btn:hover { filter: brightness(1.3); }
 #graphics-settings-close-btn:active { transform: scale(0.9); }
 
 #graphics-settings-popup {
@@ -2200,7 +2200,7 @@ body {
     cursor: pointer;
     clip-path: polygon(0% 4px, 4px 4px, 4px 0%, calc(100% - 4px) 0%, calc(100% - 4px) 4px, 100% 4px, 100% calc(100% - 4px), calc(100% - 4px) calc(100% - 4px), calc(100% - 4px) 100%, 4px 100%, 4px calc(100% - 4px), 0% calc(100% - 4px));
 }
-#photo-filters-close-btn:hover { filter: brightness(1.3); transform: scale(1.1); }
+#photo-filters-close-btn:hover { filter: brightness(1.3); }
 #photo-filters-close-btn:active { transform: scale(0.9); }
 
 #photo-filters-popup {
@@ -2244,7 +2244,7 @@ body {
     transition: transform 0.1s, filter 0.1s, border-color 0.1s;
     clip-path: polygon(0% 3px, 3px 3px, 3px 0%, calc(100% - 3px) 0%, calc(100% - 3px) 3px, 100% 3px, 100% calc(100% - 3px), calc(100% - 3px) calc(100% - 3px), calc(100% - 3px) 100%, 3px 100%, 3px calc(100% - 3px), 0% calc(100% - 3px));
 }
-.photo-filter-card:hover { filter: brightness(1.2); transform: scale(1.05); }
+.photo-filter-card:hover { filter: brightness(1.2); }
 .photo-filter-card:active { transform: scale(0.93); }
 .photo-filter-card.active {
     border-color: var(--gui-accent);
@@ -2353,7 +2353,7 @@ body {
     line-height: 1;
     clip-path: polygon(0% 4px, 4px 4px, 4px 0%, calc(100% - 4px) 0%, calc(100% - 4px) 4px, 100% 4px, 100% calc(100% - 4px), calc(100% - 4px) calc(100% - 4px), calc(100% - 4px) 100%, 4px 100%, 4px calc(100% - 4px), 0% calc(100% - 4px));
 }
-#gui-settings-close-btn:hover { filter: brightness(1.3); transform: scale(1.1); }
+#gui-settings-close-btn:hover { filter: brightness(1.3); }
 #gui-settings-close-btn:active { transform: scale(0.9); }
 
 #gui-settings-popup {
@@ -2399,7 +2399,7 @@ body {
     transition: filter 0.1s, transform 0.1s, border-color 0.15s;
     clip-path: polygon(0% 3px, 3px 3px, 3px 0%, calc(100% - 3px) 0%, calc(100% - 3px) 3px, 100% 3px, 100% calc(100% - 3px), calc(100% - 3px) calc(100% - 3px), calc(100% - 3px) 100%, 3px 100%, 3px calc(100% - 3px), 0% calc(100% - 3px));
 }
-.gui-theme-card:hover { filter: brightness(1.3); transform: scale(1.05); }
+.gui-theme-card:hover { filter: brightness(1.3); }
 .gui-theme-card:active { transform: scale(0.95); }
 .gui-theme-card.selected { border-color: var(--gui-accent); background: var(--gui-active); }
 
@@ -2480,7 +2480,7 @@ body { transition: background-color 1.5s ease; }
     line-height: 1;
     clip-path: polygon(0% 4px, 4px 4px, 4px 0%, calc(100% - 4px) 0%, calc(100% - 4px) 4px, 100% 4px, 100% calc(100% - 4px), calc(100% - 4px) calc(100% - 4px), calc(100% - 4px) 100%, 4px 100%, 4px calc(100% - 4px), 0% calc(100% - 4px));
 }
-#explicit-warning-close-btn:hover { filter: brightness(1.3); transform: scale(1.1); }
+#explicit-warning-close-btn:hover { filter: brightness(1.3); }
 #explicit-warning-close-btn:active { transform: scale(0.9); }
 
 #explicit-warning-popup {
@@ -2626,7 +2626,7 @@ body { transition: background-color 1.5s ease; }
     line-height: 1;
     clip-path: polygon(0% 4px, 4px 4px, 4px 0%, calc(100% - 4px) 0%, calc(100% - 4px) 4px, 100% 4px, 100% calc(100% - 4px), calc(100% - 4px) calc(100% - 4px), calc(100% - 4px) 100%, 4px 100%, 4px calc(100% - 4px), 0% calc(100% - 4px));
 }
-#community-close-btn:hover { filter: brightness(1.3); transform: scale(1.1); }
+#community-close-btn:hover { filter: brightness(1.3); }
 #community-close-btn:active { transform: scale(0.9); }
 #community-popup {
     background: var(--gui-bg-light);
@@ -3064,7 +3064,7 @@ body { transition: background-color 1.5s ease; }
     clip-path: polygon(0% 3px, 3px 3px, 3px 0%, calc(100% - 3px) 0%, calc(100% - 3px) 3px, 100% 3px, 100% calc(100% - 3px), calc(100% - 3px) calc(100% - 3px), calc(100% - 3px) 100%, 3px 100%, 3px calc(100% - 3px), 0% calc(100% - 3px));
     cursor: pointer;
 }
-#music-popup-close-btn:hover { filter: brightness(1.3); transform: scale(1.1); }
+#music-popup-close-btn:hover { filter: brightness(1.3); }
 #music-popup-close-btn:active { transform: scale(0.9); }
 #music-popup {
     background: var(--gui-bg-light);
@@ -3195,7 +3195,7 @@ body { transition: background-color 1.5s ease; }
     transition: transform 0.1s, filter 0.1s;
     clip-path: polygon(0% 3px, 3px 3px, 3px 0%, calc(100% - 3px) 0%, calc(100% - 3px) 3px, 100% 3px, 100% calc(100% - 3px), calc(100% - 3px) calc(100% - 3px), calc(100% - 3px) 100%, 3px 100%, 3px calc(100% - 3px), 0% calc(100% - 3px));
 }
-#embed-popup-close-btn:hover { filter: brightness(1.3); transform: scale(1.1); }
+#embed-popup-close-btn:hover { filter: brightness(1.3); }
 #embed-popup-close-btn:active { transform: scale(0.9); }
 
 #embed-popup {
@@ -3330,7 +3330,7 @@ body { transition: background-color 1.5s ease; }
     clip-path: polygon(0% 3px, 3px 3px, 3px 0%, calc(100% - 3px) 0%, calc(100% - 3px) 3px, 100% 3px, 100% calc(100% - 3px), calc(100% - 3px) calc(100% - 3px), calc(100% - 3px) 100%, 3px 100%, 3px calc(100% - 3px), 0% calc(100% - 3px));
     transition: filter 0.1s, transform 0.1s;
 }
-#analytics-close-btn:hover  { filter: brightness(1.3); transform: scale(1.1); }
+#analytics-close-btn:hover  { filter: brightness(1.3); }
 #analytics-close-btn:active { transform: scale(0.9); }
 
 #analytics-popup {
@@ -3555,7 +3555,7 @@ body { transition: background-color 1.5s ease; }
     clip-path: polygon(0% 3px, 3px 3px, 3px 0%, calc(100% - 3px) 0%, calc(100% - 3px) 3px, 100% 3px, 100% calc(100% - 3px), calc(100% - 3px) calc(100% - 3px), calc(100% - 3px) 100%, 3px 100%, 3px calc(100% - 3px), 0% calc(100% - 3px));
     transition: transform 0.1s, filter 0.1s;
 }
-#one-by-one-ok-btn:hover  { filter: brightness(1.2); transform: scale(1.06); }
+#one-by-one-ok-btn:hover  { filter: brightness(1.2); }
 #one-by-one-ok-btn:active { transform: scale(0.92); }
 #radial-menu-overlay {
     position: fixed; inset: 0; z-index: 9998;
@@ -3635,7 +3635,7 @@ body { transition: background-color 1.5s ease; }
     clip-path: polygon(0% 3px, 3px 3px, 3px 0%, calc(100% - 3px) 0%, calc(100% - 3px) 3px, 100% 3px, 100% calc(100% - 3px), calc(100% - 3px) calc(100% - 3px), calc(100% - 3px) 100%, 3px 100%, 3px calc(100% - 3px), 0% calc(100% - 3px));
     cursor: pointer;
 }
-#brush-popup-close:hover  { filter: brightness(1.3); transform: scale(1.1); }
+#brush-popup-close:hover  { filter: brightness(1.3); }
 #brush-popup-close:active { transform: scale(0.9); }
 
 #brush-popup {
@@ -3666,7 +3666,7 @@ body { transition: background-color 1.5s ease; }
     clip-path: polygon(0% 3px, 3px 3px, 3px 0%, calc(100% - 3px) 0%, calc(100% - 3px) 3px, 100% 3px, 100% calc(100% - 3px), calc(100% - 3px) calc(100% - 3px), calc(100% - 3px) 100%, 3px 100%, 3px calc(100% - 3px), 0% calc(100% - 3px));
     min-width: 48px;
 }
-.brush-sz-btn:hover  { filter: brightness(1.25); transform: scale(1.06); }
+.brush-sz-btn:hover  { filter: brightness(1.25); }
 .brush-sz-btn:active { transform: scale(0.93); }
 .brush-sz-btn.active { border-color: var(--gui-accent, #ffdf80); color: var(--gui-accent, #ffdf80); background: var(--gui-active, #6b4726); }
 
@@ -3709,7 +3709,7 @@ body { transition: background-color 1.5s ease; }
     clip-path: polygon(0% 3px, 3px 3px, 3px 0%, calc(100% - 3px) 0%, calc(100% - 3px) 3px, 100% 3px, 100% calc(100% - 3px), calc(100% - 3px) calc(100% - 3px), calc(100% - 3px) 100%, 3px 100%, 3px calc(100% - 3px), 0% calc(100% - 3px));
     cursor: pointer;
 }
-#mirror-popup-close:hover  { filter: brightness(1.3); transform: scale(1.1); }
+#mirror-popup-close:hover  { filter: brightness(1.3); }
 #mirror-popup-close:active { transform: scale(0.9); }
 
 #mirror-popup {
@@ -3739,7 +3739,7 @@ body { transition: background-color 1.5s ease; }
     transition: transform 0.1s, filter 0.1s, border-color 0.1s, color 0.1s;
     clip-path: polygon(0% 3px, 3px 3px, 3px 0%, calc(100% - 3px) 0%, calc(100% - 3px) 3px, 100% 3px, 100% calc(100% - 3px), calc(100% - 3px) calc(100% - 3px), calc(100% - 3px) 100%, 3px 100%, 3px calc(100% - 3px), 0% calc(100% - 3px));
 }
-.mirror-card:hover  { filter: brightness(1.25); transform: scale(1.06); }
+.mirror-card:hover  { filter: brightness(1.25); }
 .mirror-card:active { transform: scale(0.93); }
 .mirror-card.active { border-color: var(--gui-accent, #ffdf80); color: var(--gui-accent, #ffdf80); background: var(--gui-active, #6b4726); }
 .mirror-card-icon  { font-size: 18px; line-height: 1; }
@@ -3896,7 +3896,7 @@ body { transition: background-color 1.5s ease; }
     z-index: 10; padding: 0; line-height: 1;
     clip-path: polygon(0% 4px,4px 4px,4px 0%,calc(100% - 4px) 0%,calc(100% - 4px) 4px,100% 4px,100% calc(100% - 4px),calc(100% - 4px) calc(100% - 4px),calc(100% - 4px) 100%,4px 100%,4px calc(100% - 4px),0% calc(100% - 4px));
 }
-#grid-res-close-btn:hover { filter: brightness(1.3); transform: scale(1.1); }
+#grid-res-close-btn:hover { filter: brightness(1.3); }
 #grid-res-close-btn:active { transform: scale(0.9); }
 
 #grid-res-popup {
@@ -4050,7 +4050,7 @@ body:not(.presentation-mode) #block-name-display {
     transition: transform 0.1s, filter 0.1s; z-index: 10; padding: 0; line-height: 1;
     clip-path: polygon(0% 3px, 3px 3px, 3px 0%, calc(100% - 3px) 0%, calc(100% - 3px) 3px, 100% 3px, 100% calc(100% - 3px), calc(100% - 3px) calc(100% - 3px), calc(100% - 3px) 100%, 3px 100%, 3px calc(100% - 3px), 0% calc(100% - 3px));
 }
-#keybindings-close-btn:hover { filter: brightness(1.3); transform: scale(1.1); }
+#keybindings-close-btn:hover { filter: brightness(1.3); }
 #keybindings-close-btn:active { transform: scale(0.9); }
 #keybindings-popup {
     background: var(--gui-bg-light);
@@ -4143,7 +4143,7 @@ body:not(.presentation-mode) #block-name-display {
     transition: filter 0.1s, transform 0.1s;
     clip-path: polygon(0% 2px, 2px 2px, 2px 0%, calc(100% - 2px) 0%, calc(100% - 2px) 2px, 100% 2px, 100% calc(100% - 2px), calc(100% - 2px) calc(100% - 2px), calc(100% - 2px) 100%, 2px 100%, 2px calc(100% - 2px), 0% calc(100% - 2px));
 }
-#keybindings-reset-btn:hover { filter: brightness(1.3); transform: scale(1.04); }
+#keybindings-reset-btn:hover { filter: brightness(1.3); }
 #keybindings-reset-btn:active { transform: scale(0.96); }
 #fun-popup-overlay,
 #island-emoji-overlay {
@@ -4178,7 +4178,7 @@ body:not(.presentation-mode) #block-name-display {
     cursor: pointer;
 }
 #fun-popup-close-btn:hover,
-#island-emoji-close-btn:hover { filter: brightness(1.3); transform: scale(1.1); }
+#island-emoji-close-btn:hover { filter: brightness(1.3); }
 #fun-popup-close-btn:active,
 #island-emoji-close-btn:active { transform: scale(0.9); }
 
@@ -4275,7 +4275,7 @@ body:not(.presentation-mode) #block-name-display {
     clip-path: polygon(0% 3px, 3px 3px, 3px 0%, calc(100% - 3px) 0%, calc(100% - 3px) 3px, 100% 3px, 100% calc(100% - 3px), calc(100% - 3px) calc(100% - 3px), calc(100% - 3px) 100%, 3px 100%, 3px calc(100% - 3px), 0% calc(100% - 3px));
     transition: filter 0.1s, transform 0.1s;
 }
-#achievements-close-btn:hover  { filter: brightness(1.3); transform: scale(1.1); }
+#achievements-close-btn:hover  { filter: brightness(1.3); }
 #achievements-close-btn:active { transform: scale(0.9); }
 
 #achievements-popup {
@@ -4512,7 +4512,7 @@ body:not(.presentation-mode) #block-name-display {
     line-height: 1;
     cursor: pointer;
 }
-#save-slots-close-btn:hover { filter: brightness(1.3); transform: scale(1.1); }
+#save-slots-close-btn:hover { filter: brightness(1.3); }
 #save-slots-close-btn:active { transform: scale(0.9); }
 #save-slots-popup {
     background: var(--gui-bg-light);
@@ -4634,4 +4634,34 @@ body:not(.presentation-mode) #block-name-display {
 }
 .btn-save-slots:hover { filter: brightness(1.3); }
 .btn-save-slots:active { transform: scale(0.95); }
+
+@keyframes btn-squish {
+    0%   { transform: scaleX(1.0)  scaleY(1.0); }
+    18%  { transform: scaleX(1.14) scaleY(0.86); }
+    40%  { transform: scaleX(0.93) scaleY(1.11); }
+    62%  { transform: scaleX(1.05) scaleY(0.96); }
+    80%  { transform: scaleX(0.98) scaleY(1.03); }
+    100% { transform: scaleX(1.0)  scaleY(1.0); }
+}
+
+button:hover,
+.about-link:hover,
+.float-mode-card:hover,
+.mirror-card:hover,
+.brush-sz-btn:hover,
+.shape-preset-btn:hover,
+.fill-block-btn:hover,
+.bsearch-cat-btn:hover,
+.terraform-h-btn:hover,
+.zoom-step-btn:hover,
+.timp-btn:hover,
+.kb-key-btn:hover,
+.save-slot-btn:hover,
+.btn-save-slots:hover,
+.climate-btn:hover,
+.zoom-btn:hover,
+.popup-help-btn:hover {
+    animation: btn-squish 0.38s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
+    transform-origin: center center;
+}
 
