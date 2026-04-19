@@ -962,6 +962,44 @@ That is all, what do you think??  :menhera-point:
 
 ![Devlog67thub](<.github/Devlogs (Flavortown)/Devlog67.png>)
 
+
+
+---
+
+
+# Devlog 68
+### Overall : Added Buton Bump animation
+
+---
+
+# Comit [(2731f7c)](https://github.com/Adium1000/Isometric-island/commit/2731f7c97acdc84d3df33aaec7d394b4f8a7d25b)
+
+- Added Button bump effect
+- Now some buttons will make this animation when you touch them with your cursor, this makes the game pop even if it is a small change
+
+
+[![ButtonBUMP](https://i.postimg.cc/hvwKDnHx/Recording2026-04-18235337-ezgif-com-gif-maker.gif)](https://postimg.cc/LgzcDc46)
+
+
+This animation apply to:
+- Popups
+- Popup's Action buttons
+- Some popup's inside buttons
+- Hotbar (OLD)
+
+
+This animation does not apply to
+- Search Popup
+- Fill Popup
+
+---
+- Added Devlog image in GIF
+
+---
+Anyway that is all what do you think? :menhera-point: 
+
+![DEVLOG68insider](<.github/Devlogs (Flavortown)/devlog68.gif>)
+
 ---
 End 
 

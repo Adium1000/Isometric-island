@@ -148,7 +148,3 @@ Release
 Release Fin#al
 
 CLONE YOUR REPO BEFORE COMIT!
-
-# Devlog 68
-
-- Added Buton Bump animation

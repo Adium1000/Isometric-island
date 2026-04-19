@@ -40,6 +40,181 @@
     <link rel="preload" href="Assets/GUI/hotbar.png" as="image">
     <link rel="preload" href="Assets/Audio/hotbar.wav" as="audio">
     <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
+    <style id="tutorial-css">
+#tut-overlay {
+    position: fixed;
+    inset: 0;
+    z-index: 200000;
+    pointer-events: none;
+    transition: opacity 0.4s ease;
+}
+
+#tut-spotlight {
+    position: absolute;
+    border-radius: 6px;
+    box-shadow:
+        0 0 0 9999px rgba(0,0,0,0.78),
+        0 0 0 3px #ffdf80,
+        0 0 20px 6px rgba(255,223,128,0.35);
+    pointer-events: none;
+    transition:
+        left   0.45s cubic-bezier(.4,0,.2,1),
+        top    0.45s cubic-bezier(.4,0,.2,1),
+        width  0.35s ease,
+        height 0.35s ease,
+        opacity 0.3s ease;
+    z-index: 200001;
+    background: transparent;
+}
+
+#tut-skip-btn {
+    position: fixed;
+    top: 14px;
+    right: 16px;
+    z-index: 200010;
+    font-family: 'Press Start 2P', monospace;
+    font-size: 7px;
+    padding: 7px 12px;
+    background: rgba(30,10,0,0.75);
+    border: 2px solid #6b4c2a;
+    color: #c8b89a;
+    cursor: pointer;
+    letter-spacing: 0.5px;
+    transition: background 0.15s, border-color 0.15s, color 0.15s;
+}
+#tut-skip-btn:hover {
+    background: rgba(100,30,10,0.9);
+    border-color: #ffdf80;
+    color: #ffdf80;
+}
+
+#tut-card {
+    position: fixed;
+    z-index: 200010;
+    width: 320px;
+    background: var(--gui-bg, #2a1d0e);
+    border: 4px solid var(--gui-border, #6b4c2a);
+    box-shadow: 6px 6px 0 var(--gui-bg-dark, #1a1208),
+                0 0 24px rgba(255,223,128,0.12);
+    padding: 18px 20px 14px;
+    font-family: 'Press Start 2P', monospace;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    opacity: 0;
+    transform: scale(0.88) translateY(14px);
+    transition: opacity 0.3s ease,
+                transform 0.3s cubic-bezier(.18,.89,.32,1.28),
+                left 0.45s cubic-bezier(.4,0,.2,1),
+                top  0.45s cubic-bezier(.4,0,.2,1);
+    pointer-events: all;
+}
+#tut-card.tut-card-in {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+}
+
+#tut-wave-dots {
+    display: flex;
+    gap: 5px;
+    justify-content: center;
+    margin-bottom: 2px;
+}
+.tut-dot {
+    width: 7px;
+    height: 7px;
+    border-radius: 0;
+    background: var(--gui-border, #6b4c2a);
+    display: inline-block;
+    transition: background 0.2s, transform 0.2s;
+}
+.tut-dot.done  { background: #8b6340; }
+.tut-dot.active {
+    background: var(--gui-accent, #ffdf80);
+    transform: scale(1.3);
+    box-shadow: 0 0 6px rgba(255,223,128,0.5);
+    animation: tut-dot-pulse 1s ease-in-out infinite;
+}
+@keyframes tut-dot-pulse {
+    0%,100% { box-shadow: 0 0 4px 1px rgba(255,223,128,0.4); }
+    50%     { box-shadow: 0 0 10px 3px rgba(255,223,128,0.7); }
+}
+
+#tut-title {
+    margin: 0;
+    font-size: 10px;
+    color: var(--gui-accent, #ffdf80);
+    text-shadow: 2px 2px var(--gui-bg-dark, #1a1208);
+    letter-spacing: 0.5px;
+    line-height: 1.5;
+    text-align: center;
+}
+#tut-text {
+    margin: 0;
+    font-size: 9px;
+    color: #e8d5b0;
+    line-height: 2;
+    letter-spacing: 0.3px;
+    text-align: center;
+}
+
+#tut-close-prompt {
+    font-size: 6.5px;
+    color: #adffa8;
+    text-align: center;
+    line-height: 2;
+    letter-spacing: 0.3px;
+    border: 1.5px solid rgba(173,255,168,0.3);
+    padding: 6px 8px;
+    background: rgba(0,60,0,0.25);
+    animation: tut-prompt-blink 1.5s step-start infinite;
+}
+@keyframes tut-prompt-blink {
+    0%,100% { border-color: rgba(173,255,168,0.3); }
+    50%     { border-color: rgba(173,255,168,0.85); }
+}
+
+#tut-footer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-top: 4px;
+}
+#tut-step-count {
+    font-size: 6px;
+    color: var(--gui-text-dim, #a07850);
+    letter-spacing: 0.4px;
+}
+#tut-buttons { display: flex; gap: 8px; }
+
+#tut-next-btn, #tut-action-btn {
+    font-family: 'Press Start 2P', monospace;
+    font-size: 7px;
+    padding: 7px 12px;
+    border: 2.5px solid var(--gui-border, #6b4c2a);
+    cursor: pointer;
+    letter-spacing: 0.5px;
+    transition: background 0.15s, border-color 0.15s, transform 0.1s;
+}
+#tut-next-btn:hover,  #tut-action-btn:hover  { transform: scale(1.04); }
+#tut-next-btn:active, #tut-action-btn:active { transform: scale(0.97); }
+
+#tut-next-btn {
+    background: var(--gui-accent, #ffdf80);
+    color: var(--gui-bg-dark, #1a1208);
+    border-color: #d4a820;
+    box-shadow: 3px 3px 0 #a07810;
+}
+#tut-next-btn:hover { background: #ffe899; border-color: #ffdf80; }
+
+#tut-action-btn {
+    background: #1a4a1a;
+    color: #adffa8;
+    border-color: #2a7a2a;
+    box-shadow: 3px 3px 0 #0a2a0a;
+}
+#tut-action-btn:hover { background: #256025; border-color: #adffa8; }
+    </style>
     <style>
         #about-author {
             font-family: 'Press Start 2P', monospace;
@@ -1419,6 +1594,10 @@ function tryStartBuilding() {
                     <img src="./Assets/Icons/book.png" style="width:16px;height:16px;image-rendering:pixelated;vertical-align:middle;margin-right:10px;">
                     Tutorial
                 </button>
+                <button class="settings-menu-item" onclick="closeSettingsMenuPopup();setTimeout(function(){var k='ii_tutorial_done_v1';try{localStorage.removeItem(k);}catch(e){}if(typeof startIslandTutorial==='function')startIslandTutorial();},250)">
+                    <img src="./Assets/Icons/book.png" style="width:16px;height:16px;image-rendering:pixelated;vertical-align:middle;margin-right:10px;">
+                    Interactive Tutorial
+                </button>
             </div>
             <div style="display:flex;justify-content:flex-end;margin-top:14px;">
                 <button class="btn-ok" onclick="closeSettingsMenuPopup()">OK</button>
@@ -2070,33 +2249,32 @@ function esc(s) {
 }
 
 const CM_BLOCK_COLORS = {
-    0:  null,          
+    0:  null,           
     1:  '#8B6340',      
-    2:  '#9B7350',      
+    2:  '#9B7350',     
     3:  '#7a5530',      
-    4:  '#5a9e3a',      
-    5:  '#787878',      
-    6:  '#c8a040',      
-    7:  '#909090',     
+    4:  '#5a9e3a',     
+    5:  '#787878',   
+    6:  '#c8a040',  
+    7:  '#909090',  
     8:  '#607060',      
-    9:  '#d4c080',    
-    10: '#c08050',      
-    11: '#3060c0',   
-    12: '#e8f0ff',   
-    13: '#9eb0c0',     
+    9:  '#d4c080',      
+    10: '#c08050',     
+    11: '#3060c0',     
+    12: '#e8f0ff',      
+    13: '#9eb0c0',      
     14: '#a0d0e8',     
-    15: '#e07020',    
-    16: '#d4a830',   
-    17: '#50a830',    
-    18: '#2a7a20',   
-    19: '#8ab0c8',     
+    15: '#e07020',     
+    16: '#d4a830',     
+    17: '#50a830',      
+    19: '#8ab0c8',      
     20: '#f0f8ff',   
-    21: '#8B5E3C',     
-    22: '#3a8a28',    
-    23: '#d8eaf8',    
-    24: '#d0e8f8',      
+    21: '#8B5E3C',      
+    22: '#3a8a28',     
+    23: '#d8eaf8',      
+    24: '#d0e8f8',    
     25: '#c8e0f0',     
-    26: '#e8f4ff',     
+    26: '#e8f4ff',      
 };
 
 window.cmRenderAllThumbs = function() {
@@ -2698,3 +2876,406 @@ window.closeHelpInfo = closeHelpInfo;
         </div>
     </div>
 </div>
+<script id="tutorial-js">
+// ╔══════════════════════════════════════════════════════════════════╗
+// ║          Isometric Island — Spotlight Tutorial System            ║
+// ╚══════════════════════════════════════════════════════════════════╝
+(function () {
+    'use strict';
+
+    const TUTORIAL_KEY = 'ii_tutorial_done_v1';
+
+    function alreadySeen() {
+        try { return localStorage.getItem(TUTORIAL_KEY) === '1'; } catch (_) { return false; }
+    }
+
+    const STEPS = [
+        {
+            id: 'hotbar',
+            target: '#dock',
+            position: 'top',
+            title: 'Hotbar',
+            text: 'This is the Hotbar, here you can find all the placeable blocks and objects.',
+            action: null,
+        },
+        {
+            id: 'zoombar',
+            target: '#zoom-ui',
+            position: 'left',
+            title: 'Zoom Bar',
+            text: 'Zoom bar makes you zoom the island, you can use the buttons zoom + or - or the bar.',
+            action: null,
+        },
+        {
+            id: 'music',
+            target: '#music-toggle',
+            position: 'top',
+            title: 'Music menu',
+            text: 'This is the music menu, from here you can choose to listen to a Spotify playlist or change the BG noise volume.',
+            popupSelector: '#music-popup-wrapper',
+            action: {
+                label: 'Open Music Menu',
+                fn: () => { if (typeof openMusicPopup === 'function') openMusicPopup(); },
+                closeSelector: '#music-popup-overlay',
+                closePrompt: 'Nice! Now you can close this popup to continue.',
+            },
+        },
+        {
+            id: 'float',
+            target: '#float-toggle',
+            position: 'top',
+            title: 'Float Mode',
+            text: 'From the float popup you can choose how the island float and the mode that the Island Float.',
+            popupSelector: '#float-popup-wrapper',
+            action: {
+                label: 'Open Float Menu',
+                fn: () => { if (typeof openFloatPopup === 'function') openFloatPopup(); },
+                closeSelector: '#float-popup-overlay',
+                closePrompt: 'Nice! Now you can close the popup to continue.',
+            },
+        },
+        {
+            id: 'radial',
+            target: '#radial-menu',
+            position: 'center',
+            title: 'Radial Menu',
+            text: 'Right click to open the radial menu to choose other tools for the island.',
+            popupSelector: '#radial-menu-overlay',
+            action: {
+                label: 'Open Radial Menu',
+                fn: () => {
+                    if (typeof showRadialMenu === 'function') showRadialMenu();
+                    if (typeof window._radialMenuActive !== 'undefined') window._radialMenuActive = true;
+                    function tutRadialClose(ev) {
+                        const isEscape = ev.type === 'keydown' && ev.key === 'Escape';
+                        const isLeftClick = ev.type === 'mousedown' && ev.button === 0;
+                        if (!isEscape && !isLeftClick) return;
+                        if (typeof hideRadialMenu === 'function') hideRadialMenu();
+                        if (typeof window._radialMenuActive !== 'undefined') window._radialMenuActive = false;
+                        document.removeEventListener('keydown', tutRadialClose);
+                        document.removeEventListener('mousedown', tutRadialClose);
+                    }
+                    setTimeout(() => {
+                        document.addEventListener('keydown', tutRadialClose);
+                        document.addEventListener('mousedown', tutRadialClose);
+                    }, 300);
+                },
+                closeSelector: '#radial-menu-overlay',
+                closePrompt: 'Nice, now tap here to continue.',
+            },
+        },
+        {
+            id: 'file',
+            target: '#save-btn',
+            position: 'top',
+            title: 'Menu File',
+            text: 'From here you can open the file menu and control other stuff for the island.',
+            popupSelector: '#save-popup-wrapper',
+            action: {
+                label: 'Open File Menu',
+                fn: () => { if (typeof openSavePopup === 'function') openSavePopup(); },
+                closeSelector: '#save-popup-overlay',
+                closePrompt: 'Nice! Now close the file menu to continue.',
+            },
+        },
+        {
+            id: 'done',
+            target: null,
+            position: 'center',
+            title: 'You are Done!',
+            text: 'You did complete the Spotlight Tutorial, Good job! ',
+            action: null,
+            last: true,
+        },
+    ];
+
+    let currentStep     = 0;
+    let waitingForClose = false;
+
+    function buildDOM() {
+        const overlay = document.createElement('div');
+        overlay.id = 'tut-overlay';
+        const spotlight = document.createElement('div');
+        spotlight.id = 'tut-spotlight';
+        overlay.appendChild(spotlight);
+
+        const card = document.createElement('div');
+        card.id = 'tut-card';
+        card.innerHTML = `
+            <div id="tut-wave-dots"></div>
+            <h3 id="tut-title"></h3>
+            <p  id="tut-text"></p>
+            <div id="tut-close-prompt"></div>
+            <div id="tut-footer">
+                <span id="tut-step-count"></span>
+                <div id="tut-buttons">
+                    <button id="tut-action-btn"></button>
+                    <button id="tut-next-btn">Next ▶</button>
+                </div>
+            </div>
+        `;
+
+        const skipBtn = document.createElement('button');
+        skipBtn.id = 'tut-skip-btn';
+        skipBtn.textContent = 'Skip ✕';
+        skipBtn.onclick = endTutorial;
+
+        document.body.appendChild(overlay);
+        document.body.appendChild(card);
+        document.body.appendChild(skipBtn);
+
+        document.getElementById('tut-next-btn').onclick   = nextStep;
+        document.getElementById('tut-action-btn').onclick = doAction;
+    }
+
+    function applySpotlight(step) {
+        const pad       = 14;
+        const spotlight = document.getElementById('tut-spotlight');
+        if (!spotlight) return;
+        if (!step.target || step.position === 'center') {
+            spotlight.style.opacity = '0';
+            return;
+        }
+        const el = document.querySelector(step.target);
+        if (!el) { spotlight.style.opacity = '0'; return; }
+        const rect = el.getBoundingClientRect();
+        const cx = rect.left + rect.width  / 2;
+        const cy = rect.top  + rect.height / 2;
+        const hw = rect.width  / 2 + pad;
+        const hh = rect.height / 2 + pad;
+        spotlight.style.opacity = '1';
+        spotlight.style.left   = (cx - hw) + 'px';
+        spotlight.style.top    = (cy - hh) + 'px';
+        spotlight.style.width  = (hw * 2)  + 'px';
+        spotlight.style.height = (hh * 2)  + 'px';
+    }
+
+    function positionCard(step, anchorSelector) {
+        const card = document.getElementById('tut-card');
+        if (!card) return;
+        const pad = 20;
+        const cw  = card.offsetWidth  || 320;
+        const ch  = card.offsetHeight || 220;
+        const vw  = window.innerWidth;
+        const vh  = window.innerHeight;
+        if (anchorSelector) {
+            const popup = document.querySelector(anchorSelector);
+            if (popup) {
+                const pr = popup.getBoundingClientRect();
+                let left = pr.left - cw - pad;
+                let top  = pr.top  + pr.height / 2 - ch / 2;
+                if (left < 10) left = pr.right + pad;
+                left = Math.max(10, Math.min(left, vw - cw - 10));
+                top  = Math.max(10, Math.min(top,  vh - ch - 10));
+                card.style.left = Math.round(left) + 'px';
+                card.style.top  = Math.round(top)  + 'px';
+                return;
+            }
+        }
+
+        if (!step.target || step.position === 'center') {
+            card.style.left = Math.round((vw - cw) / 2) + 'px';
+            card.style.top  = Math.round((vh - ch) / 2) + 'px';
+            return;
+        }
+
+        if (step.position === 'above-hotbar') {
+            const el = document.querySelector(step.target);
+            if (el) {
+                const rect = el.getBoundingClientRect();
+                const left = Math.max(10, Math.min(rect.left, vw - cw - 10));
+                const top  = Math.max(10, rect.top - ch - pad);
+                card.style.left = Math.round(left) + 'px';
+                card.style.top  = Math.round(top)  + 'px';
+            } else {
+                card.style.left = Math.round((vw - cw) / 2) + 'px';
+                card.style.top  = Math.round((vh - ch) / 2) + 'px';
+            }
+            return;
+        }
+
+        const el = document.querySelector(step.target);
+        if (!el) {
+            card.style.left = Math.round((vw - cw) / 2) + 'px';
+            card.style.top  = Math.round((vh - ch) / 2) + 'px';
+            return;
+        }
+        const rect = el.getBoundingClientRect();
+        let left, top;
+        switch (step.position) {
+            case 'top':
+                left = rect.left + rect.width / 2 - cw / 2;
+                top  = rect.top  - ch - pad;
+                break;
+            case 'bottom':
+                left = rect.left + rect.width / 2 - cw / 2;
+                top  = rect.bottom + pad;
+                break;
+            case 'left':
+                left = rect.left - cw - pad;
+                top  = rect.top  + rect.height / 2 - ch / 2;
+                break;
+            case 'right':
+                left = rect.right + pad;
+                top  = rect.top   + rect.height / 2 - ch / 2;
+                break;
+            default:
+                left = (vw - cw) / 2;
+                top  = (vh - ch) / 2;
+        }
+        left = Math.max(10, Math.min(left, vw - cw - 10));
+        top  = Math.max(10, Math.min(top,  vh - ch - 10));
+        card.style.left = Math.round(left) + 'px';
+        card.style.top  = Math.round(top)  + 'px';
+    }
+
+    function renderStep() {
+        const step = STEPS[currentStep];
+        waitingForClose = false;
+        applySpotlight(step);
+
+        document.getElementById('tut-wave-dots').innerHTML =
+            STEPS.map((s, i) =>
+                `<span class="tut-dot ${i === currentStep ? 'active' : (i < currentStep ? 'done' : '')}"></span>`
+            ).join('');
+
+        document.getElementById('tut-title').textContent      = step.title;
+        document.getElementById('tut-text').textContent       = step.text;
+        document.getElementById('tut-step-count').textContent = `${currentStep + 1} / ${STEPS.length}`;
+
+        const promptEl = document.getElementById('tut-close-prompt');
+        promptEl.textContent   = '';
+        promptEl.style.display = 'none';
+
+        const nextBtn   = document.getElementById('tut-next-btn');
+        const actionBtn = document.getElementById('tut-action-btn');
+
+        if (step.last) {
+            nextBtn.textContent     = 'Start Building! 🏝️';
+            nextBtn.style.display   = '';
+            actionBtn.style.display = 'none';
+        } else if (step.action) {
+            nextBtn.style.display   = 'none';
+            actionBtn.style.display = '';
+            actionBtn.textContent   = step.action.label + ' ▶';
+        } else {
+            nextBtn.textContent     = 'Next ▶';
+            nextBtn.style.display   = '';
+            actionBtn.style.display = 'none';
+        }
+
+        const card = document.getElementById('tut-card');
+        card.classList.remove('tut-card-in');
+        void card.offsetWidth;
+        card.classList.add('tut-card-in');
+        setTimeout(() => positionCard(step, null), 40);
+    }
+
+    function doAction() {
+        const step = STEPS[currentStep];
+        if (!step.action) return;
+        step.action.fn();
+        document.getElementById('tut-action-btn').style.display = 'none';
+        const promptEl = document.getElementById('tut-close-prompt');
+        promptEl.textContent   = step.action.closePrompt;
+        promptEl.style.display = 'block';
+        waitingForClose = true;
+        const spotlight = document.getElementById('tut-spotlight');
+        if (spotlight) spotlight.style.opacity = '0';
+        const card = document.getElementById('tut-card');
+        if (card) {
+            let tries = 0;
+            const waitPopup = setInterval(() => {
+                tries++;
+                const popupAnchor = step.popupSelector || null;
+                const popupEl = popupAnchor ? document.querySelector(popupAnchor) : null;
+                const visible = popupEl && popupEl.getBoundingClientRect().width > 0;
+                if (visible || tries > 20) {
+                    clearInterval(waitPopup);
+                    positionCard(step, visible ? popupAnchor : null);
+                }
+            }, 80);
+        }
+
+        const sel = step.action.closeSelector;
+        const poller = setInterval(() => {
+            if (!waitingForClose) { clearInterval(poller); return; }
+            const el = sel ? document.querySelector(sel) : null;
+            if (!el) { clearInterval(poller); return; }
+            const hasVisible = el.classList.contains('popup-visible') || el.classList.contains('radial-visible');
+            const hidden =
+                el.style.display === 'none' ||
+                !hasVisible ||
+                window.getComputedStyle(el).opacity === '0';
+            if (hidden) {
+                clearInterval(poller);
+                waitingForClose = false;
+                setTimeout(nextStep, 300);
+            }
+        }, 200);
+    }
+
+    function nextStep() {
+        if (currentStep >= STEPS.length - 1) { endTutorial(); return; }
+        currentStep++;
+        renderStep();
+    }
+
+    function endTutorial() {
+        try { localStorage.setItem(TUTORIAL_KEY, '1'); } catch (_) {}
+        waitingForClose = false;
+        ['tut-overlay', 'tut-card', 'tut-skip-btn'].forEach(id => {
+            const el = document.getElementById(id);
+            if (!el) return;
+            el.style.transition = 'opacity 0.35s ease';
+            el.style.opacity    = '0';
+            setTimeout(() => { if (el.parentNode) el.parentNode.removeChild(el); }, 380);
+        });
+    }
+
+    function startTutorial() {
+        if (alreadySeen()) return;
+        if (document.getElementById('tut-overlay')) return;
+        currentStep     = 0;
+        waitingForClose = false;
+        buildDOM();
+        renderStep();
+    }
+
+    function patchCloseWelcome() {
+        const original = window.closeWelcome;
+        window.closeWelcome = function () {
+            if (typeof original === 'function') original.apply(this, arguments);
+            setTimeout(startTutorial, 700);
+        };
+    }
+
+    function waitAndPatch() {
+        if (typeof window.closeWelcome === 'function') {
+            patchCloseWelcome();
+            return;
+        }
+        let attempts = 0;
+        const iv = setInterval(() => {
+            attempts++;
+            if (typeof window.closeWelcome === 'function') {
+                clearInterval(iv);
+                patchCloseWelcome();
+            } else if (attempts > 150) {
+                clearInterval(iv);
+            }
+        }, 100);
+    }
+
+    window.startIslandTutorial = startTutorial;
+
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', waitAndPatch);
+    } else {
+        waitAndPatch();
+    }
+})();
+</script>
+
+</body>
+</html>
