@@ -450,6 +450,24 @@ THE README IS FULLY WRITEN BY ME - a wiki for my game kinda
 
 3. Lazy Audio Loading. Before, the game would load all the files at the same time when it started, which could slow things down. Now it only loads the hotbar sound right away. It loads sounds like the place sound and background music only when they are needed for the first time.
 
+
+### Stars
+
+
+## Star History
+
+<a href="https://www.star-history.com/?repos=Adium1000%2FIsometric-island&type=date&legend=top-left">
+ <picture>
+   <source media="(prefers-color-scheme: dark)" srcset="https://api.star-history.com/chart?repos=Adium1000/Isometric-island&type=date&theme=dark&legend=top-left" />
+   <source media="(prefers-color-scheme: light)" srcset="https://api.star-history.com/chart?repos=Adium1000/Isometric-island&type=date&legend=top-left" />
+   <img alt="Star History Chart" src="https://api.star-history.com/chart?repos=Adium1000/Isometric-island&type=date&legend=top-left" />
+ </picture>
+</a>
+
+
+
+
+
 ### You reached the end for now :)
 ![the end](.github/Banners/endreadme.png)   
 - You can try:
@@ -458,3 +476,4 @@ THE README IS FULLY WRITEN BY ME - a wiki for my game kinda
 3. Star the repo
 4. Suggest something cool (on Flavortown!) see `FlavortownDevlogsHistory.md`
 5. Don't like it? It's okay! Give me some feedback on what I can improve. :)
+

@@ -1,1 +1,0 @@
-Here you will fiind the .js language packs for next versions

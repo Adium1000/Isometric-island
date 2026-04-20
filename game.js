@@ -941,12 +941,12 @@ function createTile(x, y, z, type, customPath = null, parent = mapContainer) {
                         if (slot.classList.contains('page-2') && currentPage !== 2) switchPage(2);
                         else if (slot.classList.contains('page-1') && currentPage !== 1) switchPage(1);
                         selectBlock(slotType, slot);
-                        showToast('Picked: ' + (rawName.charAt(0).toUpperCase() + rawName.slice(1)), './Assets/Blocks/' + rawName + '.png');
+                        showToast(LangManager.t('toast.picked') + ' ' + (rawName.charAt(0).toUpperCase() + rawName.slice(1)), './Assets/Blocks/' + rawName + '.png');
                         matched = true;
                         break;
                     }
                 }
-                if (!matched) showToast('Block not in hotbar!');
+                if (!matched) showToast(LangManager.t('toast.block_not_in_hotbar'));
             }
             return;
         }
@@ -1431,28 +1431,28 @@ function showCodeBar(code) {
 function pasteFromClipboard() {
     navigator.clipboard.readText().then(text => {
         document.getElementById('popup-code-input').value = text.trim();
-        showToast('Succesfully Pasted!');
+        showToast(LangManager.t('toast.pasted'));
     }).catch(() => {
         document.getElementById('popup-code-input').focus();
-        showToast('Press CTRL + V to paste!');
+        showToast(LangManager.t('toast.press_ctrl_v'));
     });
 }
 
 function openLoadPopup() {
     const input = document.getElementById('popup-code-input').value.trim();
     if (!input) return;
-    if (input.toUpperCase() === 'FLAVORTOWN') { showToast('Flavortown is the best :3'); return; }
+    if (input.toUpperCase() === 'FLAVORTOWN') { showToast(LangManager.t('toast.flavortown')); return; }
     const ok = loadIslandCode(input);
-    if (!ok) showToast('Invalid Code!');
-    else { closeSavePopup(); showToast('Succesfully Loaded!'); }
+    if (!ok) showToast(LangManager.t('toast.invalid_code'));
+    else { closeSavePopup(); showToast(LangManager.t('toast.loaded')); }
 }
 
 function copyCode() {
     const val = document.getElementById('code-bar-value').value;
-    navigator.clipboard.writeText(val).then(() => showToast('Succesfully Copied!')).catch(() => {
+    navigator.clipboard.writeText(val).then(() => showToast(LangManager.t('toast.copied_clipboard'))).catch(() => {
         document.getElementById('code-bar-value').select();
         document.execCommand('copy');
-        showToast('Succesfully Copied!');
+        showToast(LangManager.t('toast.copied_clipboard'));
     });
 }
 
@@ -1461,7 +1461,7 @@ function generateShareURL() {
     const url = window.location.origin + window.location.pathname + '#island=' + encodeURIComponent(code);
     history.replaceState(null, '', '#island=' + encodeURIComponent(code));
     navigator.clipboard.writeText(url).then(() => {
-        showToast('Share link copied!');
+        showToast(LangManager.t('toast.share_link_copied'));
         updateOGTags(code);
     }).catch(() => {
         showToast('Copy: ' + url);
@@ -1922,7 +1922,7 @@ function deleteIsland() {
         for (let y = 0; y < 8; y++) for (let x = 0; x < 8; x++) createTile(x, y, 0, 'dirt', null, frag);
         mapContainer.appendChild(frag);
         saveState(); updateMinimap(); closeSavePopup();
-        showToast('Succesfully Deleted!');
+        showToast(LangManager.t('toast.deleted'));
     }, { once: true });
     hotbarSound.currentTime = 0; hotbarSound.play().catch(e => {});
 }
@@ -1980,7 +1980,7 @@ function deleteIslandWithSnake() {
         }
         mapContainer.appendChild(frag);
         saveState(); updateMinimap();
-        showToast('Succesfully Deleted!');
+        showToast(LangManager.t('toast.deleted'));
         hotbarSound.currentTime = 0; hotbarSound.play().catch(e => {});
         map.style.transition = 'none';
         map.style.transform = (map.style.transform || '').replace(/translateY\([^)]*\)/g, '').trim() + ' translateY(-60px)';
@@ -2461,7 +2461,7 @@ function fillSelectedTiles(blockType) {
     saveState();
     updateMinimap();
     closeFillPanel();
-    showToast('Filled' + (h > 1 ? ' (H:' + h + ')' : '') + '!');
+    showToast(LangManager.t('toast.filled') + (h > 1 ? ' (H:' + h + ')' : '') + '!');
 }
 
 document.getElementById('stage').addEventListener('mousedown', (e) => {
@@ -2688,7 +2688,7 @@ window.addEventListener('keydown', (e) => {
     updateFillButton();
     placeSound.currentTime = 0; placeSound.play().catch(e => {});
     saveState();
-    showToast('Deleted ' + deletedCount + ' block' + (deletedCount !== 1 ? 's' : '') + '!');
+    showToast(LangManager.t('toast.deleted_blocks') + ' ' + deletedCount + ' ' + (deletedCount !== 1 ? LangManager.t('toast.blocks_suffix_plural') : LangManager.t('toast.blocks_suffix')) + '!');
 });
 
 window.onload = () => {
@@ -2800,7 +2800,7 @@ window.onload = () => {
             if (loaded) {
                 updateMinimap();
                 _hide();
-                showToast('Island loaded from link!');
+                showToast(LangManager.t('toast.island_loaded_link'));
                 return;
             } else {
                 _hide();
@@ -2832,7 +2832,7 @@ window.onload = () => {
             if (restored) {
                 updateMinimap();
                 _hide();
-                showToast('Island Restored from the last sesion.');
+                showToast(LangManager.t('toast.island_restored'));
                 return;
             }
         } catch(e) {
@@ -3003,7 +3003,7 @@ function applyIslandShape(rows, cols) {
     currentIslandCols = cols; currentIslandRows = rows;
     saveState(); refreshShapeGrid();
     hotbarSound.currentTime = 0; hotbarSound.play().catch(e => {});
-    showToast('Island: ' + cols + 'x' + rows + '!');
+    showToast(LangManager.t('toast.island_size') + ' ' + cols + 'x' + rows + '!');
     closeSavePopup();
     closeGridResPopup();
 }
@@ -3038,7 +3038,7 @@ function applyCirclePreset(size) {
     currentIslandCols = cols; currentIslandRows = rows;
     saveState(); refreshShapeGrid();
     hotbarSound.currentTime = 0; hotbarSound.play().catch(e => {});
-    showToast('Circle ' + cols + 'x' + rows + '!');
+    showToast(LangManager.t('settings.preset_8circle').replace('8x8 ','').replace('CIRCLE','Circle').split(' ')[0] + ' ' + cols + 'x' + rows + '!');
     closeSavePopup();
     closeGridResPopup();
 }
@@ -3078,7 +3078,7 @@ function applyDonutPreset(size, holeR) {
     currentIslandCols = cols; currentIslandRows = rows;
     saveState(); refreshShapeGrid();
     hotbarSound.currentTime = 0; hotbarSound.play().catch(e => {});
-    showToast('Donut ' + cols + 'x' + rows + '!');
+    showToast(LangManager.t('toast.preset_donut') + ' ' + cols + 'x' + rows + '!');
     closeSavePopup(); closeGridResPopup(); closeSettingsPopup();
 }
 
@@ -3112,7 +3112,7 @@ function applyDiamondPreset(size) {
     currentIslandCols = cols; currentIslandRows = rows;
     saveState(); refreshShapeGrid();
     hotbarSound.currentTime = 0; hotbarSound.play().catch(e => {});
-    showToast('Diamond ' + cols + 'x' + rows + '!');
+    showToast(LangManager.t('toast.preset_diamond') + ' ' + cols + 'x' + rows + '!');
     closeSavePopup(); closeGridResPopup(); closeSettingsPopup();
 }
 function applyCrossPreset(size) {
@@ -3148,7 +3148,7 @@ function applyCrossPreset(size) {
     currentIslandCols = cols; currentIslandRows = rows;
     saveState(); refreshShapeGrid();
     hotbarSound.currentTime = 0; hotbarSound.play().catch(e => {});
-    showToast('Cross ' + cols + 'x' + rows + '!');
+    showToast(LangManager.t('toast.preset_cross') + ' ' + cols + 'x' + rows + '!');
     closeSavePopup(); closeGridResPopup(); closeSettingsPopup();
 }
 
@@ -3194,7 +3194,7 @@ function applyStarPreset(size) {
     currentIslandCols = cols; currentIslandRows = rows;
     saveState(); refreshShapeGrid();
     hotbarSound.currentTime = 0; hotbarSound.play().catch(e => {});
-    showToast('Star ' + cols + 'x' + rows + '!');
+    showToast(LangManager.t('toast.preset_star') + ' ' + cols + 'x' + rows + '!');
     closeSavePopup(); closeGridResPopup(); closeSettingsPopup();
 }
 
@@ -3283,10 +3283,58 @@ function openSettingsPopup() {
     }
     const overlay = document.getElementById('settings-popup-overlay');
     overlay.style.display = 'flex';
-    requestAnimationFrame(() => requestAnimationFrame(() => overlay.classList.add('popup-visible')));
+    requestAnimationFrame(() => requestAnimationFrame(() => {
+        overlay.classList.add('popup-visible');
+        renderLangButtons();
+    }));
     refreshShapeGrid();
     hotbarSound.currentTime = 0; hotbarSound.play().catch(e => {});
 }
+function renderLangButtons() {
+    const container = document.getElementById('lang-btn-group');
+    if (!container || !window.LangManager) return;
+    const list   = window.LangManager.getLangList();
+    const active = window.LangManager.getLang();
+    if (!list.length) return;
+    container.innerHTML = '';
+    list.forEach(l => {
+        const btn = document.createElement('button');
+        btn.className = 'lang-btn' + (l.code === active ? ' lang-btn-active' : '');
+        btn.textContent = l.flag + ' ' + l.name;
+        btn.onclick = () => {
+            window.LangManager.setLang(l.code);
+        };
+        container.appendChild(btn);
+    });
+    const labelEl = document.getElementById('lang-current-label');
+    if (labelEl) {
+        const cur = list.find(l => l.code === active);
+        if (cur) labelEl.textContent = cur.flag + ' ' + cur.name;
+    }
+}
+function openLanguagePopup() {
+    const overlay = document.getElementById('language-popup-overlay');
+    if (!overlay) return;
+    renderLangButtons();
+    overlay.style.display = 'flex';
+    requestAnimationFrame(() => overlay.classList.add('popup-visible'));
+    hotbarSound.currentTime = 0; hotbarSound.play().catch(e => {});
+}
+function closeLanguagePopup() {
+    const overlay = document.getElementById('language-popup-overlay');
+    if (!overlay) return;
+    overlay.classList.remove('popup-visible');
+    pclsSound.currentTime = 0; pclsSound.play().catch(e => {});
+    setTimeout(() => { overlay.style.display = 'none'; }, 260);
+}
+window.addEventListener('langReady',   renderLangButtons);
+window.addEventListener('langChanged', () => {
+    renderLangButtons();
+    if (typeof showToast === 'function') {
+        const name = (window.LangManager.getLangList().find(l => l.code === window.LangManager.getLang()) || {}).name || '';
+        showToast(LangManager.t('toast.lang_changed') + ' ' + name);
+    }
+});
 function closeSettingsPopup() {
     const overlay = document.getElementById('settings-popup-overlay');
     overlay.classList.remove('popup-visible');
@@ -3407,7 +3455,7 @@ function drawQR(text) {
 
 function showQRCode() {
     const code = document.getElementById('popup-code-output').value;
-    if (!code) { showToast('No code yet!'); return; }
+    if (!code) { showToast(LangManager.t('toast.no_code')); return; }
     const overlay = document.getElementById('qr-popup-overlay');
     overlay.style.display = 'flex';
     requestAnimationFrame(() => requestAnimationFrame(() => {
@@ -3699,7 +3747,7 @@ function generateIslandEmoji() {
 }
 function copyIslandEmoji() {
     const text = document.getElementById('island-emoji-grid').textContent;
-    navigator.clipboard.writeText(text).then(() => showToast('Emoji island copied! 🏝️'));
+    navigator.clipboard.writeText(text).then(() => showToast(LangManager.t('toast.emoji_copied')));
 }
 
 function openIslandBiomePopup() {
@@ -3747,7 +3795,7 @@ document.addEventListener('keydown', (e) => {
         if (window._activeRadialTool) {
             _radialToolCleanup();
             window._activeRadialTool = null;
-            showToast('Tool disabled');
+            showToast(LangManager.t('toast.tool_disabled'));
             return;
         }
         closeIslandBiomePopup();
@@ -4020,36 +4068,6 @@ function toggleCursorTrail(btn) {
     localStorage.setItem('cursorTrail', window._cursorTrailEnabled ? 'on' : 'off');
     hotbarSound.currentTime = 0; hotbarSound.play().catch(e => {});
 }
-const BLOCK_NAMES_RO = {
-    'dirt':         'Grass',
-    'dirt2':        'Dirt',
-    'ShovedDirt':   'Shoveled Dirt',
-    'flovers':      'Flowers',
-    'rock':         'Rock',
-    'crops':        'Crops',
-    'stone':        'Stone',
-    'mossystone':   'Mossy Stone',
-    'sand':         'Sand',
-    'redsand':      'Red Sand',
-    'water':        'Water',
-    'snow':         'Snow',
-    'snowrocks':    'Snow Rocks',
-    'ice':          'Ice',
-    'pumpkin':      'Pumpkin',
-    'Hay':          'Haystack',
-    'melon':        'Melon',
-    'tree':         'Tree',
-    'snowed_tree':  'Snowy Tree',
-    'snowman':      'Snowman',
-    'wood':         'Wood',
-    'leaf':         'Leaves',
-    'snow2':        'Snow Leaves',
-    'snowmanb1':    'Snowman Body',
-    'snowmanb2':    'Snowman Mid',
-    'SnowmanHead':  'Snowman Head',
-    'eraser':       'Eraser',
-};
-
 function getBlockNameRo(src) {
     const marker = 'Assets/Blocks/';
     const mi = src.indexOf(marker);
@@ -4057,7 +4075,11 @@ function getBlockNameRo(src) {
         .replace(/\.png$/i, '')
         .split('/')
         .pop();
-    return BLOCK_NAMES_RO[raw] || (raw.charAt(0).toUpperCase() + raw.slice(1));
+    const fullStr = (window.LangManager && LangManager.t('blocks.' + raw)) || '';
+    if (fullStr && fullStr !== 'blocks.' + raw) {
+        return fullStr.split(':')[0].trim();
+    }
+    return raw.charAt(0).toUpperCase() + raw.slice(1);
 }
 
 function openAnalyticsPopup() {
@@ -4096,11 +4118,11 @@ function openAnalyticsPopup() {
     list.innerHTML = '';
 
     if (sorted.length === 0) {
-        list.innerHTML = '<div style="color:var(--gui-text-dim);font-size:7px;text-align:center;padding:16px;">No blocks placed yet!</div>';
+        list.innerHTML = '<div style="color:var(--gui-text-dim);font-size:7px;text-align:center;padding:16px;">' + (window.LangManager ? LangManager.t('analytics.no_blocks') : 'No blocks placed yet!') + '</div>';
     } else {
         const maxCount = sorted[0][1];
         sorted.forEach(([raw, count]) => {
-            const name = BLOCK_NAMES_RO[raw] || (raw.charAt(0).toUpperCase() + raw.slice(1));
+            const name = getBlockNameRo('./Assets/Blocks/' + raw + '.png');
             const pct = Math.round((count / total) * 100);
             const barW = Math.max(4, Math.round((count / maxCount) * 100));
             const row = document.createElement('div');
@@ -4403,21 +4425,24 @@ let _presentationMode = false;
 function togglePresentationMode() {
     _presentationMode = !_presentationMode;
     document.body.classList.toggle('presentation-mode', _presentationMode);
-    showToast(_presentationMode ? 'Presentation ON' : 'Presentation OFF');
+    showToast(_presentationMode ? LangManager.t('toast.presentation_on') : LangManager.t('toast.presentation_off'));
     hotbarSound.currentTime = 0; hotbarSound.play().catch(() => {});
 }
 
-const _RADIAL_ITEMS = [
-    { icon: '', label: ['BRUSH', 'SIZE'],  action: 'brush'  },
-    { icon: '',  label: ['MIRROR', 'MODE'], action: 'mirror' },
-    { icon: '',  label: ['GRID',  'OVERLAY'], action: 'grid' },
-    { icon: '',  label: ['SETTINGS'], action: 'settings' },
-    { icon: '',  label: ['PRESENT', 'MODE'], action: 'presentation' },
-    { icon: '', label: ['MAGIC', 'WAND'],   action: 'magic_wand'   },
-    { icon: '', label: ['TERRA', 'FORM'],   action: 'terraform'    },
-    { icon: '', label: ['LINE', 'TOOL'],    action: 'line_tool'    },
-    { icon: '', label: ['CIRCLE', 'TOOL'],  action: 'circle_tool'  },
-];
+function _getRadialItems() {
+    const t = window.LangManager ? window.LangManager.t.bind(window.LangManager) : (k) => k;
+    return [
+        { icon: '', label: t('radial.brush_size').split('|'),   action: 'brush'        },
+        { icon: '', label: t('radial.mirror_mode').split('|'),  action: 'mirror'       },
+        { icon: '', label: t('radial.grid_overlay').split('|'), action: 'grid'         },
+        { icon: '', label: t('radial.settings').split('|'),     action: 'settings'     },
+        { icon: '', label: t('radial.present_mode').split('|'), action: 'presentation' },
+        { icon: '', label: t('radial.magic_wand').split('|'),   action: 'magic_wand'   },
+        { icon: '', label: t('radial.terraform').split('|'),    action: 'terraform'    },
+        { icon: '', label: t('radial.line_tool').split('|'),    action: 'line_tool'    },
+        { icon: '', label: t('radial.circle_tool').split('|'), action: 'circle_tool'  },
+    ];
+}
 
 function _getThemeColor(varName, fallback) {
     return getComputedStyle(document.body).getPropertyValue(varName).trim() || fallback;
@@ -4434,7 +4459,7 @@ function _buildRadialSVG(hovIdx) {
     const clrAccBrd = _getThemeColor('--gui-shadow',   '#b8860b');
 
     const cx = 150, cy = 150, outerR = 128, innerR = 60;
-    const n = _RADIAL_ITEMS.length;
+    const n = _getRadialItems().length;
     const gapDeg = 8;
     const sliceDeg = 360 / n - gapDeg;
     const PX = 4;
@@ -4443,9 +4468,9 @@ function _buildRadialSVG(hovIdx) {
     for (let i = 0; i < n; i++) {
         const startDeg = i * (360 / n) - 90 + gapDeg / 2;
         const hov = i === hovIdx;
-        const gridActive = _RADIAL_ITEMS[i].action === 'grid' && gridOverlayEnabled;
-        const presActive = _RADIAL_ITEMS[i].action === 'presentation' && _presentationMode;
-        const toolActive = ['magic_wand','terraform','line_tool','circle_tool'].includes(_RADIAL_ITEMS[i].action) && window._activeRadialTool === _RADIAL_ITEMS[i].action;
+        const gridActive = _getRadialItems()[i].action === 'grid' && gridOverlayEnabled;
+        const presActive = _getRadialItems()[i].action === 'presentation' && _presentationMode;
+        const toolActive = ['magic_wand','terraform','line_tool','circle_tool'].includes(_getRadialItems()[i].action) && window._activeRadialTool === _getRadialItems()[i].action;
         const fill   = hov ? clrAccent : (gridActive || presActive || toolActive ? clrActive : clrBg);
         const border = hov ? clrAccBrd : clrBorder;
 
@@ -4488,9 +4513,9 @@ function _buildRadialSVG(hovIdx) {
 
         const ico = document.createElement('span');
         ico.className = 'radial-ico';
-        ico.textContent = _RADIAL_ITEMS[i].icon;
+        ico.textContent = _getRadialItems()[i].icon;
         el.appendChild(ico);
-        _RADIAL_ITEMS[i].label.forEach(line => {
+        _getRadialItems()[i].label.forEach(line => {
             const s = document.createElement('span');
             s.style.display = 'block';
             s.textContent = line;
@@ -4516,7 +4541,7 @@ function _getRadialHovered(mx, my) {
     const dist = Math.sqrt(dx * dx + dy * dy);
     const outerR = 128 * scale, innerR = 60 * scale;
     if (dist < innerR || dist > outerR) return -1;
-    const n = _RADIAL_ITEMS.length;
+    const n = _getRadialItems().length;
     let ang = Math.atan2(dy, dx) * 180 / Math.PI + 90;
     if (ang < 0) ang += 360;
     return Math.min(Math.floor(ang / (360 / n)), n - 1);
@@ -4541,7 +4566,7 @@ function hideRadialMenu() {
 
 function handleRadialSelect() {
     if (_radialHoveredIdx < 0) return;
-    const action = _RADIAL_ITEMS[_radialHoveredIdx].action;
+    const action = _getRadialItems()[_radialHoveredIdx].action;
     if (action === 'brush')        openBrushPopup();
     if (action === 'mirror')       openMirrorPopup();
     if (action === 'grid')         _toggleRadialGrid();
@@ -4562,7 +4587,7 @@ function _toggleRadialGrid() {
         applyGridOverlay(gridOverlayEnabled);
     }
     hotbarSound.currentTime = 0; hotbarSound.play().catch(() => {});
-    showToast(gridOverlayEnabled ? 'Grid ON' : 'Grid OFF');
+    showToast(gridOverlayEnabled ? LangManager.t('toast.grid_on') : LangManager.t('toast.grid_off'));
 }
 window._activeRadialTool = null;
 
@@ -4570,14 +4595,14 @@ function _activateRadialTool(tool) {
     if (window._activeRadialTool === tool) {
         window._activeRadialTool = null;
         _radialToolCleanup();
-        showToast('Tool disabled');
+        showToast(LangManager.t('toast.tool_disabled'));
         return;
     }
     _radialToolCleanup();
     window._activeRadialTool = tool;
     hotbarSound.currentTime = 0; hotbarSound.play().catch(() => {});
     const names = { magic_wand: 'Magic Wand', terraform: 'Terraforming', line_tool: 'Line Tool', circle_tool: 'Circle Tool' };
-    showToast(names[tool] + ' active');
+    showToast(names[tool] + ' ' + LangManager.t('toast.tool_active'));
     _radialToolSetup(tool);
 }
 
@@ -4626,7 +4651,7 @@ function _magicWandSelect(startTile) {
     }
     if (typeof drawSelectionCanvas === 'function') drawSelectionCanvas();
     if (typeof updateFillButton === 'function') updateFillButton();
-    showToast('Selected: ' + selectedTiles.size + ' tiles');
+    showToast(LangManager.t('toast.selected_tiles') + ' ' + selectedTiles.size + ' ' + LangManager.t('toast.tiles_suffix'));
     hotbarSound.currentTime = 0; hotbarSound.play().catch(() => {});
 }
 let _terraformStartY = null;
@@ -4672,7 +4697,7 @@ function _terraformApply(tile, delta) {
         t.setAttribute('data-pos-top', posTop);
         t.style.zIndex = (x + y) + nz;
     });
-    showToast('Z: ' + (z + delta));
+    showToast(LangManager.t('toast.z_level') + ' ' + (z + delta));
 }
 window._lineToolStart = null;
 
@@ -4683,7 +4708,7 @@ function _lineToolClick(tile) {
 
     if (!window._lineToolStart) {
         window._lineToolStart = { x, y, z };
-        showToast('Line point started');
+        showToast(LangManager.t('toast.line_point_started'));
         tile.classList.add('selected-tile');
         return;
     }
@@ -4696,7 +4721,7 @@ function _lineToolClick(tile) {
     });
     window._lineToolStart = null;
     updateMinimap();
-    showToast('Line Placed! (' + pts.length + ' tile-uri)');
+    showToast(LangManager.t('toast.line_placed') + ' (' + pts.length + ' ' + LangManager.t('toast.tiles_suffix') + ')');
     selectedTiles.forEach(t => t.classList.remove('selected-tile'));
     selectedTiles.clear();
 }
@@ -4725,7 +4750,7 @@ function _circleToolClick(tile) {
 
     if (!window._circleToolStart) {
         window._circleToolStart = { x, y, z };
-        showToast('Started Circle');
+        showToast(LangManager.t('toast.started_circle'));
         tile.classList.add('selected-tile');
         return;
     }
@@ -4740,7 +4765,7 @@ function _circleToolClick(tile) {
     });
     window._circleToolStart = null;
     updateMinimap();
-    showToast('Pasted Circle (' + pts.length + ' tile-uri)');
+    showToast(LangManager.t('toast.pasted_circle') + ' (' + pts.length + ' ' + LangManager.t('toast.tiles_suffix') + ')');
     selectedTiles.forEach(t => t.classList.remove('selected-tile'));
     selectedTiles.clear();
 }
@@ -5043,7 +5068,7 @@ function handleInteractionBrushed(tile, x, y, z) {
             body.id = 'ach-toast-body';
             const lbl = document.createElement('div');
             lbl.id = 'ach-toast-label';
-            lbl.textContent = 'Achievement Unlocked!';
+            lbl.textContent = (window.LangManager ? LangManager.t('achievements.unlocked_label') : 'Achievement Unlocked!');
             const title = document.createElement('div');
             title.id = 'ach-toast-title';
             body.appendChild(lbl);
@@ -5057,7 +5082,11 @@ function handleInteractionBrushed(tile, x, y, z) {
         const icon = document.getElementById('ach-toast-icon');
         const titleEl = document.getElementById('ach-toast-title');
         if (icon)   icon.src = ach.icon;
-        if (titleEl) titleEl.textContent = ach.title;
+        if (titleEl) {
+        const lm = window.LangManager;
+        titleEl.textContent = (lm && lm.t('achievements.list.' + ach.id + '.title') !== 'achievements.list.' + ach.id + '.title')
+            ? lm.t('achievements.list.' + ach.id + '.title') : ach.title;
+    }
 
         clearTimeout(toast._hideTimer);
         requestAnimationFrame(() => requestAnimationFrame(() => {
@@ -5101,7 +5130,7 @@ function handleInteractionBrushed(tile, x, y, z) {
         const pct      = total ? Math.round((unlocked / total) * 100) : 0;
 
         if (fill)    fill.style.width = pct + '%';
-        if (progLbl) progLbl.textContent = unlocked + ' / ' + total + ' Unlocked';
+        if (progLbl) progLbl.textContent = unlocked + ' / ' + total + ' ' + (window.LangManager ? LangManager.t('achievements.progress') : 'Unlocked');
 
         list.innerHTML = '';
         const addSection = (label, items) => {
@@ -5131,10 +5160,15 @@ function handleInteractionBrushed(tile, x, y, z) {
                 info.className = 'ach-info';
                 const titleDiv = document.createElement('div');
                 titleDiv.className = 'ach-title';
-                titleDiv.textContent = ach.title;
+                const lm = window.LangManager;
+                const achTitle = (lm && lm.t('achievements.list.' + ach.id + '.title') !== 'achievements.list.' + ach.id + '.title')
+                    ? lm.t('achievements.list.' + ach.id + '.title') : ach.title;
+                const achDesc  = (lm && lm.t('achievements.list.' + ach.id + '.desc')  !== 'achievements.list.' + ach.id + '.desc')
+                    ? lm.t('achievements.list.' + ach.id + '.desc')  : ach.desc;
+                titleDiv.textContent = achTitle;
                 const descDiv = document.createElement('div');
                 descDiv.className = 'ach-desc';
-                descDiv.textContent = ach.unlocked ? ach.desc : '???';
+                descDiv.textContent = ach.unlocked ? achDesc : (lm ? lm.t('achievements.locked_desc') : '???');
                 info.appendChild(titleDiv);
                 info.appendChild(descDiv);
                 const badge = document.createElement('div');
@@ -5148,8 +5182,8 @@ function handleInteractionBrushed(tile, x, y, z) {
             });
         };
 
-        addSection('Achievements', ACHIEVEMENTS.filter(a => a.group === 'normal'));
-        addSection('Easter Eggs', ACHIEVEMENTS.filter(a => a.group === 'easter'));
+        addSection((window.LangManager ? LangManager.t('achievements.title') : 'Achievements'), ACHIEVEMENTS.filter(a => a.group === 'normal'));
+        addSection('Easter Eggs', ACHIEVEMENTS.filter(a => a.group === 'easter')); 
     }
     window.openAchievementsPopup  = openAchievementsPopup;
     window.closeAchievementsPopup = closeAchievementsPopup;
@@ -5199,10 +5233,10 @@ function handleInteractionBrushed(tile, x, y, z) {
         else {
             const val = input ? input.value.trim() : '';
             if (!val) return;
-            if (val.toUpperCase() === 'FLAVORTOWN') { showToast('Flavortown is the best :3'); return; }
+            if (val.toUpperCase() === 'FLAVORTOWN') { showToast(LangManager.t('toast.flavortown')); return; }
             const ok = loadIslandCode(val);
-            if (!ok) showToast('Invalid Code!');
-            else { closeSavePopup(); showToast('Succesfully Loaded!'); }
+            if (!ok) showToast(LangManager.t('toast.invalid_code'));
+            else { closeSavePopup(); showToast(LangManager.t('toast.loaded')); }
         }
     };
 
@@ -5297,23 +5331,23 @@ function saveToSlot(idx) {
     const date = now.toLocaleDateString() + ' ' + now.toLocaleTimeString([], {hour:'2-digit',minute:'2-digit'});
     _setSlotData(idx, { code, thumb, date });
     renderSaveSlots();
-    showToast('Saved to Slot ' + (idx + 1) + '!');
+    showToast(LangManager.t('toast.saved_to_slot') + ' ' + (idx + 1) + '!');
 }
 
 function loadFromSlot(idx) {
     const data = _getSlotData(idx);
-    if (!data || !data.code) { showToast('Slot ' + (idx + 1) + ' is empty!'); return; }
+    if (!data || !data.code) { showToast(LangManager.t('toast.slot') + ' ' + (idx + 1) + ' ' + LangManager.t('toast.slot_empty')); return; }
     const ok = loadIslandCode(data.code);
-    if (!ok) { showToast('Error loading slot ' + (idx + 1) + '!'); return; }
+    if (!ok) { showToast(LangManager.t('toast.error_loading_slot') + ' ' + (idx + 1) + '!'); return; }
     closeSaveSlotsPopup();
     closeSavePopup();
-    showToast('Loaded Slot ' + (idx + 1) + '!');
+    showToast(LangManager.t('toast.loaded_slot') + ' ' + (idx + 1) + '!');
 }
 
 function deleteSlot(idx) {
     _deleteSlotData(idx);
     renderSaveSlots();
-    showToast('Slot ' + (idx + 1) + ' deleted!');
+    showToast(LangManager.t('toast.slot') + ' ' + (idx + 1) + ' ' + LangManager.t('toast.slot_deleted'));
 }
 (function() {
     const TIPS_KEY = 'ii_tips_seen';

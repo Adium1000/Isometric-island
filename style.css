@@ -4635,6 +4635,7 @@ body:not(.presentation-mode) #block-name-display {
 .btn-save-slots:hover { filter: brightness(1.3); }
 .btn-save-slots:active { transform: scale(0.95); }
 
+/* ── Global button squish hover (like inventory blocks) ─────────────────── */
 @keyframes btn-squish {
     0%   { transform: scaleX(1.0)  scaleY(1.0); }
     18%  { transform: scaleX(1.14) scaleY(0.86); }
@@ -4665,3 +4666,75 @@ button:hover,
     transform-origin: center center;
 }
 
+/* ── Language popup ──────────────────────────────────────────── */
+#language-popup-overlay {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.65);
+    z-index: 7300;
+    justify-content: center;
+    align-items: center;
+    opacity: 0;
+    transition: opacity 0.25s ease;
+}
+#language-popup-overlay.popup-visible { opacity: 1; }
+
+#language-popup-wrapper {
+    position: relative;
+    transform: scale(0.88) translateY(24px);
+    transition: transform 0.28s cubic-bezier(0.18, 0.89, 0.32, 1.28);
+}
+#language-popup-overlay.popup-visible #language-popup-wrapper {
+    transform: scale(1.3) translateY(0);
+}
+
+#language-popup-close-btn {
+    position: absolute;
+    top: -18px;
+    right: -18px;
+    width: 36px;
+    height: 36px;
+    background: #7a2020;
+    border: 4px solid var(--gui-border);
+    box-shadow: 3px 3px 0 #3b1010;
+    color: #fff;
+    font-family: 'Press Start 2P', cursive;
+    font-size: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: transform 0.1s, filter 0.1s;
+    z-index: 10;
+    padding: 0;
+    line-height: 1;
+    cursor: pointer;
+    clip-path: polygon(0% 4px, 4px 4px, 4px 0%, calc(100% - 4px) 0%, calc(100% - 4px) 4px, 100% 4px, 100% calc(100% - 4px), calc(100% - 4px) calc(100% - 4px), calc(100% - 4px) 100%, 4px 100%, 4px calc(100% - 4px), 0% calc(100% - 4px));
+}
+#language-popup-close-btn:hover { filter: brightness(1.3); }
+#language-popup-close-btn:active { transform: scale(0.9); }
+
+#language-popup {
+    background: var(--gui-bg-light);
+    border: 4px solid var(--gui-border);
+    box-shadow: 6px 6px 0 var(--gui-shadow);
+    padding: 18px 22px 16px 22px;
+    min-width: 240px;
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+    font-family: 'Press Start 2P', cursive;
+    image-rendering: pixelated;
+}
+#language-popup h2 {
+    margin: 0 0 16px 0;
+    color: var(--gui-text);
+    font-size: 10px;
+    text-shadow: 2px 2px var(--gui-title-sh);
+    letter-spacing: 1px;
+}
+#language-popup-body {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}

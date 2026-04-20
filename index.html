@@ -41,6 +41,7 @@
     <link rel="preload" href="Assets/Audio/hotbar.wav" as="audio">
     <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
     <style id="tutorial-css">
+
 #tut-overlay {
     position: fixed;
     inset: 0;
@@ -410,7 +411,7 @@
 <div class="game-title-container">
     <h1 class="game-title" id="game-title-el" onclick="handleTitleClick()" style="cursor:pointer;user-select:none;">Isometric Island</h1>
     <div id="splash-text">relaxing</div>
-    <div id="offline-indicator">&#x25CF; OFFLINE</div>
+    <div id="offline-indicator"><span data-t="offline">● OFFLINE</span></div>
 </div>
 
 <script>
@@ -445,16 +446,16 @@
     <div id="agreement-wrapper">
         <div id="agreement-popup" class="pixel-corners">
             <div id="agreement-header">
-                <h2>Before You Play</h2>
-                <div class="sub" style="margin-top:10px;">Please read and accept our policies to continue</div>
+                <h2 data-t="agreement.title">Before You Play</h2>
+                <div class="sub" style="margin-top:10px;" data-t="agreement.subtitle">Please read and accept our policies to continue</div>
             </div>
             <hr class="wdivider">
             <div id="agreement-tabs">
-                <button class="agreement-tab active" id="tab-privacy" onclick="switchAgreementTab('privacy')">Privacy Policy</button>
-                <button class="agreement-tab" id="tab-terms" onclick="switchAgreementTab('terms')">Terms of Service</button>
-                <button class="agreement-tab agreement-tab-info" id="tab-imprint" onclick="switchAgreementTab('imprint')">Imprint</button>
-                <button class="agreement-tab agreement-tab-info" id="tab-aup" onclick="switchAgreementTab('aup')">AUP</button>
-                <button class="agreement-tab agreement-tab-info" id="tab-dmca" onclick="switchAgreementTab('dmca')">DMCA</button>
+                <button class="agreement-tab active" id="tab-privacy" onclick="switchAgreementTab('privacy')" data-t="agreement.tab_privacy">Privacy Policy</button>
+                <button class="agreement-tab" id="tab-terms" onclick="switchAgreementTab('terms')" data-t="agreement.tab_terms">Terms of Service</button>
+                <button class="agreement-tab agreement-tab-info" id="tab-imprint" onclick="switchAgreementTab('imprint')" data-t="agreement.tab_imprint">Imprint</button>
+                <button class="agreement-tab agreement-tab-info" id="tab-aup" onclick="switchAgreementTab('aup')" data-t="agreement.tab_aup">AUP</button>
+                <button class="agreement-tab agreement-tab-info" id="tab-dmca" onclick="switchAgreementTab('dmca')" data-t="agreement.tab_dmca">DMCA</button>
             </div>
             <div id="agreement-doc-wrap">
                 <div id="agreement-loading-privacy" class="agreement-loading">Loading...</div>
@@ -683,6 +684,31 @@
     .agreement-tab-info.active {
         opacity: 1;
     }
+    .lang-btn {
+        font-family: 'Press Start 2P', monospace;
+        font-size: 7px;
+        padding: 5px 9px;
+        background: var(--gui-bg-dark, #1a1208);
+        border: 2px solid var(--gui-border, #6b4c2a);
+        color: #c8b89a;
+        cursor: pointer;
+        letter-spacing: 0.4px;
+        transition: background 0.12s, border-color 0.12s, color 0.12s;
+        white-space: nowrap;
+        clip-path: polygon(0% 3px, 3px 3px, 3px 0%, calc(100% - 3px) 0%, calc(100% - 3px) 3px, 100% 3px, 100% calc(100% - 3px), calc(100% - 3px) calc(100% - 3px), calc(100% - 3px) 100%, 3px 100%, 3px calc(100% - 3px), 0% calc(100% - 3px));
+    }
+    .lang-btn:hover {
+        border-color: var(--gui-accent, #ffdf80);
+        color: var(--gui-accent, #ffdf80);
+    }
+    .lang-btn.lang-btn-active {
+        background: var(--gui-accent, #ffdf80);
+        border-color: #d4a820;
+        color: var(--gui-bg-dark, #1a1208);
+        box-shadow: 2px 2px 0 #a07810;
+    }
+
+
 </style>
 <script>
     const AGREEMENT_KEY = 'ii_agreed_v2';
@@ -779,7 +805,7 @@
         <button id="welcome-close-btn" onclick="handleWelcomeClose()">&#10005;</button>
         <div id="welcome-popup" class="pixel-corners">
             <div id="welcome-header">
-                <h2>WELCOME! Read this before playing!</h2>
+                <h2 data-t="welcome.title">WELCOME! Read this before playing!</h2>
                 <div class="sub">
                     Made with &#10084;&#65039; by <strong style="color:#fff8e1;">Adium1000</strong>
                     &nbsp;&middot;&nbsp;
@@ -792,8 +818,8 @@
                     <div id="zoom-notice-banner">
                         <img src="./Assets/Icons/book.png" id="zoom-notice-icon">
                         <div id="zoom-notice-text">
-                            <div id="zoom-notice-title">REDUCE BROWSER ZOOM</div>
-                            <div id="zoom-notice-sub">For the best experience, lower your browser zoom level</div>
+                            <div id="zoom-notice-title" data-t="welcome.reduce_zoom">REDUCE BROWSER ZOOM</div>
+                            <div id="zoom-notice-sub" data-t="welcome.reduce_zoom_sub">For the best experience, lower your browser zoom level</div>
                         </div>
                     </div>
                     <div id="zoom-slider-row">
@@ -841,11 +867,11 @@
 <div id="confirm-skip-zoom-overlay" onclick="if(event.target===this)cancelSkipZoom()">
     <div id="confirm-skip-zoom-wrapper">
         <div id="confirm-skip-zoom-popup" class="pixel-corners">
-            <h2>Are you sure? </h2>
+            <h2 data-t="confirm_skip_zoom.title">Are you sure? </h2>
             <p id="confirm-skip-zoom-msg">If you exit now <strong>scaling options may not be configured</strong> and some UI elements can intercalate creating bugs! <br><br>Also on the next step you will find some <strong>Instructions</strong> that you will not read (README)!</p>
             <div id="confirm-skip-zoom-btns">
-                <button class="btn-cancel-del" onclick="cancelSkipZoom()">Back to Calibrations</button>
-                <button class="btn-confirm-del" onclick="confirmSkipZoom()">Exit :( </button>
+                <button class="btn-cancel-del" onclick="cancelSkipZoom()" data-t="confirm_skip_zoom.btn_back">Back to Calibrations</button>
+                <button class="btn-confirm-del" onclick="confirmSkipZoom()" data-t="confirm_skip_zoom.btn_exit">Exit :( </button>
             </div>
         </div>
     </div>
@@ -853,11 +879,11 @@
 <div id="confirm-skip-readme-overlay" onclick="if(event.target===this)cancelSkipReadme()">
     <div id="confirm-skip-readme-wrapper">
         <div id="confirm-skip-readme-popup" class="pixel-corners">
-            <h2>Are you sure?</h2>
+            <h2 data-t="confirm_skip_readme.title">Are you sure?</h2>
             <p id="confirm-skip-readme-msg">If you exit now witout reading the readme <strong>you revoke all of your rights </strong>to comment on bugs, missing feautres or anything else that is documented here <br><br>Don't say you weren't warned.</p>
             <div id="confirm-skip-readme-btns">
-                <button class="btn-cancel-del" onclick="cancelSkipReadme()">Back to the guide</button>
-                <button class="btn-confirm-del" onclick="confirmSkipReadme()">Exit :( </button>
+                <button class="btn-cancel-del" onclick="cancelSkipReadme()" data-t="confirm_skip_readme.btn_back">Back to the guide</button>
+                <button class="btn-confirm-del" onclick="confirmSkipReadme()" data-t="confirm_skip_readme.btn_exit">Exit :( </button>
             </div>
         </div>
     </div>
@@ -946,29 +972,29 @@ function tryStartBuilding() {
         <button class="popup-help-btn" onclick="showHelpInfo('file')">?</button>
         <button id="popup-close-btn" onclick="closeSavePopup()">&#10005;</button>
         <div id="save-popup" class="pixel-corners">
-            <h2><img src="./Assets/Icons/todorm.png" style="width:48px;height:48px;image-rendering:pixelated;vertical-align:middle;margin-right:10px;">FILE</h2>
+            <h2><img src="./Assets/Icons/todorm.png" style="width:48px;height:48px;image-rendering:pixelated;vertical-align:middle;margin-right:10px;"><span data-t="save_popup.title">FILE</span></h2>
             <div id="save-popup-body">
                 <div id="save-popup-left">
 
                     <div>
-                        <div class="popup-section-title">ISLAND CODE:</div>
+                        <div class="popup-section-title" data-t="save_popup.island_code">ISLAND CODE:</div>
                         <textarea id="popup-code-output" readonly onclick="this.select()"></textarea>
                         <div class="popup-row" style="flex-direction:column;gap:6px;margin-top:8px;">
-                            <button class="btn-qr" onclick="showQRCode()" style="width:100%;box-sizing:border-box;"><img src="./Assets/Icons/qr.png" style="width:16px;height:16px;image-rendering:pixelated;vertical-align:middle;margin-right:6px;">SHOW QR CODE</button>
-                            <button class="btn-copy" onclick="navigator.clipboard.writeText(document.getElementById('popup-code-output').value).then(()=>showToast('Succesfully copied to clipboard!'))" style="width:100%;box-sizing:border-box;"><img src="./Assets/Icons/todorm.png" style="width:16px;height:16px;image-rendering:pixelated;vertical-align:middle;margin-right:6px;">COPY ISLAND CODE</button>
-                            <button class="btn-share-url" onclick="generateShareURL()" style="width:100%;box-sizing:border-box;background:#1a3a5c;border-color:#2a6a9e;color:#a0d4ff;"><img src="./Assets/Icons/todorm.png" style="width:16px;height:16px;image-rendering:pixelated;vertical-align:middle;margin-right:6px;">COPY SHARE LINK</button>
-                            <button class="btn-embed" onclick="openEmbedPopup()" style="width:100%;box-sizing:border-box;"><img src="./Assets/Icons/todorm.png" style="width:16px;height:16px;image-rendering:pixelated;vertical-align:middle;margin-right:6px;">&#60;/&#62; EMBED CODE</button>
+                            <button class="btn-qr" onclick="showQRCode()" style="width:100%;box-sizing:border-box;"><img src="./Assets/Icons/qr.png" style="width:16px;height:16px;image-rendering:pixelated;vertical-align:middle;margin-right:6px;"><span data-t="save_popup.show_qr">SHOW QR CODE</span></button>
+                            <button class="btn-copy" onclick="navigator.clipboard.writeText(document.getElementById('popup-code-output').value).then(()=>showToast(LangManager.t('toast.copied_clipboard')))" style="width:100%;box-sizing:border-box;"><img src="./Assets/Icons/todorm.png" style="width:16px;height:16px;image-rendering:pixelated;vertical-align:middle;margin-right:6px;"><span data-t="save_popup.copy_code">COPY ISLAND CODE</span></button>
+                            <button class="btn-share-url" onclick="generateShareURL()" style="width:100%;box-sizing:border-box;background:#1a3a5c;border-color:#2a6a9e;color:#a0d4ff;"><img src="./Assets/Icons/todorm.png" style="width:16px;height:16px;image-rendering:pixelated;vertical-align:middle;margin-right:6px;"><span data-t="save_popup.copy_link">COPY SHARE LINK</span></button>
+                            <button class="btn-embed" onclick="openEmbedPopup()" style="width:100%;box-sizing:border-box;"><img src="./Assets/Icons/todorm.png" style="width:16px;height:16px;image-rendering:pixelated;vertical-align:middle;margin-right:6px;"><span data-t="save_popup.embed_code">&#60;/&#62; EMBED CODE</span></button>
                         </div>
                     </div>
 
                     <hr class="popup-divider">
 
                     <div>
-                        <div class="popup-section-title">LOAD ISLAND CODE:</div>
-                        <input type="text" id="popup-code-input" placeholder="Paste your code here... ;)">
+                        <div class="popup-section-title" data-t="save_popup.load_code">LOAD ISLAND CODE:</div>
+                        <input type="text" id="popup-code-input" data-t-placeholder="save_popup.paste_placeholder" placeholder="Paste your code here... ;)">
                         <div class="popup-row" style="flex-direction:column;gap:6px;">
-                            <button class="btn-paste" onclick="pasteFromClipboard()" style="width:100%;box-sizing:border-box;"><img src="./Assets/Icons/todorm.png" style="width:16px;height:16px;image-rendering:pixelated;vertical-align:middle;margin-right:6px;">PASTE FROM CLIPBOARD</button>
-                            <button class="btn-load" onclick="openLoadPopup()" style="width:100%;box-sizing:border-box;"><img src="./Assets/Icons/load.png" style="width:16px;height:16px;image-rendering:pixelated;vertical-align:middle;margin-right:6px;">LOAD</button>
+                            <button class="btn-paste" onclick="pasteFromClipboard()" style="width:100%;box-sizing:border-box;"><img src="./Assets/Icons/todorm.png" style="width:16px;height:16px;image-rendering:pixelated;vertical-align:middle;margin-right:6px;"><span data-t="save_popup.paste_btn">PASTE FROM CLIPBOARD</span></button>
+                            <button class="btn-load" onclick="openLoadPopup()" style="width:100%;box-sizing:border-box;"><img src="./Assets/Icons/load.png" style="width:16px;height:16px;image-rendering:pixelated;vertical-align:middle;margin-right:6px;"><span data-t="save_popup.load_btn">LOAD</span></button>
                         </div>
                     </div>
 
@@ -980,27 +1006,27 @@ function tryStartBuilding() {
 
                     <div style="display:flex;flex-direction:column;gap:14px;flex:1;">
                         <div>
-                            <div class="popup-section-title">SAVE SLOTS:</div>
-                            <button class="btn-save-slots" onclick="openSaveSlotsPopup()" style="width:100%;box-sizing:border-box;"><img src="./Assets/Icons/load.png" style="width:16px;height:16px;image-rendering:pixelated;vertical-align:middle;margin-right:6px;">MANAGE SAVE SLOTS</button>
+                            <div class="popup-section-title" data-t="save_popup.save_slots">SAVE SLOTS:</div>
+                            <button class="btn-save-slots" onclick="openSaveSlotsPopup()" style="width:100%;box-sizing:border-box;"><img src="./Assets/Icons/load.png" style="width:16px;height:16px;image-rendering:pixelated;vertical-align:middle;margin-right:6px;"><span data-t="save_popup.manage_slots">MANAGE SAVE SLOTS</span></button>
                         </div>
 
                         <div>
-                            <div class="popup-section-title">FUN:</div>
-                            <button class="btn-random" onclick="closeSavePopup();openFunPopup()">FUN</button>
+                            <div class="popup-section-title" data-t="save_popup.fun">FUN:</div>
+                            <button class="btn-random" onclick="closeSavePopup();openFunPopup()" data-t="save_popup.fun_btn">FUN</button>
                             <div id="random-island-type" style="color:#ffdf80;font-size:7px;text-align:center;margin-top:6px;min-height:12px;letter-spacing:1px;"></div>
                             <div id="mountain-type" style="display:none;"></div>
                         </div>
 
                         <div style="display:flex;flex-direction:column;gap:8px;">
-                            <button class="btn-settings" onclick="openSettingsPopup()"><img src="./Assets/Icons/maintenance.png" style="width:16px;height:16px;image-rendering:pixelated;vertical-align:middle;margin-right:6px;"> SETTINGS</button>
-                            <button class="btn-settings" onclick="openAnalyticsPopup()" style="background:#2a4a2e;border-color:#1a3020;color:#a8ffb8;"> ISLAND ANALYTICS</button>
-                            <button class="btn-settings" onclick="openAchievementsPopup()" style="background:#2a1a4a;border-color:#4a2880;color:#c8a8ff;"><img src="./Assets/Icons/book.png" style="width:16px;height:16px;image-rendering:pixelated;vertical-align:middle;margin-right:6px;">Achievements</button>
-                            <button class="btn-settings" onclick="closeSavePopup();openCommunityPopup()" style="background:#1a3a5c;border-color:#2a6a9e;color:#a0d4ff;"><img src="./Assets/Icons/Comunitymaps.png" style="width:16px;height:16px;image-rendering:pixelated;vertical-align:middle;margin-right:6px;">COMMUNITY MAPS</button>
+                            <button class="btn-settings" onclick="openSettingsPopup()"><img src="./Assets/Icons/maintenance.png" style="width:16px;height:16px;image-rendering:pixelated;vertical-align:middle;margin-right:6px;"><span data-t="save_popup.btn_settings"> SETTINGS</span></button>
+                            <button class="btn-settings" onclick="openAnalyticsPopup()" style="background:#2a4a2e;border-color:#1a3020;color:#a8ffb8;"><span data-t="save_popup.btn_analytics"> ISLAND ANALYTICS</span></button>
+                            <button class="btn-settings" onclick="openAchievementsPopup()" style="background:#2a1a4a;border-color:#4a2880;color:#c8a8ff;"><img src="./Assets/Icons/book.png" style="width:16px;height:16px;image-rendering:pixelated;vertical-align:middle;margin-right:6px;"><span data-t="save_popup.btn_achievements">Achievements</span></button>
+                            <button class="btn-settings" onclick="closeSavePopup();openCommunityPopup()" style="background:#1a3a5c;border-color:#2a6a9e;color:#a0d4ff;"><img src="./Assets/Icons/Comunitymaps.png" style="width:16px;height:16px;image-rendering:pixelated;vertical-align:middle;margin-right:6px;"><span data-t="save_popup.btn_community">COMMUNITY MAPS</span></button>
                         </div>
 
                         <div class="danger-zone">
-                            <div class="popup-section-title">DANGER ZONE:</div>
-                            <button class="btn-danger" onclick="openConfirmDelete()"><img src="./Assets/Icons/remove.png" style="width:16px;height:16px;image-rendering:pixelated;vertical-align:middle;margin-right:6px;">DELETE ISLAND</button>
+                            <div class="popup-section-title" data-t="save_popup.danger_zone">DANGER ZONE:</div>
+                            <button class="btn-danger" onclick="openConfirmDelete()"><img src="./Assets/Icons/remove.png" style="width:16px;height:16px;image-rendering:pixelated;vertical-align:middle;margin-right:6px;"><span data-t="save_popup.btn_delete">DELETE ISLAND</span></button>
                         </div>
                     </div>
 
@@ -1019,27 +1045,27 @@ function tryStartBuilding() {
         <button class="popup-help-btn" onclick="showHelpInfo('settings')">?</button>
         <button id="settings-close-btn" onclick="closeSettingsPopup()">&#10005;</button>
         <div id="settings-popup" class="pixel-corners">
-            <h2><img src="./Assets/Icons/maintenance.png" style="width:26px;height:26px;image-rendering:pixelated;vertical-align:middle;margin-right:6px;"> SETTINGS</h2>
+            <h2><img src="./Assets/Icons/maintenance.png" style="width:26px;height:26px;image-rendering:pixelated;vertical-align:middle;margin-right:6px;"> <span data-t="settings.title">SETTINGS</span></h2>
             <div id="settings-popup-body">
 
                 <div id="settings-left">
 
                     <div>
-                        <div class="popup-section-title">ISLAND SHAPING:</div>
+                        <div class="popup-section-title" data-t="settings.section_shaping">ISLAND SHAPING:</div>
                         <div id="grid-res-row">
                             <span id="grid-res-label">SIZE: <span id="grid-res-current">8 x 8</span></span>
                             <button id="grid-res-btn" onclick="openGridResPopup()">
-                                <img src="./Assets/Icons/maintenance.png" style="width:12px;height:12px;image-rendering:pixelated;vertical-align:middle;margin-right:5px;">GRID RESOLUTION
+                                <img src="./Assets/Icons/maintenance.png" style="width:12px;height:12px;image-rendering:pixelated;vertical-align:middle;margin-right:5px;"><span data-t="settings.grid_resolution">GRID RESOLUTION</span>
                             </button>
                         </div>
-                        <div class="popup-section-title" style="margin-top:10px;">PRESETS:</div>
+                        <div class="popup-section-title" style="margin-top:10px;" data-t="settings.presets">PRESETS:</div>
                         <div id="shape-presets-col">
-                            <button class="shape-preset-btn" onclick="applyCirclePreset(8)">8x8 CIRCLE</button>
-                            <button class="shape-preset-btn" onclick="applyCirclePreset(16)">16x16 CIRCLE</button>
-                            <button class="shape-preset-btn" onclick="applyDonutPreset(12,3)">DONUT</button>
-                            <button class="shape-preset-btn" onclick="applyDiamondPreset(12)">DIAMOND</button>
-                            <button class="shape-preset-btn" onclick="applyCrossPreset(12)">CROSS</button>
-                            <button class="shape-preset-btn" onclick="applyStarPreset(14)">STAR</button>
+                            <button class="shape-preset-btn" onclick="applyCirclePreset(8)" data-t="settings.preset_8circle">8x8 CIRCLE</button>
+                            <button class="shape-preset-btn" onclick="applyCirclePreset(16)" data-t="settings.preset_16circle">16x16 CIRCLE</button>
+                            <button class="shape-preset-btn" onclick="applyDonutPreset(12,3)" data-t="settings.preset_donut">DONUT</button>
+                            <button class="shape-preset-btn" onclick="applyDiamondPreset(12)" data-t="settings.preset_diamond">DIAMOND</button>
+                            <button class="shape-preset-btn" onclick="applyCrossPreset(12)" data-t="settings.preset_cross">CROSS</button>
+                            <button class="shape-preset-btn" onclick="applyStarPreset(14)" data-t="settings.preset_star">STAR</button>
                         </div>
                         <div id="shape-perf-disclaimer">
                             <span id="shape-perf-icon">⚠</span> Higher resolution may affect performance
@@ -1049,23 +1075,23 @@ function tryStartBuilding() {
                     <hr class="popup-divider">
 
                     <div>
-                        <div class="popup-section-title">CLIMATE:</div>
+                        <div class="popup-section-title" data-t="settings.section_climate">CLIMATE:</div>
                         <div style="display:grid;grid-template-columns:1fr 1fr;gap:6px;">
-                            <button class="climate-btn active" id="cbtn-off" onclick="setClimate('off')"><img src="./Assets/Icons/off.png" style="width:14px;height:14px;image-rendering:pixelated;vertical-align:middle;margin-right:5px;">OFF</button>
-                            <button class="climate-btn" id="cbtn-rain" onclick="setClimate('rain')"><img src="./Assets/Icons/rainrr.png" style="width:14px;height:14px;image-rendering:pixelated;vertical-align:middle;margin-right:5px;">Rain</button>
-                            <button class="climate-btn" id="cbtn-snow" onclick="setClimate('snow')"><img src="./Assets/Icons/rain.png" style="width:14px;height:14px;image-rendering:pixelated;vertical-align:middle;margin-right:5px;">Snowy</button>
-                            <button class="climate-btn" id="cbtn-wind" onclick="setClimate('wind')"><img src="./Assets/Icons/wind.png" style="width:14px;height:14px;image-rendering:pixelated;vertical-align:middle;margin-right:5px;">Wind</button>
+                            <button class="climate-btn active" id="cbtn-off" onclick="setClimate('off')"><img src="./Assets/Icons/off.png" style="width:14px;height:14px;image-rendering:pixelated;vertical-align:middle;margin-right:5px;"><span data-t="settings.climate_off">OFF</span></button>
+                            <button class="climate-btn" id="cbtn-rain" onclick="setClimate('rain')"><img src="./Assets/Icons/rainrr.png" style="width:14px;height:14px;image-rendering:pixelated;vertical-align:middle;margin-right:5px;"><span data-t="settings.climate_rain">Rain</span></button>
+                            <button class="climate-btn" id="cbtn-snow" onclick="setClimate('snow')"><img src="./Assets/Icons/rain.png" style="width:14px;height:14px;image-rendering:pixelated;vertical-align:middle;margin-right:5px;"><span data-t="settings.climate_snow">Snowy</span></button>
+                            <button class="climate-btn" id="cbtn-wind" onclick="setClimate('wind')"><img src="./Assets/Icons/wind.png" style="width:14px;height:14px;image-rendering:pixelated;vertical-align:middle;margin-right:5px;"><span data-t="settings.climate_wind">Wind</span></button>
                         </div>
                     </div>
 
                     <hr class="popup-divider">
 
                     <div>
-                        <div class="popup-section-title">TIME OF DAY:</div>
+                        <div class="popup-section-title" data-t="settings.section_time">TIME OF DAY:</div>
                         <div style="display:flex;gap:6px;">
-                            <button class="timp-btn active" id="tbtn-zi" onclick="setTimp('Day')"><img src="./Assets/Icons/day.png" style="width:14px;height:14px;image-rendering:pixelated;vertical-align:middle;margin-right:5px;">Day</button>
-                            <button class="timp-btn" id="tbtn-apus" onclick="setTimp('Sunset')"><img src="./Assets/Icons/resun.png" style="width:14px;height:14px;image-rendering:pixelated;vertical-align:middle;margin-right:5px;">Sunset</button>
-                            <button class="timp-btn" id="tbtn-noapte" onclick="setTimp('Night')"><img src="./Assets/Icons/night.png" style="width:14px;height:14px;image-rendering:pixelated;vertical-align:middle;margin-right:5px;">Night</button>
+                            <button class="timp-btn active" id="tbtn-zi" onclick="setTimp('Day')"><img src="./Assets/Icons/day.png" style="width:14px;height:14px;image-rendering:pixelated;vertical-align:middle;margin-right:5px;"><span data-t="settings.time_day">Day</span></button>
+                            <button class="timp-btn" id="tbtn-apus" onclick="setTimp('Sunset')"><img src="./Assets/Icons/resun.png" style="width:14px;height:14px;image-rendering:pixelated;vertical-align:middle;margin-right:5px;"><span data-t="settings.time_sunset">Sunset</span></button>
+                            <button class="timp-btn" id="tbtn-noapte" onclick="setTimp('Night')"><img src="./Assets/Icons/night.png" style="width:14px;height:14px;image-rendering:pixelated;vertical-align:middle;margin-right:5px;"><span data-t="settings.time_night">Night</span></button>
                         </div>
                     </div>
 
@@ -1075,68 +1101,76 @@ function tryStartBuilding() {
 
                 <div id="settings-right">
 
-                    <div class="popup-section-title">Visuals</div>
+                    <div class="popup-section-title" data-t="settings.section_visuals">Visuals</div>
 
                     <div class="visual-option-row">
-                        <span class="visual-option-label"><img src="./Assets/Cursors/pointer.png" style="width:14px;height:14px;image-rendering:pixelated;vertical-align:middle;margin-right:5px;">Pointer Settings</span>
+                        <span class="visual-option-label"><img src="./Assets/Cursors/pointer.png" style="width:14px;height:14px;image-rendering:pixelated;vertical-align:middle;margin-right:5px;"><span data-t="settings.pointer_settings">Pointer Settings</span></span>
                         <button class="btn-pointer-settings" onclick="openPointerSettings()">&#9654;</button>
                     </div>
 
                     <div class="visual-option-row">
-                        <span class="visual-option-label"><img src="./Assets/Icons/hotbar.png" style="width:14px;height:14px;image-rendering:pixelated;vertical-align:middle;margin-right:5px;">GUI</span>
+                        <span class="visual-option-label"><img src="./Assets/Icons/hotbar.png" style="width:14px;height:14px;image-rendering:pixelated;vertical-align:middle;margin-right:5px;"><span data-t="settings.gui_label">GUI</span></span>
                         <button class="btn-pointer-settings" onclick="openGUISettings()">&#9654;</button>
                     </div>
 
                     <div class="visual-option-row">
-                        <span class="visual-option-label"><img src="./Assets/Icons/video.png" style="width:14px;height:14px;image-rendering:pixelated;vertical-align:middle;margin-right:5px;">Graphics</span>
+                        <span class="visual-option-label"><img src="./Assets/Icons/video.png" style="width:14px;height:14px;image-rendering:pixelated;vertical-align:middle;margin-right:5px;"><span data-t="settings.graphics">Graphics</span></span>
                         <button class="btn-pointer-settings" onclick="openGraphicsSettings()">&#9654;</button>
                     </div>
 
                     <div class="visual-option-row">
-                        <span class="visual-option-label"><img src="./Assets/Icons/video.png" style="width:14px;height:14px;image-rendering:pixelated;vertical-align:middle;margin-right:5px;">Photo Filters</span>
+                        <span class="visual-option-label"><img src="./Assets/Icons/video.png" style="width:14px;height:14px;image-rendering:pixelated;vertical-align:middle;margin-right:5px;"><span data-t="settings.photo_filters">Photo Filters</span></span>
                         <button class="btn-pointer-settings" onclick="openPhotoFilters()">&#9654;</button>
                     </div>
 
                     <div class="visual-option-row">
-                        <span class="visual-option-label"><img src="./Assets/Icons/grid.png" style="width:14px;height:14px;image-rendering:pixelated;vertical-align:middle;margin-right:5px;">Grid Overlay</span>
+                        <span class="visual-option-label"><img src="./Assets/Icons/grid.png" style="width:14px;height:14px;image-rendering:pixelated;vertical-align:middle;margin-right:5px;"><span data-t="settings.grid_overlay">Grid Overlay</span></span>
                         <button class="px-switch" id="sw-grid" onclick="toggleVisualOption('gridOverlay', this)">
                             <span class="px-switch-thumb"></span>
                         </button>
                     </div>
 
                     <div class="visual-option-row">
-                        <span class="visual-option-label"><img src="./Assets/Icons/full.png" style="width:14px;height:14px;image-rendering:pixelated;vertical-align:middle;margin-right:5px;">Fullscreen</span>
+                        <span class="visual-option-label"><img src="./Assets/Icons/full.png" style="width:14px;height:14px;image-rendering:pixelated;vertical-align:middle;margin-right:5px;"><span data-t="settings.fullscreen">Fullscreen</span></span>
                         <button class="px-switch" id="sw-fullscreen" onclick="toggleFullscreen(this)">
                             <span class="px-switch-thumb"></span>
                         </button>
                     </div>
 
+                    <div class="visual-option-row" onclick="openLanguagePopup()" style="cursor:pointer;">
+                        <span class="visual-option-label"><span data-t="settings.section_language">LANGUAGE</span></span>
+                        <span style="display:flex;align-items:center;gap:6px;">
+                            <span id="lang-current-label" style="font-family:'Press Start 2P',monospace;font-size:6px;color:var(--gui-accent,#ffdf80);opacity:0.85;"></span>
+                            <button class="btn-pointer-settings" onclick="event.stopPropagation();openLanguagePopup()">&#9654;</button>
+                        </span>
+                    </div>
+
                     <hr class="popup-divider" style="margin:10px 0;">
 
-                    <div class="popup-section-title">Controls</div>
+                    <div class="popup-section-title" data-t="settings.section_controls">Controls</div>
 
                     <div class="visual-option-row">
-                        <span class="visual-option-label"><img src="./Assets/Icons/slide.png" style="width:14px;height:14px;image-rendering:pixelated;vertical-align:middle;margin-right:5px;">Slide to place</span>
+                        <span class="visual-option-label"><img src="./Assets/Icons/slide.png" style="width:14px;height:14px;image-rendering:pixelated;vertical-align:middle;margin-right:5px;"><span data-t="settings.slide_to_place">Slide to place</span></span>
                         <button class="px-switch" id="sw-slide-place" onclick="toggleVisualOption('slideToPlace', this)">
                             <span class="px-switch-thumb"></span>
                         </button>
                     </div>
 
                     <div class="visual-option-row">
-                        <span class="visual-option-label"><img src="./Assets/Icons/fps.png" style="width:14px;height:14px;image-rendering:pixelated;vertical-align:middle;margin-right:5px;">FPS Counter</span>
+                        <span class="visual-option-label"><img src="./Assets/Icons/fps.png" style="width:14px;height:14px;image-rendering:pixelated;vertical-align:middle;margin-right:5px;"><span data-t="settings.fps_counter">FPS Counter</span></span>
                         <button class="px-switch" id="sw-fps" onclick="toggleVisualOption('fpsCounter', this)">
                             <span class="px-switch-thumb"></span>
                         </button>
                     </div>
 
                     <div class="visual-option-row">
-                        <span class="visual-option-label">Key Bindings</span>
+                        <span class="visual-option-label" data-t="settings.key_bindings">Key Bindings</span>
                         <button class="btn-pointer-settings" onclick="openKeyBindingsPopup()">&#9654;</button>
                     </div>
 
                     <hr class="popup-divider" style="margin:10px 0;">
 
-                    <div class="popup-section-title">Scale</div>
+                    <div class="popup-section-title" data-t="settings.section_scale">Scale</div>
 
                     <div id="settings-scale-row">
                         <button class="zoom-step-btn" id="settings-zoom-out" onclick="stepZoom('settings', -10)">−</button>
@@ -1161,11 +1195,11 @@ function tryStartBuilding() {
         <button id="qr-close-btn" onclick="closeQRPopup()">&#10005;</button>
         <div id="qr-popup" class="pixel-corners">
             <h2><img src="./Assets/Icons/qr.png" style="width:26px;height:26px;image-rendering:pixelated;vertical-align:middle;margin-right:6px;"> QR CODE</h2>
-            <div id="qr-subtitle">Scan to share your island!</div>
+            <div id="qr-subtitle" data-t="qr.subtitle">Scan to share your island!</div>
             <div id="qr-canvas-wrap">
                 <div id="qr-output"></div>
             </div>
-            <div id="qr-hint">Scan with any QR app to load your island code</div>
+            <div id="qr-hint" data-t="qr.hint">Scan with any QR app to load your island code</div>
         </div>
     </div>
 </div>
@@ -1173,11 +1207,11 @@ function tryStartBuilding() {
 <div id="confirm-delete-overlay" onclick="if(event.target===this)closeConfirmDelete()">
     <div id="confirm-delete-wrapper">
         <div id="confirm-delete-popup" class="pixel-corners">
-            <h2><img src="./Assets/Icons/remove.png" style="width:26px;height:26px;image-rendering:pixelated;vertical-align:middle;margin-right:6px;">DELETE ISLAND?</h2>
-            <p id="confirm-delete-msg">Are you sure you want to delete the island? This action cannot be undone!</p>
+            <h2><img src="./Assets/Icons/remove.png" style="width:26px;height:26px;image-rendering:pixelated;vertical-align:middle;margin-right:6px;"><span data-t="delete_island.title">DELETE ISLAND?</span></h2>
+            <p id="confirm-delete-msg" data-t="delete_island.msg">Are you sure you want to delete the island? This action cannot be undone!</p>
             <div id="confirm-delete-btns">
-                <button class="btn-cancel-del" onclick="closeConfirmDelete()">CANCEL</button>
-                <button class="btn-confirm-del" onclick="confirmDeleteIsland()">DELETE</button>
+                <button class="btn-cancel-del" onclick="closeConfirmDelete()" data-t="delete_island.btn_cancel">CANCEL</button>
+                <button class="btn-confirm-del" onclick="confirmDeleteIsland()" data-t="delete_island.btn_delete">DELETE</button>
             </div>
         </div>
     </div>
@@ -1189,10 +1223,10 @@ function tryStartBuilding() {
 <div id="fill-panel" onclick="event.stopPropagation()">
     <button id="fill-panel-close-btn" onclick="closeFillPanel()">&#10005;</button>
     <div id="fill-panel-inner" class="pixel-corners">
-        <h3>Fill</h3>
-        <div id="fill-panel-info">0 tiles selected</div>
+        <h3 data-t="fill_panel.title">Fill</h3>
+        <div id="fill-panel-info" data-t="fill_panel.tiles_selected">0 tiles selected</div>
         <div id="terraform-row">
-            <span id="terraform-label">HEIGHT:</span>
+            <span id="terraform-label" data-t="fill_panel.height_label">HEIGHT:</span>
             <div id="terraform-btns">
                 <button class="terraform-h-btn active" data-h="1" onclick="setTerraformHeight(1)">1</button>
                 <button class="terraform-h-btn" data-h="2" onclick="setTerraformHeight(2)">2</button>
@@ -1206,15 +1240,15 @@ function tryStartBuilding() {
         </div>
         <div id="fill-blocks-grid"></div>
         <div id="fill-panel-actions">
-            <button onclick="closeFillPanel()" style="background:#7a2020;color:#fff;border-color:#523519;">CANCEL</button>
+            <button onclick="closeFillPanel()" style="background:#7a2020;color:#fff;border-color:#523519;" data-t="fill_panel.btn_cancel">CANCEL</button>
         </div>
     </div>
 </div>
 
 <div id="code-bar">
-    <span>YOUR CODE:</span>
+    <span data-t="code_bar.label">YOUR CODE:</span>
     <input id="code-bar-value" type="text" readonly onclick="this.select()">
-    <button onclick="copyCode()">COPY</button>
+    <button onclick="copyCode()" data-t="code_bar.btn_copy">COPY</button>
     <button onclick="showCodeBar('')" style="background:#7a2020;color:#fff">&#10005;</button>
 </div>
 
@@ -1266,9 +1300,9 @@ function tryStartBuilding() {
         <button id="block-search-close-btn" onclick="closeBlockSearch()">&#10005;</button>
         <div id="block-search-popup" class="pixel-corners">
             <div id="block-search-header">
-                <h2> Search </h2>
+                <h2 data-t="block_search.title"> Search </h2>
                 <div id="block-search-input-wrap">
-                    <input id="block-search-input" type="text" placeholder="SEARCH BLOCKS..." autocomplete="off" oninput="filterBlockSearch(this.value)">
+                    <input id="block-search-input" type="text" placeholder="SEARCH BLOCKS..." data-t-placeholder="block_search.placeholder" autocomplete="off" oninput="filterBlockSearch(this.value)">
                 </div>
             </div>
             <div id="block-search-categories"></div>
@@ -1279,17 +1313,17 @@ function tryStartBuilding() {
     <div id="fun-popup-wrapper">
         <button id="fun-popup-close-btn" onclick="closeFunPopup()">&#10005;</button>
         <div id="fun-popup" class="pixel-corners">
-            <h2>FUN</h2>
+            <h2 data-t="fun_popup.title">FUN</h2>
             <div class="biome-grid" id="fun-popup-grid">
                 <div class="biome-card" onclick="closeFunPopup();openIslandBiomePopup()">
                     <div class="biome-icon"></div>
-                    <div class="biome-name">RANDOM ISLAND</div>
-                    <div class="biome-desc">Generate a random<br>biome island</div>
+                    <div class="biome-name" data-t="fun_popup.random_island_name">RANDOM ISLAND</div>
+                    <div class="biome-desc" data-t="fun_popup.random_island_desc">Generate a random<br>biome island</div>
                 </div>
                 <div class="biome-card" onclick="closeFunPopup();openMountainBiomePopup()">
                     <div class="biome-icon"></div>
-                    <div class="biome-name">RANDOM MOUNTAIN</div>
-                    <div class="biome-desc">Generate a random<br>mountain island</div>
+                    <div class="biome-name" data-t="fun_popup.random_mountain_name">RANDOM MOUNTAIN</div>
+                    <div class="biome-desc" data-t="fun_popup.random_mountain_desc">Generate a random<br>mountain island</div>
                 </div>
                 <div class="biome-card fun-emoji-card" onclick="closeFunPopup();openIslandEmojiPopup()">
                     <div class="biome-icon"></div>
@@ -1399,6 +1433,21 @@ function tryStartBuilding() {
         </div>
     </div>
 </div>
+<div id="language-popup-overlay" onclick="if(event.target===this)closeLanguagePopup()">
+    <div id="language-popup-wrapper">
+        <button id="language-popup-close-btn" onclick="closeLanguagePopup()">&#10005;</button>
+        <div id="language-popup" class="pixel-corners">
+            <h2><span data-t="settings.section_language">LANGUAGE</span></h2>
+            <div id="language-popup-body">
+                <div id="lang-btn-group" style="display:flex;flex-wrap:wrap;gap:8px;margin-top:4px;"></div>
+            </div>
+            <div style="display:flex;justify-content:flex-end;margin-top:16px;">
+                <button class="btn-ok" onclick="closeLanguagePopup()" data-t="ui.ok">OK</button>
+            </div>
+        </div>
+    </div>
+</div>
+
 <div id="graphics-settings-overlay" onclick="if(event.target===this)closeGraphicsSettings()">
     <div id="graphics-settings-wrapper">
         <button class="popup-help-btn" onclick="showHelpInfo('graphics')">?</button>
@@ -1489,19 +1538,19 @@ function tryStartBuilding() {
             <h2><img src="./Assets/Cursors/pointer.png" style="width:26px;height:26px;image-rendering:pixelated;vertical-align:middle;margin-right:6px;">POINTER SETTINGS</h2>
             <div id="pointer-settings-body">
                 <div class="visual-option-row">
-                    <span class="visual-option-label"><img src="./Assets/Cursors/pointer.png" style="width:14px;height:14px;image-rendering:pixelated;vertical-align:middle;margin-right:5px;">Custom Cursors</span>
+                    <span class="visual-option-label"><img src="./Assets/Cursors/pointer.png" style="width:14px;height:14px;image-rendering:pixelated;vertical-align:middle;margin-right:5px;"><span data-t="pointer_settings.custom_cursors">Custom Cursors</span></span>
                     <button class="px-switch" id="sw-custom-cursor" onclick="toggleCustomCursor(this)">
                         <span class="px-switch-thumb"></span>
                     </button>
                 </div>
                 <div class="visual-option-row">
-                    <span class="visual-option-label"><img src="./Assets/Blocks/dirt.png" style="width:14px;height:14px;image-rendering:pixelated;vertical-align:middle;margin-right:5px;">Block Tooltips</span>
+                    <span class="visual-option-label"><img src="./Assets/Blocks/dirt.png" style="width:14px;height:14px;image-rendering:pixelated;vertical-align:middle;margin-right:5px;"><span data-t="pointer_settings.block_tooltips">Block Tooltips</span></span>
                     <button class="px-switch on" id="sw-block-tooltips" onclick="toggleBlockTooltips(this)">
                         <span class="px-switch-thumb"></span>
                     </button>
                 </div>
                 <div class="visual-option-row">
-                    <span class="visual-option-label">✦ Cursor Trail</span>
+                    <span class="visual-option-label" data-t="pointer_settings.cursor_trail">✦ Cursor Trail</span>
                     <button class="px-switch" id="sw-cursor-trail" onclick="toggleCursorTrail(this)">
                         <span class="px-switch-thumb"></span>
                     </button>
@@ -1525,29 +1574,29 @@ function tryStartBuilding() {
                         <div class="gui-theme-swatch gui-swatch-auto">
                             <span class="gui-swatch-icon"></span>
                         </div>
-                        <div class="gui-theme-name">AUTO</div>
-                        <div class="gui-theme-desc">Follows climate</div>
+                        <div class="gui-theme-name" data-t="gui_settings.auto">AUTO</div>
+                        <div class="gui-theme-desc" data-t="gui_settings.auto_desc">Follows climate</div>
                     </div>
                     <div class="gui-theme-card" id="gui-card-default" onclick="setGUIThemeManual('default')">
                         <div class="gui-theme-swatch gui-swatch-default">
                             <span class="gui-swatch-icon"></span>
                         </div>
-                        <div class="gui-theme-name">BROWN</div>
-                        <div class="gui-theme-desc">Default theme</div>
+                        <div class="gui-theme-name" data-t="gui_settings.brown">BROWN</div>
+                        <div class="gui-theme-desc" data-t="gui_settings.brown_desc">Default theme</div>
                     </div>
                     <div class="gui-theme-card" id="gui-card-blue" onclick="setGUIThemeManual('blue')">
                         <div class="gui-theme-swatch gui-swatch-blue">
                             <span class="gui-swatch-icon"></span>
                         </div>
-                        <div class="gui-theme-name">BLUE</div>
-                        <div class="gui-theme-desc">Rain &amp; Snow</div>
+                        <div class="gui-theme-name" data-t="gui_settings.blue">BLUE</div>
+                        <div class="gui-theme-desc" data-t="gui_settings.blue_desc">Rain &amp; Snow</div>
                     </div>
                     <div class="gui-theme-card" id="gui-card-green" onclick="setGUIThemeManual('green')">
                         <div class="gui-theme-swatch gui-swatch-green">
                             <span class="gui-swatch-icon"></span>
                         </div>
-                        <div class="gui-theme-name">GREEN</div>
-                        <div class="gui-theme-desc">Wind theme</div>
+                        <div class="gui-theme-name" data-t="gui_settings.green">GREEN</div>
+                        <div class="gui-theme-desc" data-t="gui_settings.green_desc">Wind theme</div>
                     </div>
                 </div>
                 <div style="display:flex;justify-content:flex-end;margin-top:16px;">
@@ -1588,15 +1637,15 @@ function tryStartBuilding() {
             <div id="settings-menu-list">
                 <button class="settings-menu-item" onclick="closeSettingsMenuPopup();openLicensesView()">
                     <img src="./Assets/Icons/book.png" style="width:16px;height:16px;image-rendering:pixelated;vertical-align:middle;margin-right:10px;">
-                    Legal documents
+                    <span data-t="settings_menu.legal_docs">Legal documents</span>
                 </button>
                 <button class="settings-menu-item" onclick="closeSettingsMenuPopup();openTutorialFromMenu()">
                     <img src="./Assets/Icons/book.png" style="width:16px;height:16px;image-rendering:pixelated;vertical-align:middle;margin-right:10px;">
-                    Tutorial
+                    <span data-t="settings_menu.tutorial">Tutorial</span>
                 </button>
                 <button class="settings-menu-item" onclick="closeSettingsMenuPopup();setTimeout(function(){var k='ii_tutorial_done_v1';try{localStorage.removeItem(k);}catch(e){}if(typeof startIslandTutorial==='function')startIslandTutorial();},250)">
                     <img src="./Assets/Icons/book.png" style="width:16px;height:16px;image-rendering:pixelated;vertical-align:middle;margin-right:10px;">
-                    Interactive Tutorial
+                    <span data-t="settings_menu.interactive_tutorial">Interactive Tutorial</span>
                 </button>
             </div>
             <div style="display:flex;justify-content:flex-end;margin-top:14px;">
@@ -1764,6 +1813,11 @@ function openTutorialFromMenu() {
     };
 })();
 </script>
+    <script src="Assets/Language/index.js"></script>
+    <script src="Assets/Language/en.js"></script>
+    <script src="Assets/Language/ro.js"></script>
+    <script src="Assets/Language/ru.js"></script>
+    <script src="lang.js"></script>
     <script src="game.js" defer></script>
 <script>
 window.addEventListener('load', function() {
@@ -1783,16 +1837,16 @@ window.addEventListener('load', function() {
             <div id="explicit-warning-icon-row">
                 <img src="./Assets/Icons/exp.png" id="explicit-warning-icon" style="image-rendering:pixelated;">
             </div>
-            <h2 id="explicit-warning-title">COMMUNITY MAPS</h2>
-            <div id="explicit-warning-subtitle">CONTENT WARNING</div>
+            <h2 id="explicit-warning-title" data-t="community.title">COMMUNITY MAPS</h2>
+            <div id="explicit-warning-subtitle" data-t="community.content_warning">CONTENT WARNING</div>
             <p id="explicit-warning-text">
                 Community maps are created by players and may contain content that some users find inappropriate or offensive.<br><br>
                 By entering, you agree not to upload explicit, offensive, or inappropriate content.<br><br>
                 Violations may result in a permanent ban.
             </p>
             <div id="explicit-warning-buttons">
-                <button id="explicit-agree-btn" onclick="explicitAgree()">I AGREE</button>
-                <button id="explicit-decline-btn" onclick="explicitDecline()">GO BACK</button>
+                <button id="explicit-agree-btn" onclick="explicitAgree()" data-t="community.agree_btn">I AGREE</button>
+                <button id="explicit-decline-btn" onclick="explicitDecline()" data-t="community.go_back_btn">GO BACK</button>
             </div>
         </div>
     </div>
@@ -1803,26 +1857,26 @@ window.addEventListener('load', function() {
         <button id="community-close-btn" onclick="closeCommunityPopup()">&#10005;</button>
         <div id="community-popup" class="pixel-corners">
             <div id="cm-topbar">
-                <h2 id="cm-title">COMMUNITY MAPS</h2>
+                <h2 id="cm-title" data-t="community.title">COMMUNITY MAPS</h2>
             </div>
             <div id="cm-search-bar">
                 <div id="cm-search-icon">
                     <img src="./Assets/Icons/zoom.png" style="width:14px;height:14px;image-rendering:pixelated;display:block;">
                 </div>
-                <input id="cm-search-input" type="text" placeholder="Search maps or authors..." oninput="cmFilterMaps(this.value)" autocomplete="off">
+                <input id="cm-search-input" type="text" data-t-placeholder="community.search_placeholder" placeholder="Search maps or authors..." oninput="cmFilterMaps(this.value)" autocomplete="off">
                 <button id="cm-search-clear" onclick="cmClearSearch()" style="display:none;">&#10005;</button>
             </div>
             <div id="cm-content-area">
                 <div id="cm-tab-browse" class="cm-tab-content">
                     <div id="cm-maps-list">
-                        <div class="cm-loading">LOADING...</div>
+                        <div class="cm-loading" data-t="community.loading">LOADING...</div>
                     </div>
                 </div>
                 <div id="cm-tab-upload" class="cm-tab-content" style="display:none;">
-                    <div class="popup-section-title">MAP NAME:</div>
-                    <input id="cm-map-name" type="text" maxlength="40" placeholder="ex: My cool island...">
-                    <div class="cm-hint">Share your current island with the community</div>
-                    <button class="btn-qr" onclick="cmSaveMap()">PUBLISH TO COMMUNITY</button>
+                    <div class="popup-section-title" data-t="community.map_name_label">MAP NAME:</div>
+                    <input id="cm-map-name" type="text" maxlength="40" data-t-placeholder="community.map_name_placeholder" placeholder="ex: My cool island...">
+                    <div class="cm-hint" data-t="community.share_hint">Share your current island with the community</div>
+                    <button class="btn-qr" onclick="cmSaveMap()" data-t="community.publish_btn">PUBLISH TO COMMUNITY</button>
                     <div id="cm-save-status"></div>
                 </div>
                 <div id="cm-tab-account" class="cm-tab-content" style="display:none;">
@@ -1834,18 +1888,18 @@ window.addEventListener('load', function() {
                                     <img src="./Assets/Icons/account.png" style="width:32px;height:32px;image-rendering:pixelated;opacity:0.6;">
                                 </div>
                             </div>
-                            <div id="cm-acct-name">NOT LOGGED IN</div>
+                            <div id="cm-acct-name" data-t="community.not_logged_in">NOT LOGGED IN</div>
                         </div>
                         <div class="cm-acct-dash-divider"></div>
                         <div id="cm-acct-tab-maps-row">
-                            <span id="cm-acct-tab-maps-label">MY MAPS SHARED:</span>
+                            <span id="cm-acct-tab-maps-label" data-t="community.my_maps_label">MY MAPS SHARED:</span>
                             <span id="cm-acct-maps-count">—</span>
                         </div>
                         <div class="cm-acct-dash-divider"></div>
                         <div id="cm-acct-tab-actions">
-                            <button id="cm-delete-account-btn" onclick="cmDeleteAccount()" style="display:none;">🗑 DELETE ACCOUNT</button>
+                            <button id="cm-delete-account-btn" onclick="cmDeleteAccount()" style="display:none;" data-t="community.delete_account_btn">🗑 DELETE ACCOUNT</button>
                             <button id="cm-auth-btn" onclick="cmLogin()">
-                                <img src="./Assets/Icons/google.png" style="width:12px;height:12px;image-rendering:pixelated;vertical-align:middle;margin-right:5px;">LOGIN WITH GOOGLE
+                                <img src="./Assets/Icons/google.png" style="width:12px;height:12px;image-rendering:pixelated;vertical-align:middle;margin-right:5px;"><span data-t="community.login_btn">LOGIN WITH GOOGLE</span>
                             </button>
                         </div>
                     </div>
@@ -1854,15 +1908,15 @@ window.addEventListener('load', function() {
             <div id="cm-tabs">
                 <button id="cm-tab-browse-btn" class="cm-tab cm-tab-active" onclick="cmSwitchTab('browse')">
                     <img src="./Assets/Icons/Comunitymaps.png" class="cm-tab-icon" style="image-rendering:pixelated;">
-                    <span>BROWSE</span>
+                    <span data-t="community.tab_browse">BROWSE</span>
                 </button>
                 <button id="cm-tab-upload-btn" class="cm-tab" onclick="cmSwitchTab('upload')">
                     <img src="./Assets/Icons/Software.png" class="cm-tab-icon" style="image-rendering:pixelated;">
-                    <span>PUBLISH</span>
+                    <span data-t="community.tab_publish">PUBLISH</span>
                 </button>
                 <button id="cm-tab-account-btn" class="cm-tab" onclick="cmSwitchTab('account')">
                     <img src="./Assets/Icons/account.png" class="cm-tab-icon" style="image-rendering:pixelated;">
-                    <span>ACCOUNT</span>
+                    <span data-t="community.tab_account">ACCOUNT</span>
                 </button>
             </div>
 
@@ -1877,7 +1931,7 @@ window.cmLoadAccountMapsCount = async function() {
     if (!window._cmCurrentUser) { countEl.textContent = '—'; return; }
     countEl.textContent = 'Loading...';
     const cards = document.querySelectorAll('.cm-map-card[data-author-uid="' + window._cmCurrentUser.uid + '"]');
-    countEl.textContent = cards.length + ' map' + (cards.length !== 1 ? 's' : '');
+    countEl.textContent = cards.length + ' ' + (window.LangManager ? LangManager.t('community.maps_count_suffix') : (cards.length !== 1 ? 'maps' : 'map'));
 };
 let _cmAllMaps = [];
 
@@ -1900,7 +1954,7 @@ window.cmFilterMaps = function(query) {
     if (!emptyEl) {
         emptyEl = document.createElement('div');
         emptyEl.className = 'cm-loading cm-search-empty';
-        emptyEl.textContent = 'No maps found.';
+        emptyEl.textContent = window.LangManager ? LangManager.t('community.no_maps_found') : 'No maps found.';
         list.appendChild(emptyEl);
     }
     emptyEl.style.display = (q && visible === 0) ? 'block' : 'none';
@@ -1968,7 +2022,7 @@ onAuthStateChanged(auth, user => {
         if (acctName) acctName.textContent = 'NOT LOGGED IN';
         if (acctPhoto) acctPhoto.style.display = 'none';
         if (placeholder) placeholder.style.display = 'flex';
-        btn.innerHTML = '<img src="./Assets/Icons/google.png" style="width:12px;height:12px;image-rendering:pixelated;vertical-align:middle;margin-right:5px;">LOGIN WITH GOOGLE';
+        btn.innerHTML = '<img src="./Assets/Icons/google.png" style="width:12px;height:12px;image-rendering:pixelated;vertical-align:middle;margin-right:5px;"><span data-t="community.login_btn">LOGIN WITH GOOGLE</span>';
         btn.onclick   = cmLogin;
         if (delBtn) delBtn.style.display = 'none';
     }
@@ -2047,7 +2101,7 @@ window.cmSaveMap = async () => {
 
 async function cmLoadMaps() {
     const list = document.getElementById('cm-maps-list');
-    list.innerHTML = '<div class="cm-loading">LOADING...</div>';
+    list.innerHTML = '<div class="cm-loading">' + (window.LangManager ? LangManager.t('community.loading') : 'LOADING...') + '</div>';
     const searchInput = document.getElementById('cm-search-input');
     const clearBtn = document.getElementById('cm-search-clear');
     if (searchInput) searchInput.value = '';
@@ -2059,7 +2113,7 @@ async function cmLoadMaps() {
         const snap = await getDocs(q);
         const maps = snap.docs.map(d => ({ id: d.id, ...d.data() }));
         if (!maps.length) {
-            list.innerHTML = '<div class="cm-loading">No maps yet.<br>Be the first!</div>';
+            list.innerHTML = '<div class="cm-loading">' + (window.LangManager ? LangManager.t('community.empty') : 'No maps yet.<br>Be the first!') + '</div>';
             return;
         }
         list.innerHTML = maps.map(m => `
@@ -2078,7 +2132,7 @@ async function cmLoadMaps() {
             </div>`).join('');
         requestAnimationFrame(() => cmRenderAllThumbs());
     } catch(e) {
-        list.innerHTML = `<div class="cm-loading" style="color:#ff8888;">Failed to load.<br>${e.message}</div>`;
+        list.innerHTML = `<div class="cm-loading" style="color:#ff8888;">${window.LangManager ? LangManager.t('community.failed_load') : 'Failed to load.'}<br>${e.message}</div>`;
     }
 }
 
@@ -2249,32 +2303,33 @@ function esc(s) {
 }
 
 const CM_BLOCK_COLORS = {
-    0:  null,           
-    1:  '#8B6340',      
-    2:  '#9B7350',     
-    3:  '#7a5530',      
-    4:  '#5a9e3a',     
-    5:  '#787878',   
-    6:  '#c8a040',  
-    7:  '#909090',  
-    8:  '#607060',      
-    9:  '#d4c080',      
-    10: '#c08050',     
-    11: '#3060c0',     
-    12: '#e8f0ff',      
-    13: '#9eb0c0',      
-    14: '#a0d0e8',     
-    15: '#e07020',     
-    16: '#d4a830',     
-    17: '#50a830',      
-    19: '#8ab0c8',      
-    20: '#f0f8ff',   
-    21: '#8B5E3C',      
-    22: '#3a8a28',     
-    23: '#d8eaf8',      
-    24: '#d0e8f8',    
-    25: '#c8e0f0',     
-    26: '#e8f4ff',      
+    0:  null,           // eraser
+    1:  '#8B6340',      // dirt
+    2:  '#9B7350',      // dirt2
+    3:  '#7a5530',      // ShovedDirt
+    4:  '#5a9e3a',      // flovers
+    5:  '#787878',      // rock
+    6:  '#c8a040',      // crops
+    7:  '#909090',      // stone
+    8:  '#607060',      // mossystone
+    9:  '#d4c080',      // sand
+    10: '#c08050',      // redsand
+    11: '#3060c0',      // water
+    12: '#e8f0ff',      // snow
+    13: '#9eb0c0',      // snowrocks
+    14: '#a0d0e8',      // ice
+    15: '#e07020',      // pumpkin
+    16: '#d4a830',      // Hay
+    17: '#50a830',      // melon
+    18: '#2a7a20',      // tree
+    19: '#8ab0c8',      // snowed_tree
+    20: '#f0f8ff',      // snowman
+    21: '#8B5E3C',      // wood
+    22: '#3a8a28',      // leaf
+    23: '#d8eaf8',      // snow2
+    24: '#d0e8f8',      // snowmanb1
+    25: '#c8e0f0',      // snowmanb2
+    26: '#e8f4ff',      // SnowmanHead
 };
 
 window.cmRenderAllThumbs = function() {
@@ -2497,17 +2552,17 @@ window.showEmbedPreview = () => {
     <div id="embed-popup-wrapper">
         <button id="embed-popup-close-btn" onclick="closeEmbedPopup()">&#10005;</button>
         <div id="embed-popup" class="pixel-corners">
-            <h2><img src="./Assets/Icons/todorm.png" style="width:32px;height:32px;image-rendering:pixelated;vertical-align:middle;margin-right:10px;">EMBED ISLAND</h2>
+            <h2><img src="./Assets/Icons/todorm.png" style="width:32px;height:32px;image-rendering:pixelated;vertical-align:middle;margin-right:10px;"><span data-t="embed.title">EMBED ISLAND</span></h2>
             <hr class="popup-divider">
 
-            <div class="popup-section-title">ISLAND EMBED CODE:</div>
+            <div class="popup-section-title" data-t="embed.section_label">ISLAND EMBED CODE:</div>
             <textarea id="embed-code-output" readonly onclick="this.select()"></textarea>
 
             <div class="embed-btn-col">
-                <button class="btn-copy" onclick="navigator.clipboard.writeText(document.getElementById('embed-code-output').value).then(()=>showToast('Embed code copied!'))">
-                    <img src="./Assets/Icons/todorm.png" style="width:14px;height:14px;image-rendering:pixelated;vertical-align:middle;margin-right:6px;">COPY EMBED CODE
+                <button class="btn-copy" onclick="navigator.clipboard.writeText(document.getElementById('embed-code-output').value).then(()=>showToast(LangManager.t('toast.embed_copied')))">
+                    <img src="./Assets/Icons/todorm.png" style="width:14px;height:14px;image-rendering:pixelated;vertical-align:middle;margin-right:6px;"><span data-t="embed.copy_btn">COPY EMBED CODE</span>
                 </button>
-                <button class="btn-qr" onclick="showEmbedPreview()">
+                <button class="btn-qr" onclick="showEmbedPreview()" data-t="embed.preview_btn">
                     &#9654; PREVIEW
                 </button>
             </div>
@@ -2524,7 +2579,7 @@ window.showEmbedPreview = () => {
     <div id="grid-res-wrapper" onclick="event.stopPropagation()">
         <button id="grid-res-close-btn" onclick="closeGridResPopup()">&#10005;</button>
         <div id="grid-res-popup" class="pixel-corners">
-            <h2><img src="./Assets/Icons/maintenance.png" style="width:22px;height:22px;image-rendering:pixelated;vertical-align:middle;margin-right:8px;">GRID RESOLUTION</h2>
+            <h2><img src="./Assets/Icons/maintenance.png" style="width:22px;height:22px;image-rendering:pixelated;vertical-align:middle;margin-right:8px;"><span data-t="settings.grid_resolution">GRID RESOLUTION</span></h2>
             <div id="island-shape-grid"></div>
             <div id="shape-size-label">Hover to preview size</div>
         </div>
@@ -2848,8 +2903,12 @@ const HELP_INFO = {
 function showHelpInfo(key) {
     const data = HELP_INFO[key];
     if (!data) return;
-    document.getElementById('help-info-title').textContent = data.title;
-    document.getElementById('help-info-text').textContent = data.text;
+    const langKey = 'help.' + key.replace(/-/g, '_');
+    const lm = window.LangManager;
+    const title = (lm && lm.t(langKey + '.title') !== langKey + '.title') ? lm.t(langKey + '.title') : data.title;
+    const text  = (lm && lm.t(langKey + '.text')  !== langKey + '.text')  ? lm.t(langKey + '.text')  : data.text;
+    document.getElementById('help-info-title').textContent = title;
+    document.getElementById('help-info-text').textContent = text;
     const overlay = document.getElementById('help-info-overlay');
     overlay.style.display = 'flex';
     requestAnimationFrame(() => requestAnimationFrame(() => overlay.classList.add('popup-visible')));
@@ -2877,9 +2936,7 @@ window.closeHelpInfo = closeHelpInfo;
     </div>
 </div>
 <script id="tutorial-js">
-// ╔══════════════════════════════════════════════════════════════════╗
-// ║          Isometric Island — Spotlight Tutorial System            ║
-// ╚══════════════════════════════════════════════════════════════════╝
+
 (function () {
     'use strict';
 
@@ -2894,55 +2951,55 @@ window.closeHelpInfo = closeHelpInfo;
             id: 'hotbar',
             target: '#dock',
             position: 'top',
-            title: 'Hotbar',
-            text: 'This is the Hotbar, here you can find all the placeable blocks and objects.',
+            title: '🧱 Hotbar',
+            text: 'Aceasta este bara de blocuri! Apasă pe orice bloc pentru a-l selecta, apoi dă click pe insulă pentru a-l plasa. Folosește săgețile pentru mai multe blocuri.',
             action: null,
         },
         {
             id: 'zoombar',
             target: '#zoom-ui',
             position: 'left',
-            title: 'Zoom Bar',
-            text: 'Zoom bar makes you zoom the island, you can use the buttons zoom + or - or the bar.',
+            title: '🔍 Zoom Bar',
+            text: 'Folosește Zoom Bar-ul pentru a mări sau micșora vederea insulei. Apasă + sau − sau trage dot-ul.',
             action: null,
         },
         {
             id: 'music',
             target: '#music-toggle',
             position: 'top',
-            title: 'Music menu',
-            text: 'This is the music menu, from here you can choose to listen to a Spotify playlist or change the BG noise volume.',
+            title: '🎵 Meniu Muzică',
+            text: 'Pictograma muzicii deschide meniul Music! Poți asculta un playlist Spotify sau activa/dezactiva muzica de fundal. Apasă butonul de mai jos!',
             popupSelector: '#music-popup-wrapper',
             action: {
-                label: 'Open Music Menu',
+                label: 'Deschide Muzica',
                 fn: () => { if (typeof openMusicPopup === 'function') openMusicPopup(); },
                 closeSelector: '#music-popup-overlay',
-                closePrompt: 'Nice! Now you can close this popup to continue.',
+                closePrompt: '🎵 Super! Acum închide meniul Muzică pentru a continua.',
             },
         },
         {
             id: 'float',
             target: '#float-toggle',
             position: 'top',
-            title: 'Float Mode',
-            text: 'From the float popup you can choose how the island float and the mode that the Island Float.',
+            title: '🌊 Float Mode',
+            text: 'Butonul Float face insula să plutească și să se anime! Deschide-l pentru a alege un preset și o viteză.',
             popupSelector: '#float-popup-wrapper',
             action: {
-                label: 'Open Float Menu',
+                label: 'Deschide Float',
                 fn: () => { if (typeof openFloatPopup === 'function') openFloatPopup(); },
                 closeSelector: '#float-popup-overlay',
-                closePrompt: 'Nice! Now you can close the popup to continue.',
+                closePrompt: '🌊 Mișto! Închide meniul Float pentru a merge mai departe.',
             },
         },
         {
             id: 'radial',
             target: '#radial-menu',
             position: 'center',
-            title: 'Radial Menu',
-            text: 'Right click to open the radial menu to choose other tools for the island.',
+            title: '🕹️ Radial Menu',
+            text: 'Click dreapta (sau apăsare lungă pe mobil) oriunde pe insulă deschide Radial Menu — acces rapid la Brush, Mirror, Undo și mai mult!',
             popupSelector: '#radial-menu-overlay',
             action: {
-                label: 'Open Radial Menu',
+                label: 'Deschide Radial Menu',
                 fn: () => {
                     if (typeof showRadialMenu === 'function') showRadialMenu();
                     if (typeof window._radialMenuActive !== 'undefined') window._radialMenuActive = true;
@@ -2961,29 +3018,29 @@ window.closeHelpInfo = closeHelpInfo;
                     }, 300);
                 },
                 closeSelector: '#radial-menu-overlay',
-                closePrompt: 'Nice, now tap here to continue.',
+                closePrompt: '🕹️ Mișto! Închide Radial Menu (Escape sau click stânga) pentru a continua.',
             },
         },
         {
             id: 'file',
             target: '#save-btn',
             position: 'top',
-            title: 'Menu File',
-            text: 'From here you can open the file menu and control other stuff for the island.',
+            title: '💾 Meniu File',
+            text: 'Pictograma de salvare deschide meniul File complet: salvezi insula, încarci coduri, gestionezi slot-uri, schimbi setări și multe altele!',
             popupSelector: '#save-popup-wrapper',
             action: {
-                label: 'Open File Menu',
+                label: 'Deschide File',
                 fn: () => { if (typeof openSavePopup === 'function') openSavePopup(); },
                 closeSelector: '#save-popup-overlay',
-                closePrompt: 'Nice! Now close the file menu to continue.',
+                closePrompt: '💾 Perfect! Închide meniul File pentru a termina tutorialul.',
             },
         },
         {
             id: 'done',
             target: null,
             position: 'center',
-            title: 'You are Done!',
-            text: 'You did complete the Spotlight Tutorial, Good job! ',
+            title: '🎉 Ești gata!',
+            text: 'Acum știi tot ce trebuie! Construiește-ți insula, experimentează cu blocuri și împarte creațiile cu comunitatea. Mult succes! 🏝️',
             action: null,
             last: true,
         },
@@ -3078,7 +3135,6 @@ window.closeHelpInfo = closeHelpInfo;
             card.style.top  = Math.round((vh - ch) / 2) + 'px';
             return;
         }
-
         if (step.position === 'above-hotbar') {
             const el = document.querySelector(step.target);
             if (el) {
@@ -3196,7 +3252,6 @@ window.closeHelpInfo = closeHelpInfo;
                 }
             }, 80);
         }
-
         const sel = step.action.closeSelector;
         const poller = setInterval(() => {
             if (!waitingForClose) { clearInterval(poller); return; }

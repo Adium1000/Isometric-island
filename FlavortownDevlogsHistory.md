@@ -1000,6 +1000,65 @@ Anyway that is all what do you think? :menhera-point:
 
 ![DEVLOG68insider](<.github/Devlogs (Flavortown)/devlog68.gif>)
 
+
+
+---
+
+# Devlog 59
+Overall Devlog info: Spotilight tutorial and more ASCII art
+---
+# Comit [(6ccf870)](https://github.com/Adium1000/Isometric-island/commit/6ccf8703b5c029b5bb0adf1ad9d34bc20a2318ad)
+
+### Added the Tutorial Spotlight
+- The tutorial Spotlight helps the user understand th game
+- This opens the first time you load the game
+
+[![IMG](https://i.postimg.cc/6qM7gMwh/image.png)](https://postimg.cc/0KJ2Jdz6)
+
+---
+What tutorial spotlight includes?
+
+### 1. Hotbar
+
+`This is the Hotbar, here you can find all the placeable blocks and objects.`
+
+### 2. Zoombar
+
+`Zoom bar makes you zoom the island, you can use the buttons zoom + or - or the bar.`
+
+### 3. Music Menu
+
+`This is the music menu, from here you can choose to listen to a Spotify playlist or change the BG noise volume.`
+
+### 4. Float Mode
+
+`From the float popup you can choose how the island float and the mode that the Island Float.`
+
+### 5. Radial Menu
+
+`Right click to open the radial menu to choose other tools for the island.`
+
+### 6. Menu file
+
+`From here you can open the file menu and control other stuff for the island.`
+
+### 7. Done :3 
+
+`You did complete the Spotlight Tutorial, Good job!`
+
+---
+
+- Also you can RE-Open the Spotlight tutorial from the Licenses and Menus 
+
+---
+
+- Devlog Thumbnail
+
+---
+
+Anyway that is all what do you think? :menhera-huh: 
+
+![d69](<.github/Devlogs (Flavortown)/devlog69.png>)
 ---
 End 
 

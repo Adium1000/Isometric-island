@@ -147,4 +147,4 @@ Devlog Sketch
 Release
 Release Fin#al
 
-CLONE YOUR REPO BEFORE COMIT!
+# Devlog 70
