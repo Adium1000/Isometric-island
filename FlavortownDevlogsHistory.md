@@ -1060,12 +1060,73 @@ Anyway that is all what do you think? :menhera-huh:
 
 ![d69](<.github/Devlogs (Flavortown)/devlog69.png>)
 ---
+
+# Devlog 70
+Overall: Added Language Manager, Contributions opened
+
+---
+
+# Comit [(c78c679)](https://github.com/Adium1000/Isometric-island/commit/c78c679911df943ccd4e572b68472394071e7a3a)
+
+### Added Language Manager
+Language manager is overall the `lang.js` located in `root`
+Language manager replaces the hard coded text with the translated ones 
+Language manager logs everything in the logs in romanian language :3
+Language manager logs only the fails and language changes 
+
+Here is how it works:
+
+1. Initialization and Storage
+Saves the user's selected language in localStorage under the key `ii_language`, so that the preference persists across sessions.
+2. The `t(key)` function — the most important one
+Translates a key in the form of "blocks.dirt" or "mirror.title" into the text corresponding to the active language. If it cannot find the translation, it tries the fallback (English), and if it is not there either, it returns the raw key.
+3. `_applyDOM()`
+Searches the HTML for elements with the data-t attribute and automatically replaces their text:
+
+---
+
+### Added Language Indexer 
+Language indexer indexes the languages in the game (for now only english)
+Also if you contribute, you need to modify this file
+
+---
+
+### Added en.js
+`en.js` is an language file that is indexed by the `index.js` and then procesed by the `lang.js`
+`en.js` have all the lines that can be translated in the game (a lot of lines)
+
+What it does:
+
+Populates the global variable `window.__LANG_DATA__['en']` with a hierarchical JSON object containing all the in-game text organized by category.
+
+---
+
+### Added language popup in the game settings
+Now in the game's settings popup contains languages indexed from the `index.js`
+
+---
+
+### Contributions Opened!
+Do you want to help? Glad to hear, now you can translate the game in your own language thanks to the language manager 
+
+---
+- Added devlog thumbnail: details and stuff by Adrian
+© Image spotlight by Adrian
+---
+
+![DEVLOG70](<.github/Devlogs (Flavortown)/DEVLOG70.png>)
+
+
+---
 End 
 
 ![yayyy](https://emoji.slack-edge.com/T09V59WQY1E/yayayayayay/203666b7424ee7a7.gif)
 
 ---
 
+
+
+---
 # Here are some comments from the ships:
 
 What I realised from reading all of them?
