@@ -1,3 +1,13 @@
+//  ______    ______   ___ __ __   ________   ___   __     ________  ________   ___   __      
+// /_____/\  /_____/\ /__//_//_/\ /_______/\ /__/\ /__/\  /_______/\/_______/\ /__/\ /__/\    
+// \:::_ \ \ \:::_ \ \\::\| \| \ \\::: _  \ \\::\_\\  \ \ \__.::._\/\::: _  \ \\::\_\\  \ \   
+//  \:(_) ) )_\:\ \ \ \\:.      \ \\::(_)  \ \\:. `-\  \ \   \::\ \  \::(_)  \ \\:. `-\  \ \  
+//   \: __ `\ \\:\ \ \ \\:.\-/\  \ \\:: __  \ \\:. _    \ \  _\::\ \__\:: __  \ \\:. _    \ \ 
+//    \ \ `\ \ \\:\_\ \ \\. \  \  \ \\:.\ \  \ \\. \`-\  \ \/__\::\__/\\:.\ \  \ \\. \`-\  \ \
+//    \_\/ \_\/ \_____\/ \__\/ \__\/ \__\/\__\/ \__\/ \__\/\________\/ \__\/\__\/ \__\/ \__\/
+                                                                                           
+
+
 window.__LANG_DATA__ = window.__LANG_DATA__ || {};
 window.__LANG_DATA__['ro'] = {
   _meta: { lang: 'ro', name: 'Română', flag: '🇷🇴' },
@@ -392,13 +402,13 @@ window.__LANG_DATA__['ro'] = {
     btn_next: 'Următor ▶',
     btn_start: 'Începe construcția! 🏝️',
     steps: {
-      hotbar:   { title: '🧱 Hotbar',           text: 'Aceasta este bara de blocuri! Apasă pe orice bloc pentru a-l selecta, apoi dă click pe insulă pentru a-l plasa. Folosește săgețile pentru mai multe blocuri.' },
-      zoom:     { title: '🔍 Zoom Bar',          text: 'Folosește Zoom Bar-ul pentru a mări sau micșora vederea insulei. Apasă + sau − sau trage dot-ul.' },
-      music:    { title: '🎵 Meniu Muzică',      text: 'Pictograma muzicii deschide meniul Music! Poți asculta un playlist Spotify sau activa/dezactiva muzica de fundal. Apasă butonul de mai jos!', action: 'Deschide Muzica' },
-      float:    { title: '🌊 Float Mode',        text: 'Butonul Float face insula să plutească și să se anime! Deschide-l pentru a alege un preset și o viteză.', action: 'Deschide Float' },
-      radial:   { title: '🕹️ Radial Menu',       text: 'Click dreapta (sau apăsare lungă pe mobil) oriunde pe insulă deschide Radial Menu — acces rapid la Brush, Mirror, Undo și mai mult!', action: 'Deschide Radial Menu' },
-      save:     { title: '💾 Meniu File',        text: 'Pictograma de salvare deschide meniul File complet: salvezi insula, încarci coduri, gestionezi slot-uri, schimbi setări și multe altele!', action: 'Deschide File' },
-      done:     { title: '🎉 Ești gata!',        text: 'Acum știi tot ce trebuie! Construiește-ți insula, experimentează cu blocuri și împarte creațiile cu comunitatea. Mult succes! 🏝️' },
+      hotbar:   { title: 'Hotbar',           text: 'Aceasta este bara de blocuri! Apasă pe orice bloc pentru a-l selecta, apoi dă click pe insulă pentru a-l plasa. Folosește săgețile pentru mai multe blocuri.' },
+      zoom:     { title: 'Zoom Bar',          text: 'Folosește Zoom Bar-ul pentru a mări sau micșora vederea insulei. Apasă + sau − sau trage dot-ul.' },
+      music:    { title: 'Meniu Muzică',      text: 'Pictograma muzicii deschide meniul Music! Poți asculta un playlist Spotify sau activa/dezactiva muzica de fundal. Apasă butonul de mai jos!', action: 'Deschide Muzica' },
+      float:    { title: 'Float Mode',        text: 'Butonul Float face insula să plutească și să se anime! Deschide-l pentru a alege un preset și o viteză.', action: 'Deschide Float' },
+      radial:   { title: 'Radial Menu',       text: 'Click dreapta (sau apăsare lungă pe mobil) oriunde pe insulă deschide Radial Menu — acces rapid la Brush, Mirror, Undo și mai mult!', action: 'Deschide Radial Menu' },
+      save:     { title: 'Meniu File',        text: 'Pictograma de salvare deschide meniul File complet: salvezi insula, încarci coduri, gestionezi slot-uri, schimbi setări și multe altele!', action: 'Deschide File' },
+      done:     { title: 'Ești gata!',        text: 'Acum știi tot ce trebuie! Construiește-ți insula, experimentează cu blocuri și împarte creațiile cu comunitatea. Mult succes! 🏝️' },
     },
   },
 
