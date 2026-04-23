@@ -3,9 +3,14 @@
 // `.  `-. | .-. :|  .--' \  `'  / ,--.| .--'| .-. :    |  |.'.|  || .-. ||  .--'|     /| .-. :|  .--' 
 // .-'    |\   --.|  |     \    /  |  |\ `--.\   --.    |   ,'.   |' '-' '|  |   |  \  \\   --.|  |    
 // `-----'  `----'`--'      `--'   `--' `---' `----'    '--'   '--' `---' `--'   `--'`--'`----'`--'    
-     
-
-// Service worker makes this project run more smoothlly! Take a look!
+ 
+// ==========================================================
+// Isometric Island Service Worker
+//
+// This game is optimized by the sw.js
+// This cache all the images and lazy loading all the music 
+// and Assets
+// ==========================================================
 
 const CACHE_NAME = 'isometric-island-v2';
 const PRECACHE_ASSETS = [

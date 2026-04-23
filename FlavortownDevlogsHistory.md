@@ -1118,6 +1118,60 @@ Do you want to help? Glad to hear, now you can translate the game in your own la
 
 
 ---
+
+# Devlog 71
+Overall Devlog: Added Romanian Langage
+
+# COMIT [(53a3294)](https://github.com/Adium1000/Isometric-island/commit/53a3294f4ba1d6903715df672add494b75d2e920)
+
+- Added Romanian Language as an js
+- I added Romanian because is my native language
+
+---
+
+# COMIT [(64d9c31)](https://github.com/Adium1000/Isometric-island/commit/64d9c31bb92fadc40e90942d4e6094509518f9d6)
+
+- Indexed `ro.js` so  you can now change the game language to romanian
+
+---
+
+### Contributions Opened!
+Do you want to help? Glad to hear, now you can translate the game in your own language thanks to the language manager 
+HELP TRANSLATE THE GAME IN YOUR LANGUAGE NOW PLEASE - HELP TRANSLATE THE GAME IN YOUR LANGUAGE NOW PLEASE 
+
+---
+- Added devlog thumbnail: details and stuff by Adrian
+
+---
+The Devlog Image is Powerd by Image spotlight by Adrian
+
+- Image spotlight contains Macro Lens pictures edited by software
+- All images are taked by Adrian
+
+© Image spotlight by Adrian
+
+---
+
+Anyway that is all what do you think?
+
+![devlog71](<.github/Devlogs (Flavortown)/devlog71.png>)
+---
+
+# Devlog 72
+Overall: Fixed tutorial spotlight
+
+# Fixed Tutorial Spotlight Language issues
+- Previously when you opened the tutorial spotlight some interact buttons haved text in romanian and not in english
+
+# Fixed RE-OPEN tutorial spotlight
+- Previously the focus buged in the settings button, now all the popup closes when this is oppened
+
+---
+Anyway that is all, what do you think???  :menhera-happy-wave: 
+ 
+ ![devlog72](<.github/Devlogs (Flavortown)/devlog72.png>)
+
+---
 End 
 
 ![yayyy](https://emoji.slack-edge.com/T09V59WQY1E/yayayayayay/203666b7424ee7a7.gif)

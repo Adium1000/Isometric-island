@@ -6,8 +6,13 @@
 // ████████ ▀█▄██ ██ ██ ▀████ ▀██▀█ ▀█▄██ ▀████ ▀█▄▄▄   ███      ███ ▀█▄██ ██ ██ ▀█▄██ ▀████ ▀█▄▄▄ ██      ███████▀ ██ ▀████▀  
 //                         ██                ██                                           ██                                   
 //                       ▀▀▀               ▀▀▀                                          ▀▀▀                                    
-//Isometric Island Language Manager 3.0
 
+// ==========================================================
+// Isometric Island Language Manager 3.0
+//
+// Isometric Language manager loads the game's JS from the ./Assets/Language/
+// If you delete this file the game will use the hardcoded presets
+// ==========================================================
 
 
 (function () {

@@ -1643,7 +1643,7 @@ function tryStartBuilding() {
                     <img src="./Assets/Icons/book.png" style="width:16px;height:16px;image-rendering:pixelated;vertical-align:middle;margin-right:10px;">
                     <span data-t="settings_menu.tutorial">Tutorial</span>
                 </button>
-                <button class="settings-menu-item" onclick="closeSettingsMenuPopup();setTimeout(function(){var k='ii_tutorial_done_v1';try{localStorage.removeItem(k);}catch(e){}if(typeof startIslandTutorial==='function')startIslandTutorial();},250)">
+                <button class="settings-menu-item" onclick="closeAllPopups();setTimeout(function(){var k='ii_tutorial_done_v1';try{localStorage.removeItem(k);}catch(e){}if(typeof startIslandTutorial==='function')startIslandTutorial();},250)">
                     <img src="./Assets/Icons/book.png" style="width:16px;height:16px;image-rendering:pixelated;vertical-align:middle;margin-right:10px;">
                     <span data-t="settings_menu.interactive_tutorial">Interactive Tutorial</span>
                 </button>
@@ -2303,33 +2303,33 @@ function esc(s) {
 }
 
 const CM_BLOCK_COLORS = {
-    0:  null,           // eraser
-    1:  '#8B6340',      // dirt
-    2:  '#9B7350',      // dirt2
-    3:  '#7a5530',      // ShovedDirt
-    4:  '#5a9e3a',      // flovers
-    5:  '#787878',      // rock
-    6:  '#c8a040',      // crops
-    7:  '#909090',      // stone
-    8:  '#607060',      // mossystone
-    9:  '#d4c080',      // sand
-    10: '#c08050',      // redsand
-    11: '#3060c0',      // water
-    12: '#e8f0ff',      // snow
-    13: '#9eb0c0',      // snowrocks
-    14: '#a0d0e8',      // ice
-    15: '#e07020',      // pumpkin
-    16: '#d4a830',      // Hay
-    17: '#50a830',      // melon
-    18: '#2a7a20',      // tree
-    19: '#8ab0c8',      // snowed_tree
-    20: '#f0f8ff',      // snowman
-    21: '#8B5E3C',      // wood
-    22: '#3a8a28',      // leaf
-    23: '#d8eaf8',      // snow2
-    24: '#d0e8f8',      // snowmanb1
-    25: '#c8e0f0',      // snowmanb2
-    26: '#e8f4ff',      // SnowmanHead
+    0:  null,           
+    1:  '#8B6340',      
+    2:  '#9B7350',    
+    3:  '#7a5530',    
+    4:  '#5a9e3a',      
+    5:  '#787878',   
+    6:  '#c8a040',    
+    7:  '#909090',     
+    8:  '#607060',     
+    9:  '#d4c080',    
+    10: '#c08050', 
+    11: '#3060c0',      
+    12: '#e8f0ff',      
+    13: '#9eb0c0',      
+    14: '#a0d0e8',   
+    15: '#e07020',      
+    16: '#d4a830', 
+    17: '#50a830',     
+    18: '#2a7a20',      
+    19: '#8ab0c8',      
+    20: '#f0f8ff',  
+    21: '#8B5E3C', 
+    22: '#3a8a28',    
+    23: '#d8eaf8',   
+    24: '#d0e8f8',      
+    25: '#c8e0f0',    
+    26: '#e8f4ff',   
 };
 
 window.cmRenderAllThumbs = function() {
@@ -2971,7 +2971,7 @@ window.closeHelpInfo = closeHelpInfo;
             text: 'The music icon opens the Music menu! You can listen to a Spotify playlist or turn background music on or off. Tap the button below!',
             popupSelector: '#music-popup-wrapper',
             action: {
-                label: 'Deschide Muzica',
+                label: 'Open Menu',
                 fn: () => { if (typeof openMusicPopup === 'function') openMusicPopup(); },
                 closeSelector: '#music-popup-overlay',
                 closePrompt: 'Great! Now close the Music menu to continue.',
@@ -2985,7 +2985,7 @@ window.closeHelpInfo = closeHelpInfo;
             text: 'The Float button makes the island float and come to life! Click it to choose a preset and a speed.',
             popupSelector: '#float-popup-wrapper',
             action: {
-                label: 'Deschide Float',
+                label: 'Open Float',
                 fn: () => { if (typeof openFloatPopup === 'function') openFloatPopup(); },
                 closeSelector: '#float-popup-overlay',
                 closePrompt: 'Cool! Close the Float menu to continue.',
@@ -2999,7 +2999,7 @@ window.closeHelpInfo = closeHelpInfo;
             text: 'Right-click (or long-press on mobile) anywhere on the island to open the Radial Menu—quick access to Brush, Mirror, Undo, and more!',
             popupSelector: '#radial-menu-overlay',
             action: {
-                label: 'Deschide Radial Menu',
+                label: 'Open Radial Menu',
                 fn: () => {
                     if (typeof showRadialMenu === 'function') showRadialMenu();
                     if (typeof window._radialMenuActive !== 'undefined') window._radialMenuActive = true;
@@ -3029,7 +3029,7 @@ window.closeHelpInfo = closeHelpInfo;
             text: 'The save icon opens the full File menu: save the island, load codes, manage slots, change settings, and much more!',
             popupSelector: '#save-popup-wrapper',
             action: {
-                label: 'Deschide File',
+                label: 'Open File',
                 fn: () => { if (typeof openSavePopup === 'function') openSavePopup(); },
                 closeSelector: '#save-popup-overlay',
                 closePrompt: 'Perfect! Close the File menu to finish the tutorial.',

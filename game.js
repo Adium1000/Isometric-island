@@ -1947,7 +1947,7 @@ function closeAllPopups() {
         'graphics-settings-overlay', 'about-popup-overlay', 'qr-popup-overlay',
         'block-search-overlay', 'island-biome-overlay', 'mountain-biome-overlay',
         'pointer-settings-overlay', 'fill-overlay', 'welcome-overlay',
-        'photo-filters-overlay',
+        'photo-filters-overlay', 'settings-menu-overlay',
     ];
     ALL_POPUP_IDS.forEach(id => {
         const el = document.getElementById(id);
