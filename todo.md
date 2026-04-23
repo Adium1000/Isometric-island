@@ -147,15 +147,14 @@ Devlog Sketch
 Release
 Release Fin#al
 
-# Devlog 72
-Overall: Fixed tutorial spotlight
+    const PALETTE = [
+        '#e6a817','#5db85c','#5b9bd5','#d95f5f','#9b6fd4',
+        '#4ecdc4','#f7a35c','#90ed7d','#8085e9','#f15c80',
+        '#e4d354','#2b908f','#f45b5b','#91e8e1','#d4a76a',
+        '#7cb5ec','#434348','#a6b8c7','#c9a96e','#70a288',
+    ];
 
-# Fixed Tutorial Spotlight Language issues
-- Previously when you opened the tutorial spotlight some interact buttons haved text in romanian and not in english
 
-# Fixed RE-OPEN tutorial spotlight
-- Previously the focus buged in the settings button, now all the popup closes when this is oppened
+# Devlog 73
 
----
-Anyway that is all, what do you think???  :menhera-happy-wave: 
- 
+Overall Devlog Added Graph to the Island Statistics Menu

@@ -1947,7 +1947,7 @@ function closeAllPopups() {
         'graphics-settings-overlay', 'about-popup-overlay', 'qr-popup-overlay',
         'block-search-overlay', 'island-biome-overlay', 'mountain-biome-overlay',
         'pointer-settings-overlay', 'fill-overlay', 'welcome-overlay',
-        'photo-filters-overlay', 'settings-menu-overlay',
+        'photo-filters-overlay',
     ];
     ALL_POPUP_IDS.forEach(id => {
         const el = document.getElementById(id);
@@ -4141,6 +4141,8 @@ function openAnalyticsPopup() {
         });
     }
 
+    _renderAnalyticsChart(sorted, total);
+
     if (typeof closeSavePopup === 'function') closeSavePopup();
     overlay.style.display = 'flex';
     requestAnimationFrame(() => requestAnimationFrame(() => overlay.classList.add('popup-visible')));
@@ -4155,6 +4157,130 @@ function closeAnalyticsPopup() {
     setTimeout(() => { overlay.style.display = 'none'; }, 350);
 }
 
+
+function _renderAnalyticsChart(sorted, total) {
+    const canvas = document.getElementById('analytics-chart');
+    const legendEl = document.getElementById('analytics-chart-legend');
+    if (!canvas || !legendEl) return;
+
+    const PALETTE = [
+        '#e6a817','#5db85c','#5b9bd5','#d95f5f','#9b6fd4',
+        '#4ecdc4','#f7a35c','#90ed7d','#8085e9','#f15c80',
+        '#e4d354','#2b908f','#f45b5b','#91e8e1','#d4a76a',
+        '#7cb5ec','#434348','#a6b8c7','#c9a96e','#70a288',
+    ];
+
+    const ctx = canvas.getContext('2d');
+    const W = canvas.width, H = canvas.height;
+    const cx = W / 2, cy = H / 2;
+    const R = Math.min(W, H) / 2 - 10;
+    const r = R * 0.52;
+
+    ctx.clearRect(0, 0, W, H);
+
+    if (sorted.length === 0) return;
+    const TOP = 12;
+    let slices = sorted.slice(0, TOP).map(([raw, count], i) => ({
+        raw, count,
+        color: PALETTE[i % PALETTE.length],
+        name: (typeof getBlockNameRo === 'function') ? getBlockNameRo('./Assets/Blocks/' + raw + '.png') : raw,
+    }));
+    if (sorted.length > TOP) {
+        const otherCount = sorted.slice(TOP).reduce((s, [, c]) => s + c, 0);
+        slices.push({ raw: '__other__', count: otherCount, color: '#666655', name: 'Other' });
+    }
+
+    let hovered = -1;
+
+    function draw(hov) {
+        ctx.clearRect(0, 0, W, H);
+        let startAngle = -Math.PI / 2;
+        slices.forEach((sl, i) => {
+            const sweep = (sl.count / total) * 2 * Math.PI;
+            const isHov = i === hov;
+            const expand = isHov ? 7 : 0;
+            const midAngle = startAngle + sweep / 2;
+            const ox = Math.cos(midAngle) * expand;
+            const oy = Math.sin(midAngle) * expand;
+
+            ctx.beginPath();
+            ctx.moveTo(cx + ox, cy + oy);
+            ctx.arc(cx + ox, cy + oy, R, startAngle, startAngle + sweep);
+            ctx.arc(cx + ox, cy + oy, r, startAngle + sweep, startAngle, true);
+            ctx.closePath();
+            ctx.fillStyle = sl.color;
+            ctx.fill();
+            ctx.strokeStyle = 'rgba(0,0,0,0.25)';
+            ctx.lineWidth = isHov ? 2 : 1;
+            ctx.stroke();
+
+            startAngle += sweep;
+        });
+        if (hov >= 0 && slices[hov]) {
+            const sl = slices[hov];
+            const pct = Math.round((sl.count / total) * 100);
+            ctx.fillStyle = '#fff8e1';
+            ctx.font = 'bold 11px monospace';
+            ctx.textAlign = 'center';
+            ctx.textBaseline = 'middle';
+            ctx.fillText(pct + '%', cx, cy - 7);
+            ctx.font = '8px monospace';
+            ctx.fillStyle = '#ffdf80';
+            ctx.fillText(sl.count + ' blk', cx, cy + 8);
+        } else {
+            ctx.fillStyle = '#ffdf80';
+            ctx.font = 'bold 10px monospace';
+            ctx.textAlign = 'center';
+            ctx.textBaseline = 'middle';
+            ctx.fillText(total, cx, cy - 6);
+            ctx.font = '7px monospace';
+            ctx.fillStyle = '#a07850';
+            ctx.fillText('blocks', cx, cy + 7);
+        }
+    }
+
+    draw(-1);
+    canvas.onmousemove = function(e) {
+        const rect = canvas.getBoundingClientRect();
+        const mx = e.clientX - rect.left, my = e.clientY - rect.top;
+        const dx = mx - cx, dy = my - cy;
+        const dist = Math.sqrt(dx*dx + dy*dy);
+        if (dist < r || dist > R + 8) {
+            if (hovered !== -1) { hovered = -1; draw(-1); updateLegendHighlight(-1); }
+            return;
+        }
+        let angle = Math.atan2(dy, dx) + Math.PI / 2;
+        if (angle < 0) angle += 2 * Math.PI;
+        let start = 0, found = -1;
+        slices.forEach((sl, i) => {
+            const sweep = (sl.count / total) * 2 * Math.PI;
+            if (angle >= start && angle < start + sweep) found = i;
+            start += sweep;
+        });
+        if (found !== hovered) { hovered = found; draw(hovered); updateLegendHighlight(hovered); }
+    };
+    canvas.onmouseleave = function() {
+        hovered = -1; draw(-1); updateLegendHighlight(-1);
+    };
+    legendEl.innerHTML = '';
+    slices.forEach((sl, i) => {
+        const item = document.createElement('div');
+        item.className = 'analytics-legend-item';
+        const pct = Math.round((sl.count / total) * 100);
+        item.innerHTML = `<div class="analytics-legend-dot" style="background:${sl.color}"></div>
+            <div class="analytics-legend-name">${sl.name}</div>
+            <div class="analytics-legend-pct">${pct}%</div>`;
+        item.onmouseenter = () => { hovered = i; draw(i); updateLegendHighlight(i); };
+        item.onmouseleave = () => { hovered = -1; draw(-1); updateLegendHighlight(-1); };
+        legendEl.appendChild(item);
+    });
+
+    function updateLegendHighlight(idx) {
+        legendEl.querySelectorAll('.analytics-legend-item').forEach((el, i) => {
+            el.classList.toggle('dimmed', idx >= 0 && i !== idx);
+        });
+    }
+}
 
 function openAboutPopup() {
     const overlay = document.getElementById('about-popup-overlay');
