@@ -3793,7 +3793,7 @@ function selectMountainBiome(idx) {
 document.addEventListener('keydown', (e) => {
     if (e.key === 'Escape') {
         if (window._activeRadialTool) {
-            _radialToolCleanup();
+            (window._radialToolCleanup || _radialToolCleanup)();
             window._activeRadialTool = null;
             showToast(LangManager.t('toast.tool_disabled'));
             return;
@@ -4174,7 +4174,7 @@ function _renderAnalyticsChart(sorted, total) {
     const W = canvas.width, H = canvas.height;
     const cx = W / 2, cy = H / 2;
     const R = Math.min(W, H) / 2 - 10;
-    const r = R * 0.52;
+    const r = R * 0.52; 
 
     ctx.clearRect(0, 0, W, H);
 
@@ -4216,6 +4216,7 @@ function _renderAnalyticsChart(sorted, total) {
 
             startAngle += sweep;
         });
+
         if (hov >= 0 && slices[hov]) {
             const sl = slices[hov];
             const pct = Math.round((sl.count / total) * 100);
@@ -4240,6 +4241,7 @@ function _renderAnalyticsChart(sorted, total) {
     }
 
     draw(-1);
+
     canvas.onmousemove = function(e) {
         const rect = canvas.getBoundingClientRect();
         const mx = e.clientX - rect.left, my = e.clientY - rect.top;
@@ -4262,6 +4264,8 @@ function _renderAnalyticsChart(sorted, total) {
     canvas.onmouseleave = function() {
         hovered = -1; draw(-1); updateLegendHighlight(-1);
     };
+
+    // legend
     legendEl.innerHTML = '';
     slices.forEach((sl, i) => {
         const item = document.createElement('div');
@@ -4908,6 +4912,67 @@ function _ellipsePoints(cx, cy, rx, ry) {
     }
     return Array.from(pts.values());
 }
+
+(function () {
+    let _previewTiles = [];
+
+    function _clearPreview() {
+        _previewTiles.forEach(t => t.classList.remove('tool-preview-tile'));
+        _previewTiles = [];
+    }
+
+    function _applyPreview(pts, z0) {
+        _clearPreview();
+        pts.forEach(([px, py]) => {
+            const t = mapContainer.querySelector(`.tile[data-x="${px}"][data-y="${py}"][data-z="${z0}"]`);
+            if (t) {
+                t.classList.add('tool-preview-tile');
+                _previewTiles.push(t);
+            }
+        });
+    }
+
+    mapContainer.addEventListener('mousemove', (e) => {
+        const tool = window._activeRadialTool;
+        if (tool !== 'line_tool' && tool !== 'circle_tool') {
+            if (_previewTiles.length) _clearPreview();
+            return;
+        }
+
+        const tile = e.target;
+        if (!tile || !tile.classList.contains('tile')) {
+            _clearPreview();
+            return;
+        }
+
+        const hx = parseInt(tile.getAttribute('data-x'));
+        const hy = parseInt(tile.getAttribute('data-y'));
+        const hz = parseInt(tile.getAttribute('data-z'));
+
+        if (tool === 'line_tool' && window._lineToolStart) {
+            const { x: x0, y: y0, z: z0 } = window._lineToolStart;
+            if (hz !== z0) { _clearPreview(); return; }
+            const pts = _bresenham(x0, y0, hx, hy);
+            _applyPreview(pts, z0);
+        } else if (tool === 'circle_tool' && window._circleToolStart) {
+            const { x: cx, y: cy, z: z0 } = window._circleToolStart;
+            if (hz !== z0) { _clearPreview(); return; }
+            const rx = Math.abs(hx - cx);
+            const ry = Math.abs(hy - cy);
+            const pts = _ellipsePoints(cx, cy, rx, ry);
+            _applyPreview(pts, z0);
+        } else {
+            _clearPreview();
+        }
+    }, { passive: true });
+    const _origCleanup = _radialToolCleanup;
+    window._radialToolCleanup = function () {
+        _clearPreview();
+        _origCleanup();
+    };
+    window.addEventListener('langReady', () => {}, { once: true }); 
+})();
+
 const _BRUSH_SIZES = [1, 2, 3, 5, 7];
 
 function openBrushPopup() {

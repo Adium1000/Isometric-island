@@ -1184,6 +1184,18 @@ body {
 .tile.selected-tile {
     image-rendering: pixelated;
 }
+.tile.tool-preview-tile {
+    outline: 2px solid rgba(255, 220, 80, 0.92);
+    outline-offset: -2px;
+    filter: brightness(1.45) saturate(1.2) !important;
+    z-index: 999999 !important;
+    animation: tool-preview-pulse 0.7s ease-in-out infinite alternate;
+}
+
+@keyframes tool-preview-pulse {
+    from { filter: brightness(1.35) saturate(1.1) !important; }
+    to   { filter: brightness(1.6)  saturate(1.4) !important; }
+}
 
 
 .grid-overlay-active .tile.grid-cell {
@@ -4729,6 +4741,7 @@ button:hover,
     animation: btn-squish 0.38s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
     transform-origin: center center;
 }
+
 #language-popup-overlay {
     display: none;
     position: fixed;

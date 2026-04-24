@@ -1172,6 +1172,59 @@ Anyway that is all, what do you think???  :menhera-happy-wave:
  ![devlog72](<.github/Devlogs (Flavortown)/devlog72.png>)
 
 ---
+
+# Devlog 73
+
+Overall Devlog Added Graph to the Island Statistics Menu
+
+---
+
+# Comit [(74bfa26)](https://github.com/Adium1000/Isometric-island/commit/74bfa26a6c59e18daf58b91f332224b09cdcecb2)
+
+
+- Added Graph in the Statistics Menu
+- The graph contains all blocks that the game have, with the spcific colors
+
+# Here are the colors used in the graph
+
+1. `#e6a817`
+2. `#e6a817`
+3. `#e6a817`
+4. `#d95f5f`
+5. `#5b9bd5` 
+6. `#5db85c`
+7. `#4ecdc4`
+8. `#f15c80`
+9. `#70a288`
+10. `#d4a76a`
+11. `#c9a96e`
+12. `#a6b8c7`
+13. `#91e8e1`
+14. `#f45b5b`
+15. `#f45b5b`
+16. `#2b908f`
+17. `#434348`
+18. `#7cb5ec`
+19. `#f7a35c`
+20. `#e4d354`
+21. `#8085e9`
+22. `#90ed7d`
+23. `#f7a35c`
+
+[![grafic_folosit_pentru_relatare](https://i.postimg.cc/cC66F5bX/image.png)](https://postimg.cc/fSnwL5Z9)
+
+- This colors are used to represent blocks used in the graph
+- You can interact with the graph 
+
+---
+
+Anyway that is all what do you think?! :menhera-point: 
+
+
+
+
+---
+
 End 
 
 ![yayyy](https://emoji.slack-edge.com/T09V59WQY1E/yayayayayay/203666b7424ee7a7.gif)
