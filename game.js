@@ -504,12 +504,14 @@ function openFloatPopup() {
     const track = document.getElementById('float-speed-track');
     if (track && !track._floatSpeedInited) _initFloatSpeedBar();
     else { const dot = document.getElementById('float-speed-dot'); if (dot) dot.style.left = (_floatSpeed * 100) + '%'; }
+    setTimeout(_startFloatPreview, 60);
     hotbarSound.currentTime = 0; hotbarSound.play().catch(e => {});
 }
 function closeFloatPopup() {
     const overlay = document.getElementById('float-popup-overlay');
     if (!overlay) return;
     overlay.classList.remove('popup-visible');
+    _stopFloatPreview();
     setTimeout(() => { overlay.style.display = 'none'; }, 300);
     hotbarSound.currentTime = 0; hotbarSound.play().catch(e => {});
 }
@@ -518,6 +520,149 @@ function _syncFloatPopupCards() {
         const card = document.getElementById('fmode-' + id);
         if (card) card.classList.toggle('active', currentFloatMode === id);
     });
+}
+
+/* ── Float popup preview ───────────────────────────────────── */
+let _floatPrevAnim = null;
+let _floatPrevT = 0;
+
+function _drawFloatPreviewIsland(ctx, W, H, offsetX, offsetY, angle) {
+    ctx.clearRect(0, 0, W, H);
+
+    /* sky gradient */
+    const grad = ctx.createLinearGradient(0, 0, 0, H);
+    grad.addColorStop(0, '#0d1a2a');
+    grad.addColorStop(1, '#1a3050');
+    ctx.fillStyle = grad;
+    ctx.fillRect(0, 0, W, H);
+
+    /* stars */
+    ctx.fillStyle = 'rgba(255,255,255,0.5)';
+    [[20,10],[50,6],[90,18],[140,8],[175,14],[205,4],[38,25],[110,3]].forEach(([x,y]) => {
+        ctx.fillRect(x, y, 1, 1);
+    });
+
+    ctx.save();
+    ctx.translate(W / 2 + offsetX, H / 2 + offsetY);
+    if (angle !== 0) ctx.rotate(angle);
+
+    /* draw a tiny isometric island: 3x3 base + 1 tree */
+    const TW = 22, TH = 11;
+    function isoX(gx, gy) { return (gx - gy) * (TW / 2); }
+    function isoY(gx, gy) { return (gx + gy) * (TH / 2); }
+
+    function drawTile(gx, gy, col, topCol) {
+        const cx = isoX(gx, gy), cy = isoY(gx, gy);
+        /* top face */
+        ctx.beginPath();
+        ctx.moveTo(cx,          cy - TH/2);
+        ctx.lineTo(cx + TW/2,   cy);
+        ctx.lineTo(cx,          cy + TH/2);
+        ctx.lineTo(cx - TW/2,   cy);
+        ctx.closePath();
+        ctx.fillStyle = topCol || col;
+        ctx.fill();
+        /* left face */
+        ctx.beginPath();
+        ctx.moveTo(cx - TW/2,   cy);
+        ctx.lineTo(cx,          cy + TH/2);
+        ctx.lineTo(cx,          cy + TH/2 + 7);
+        ctx.lineTo(cx - TW/2,   cy + 7);
+        ctx.closePath();
+        ctx.fillStyle = _shadeCol(col, -40);
+        ctx.fill();
+        /* right face */
+        ctx.beginPath();
+        ctx.moveTo(cx + TW/2,   cy);
+        ctx.lineTo(cx,          cy + TH/2);
+        ctx.lineTo(cx,          cy + TH/2 + 7);
+        ctx.lineTo(cx + TW/2,   cy + 7);
+        ctx.closePath();
+        ctx.fillStyle = _shadeCol(col, -20);
+        ctx.fill();
+    }
+
+    /* base tiles 3x3 */
+    const tiles = [
+        [0,0,'#5c3d1e','#6b8c3a'],[1,0,'#5c3d1e','#6b8c3a'],[2,0,'#5c3d1e','#6b8c3a'],
+        [0,1,'#5c3d1e','#6b8c3a'],[1,1,'#5c3d1e','#7aaa40'],[2,1,'#5c3d1e','#6b8c3a'],
+        [0,2,'#5c3d1e','#6b8c3a'],[1,2,'#5c3d1e','#6b8c3a'],[2,2,'#5c3d1e','#6b8c3a'],
+    ];
+    /* sort painter's algo */
+    tiles.sort((a,b)=>(a[0]+a[1])-(b[0]+b[1]));
+    tiles.forEach(([gx,gy,col,top]) => drawTile(gx, gy, col, top));
+
+    /* tiny tree on [1,1] */
+    const tx = isoX(1,1), ty = isoY(1,1) - TH/2;
+    ctx.fillStyle = '#5c3d1e';
+    ctx.fillRect(tx - 2, ty - 10, 4, 10);
+    ctx.beginPath();
+    ctx.arc(tx, ty - 14, 8, 0, Math.PI * 2);
+    ctx.fillStyle = '#2d6e1e';
+    ctx.fill();
+    ctx.beginPath();
+    ctx.arc(tx, ty - 19, 6, 0, Math.PI * 2);
+    ctx.fillStyle = '#3a8a28';
+    ctx.fill();
+
+    ctx.restore();
+
+    /* label */
+    ctx.fillStyle = 'rgba(0,0,0,0.45)';
+    ctx.fillRect(0, 0, W, 18);
+    ctx.fillStyle = '#ffdf80';
+    ctx.font = '7px "Press Start 2P", monospace';
+    ctx.textAlign = 'left';
+    ctx.textBaseline = 'middle';
+    const modeLabels = { off: 'OFF', updown: 'UP-DOWN', leftright: 'LEFT-RIGHT', spin: 'SPIN', jiggle: 'JIGGLE' };
+    ctx.fillText('PREVIEW: ' + (modeLabels[currentFloatMode] || 'OFF'), 6, 9);
+}
+
+function _shadeCol(hex, amt) {
+    let r = parseInt(hex.slice(1,3),16), g = parseInt(hex.slice(3,5),16), b = parseInt(hex.slice(5,7),16);
+    r = Math.max(0,Math.min(255,r+amt)); g = Math.max(0,Math.min(255,g+amt)); b = Math.max(0,Math.min(255,b+amt));
+    return '#'+[r,g,b].map(v=>v.toString(16).padStart(2,'0')).join('');
+}
+
+function _startFloatPreview() {
+    _stopFloatPreview();
+    const cv = document.getElementById('float-preview-canvas');
+    if (!cv) return;
+    const W = cv.width, H = cv.height;
+    const ctx = cv.getContext('2d');
+    ctx.font = '7px "Press Start 2P", monospace';
+
+    function tick(ts) {
+        if (!document.getElementById('float-popup-overlay') ||
+            document.getElementById('float-popup-overlay').style.display === 'none') {
+            _floatPrevAnim = null; return;
+        }
+        _floatPrevT = ts / 1000;
+        const mode = currentFloatMode;
+        const speed = _floatSpeed;
+        const base = _floatBaseDurations[mode] || 6;
+        const dur = base * (1 - speed * 0.75);
+
+        let offX = 0, offY = 0, angle = 0;
+        if (mode === 'updown') {
+            offY = Math.sin((_floatPrevT / dur) * Math.PI * 2) * 8;
+        } else if (mode === 'leftright') {
+            offX = Math.sin((_floatPrevT / dur) * Math.PI * 2) * 10;
+        } else if (mode === 'spin') {
+            angle = (_floatPrevT / dur) * Math.PI * 2;
+        } else if (mode === 'jiggle') {
+            offX = Math.sin((_floatPrevT / dur) * Math.PI * 2) * 4;
+            offY = Math.cos((_floatPrevT / dur) * Math.PI * 4) * 3;
+        }
+
+        _drawFloatPreviewIsland(ctx, W, H, offX, offY, angle);
+        _floatPrevAnim = requestAnimationFrame(tick);
+    }
+    _floatPrevAnim = requestAnimationFrame(tick);
+}
+
+function _stopFloatPreview() {
+    if (_floatPrevAnim) { cancelAnimationFrame(_floatPrevAnim); _floatPrevAnim = null; }
 }
 function setFloatMode(mode) {
     currentFloatMode = mode;
@@ -532,6 +677,10 @@ function setFloatMode(mode) {
     const folder = getGUIFolder(currentGUITheme);
     floatBtn.src = isFloating ? folder + 'floaton.png' : folder + 'floatoff.png';
     _syncFloatPopupCards();
+    /* restart preview so label + animation update immediately */
+    if (_floatPrevAnim !== null || document.getElementById('float-popup-overlay')?.style.display !== 'none') {
+        _startFloatPreview();
+    }
     hotbarSound.currentTime = 0; hotbarSound.play().catch(e => {});
     applyZoom();
 }
@@ -4169,13 +4318,17 @@ function _renderAnalyticsChart(sorted, total) {
         '#e4d354','#2b908f','#f45b5b','#91e8e1','#d4a76a',
         '#7cb5ec','#434348','#a6b8c7','#c9a96e','#70a288',
     ];
+
     const ctx = canvas.getContext('2d');
     const W = canvas.width, H = canvas.height;
     const cx = W / 2, cy = H / 2;
     const R = Math.min(W, H) / 2 - 10;
     const r = R * 0.52; 
+
     ctx.clearRect(0, 0, W, H);
+
     if (sorted.length === 0) return;
+
     const TOP = 12;
     let slices = sorted.slice(0, TOP).map(([raw, count], i) => ({
         raw, count,
@@ -4186,7 +4339,9 @@ function _renderAnalyticsChart(sorted, total) {
         const otherCount = sorted.slice(TOP).reduce((s, [, c]) => s + c, 0);
         slices.push({ raw: '__other__', count: otherCount, color: '#666655', name: 'Other' });
     }
+
     let hovered = -1;
+
     function draw(hov) {
         ctx.clearRect(0, 0, W, H);
         let startAngle = -Math.PI / 2;
@@ -4233,6 +4388,7 @@ function _renderAnalyticsChart(sorted, total) {
             ctx.fillText('blocks', cx, cy + 7);
         }
     }
+
     draw(-1);
     canvas.onmousemove = function(e) {
         const rect = canvas.getBoundingClientRect();
@@ -4275,6 +4431,7 @@ function _renderAnalyticsChart(sorted, total) {
         });
     }
 }
+
 function openAboutPopup() {
     const overlay = document.getElementById('about-popup-overlay');
     if (!overlay) return;
@@ -4289,6 +4446,7 @@ function closeAboutPopup() {
     pclsSound.currentTime = 0; pclsSound.play().catch(e => {});
     setTimeout(() => { overlay.style.display = 'none'; }, 260);
 }
+
 function openGraphicsSettings() {
     const overlay = document.getElementById('graphics-settings-overlay');
     if (!overlay) return;
@@ -4314,6 +4472,7 @@ function closeGraphicsSettings() {
     pclsSound.currentTime = 0; pclsSound.play().catch(e => {});
     setTimeout(() => { overlay.style.display = 'none'; }, 260);
 }
+
 
 window._blockParticlesEnabled = localStorage.getItem('blockParticles') !== 'off';
 
@@ -4899,6 +5058,7 @@ function _ellipsePoints(cx, cy, rx, ry) {
     }
     return Array.from(pts.values());
 }
+
 (function () {
     let _previewTiles = [];
 

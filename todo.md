@@ -148,35 +148,6 @@ Release
 Release Fin#al
 
 
-# Devlog 75
-
-## Overall : Added Previews in the Graphics menu
+# Devlog 76
+## Overall devlog: Added island float preview
 ---
-
-# Comit [(77c3f2c)](https://github.com/Adium1000/Isometric-island/commit/77c3f2c67cc7b970dd7d8ebd35a3c75697bda690#diff-3bd14d078188074c410028847113ceae68865d0ad5b844a27183ef87fbe2fcc3)
-
-- Added Previews in the Graphics menu
-- Now Each Toggle have a preview that you can inspect before closing the popup
-
-Let's take a quick look:
-
-1.
-2.
-3.
-4.
-5.
-
-
-
-
-
-
-
-
----
-© Adrian's Image Spotlight
-- The image gallery contains photos I took with a macro lens
-- The photos may be edited, which can result in a loss of their natural appearance
-
----
-Anyway that is all what do you think? :menhera-huh: 

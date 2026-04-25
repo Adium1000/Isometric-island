@@ -1184,6 +1184,7 @@ body {
 .tile.selected-tile {
     image-rendering: pixelated;
 }
+
 .tile.tool-preview-tile {
     outline: 2px solid rgba(255, 220, 80, 0.92);
     outline-offset: -2px;
@@ -2182,6 +2183,21 @@ body {
     margin-bottom: 0;
 }
 .gfx-preview-canvas {
+    width: 100%;
+    height: auto;
+    display: block;
+    image-rendering: pixelated;
+}
+
+#float-preview-wrap {
+    width: 100%;
+    border: 2px solid var(--gui-border, #6b4c2a);
+    background: #0d1a2a;
+    overflow: hidden;
+    position: relative;
+}
+
+#float-preview-canvas {
     width: 100%;
     height: auto;
     display: block;

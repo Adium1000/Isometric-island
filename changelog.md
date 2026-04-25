@@ -1251,6 +1251,62 @@ Overall Devlog: Aded Line & Circle tool show-in grid
 Anyway that is all what do you think?? :menhera-happy-wave: 
 
 
+![devlog74](<.github/Devlogs (Flavortown)/devlog74.png>)
+
+---
+
+# Devlog 75
+
+## Overall : Added Previews in the Graphics menu
+---
+
+# Comit [(77c3f2c)](https://github.com/Adium1000/Isometric-island/commit/77c3f2c67cc7b970dd7d8ebd35a3c75697bda690#diff-3bd14d078188074c410028847113ceae68865d0ad5b844a27183ef87fbe2fcc3)
+
+- Added Previews in the Graphics menu
+- Now Each Toggle have a preview that you can inspect before closing the popup
+- Each preview is 16:9
+
+
+Let's take a quick look:
+
+[![image.png](https://i.postimg.cc/wTsT0LG8/image.png)](https://postimg.cc/cr0SJgWX)
+
+
+1. Island Shadows
+
+The preview show shadows when the option is turend on
+
+2. Leaf Particles
+
+The preview show leafs when the option is turend on
+
+3. Clouds
+
+The preview show clouds when the option is turend on
+
+4. Block Particles
+
+The preview show particles when the option is turend on
+
+5. Show air particles
+
+The preview show air particles  when the option is turend on
+
+# Comit [(d0e2bae)](https://github.com/Adium1000/Isometric-island/commit/d0e2baea63ea09c75c9c1ecff2913f99e27819d8)
+
+- Added [Code of Conduct](https://github.com/Adium1000/Isometric-island?tab=coc-ov-file) (AUP.md File into the github tab)
+- Added banners in the code of conduct tab 
+
+---
+© Adrian's Image Spotlight
+- The image gallery contains photos I took with a macro lens
+- The photos may be edited, which can result in a loss of their natural appearance
+
+---
+Anyway that is all what do you think? :menhera-huh: 
+
+![devlog75](<.github/Devlogs (Flavortown)/devlog75.png>)
+
 ---
 
 End 

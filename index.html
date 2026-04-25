@@ -2774,6 +2774,10 @@ window.closeNotFound = function() {
                 </button>
             </div>
             <hr class="popup-divider">
+            <div id="float-preview-wrap">
+                <canvas id="float-preview-canvas" width="220" height="110"></canvas>
+            </div>
+            <hr class="popup-divider">
             <div class="visual-option-row" id="float-speed-bar-row">
                 <span class="visual-option-label">SPEED</span>
                 <div id="float-speed-ui">
@@ -3356,6 +3360,10 @@ window.closeHelpInfo = closeHelpInfo;
     }
 })();
 </script>
+
+<!-- ═══════════════════════════════════════════════════════════════
+     GRAPHICS SETTINGS — 16:9 LIVE PREVIEW CANVASES (unique per setting)
+═══════════════════════════════════════════════════════════════ -->
 <style>
 .gfx-preview-canvas {
     display: block;
@@ -3379,6 +3387,7 @@ window.closeHelpInfo = closeHelpInfo;
         const h=v=>Math.max(0,Math.round(v*f)).toString(16).padStart(2,'0');
         return '#'+h(r)+h(g)+h(b);
     }
+
     function drawIsoTile(ctx, cx, cy, tw, th, col) {
         ctx.fillStyle = col;
         ctx.beginPath(); ctx.moveTo(cx, cy-th/2); ctx.lineTo(cx+tw/2, cy); ctx.lineTo(cx, cy+th/2); ctx.lineTo(cx-tw/2, cy); ctx.closePath(); ctx.fill();
@@ -3387,6 +3396,7 @@ window.closeHelpInfo = closeHelpInfo;
         ctx.fillStyle = darken(col, 0.78);
         ctx.beginPath(); ctx.moveTo(cx+tw/2, cy); ctx.lineTo(cx, cy+th/2); ctx.lineTo(cx, cy+th/2+th); ctx.lineTo(cx+tw/2, cy+th); ctx.closePath(); ctx.fill();
     }
+
     function badge(ctx, W, H, on) {
         ctx.save();
         ctx.fillStyle = on ? 'rgba(20,160,60,0.90)' : 'rgba(180,30,30,0.90)';
@@ -3592,6 +3602,7 @@ window.closeHelpInfo = closeHelpInfo;
         const cv = document.getElementById(canvasId); if (!cv) return;
         const W=cv.width, H=cv.height, ctx=cv.getContext('2d');
         ctx.clearRect(0,0,W,H);
+
         ctx.fillStyle='#2a1a0a'; ctx.fillRect(0,0,W,H);
         const tw=32, th=16;
         const blocks = [
@@ -3599,7 +3610,7 @@ window.closeHelpInfo = closeHelpInfo;
             {x:W*0.7, y:H*0.65, col:'#5a8a30'}, {x:W*0.4, y:H*0.65-th, col:'#606060'},
             {x:W*0.6, y:H*0.65-th, col:'#808080'},
         ];
-        blocks.forEach(b => drawIsoTile(ctx, b.x, b.y, tw, th, b.col));
+        blocks.forEach(b => drawIsoTile(ctx, b.x, b.y, tw, th, b.col))
         drawIsoTile(ctx, W*0.5, H*0.5, tw, th, '#7aaa40');
         ctx.save(); ctx.globalAlpha=0.35; ctx.strokeStyle='#ffdf80'; ctx.lineWidth=2;
         ctx.beginPath(); ctx.moveTo(W*0.5,H*0.5-th/2); ctx.lineTo(W*0.5+tw/2,H*0.5); ctx.lineTo(W*0.5,H*0.5+th/2); ctx.lineTo(W*0.5-tw/2,H*0.5); ctx.closePath(); ctx.stroke(); ctx.restore();
@@ -3642,10 +3653,13 @@ window.closeHelpInfo = closeHelpInfo;
         const cv = document.getElementById(canvasId); if (!cv) return;
         const W=cv.width, H=cv.height, ctx=cv.getContext('2d');
         ctx.clearRect(0,0,W,H);
+
         ctx.fillStyle='#1a2a3a'; ctx.fillRect(0,0,W,H);
+
         const tw=28, th=14;
         const filled = new Set(['0,0','1,0','2,0','0,1','2,1','1,2']);
         const empty  = new Set(['3,0','1,1','3,1','0,2','2,2','3,2']);
+
         const gridW=4, gridH=3;
         const offX = W/2 - ((gridW-gridH)*(tw/2))/2;
         const offY = H*0.65;
@@ -3682,7 +3696,6 @@ window.closeHelpInfo = closeHelpInfo;
             const clouds    = on('sw-clouds');
             const particles = on('sw-block-particles');
             const air       = on('sw-show-air');
-
             renderShadows('gfx-prev-shadows', shadows);
             if (leaves) startLeafAnim('gfx-prev-leaves');
             else { if(_leafAnim){cancelAnimationFrame(_leafAnim);_leafAnim=null;} _leafParticles.length=0; renderLeaves('gfx-prev-leaves', false); }
