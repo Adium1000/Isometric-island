@@ -2168,6 +2168,25 @@ body {
     flex-direction: column;
     gap: 10px;
 }
+.gfx-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+}
+.gfx-col-item {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+.gfx-col-item .visual-option-row {
+    margin-bottom: 0;
+}
+.gfx-preview-canvas {
+    width: 100%;
+    height: auto;
+    display: block;
+    image-rendering: pixelated;
+}
 #photo-filters-overlay {
     display: none;
     position: fixed;

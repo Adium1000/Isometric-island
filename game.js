@@ -4169,15 +4169,12 @@ function _renderAnalyticsChart(sorted, total) {
         '#e4d354','#2b908f','#f45b5b','#91e8e1','#d4a76a',
         '#7cb5ec','#434348','#a6b8c7','#c9a96e','#70a288',
     ];
-
     const ctx = canvas.getContext('2d');
     const W = canvas.width, H = canvas.height;
     const cx = W / 2, cy = H / 2;
     const R = Math.min(W, H) / 2 - 10;
     const r = R * 0.52; 
-
     ctx.clearRect(0, 0, W, H);
-
     if (sorted.length === 0) return;
     const TOP = 12;
     let slices = sorted.slice(0, TOP).map(([raw, count], i) => ({
@@ -4189,9 +4186,7 @@ function _renderAnalyticsChart(sorted, total) {
         const otherCount = sorted.slice(TOP).reduce((s, [, c]) => s + c, 0);
         slices.push({ raw: '__other__', count: otherCount, color: '#666655', name: 'Other' });
     }
-
     let hovered = -1;
-
     function draw(hov) {
         ctx.clearRect(0, 0, W, H);
         let startAngle = -Math.PI / 2;
@@ -4216,7 +4211,6 @@ function _renderAnalyticsChart(sorted, total) {
 
             startAngle += sweep;
         });
-
         if (hov >= 0 && slices[hov]) {
             const sl = slices[hov];
             const pct = Math.round((sl.count / total) * 100);
@@ -4239,9 +4233,7 @@ function _renderAnalyticsChart(sorted, total) {
             ctx.fillText('blocks', cx, cy + 7);
         }
     }
-
     draw(-1);
-
     canvas.onmousemove = function(e) {
         const rect = canvas.getBoundingClientRect();
         const mx = e.clientX - rect.left, my = e.clientY - rect.top;
@@ -4264,8 +4256,6 @@ function _renderAnalyticsChart(sorted, total) {
     canvas.onmouseleave = function() {
         hovered = -1; draw(-1); updateLegendHighlight(-1);
     };
-
-    // legend
     legendEl.innerHTML = '';
     slices.forEach((sl, i) => {
         const item = document.createElement('div');
@@ -4285,7 +4275,6 @@ function _renderAnalyticsChart(sorted, total) {
         });
     }
 }
-
 function openAboutPopup() {
     const overlay = document.getElementById('about-popup-overlay');
     if (!overlay) return;
@@ -4300,7 +4289,6 @@ function closeAboutPopup() {
     pclsSound.currentTime = 0; pclsSound.play().catch(e => {});
     setTimeout(() => { overlay.style.display = 'none'; }, 260);
 }
-
 function openGraphicsSettings() {
     const overlay = document.getElementById('graphics-settings-overlay');
     if (!overlay) return;
@@ -4326,7 +4314,6 @@ function closeGraphicsSettings() {
     pclsSound.currentTime = 0; pclsSound.play().catch(e => {});
     setTimeout(() => { overlay.style.display = 'none'; }, 260);
 }
-
 
 window._blockParticlesEnabled = localStorage.getItem('blockParticles') !== 'off';
 
@@ -4912,7 +4899,6 @@ function _ellipsePoints(cx, cy, rx, ry) {
     }
     return Array.from(pts.values());
 }
-
 (function () {
     let _previewTiles = [];
 
