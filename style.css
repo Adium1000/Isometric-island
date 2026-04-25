@@ -1184,7 +1184,6 @@ body {
 .tile.selected-tile {
     image-rendering: pixelated;
 }
-
 .tile.tool-preview-tile {
     outline: 2px solid rgba(255, 220, 80, 0.92);
     outline-offset: -2px;
@@ -4776,7 +4775,6 @@ button:hover,
     animation: btn-squish 0.38s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
     transform-origin: center center;
 }
-
 #language-popup-overlay {
     display: none;
     position: fixed;

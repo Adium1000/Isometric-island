@@ -4328,7 +4328,6 @@ function _renderAnalyticsChart(sorted, total) {
     ctx.clearRect(0, 0, W, H);
 
     if (sorted.length === 0) return;
-
     const TOP = 12;
     let slices = sorted.slice(0, TOP).map(([raw, count], i) => ({
         raw, count,
@@ -5058,7 +5057,6 @@ function _ellipsePoints(cx, cy, rx, ry) {
     }
     return Array.from(pts.values());
 }
-
 (function () {
     let _previewTiles = [];
 
@@ -5116,7 +5114,7 @@ function _ellipsePoints(cx, cy, rx, ry) {
         _clearPreview();
         _origCleanup();
     };
-    window.addEventListener('langReady', () => {}, { once: true }); 
+    window.addEventListener('langReady', () => {}, { once: true });
 })();
 
 const _BRUSH_SIZES = [1, 2, 3, 5, 7];
@@ -5686,6 +5684,283 @@ function deleteSlot(idx) {
     renderSaveSlots();
     showToast(LangManager.t('toast.slot') + ' ' + (idx + 1) + ' ' + LangManager.t('toast.slot_deleted'));
 }
+
+/* ═══════════════════════════════════════════════════════════
+   POINTER SETTINGS — canvas previews
+   (same pattern as the graphics settings previews)
+   ═══════════════════════════════════════════════════════════ */
+(function() {
+    /* ── shared helpers ────────────────────────────────────── */
+    function drawIsoBg(ctx, W, H) {
+        const g = ctx.createLinearGradient(0, 0, 0, H);
+        g.addColorStop(0, '#12200e'); g.addColorStop(1, '#1e3818');
+        ctx.fillStyle = g; ctx.fillRect(0, 0, W, H);
+    }
+    function drawLabel(ctx, W, text) {
+        ctx.fillStyle = 'rgba(0,0,0,0.55)'; ctx.fillRect(0, 0, W, 18);
+        ctx.fillStyle = '#ffdf80';
+        ctx.font = '7px "Press Start 2P",monospace';
+        ctx.textAlign = 'left'; ctx.textBaseline = 'middle';
+        ctx.fillText(text, 6, 9);
+    }
+    function drawBadge(ctx, W, H, on) {
+        const label = on ? 'ON' : 'OFF';
+        const col   = on ? '#7aff70' : '#ff6060';
+        ctx.font = '7px "Press Start 2P",monospace';
+        ctx.textAlign = 'right'; ctx.textBaseline = 'bottom';
+        ctx.fillStyle = 'rgba(0,0,0,0.6)'; ctx.fillRect(W - 36, H - 18, 36, 18);
+        ctx.fillStyle = col; ctx.fillText(label, W - 5, H - 4);
+    }
+    function isoTile(ctx, cx, cy, tw, th, top, left, right) {
+        ctx.beginPath();
+        ctx.moveTo(cx, cy-th/2); ctx.lineTo(cx+tw/2, cy);
+        ctx.lineTo(cx, cy+th/2); ctx.lineTo(cx-tw/2, cy); ctx.closePath();
+        ctx.fillStyle = top; ctx.fill();
+        ctx.beginPath();
+        ctx.moveTo(cx-tw/2,cy); ctx.lineTo(cx,cy+th/2);
+        ctx.lineTo(cx,cy+th/2+6); ctx.lineTo(cx-tw/2,cy+6); ctx.closePath();
+        ctx.fillStyle = left; ctx.fill();
+        ctx.beginPath();
+        ctx.moveTo(cx+tw/2,cy); ctx.lineTo(cx,cy+th/2);
+        ctx.lineTo(cx,cy+th/2+6); ctx.lineTo(cx+tw/2,cy+6); ctx.closePath();
+        ctx.fillStyle = right; ctx.fill();
+    }
+    function tinyIsland(ctx, W, H) {
+        const tw=20,th=10;
+        const tiles = [[0,0],[1,0],[2,0],[0,1],[1,1],[2,1]];
+        tiles.sort((a,b)=>(a[0]+a[1])-(b[0]+b[1]));
+        tiles.forEach(([gx,gy])=>{
+            const cx = W/2 + (gx-gy)*(tw/2);
+            const cy = H*0.68 + (gx+gy)*(th/2);
+            isoTile(ctx,cx,cy,tw,th,'#6b8c3a','#3a5c1e','#4a7021');
+        });
+    }
+
+    /* ── 1. CUSTOM CURSORS preview ─────────────────────────── */
+    let _cursorAnim = null, _cursorT = 0;
+    function renderCursorPreview(canvasId, on) {
+        const cv = document.getElementById(canvasId); if (!cv) return;
+        const W=cv.width, H=cv.height, ctx=cv.getContext('2d');
+        ctx.clearRect(0,0,W,H);
+        drawIsoBg(ctx,W,H);
+        tinyIsland(ctx,W,H);
+
+        /* cursor path: figure-8 */
+        const t = _cursorT;
+        const mx = W*0.5 + Math.sin(t) * W*0.28;
+        const my = H*0.45 + Math.sin(t*2) * H*0.18;
+
+        if (on) {
+            /* custom pixel cursor (hand shape) */
+            const s = 2;
+            const pixels = [
+                [1,0],[1,1],[1,2],[1,3],[1,4],[1,5],[1,6],
+                [2,3],[2,4],[2,5],[2,6],[2,7],
+                [3,4],[3,5],[3,6],[3,7],
+                [0,5],[0,6],
+            ];
+            ctx.fillStyle = '#f0e8d0';
+            pixels.forEach(([px,py])=>ctx.fillRect(mx+px*s, my+py*s, s, s));
+            ctx.fillStyle = '#3a2a10';
+            [[0,0],[2,0],[0,4],[4,3]].forEach(([px,py])=>ctx.fillRect(mx+px*s, my+py*s, s, s));
+        } else {
+            /* plain OS arrow cursor outline */
+            ctx.save(); ctx.strokeStyle = '#c8b89a'; ctx.lineWidth = 1.5;
+            ctx.beginPath();
+            ctx.moveTo(mx, my); ctx.lineTo(mx, my+16); ctx.lineTo(mx+5,my+11);
+            ctx.lineTo(mx+9,my+18); ctx.lineTo(mx+11,my+17); ctx.lineTo(mx+7,my+10);
+            ctx.lineTo(mx+12,my+10); ctx.closePath(); ctx.stroke(); ctx.restore();
+        }
+
+        /* dotted trail hint */
+        if (on) {
+            for (let i=1; i<=5; i++) {
+                const ti = t - i*0.25;
+                const tx2 = W*0.5 + Math.sin(ti)*W*0.28;
+                const ty2 = H*0.45 + Math.sin(ti*2)*H*0.18;
+                ctx.globalAlpha = 0.15 * (6-i)/5;
+                ctx.fillStyle = '#ffdf80';
+                ctx.fillRect(tx2+2, ty2+2, 3, 3);
+            }
+            ctx.globalAlpha = 1;
+        }
+
+        drawLabel(ctx, W, 'CUSTOM CURSORS');
+        drawBadge(ctx, W, H, on);
+    }
+    function startCursorAnim(canvasId) {
+        if (_cursorAnim) return;
+        function tick(ts) {
+            _cursorT = ts / 1200;
+            const on = document.getElementById('sw-custom-cursor')?.classList.contains('on');
+            if (on === undefined) { _cursorAnim=null; return; }
+            renderCursorPreview(canvasId, !!on);
+            _cursorAnim = requestAnimationFrame(tick);
+        }
+        _cursorAnim = requestAnimationFrame(tick);
+    }
+    function stopCursorAnim() { if(_cursorAnim){cancelAnimationFrame(_cursorAnim);_cursorAnim=null;} }
+
+    /* ── 2. BLOCK TOOLTIPS preview ─────────────────────────── */
+    let _tipAnim = null, _tipT = 0;
+    function renderTooltipPreview(canvasId, on) {
+        const cv = document.getElementById(canvasId); if (!cv) return;
+        const W=cv.width, H=cv.height, ctx=cv.getContext('2d');
+        ctx.clearRect(0,0,W,H);
+        drawIsoBg(ctx,W,H);
+        tinyIsland(ctx,W,H);
+
+        /* hovering cursor over center tile */
+        const hx = W*0.5 + (1-1)*(20/2); /* [1,1] tile center */
+        const hy = H*0.68 + (1+1)*(10/2);
+        const cx2=W/2+(1-1)*(20/2), cy2=H*0.68+(1+1)*(10/2);
+
+        /* highlight hovered tile top face */
+        ctx.save(); ctx.globalAlpha=0.35; ctx.strokeStyle='#ffdf80'; ctx.lineWidth=1.5;
+        ctx.beginPath();
+        ctx.moveTo(cx2,cy2-5); ctx.lineTo(cx2+10,cy2); ctx.lineTo(cx2,cy2+5); ctx.lineTo(cx2-10,cy2); ctx.closePath();
+        ctx.stroke(); ctx.restore();
+
+        if (on) {
+            /* tooltip bubble */
+            const pulse = 0.93 + Math.sin(_tipT*3)*0.07;
+            const tw2=70, th2=20;
+            const tx=cx2-tw2/2, ty=cy2-th2-18;
+            ctx.save(); ctx.globalAlpha=pulse;
+            ctx.fillStyle='rgba(20,10,4,0.92)';
+            ctx.fillRect(tx,ty,tw2,th2);
+            ctx.strokeStyle='#6b4c2a'; ctx.lineWidth=1.5;
+            ctx.strokeRect(tx,ty,tw2,th2);
+            /* arrow down */
+            ctx.beginPath();
+            ctx.moveTo(cx2-4,ty+th2); ctx.lineTo(cx2+4,ty+th2); ctx.lineTo(cx2,ty+th2+5); ctx.closePath();
+            ctx.fillStyle='rgba(20,10,4,0.92)'; ctx.fill();
+            ctx.strokeStyle='#6b4c2a'; ctx.lineWidth=1.5; ctx.stroke();
+            /* text */
+            ctx.fillStyle='#ffdf80'; ctx.font='5px "Press Start 2P",monospace';
+            ctx.textAlign='center'; ctx.textBaseline='middle';
+            ctx.fillText('Grass Block', cx2, ty+th2/2);
+            ctx.restore();
+        }
+
+        drawLabel(ctx, W, 'BLOCK TOOLTIPS');
+        drawBadge(ctx, W, H, on);
+    }
+    function startTipAnim(canvasId) {
+        if (_tipAnim) return;
+        function tick(ts) {
+            _tipT = ts/1000;
+            const on = document.getElementById('sw-block-tooltips')?.classList.contains('on');
+            if (on === undefined) { _tipAnim=null; return; }
+            renderTooltipPreview(canvasId, !!on);
+            _tipAnim = requestAnimationFrame(tick);
+        }
+        _tipAnim = requestAnimationFrame(tick);
+    }
+    function stopTipAnim() { if(_tipAnim){cancelAnimationFrame(_tipAnim);_tipAnim=null;} }
+
+    /* ── 3. CURSOR TRAIL preview ───────────────────────────── */
+    const _trailParticles = [];
+    let _trailAnim = null, _trailT = 0, _trailMx = 80, _trailMy = 55;
+    function spawnTrailParticle(W, H) {
+        const t = _trailT;
+        const x = W*0.5 + Math.sin(t) * W*0.3;
+        const y = H*0.45 + Math.sin(t*1.7) * H*0.2;
+        _trailParticles.push({
+            x, y,
+            vx: (Math.random()-0.5)*1.2,
+            vy: (Math.random()-0.5)*1.2 - 0.5,
+            life: 1.0,
+            decay: 0.03 + Math.random()*0.025,
+            size: 2 + Math.random()*2,
+            col: ['#ffdf80','#ff9040','#60d8ff','#c080ff','#80ff90'][Math.floor(Math.random()*5)],
+        });
+    }
+    function renderTrailPreview(canvasId, on) {
+        const cv = document.getElementById(canvasId); if (!cv) return;
+        const W=cv.width, H=cv.height, ctx=cv.getContext('2d');
+        ctx.clearRect(0,0,W,H);
+        drawIsoBg(ctx,W,H);
+        tinyIsland(ctx,W,H);
+
+        const mx = W*0.5 + Math.sin(_trailT)*W*0.3;
+        const my = H*0.45 + Math.sin(_trailT*1.7)*H*0.2;
+
+        if (on) {
+            _trailParticles.forEach(p => {
+                ctx.save();
+                ctx.globalAlpha = p.life * 0.85;
+                ctx.fillStyle = p.col;
+                ctx.beginPath();
+                ctx.arc(p.x, p.y, p.size*p.life, 0, Math.PI*2);
+                ctx.fill();
+                ctx.restore();
+            });
+        }
+
+        /* cursor dot */
+        ctx.fillStyle = on ? '#ffdf80' : '#c8b89a';
+        ctx.beginPath(); ctx.arc(mx, my, 3, 0, Math.PI*2); ctx.fill();
+
+        drawLabel(ctx, W, 'CURSOR TRAIL');
+        drawBadge(ctx, W, H, on);
+    }
+    function startTrailAnim(canvasId) {
+        if (_trailAnim) return;
+        let spawnTimer=0;
+        function tick(ts) {
+            _trailT = ts/900;
+            const on = document.getElementById('sw-cursor-trail')?.classList.contains('on');
+            if (on === undefined) { _trailAnim=null; _trailParticles.length=0; return; }
+            spawnTimer++;
+            if (on && spawnTimer % 3 === 0) spawnTrailParticle(
+                document.getElementById(canvasId)?.width || 160,
+                document.getElementById(canvasId)?.height || 90
+            );
+            for(let i=_trailParticles.length-1;i>=0;i--) {
+                const p=_trailParticles[i];
+                p.x+=p.vx; p.y+=p.vy; p.life-=p.decay;
+                if(p.life<=0) _trailParticles.splice(i,1);
+            }
+            renderTrailPreview(canvasId, !!on);
+            _trailAnim = requestAnimationFrame(tick);
+        }
+        _trailAnim = requestAnimationFrame(tick);
+    }
+    function stopTrailAnim() { if(_trailAnim){cancelAnimationFrame(_trailAnim);_trailAnim=null;} _trailParticles.length=0; }
+
+    /* ── Main refresh ──────────────────────────────────────── */
+    window._refreshPointerPreviews = function() {
+        setTimeout(() => {
+            const on = id => !!document.getElementById(id)?.classList.contains('on');
+            const cursor   = on('sw-custom-cursor');
+            const tooltips = on('sw-block-tooltips');
+            const trail    = on('sw-cursor-trail');
+            /* restart all three anim loops (they self-read current switch state) */
+            stopCursorAnim(); startCursorAnim('ptr-prev-cursor');
+            stopTipAnim();    startTipAnim('ptr-prev-tooltips');
+            stopTrailAnim();  startTrailAnim('ptr-prev-trail');
+        }, 20);
+    };
+
+    /* hook into openPointerSettings */
+    const _origOpen = window.openPointerSettings;
+    window.openPointerSettings = function() {
+        if (_origOpen) _origOpen.apply(this, arguments);
+        setTimeout(window._refreshPointerPreviews, 90);
+    };
+
+    /* stop anims when popup closes */
+    const _origClose = window.closePointerSettings;
+    window.closePointerSettings = function() {
+        if (_origClose) _origClose.apply(this, arguments);
+        stopCursorAnim(); stopTipAnim(); stopTrailAnim();
+    };
+
+    if (document.readyState !== 'loading') setTimeout(window._refreshPointerPreviews, 600);
+    else document.addEventListener('DOMContentLoaded', ()=>setTimeout(window._refreshPointerPreviews, 600));
+})();
+
 (function() {
     const TIPS_KEY = 'ii_tips_seen';
     const TIPS_HIDDEN_KEY = 'ii_tips_hidden';

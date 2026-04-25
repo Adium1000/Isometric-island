@@ -1308,6 +1308,41 @@ Anyway that is all what do you think? :menhera-huh:
 ![devlog75](<.github/Devlogs (Flavortown)/devlog75.png>)
 
 ---
+# Devlog 76
+## Overall devlog: Added island float preview
+---
+
+Comit [(04acae5)](https://github.com/Adium1000/Isometric-island/commit/04acae5b79959e1c8fb265a98b0993903b4c7fdd)
+- Added island float preview
+
+Let's take a look at the preview
+
+- The preview sinks the folowing settings:
+ - Float speed
+ - Float direction
+ - Jiggles
+
+[![IMAGINE DEMOSTRATIVA](https://i.postimg.cc/jdhQgX4h/image.png)](https://postimg.cc/pppFyK79)
+
+
+ ---
+
+# ! The preview is strictlly for orientation and may varry from the original product 
+
+
+---
+© Adrian's Image Spotlight
+- The image gallery contains photos I took with a macro lens
+- The photos may be edited, which can result in a loss of their natural appearance
+
+---
+Anyway that is all what do you think?
+
+
+
+
+
+---
 
 End 
 
@@ -1315,7 +1350,6 @@ End
 
 ---
 
-![devlog74](<.github/Devlogs (Flavortown)/devlog74.png>)
 
 ---
 # Here are some comments from the ships:

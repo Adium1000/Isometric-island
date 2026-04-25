@@ -148,6 +148,5 @@ Release
 Release Fin#al
 
 
-# Devlog 76
-## Overall devlog: Added island float preview
----
+# Devlog 77
+

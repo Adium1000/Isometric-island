@@ -1557,23 +1557,36 @@ function tryStartBuilding() {
         <div id="pointer-settings-popup" class="pixel-corners">
             <h2><img src="./Assets/Cursors/pointer.png" style="width:26px;height:26px;image-rendering:pixelated;vertical-align:middle;margin-right:6px;">POINTER SETTINGS</h2>
             <div id="pointer-settings-body">
-                <div class="visual-option-row">
-                    <span class="visual-option-label"><img src="./Assets/Cursors/pointer.png" style="width:14px;height:14px;image-rendering:pixelated;vertical-align:middle;margin-right:5px;"><span data-t="pointer_settings.custom_cursors">Custom Cursors</span></span>
-                    <button class="px-switch" id="sw-custom-cursor" onclick="toggleCustomCursor(this)">
-                        <span class="px-switch-thumb"></span>
-                    </button>
-                </div>
-                <div class="visual-option-row">
-                    <span class="visual-option-label"><img src="./Assets/Blocks/dirt.png" style="width:14px;height:14px;image-rendering:pixelated;vertical-align:middle;margin-right:5px;"><span data-t="pointer_settings.block_tooltips">Block Tooltips</span></span>
-                    <button class="px-switch on" id="sw-block-tooltips" onclick="toggleBlockTooltips(this)">
-                        <span class="px-switch-thumb"></span>
-                    </button>
-                </div>
-                <div class="visual-option-row">
-                    <span class="visual-option-label" data-t="pointer_settings.cursor_trail">✦ Cursor Trail</span>
-                    <button class="px-switch" id="sw-cursor-trail" onclick="toggleCursorTrail(this)">
-                        <span class="px-switch-thumb"></span>
-                    </button>
+                <div class="gfx-grid">
+                    <div class="gfx-col-item">
+                        <div class="visual-option-row" id="row-custom-cursor">
+                            <span class="visual-option-label"><img src="./Assets/Cursors/pointer.png" style="width:14px;height:14px;image-rendering:pixelated;vertical-align:middle;margin-right:5px;"><span data-t="pointer_settings.custom_cursors">Custom Cursors</span></span>
+                            <button class="px-switch" id="sw-custom-cursor" onclick="toggleCustomCursor(this); _refreshPointerPreviews()">
+                                <span class="px-switch-thumb"></span>
+                            </button>
+                        </div>
+                        <canvas class="gfx-preview-canvas" id="ptr-prev-cursor" width="160" height="90"></canvas>
+                    </div>
+
+                    <div class="gfx-col-item">
+                        <div class="visual-option-row" id="row-block-tooltips">
+                            <span class="visual-option-label"><img src="./Assets/Blocks/dirt.png" style="width:14px;height:14px;image-rendering:pixelated;vertical-align:middle;margin-right:5px;"><span data-t="pointer_settings.block_tooltips">Block Tooltips</span></span>
+                            <button class="px-switch on" id="sw-block-tooltips" onclick="toggleBlockTooltips(this); _refreshPointerPreviews()">
+                                <span class="px-switch-thumb"></span>
+                            </button>
+                        </div>
+                        <canvas class="gfx-preview-canvas" id="ptr-prev-tooltips" width="160" height="90"></canvas>
+                    </div>
+
+                    <div class="gfx-col-item">
+                        <div class="visual-option-row" id="row-cursor-trail">
+                            <span class="visual-option-label">✦ <span data-t="pointer_settings.cursor_trail">Cursor Trail</span></span>
+                            <button class="px-switch" id="sw-cursor-trail" onclick="toggleCursorTrail(this); _refreshPointerPreviews()">
+                                <span class="px-switch-thumb"></span>
+                            </button>
+                        </div>
+                        <canvas class="gfx-preview-canvas" id="ptr-prev-trail" width="160" height="90"></canvas>
+                    </div>
                 </div>
                 <div style="display:flex;justify-content:flex-end;margin-top:16px;">
                     <button class="btn-ok" onclick="closePointerSettings()">OK</button>
@@ -3360,10 +3373,6 @@ window.closeHelpInfo = closeHelpInfo;
     }
 })();
 </script>
-
-<!-- ═══════════════════════════════════════════════════════════════
-     GRAPHICS SETTINGS — 16:9 LIVE PREVIEW CANVASES (unique per setting)
-═══════════════════════════════════════════════════════════════ -->
 <style>
 .gfx-preview-canvas {
     display: block;
@@ -3387,7 +3396,6 @@ window.closeHelpInfo = closeHelpInfo;
         const h=v=>Math.max(0,Math.round(v*f)).toString(16).padStart(2,'0');
         return '#'+h(r)+h(g)+h(b);
     }
-
     function drawIsoTile(ctx, cx, cy, tw, th, col) {
         ctx.fillStyle = col;
         ctx.beginPath(); ctx.moveTo(cx, cy-th/2); ctx.lineTo(cx+tw/2, cy); ctx.lineTo(cx, cy+th/2); ctx.lineTo(cx-tw/2, cy); ctx.closePath(); ctx.fill();
@@ -3430,6 +3438,7 @@ window.closeHelpInfo = closeHelpInfo;
                 ctx.beginPath(); ctx.ellipse(x, y+th/2, sw, th/3+1, 0, 0, Math.PI*2); ctx.fill();
                 ctx.restore();
             }
+        
             for (let i = h-1; i >= 0; i--) {
                 drawIsoTile(ctx, x, y - i*th, tw, th, i===0 ? col : darken(col,0.85));
             }
@@ -3476,7 +3485,8 @@ window.closeHelpInfo = closeHelpInfo;
         });
         ctx.fillStyle = '#3a9a28';
         ctx.beginPath(); ctx.arc(W*0.38, H*0.22, 32, 0, Math.PI*2); ctx.fill();
-        if (on) {
+
+         if (on) {
             _leafParticles.forEach(p => {
                 ctx.save();
                 ctx.globalAlpha = p.life * 0.9;
@@ -3610,7 +3620,7 @@ window.closeHelpInfo = closeHelpInfo;
             {x:W*0.7, y:H*0.65, col:'#5a8a30'}, {x:W*0.4, y:H*0.65-th, col:'#606060'},
             {x:W*0.6, y:H*0.65-th, col:'#808080'},
         ];
-        blocks.forEach(b => drawIsoTile(ctx, b.x, b.y, tw, th, b.col))
+        blocks.forEach(b => drawIsoTile(ctx, b.x, b.y, tw, th, b.col));
         drawIsoTile(ctx, W*0.5, H*0.5, tw, th, '#7aaa40');
         ctx.save(); ctx.globalAlpha=0.35; ctx.strokeStyle='#ffdf80'; ctx.lineWidth=2;
         ctx.beginPath(); ctx.moveTo(W*0.5,H*0.5-th/2); ctx.lineTo(W*0.5+tw/2,H*0.5); ctx.lineTo(W*0.5,H*0.5+th/2); ctx.lineTo(W*0.5-tw/2,H*0.5); ctx.closePath(); ctx.stroke(); ctx.restore();
@@ -3696,6 +3706,7 @@ window.closeHelpInfo = closeHelpInfo;
             const clouds    = on('sw-clouds');
             const particles = on('sw-block-particles');
             const air       = on('sw-show-air');
+
             renderShadows('gfx-prev-shadows', shadows);
             if (leaves) startLeafAnim('gfx-prev-leaves');
             else { if(_leafAnim){cancelAnimationFrame(_leafAnim);_leafAnim=null;} _leafParticles.length=0; renderLeaves('gfx-prev-leaves', false); }
