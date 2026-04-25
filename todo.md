@@ -154,4 +154,22 @@ Overall Devlog: Aded Line & Circle tool show-in grid
 
 ---
 
-# Comit 
+# Comit [(68ae87a)](https://github.com/Adium1000/Isometric-island/commit/68ae87aba4b87909d987d89112bc07dac224dd40)
+
+- A grid display has been added for the Line and Circle tools
+
+[![Line.png](https://i.postimg.cc/cC6yc02d/image.png)](https://postimg.cc/1Vxjmhyd)
+
+
+[![image.png](https://i.postimg.cc/pXqkHKmG/image.png)](https://postimg.cc/CznbCBHk)
+
+- You must click on a starting point for the shape to appear
+- This is very useful because, in some cases, without this feature, the Line and Circle tools can cause errors
+- To use the Line or Circle tool, you must access the radial menu
+
+---
+© Adrian's Image Spotlight
+- The image gallery contains photos I took with a macro lens
+- The photos may be edited, which can result in a loss of their natural appearance
+---
+Anyway that is all what do you think?? :menhera-happy-wave: 

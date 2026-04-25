@@ -21,7 +21,7 @@ window.__LANG_DATA__['en'] = {
   ui: {
     ok: 'OK',
     cancel: 'CANCEL',
-    delete: 'DELETE',
+    delete: 'ELETE',
     back: 'Back',
     next: 'NEXT ▶',
     close: '✕',
