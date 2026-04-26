@@ -1339,7 +1339,47 @@ Let's take a look at the preview
 Anyway that is all what do you think?
 
 
+![devlog76](<.github/Devlogs (Flavortown)/devlog76.png>)
 
+
+---
+
+
+
+
+# Devlog 77
+Overall Devlog: Added previews in mouse settings popup
+---
+
+# Comit [(0650ccd)](https://github.com/Adium1000/Isometric-island/commit/0650ccd174e1eb32c6494a216cce82c69ad854ad)
+
+- Added previews in the mouse settings popup
+
+Here is how previews work
+
+1.Custom Cursors
+
+- Shows a default pointer, if on it shows an clicky cursor
+
+2.Block Tooltips
+
+- Shows the block (name) when turned on
+
+3.Cursor trail
+- Shows an cursor trail when turned on
+---
+© Adrian's Image Spotlight
+- The image gallery contains photos I took with a macro lens
+- The photos may be edited, which can result in a loss of their natural appearance
+
+---
+Anyway that is all, what do you think? :cat-heart: 
+
+
+
+
+
+![Devlog77](<.github/Devlogs (Flavortown)/devlog77.png>)
 
 
 ---

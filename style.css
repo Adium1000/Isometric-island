@@ -882,6 +882,108 @@ body {
     text-align: center;
     line-height: 2;
 }
+
+#qr-body-row {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 0;
+}
+#qr-vertical-divider {
+    width: 0;
+    border: none;
+    border-left: 2px dashed var(--gui-divider);
+    align-self: stretch;
+    margin: 0 14px;
+}
+#qr-phone-preview {
+    padding: 10px 53px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+}
+
+#qr-phone-body {
+    position: relative;
+    width: 66px;
+    height: 110px;
+    background: var(--gui-bg);
+    border: 3px solid var(--gui-border);
+    box-shadow: 3px 3px 0 var(--gui-shadow);
+    border-radius: 6px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    animation: phone-tilt 2.6s ease-in-out infinite;
+    transform-origin: center center;
+}
+@keyframes phone-tilt {
+    0%   { transform: rotate(-9deg); }
+    35%  { transform: rotate(2deg); }
+    55%  { transform: rotate(7deg); }
+    80%  { transform: rotate(-2deg); }
+    100% { transform: rotate(-9deg); }
+}
+
+#qr-phone-screen {
+    width: 48px;
+    height: 78px;
+    background: #080e1c;
+    border: 2px solid #1a2540;
+    position: relative;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+#qr-phone-viewfinder {
+    position: relative;
+    width: 30px;
+    height: 30px;
+}
+.vf-corner {
+    position: absolute;
+    width: 8px;
+    height: 8px;
+    border-color: var(--gui-accent);
+    border-style: solid;
+    animation: vf-pulse 1.2s ease-in-out infinite;
+}
+@keyframes vf-pulse {
+    0%, 100% { opacity: 1; }
+    50%       { opacity: 0.35; }
+}
+.vf-corner.tl { top: 0; left: 0; border-width: 2px 0 0 2px; }
+.vf-corner.tr { top: 0; right: 0; border-width: 2px 2px 0 0; }
+.vf-corner.bl { bottom: 0; left: 0; border-width: 0 0 2px 2px; }
+.vf-corner.br { bottom: 0; right: 0; border-width: 0 2px 2px 0; }
+
+#qr-scan-line {
+    position: absolute;
+    left: 0; right: 0;
+    height: 2px;
+    background: linear-gradient(90deg, transparent 0%, var(--gui-accent) 50%, transparent 100%);
+    box-shadow: 0 0 6px var(--gui-accent);
+    animation: scan-sweep 1.5s linear infinite;
+}
+@keyframes scan-sweep {
+    0%   { top: 0%; opacity: 1; }
+    85%  { top: 100%; opacity: 1; }
+    100% { top: 100%; opacity: 0; }
+}
+
+#qr-phone-button {
+    position: absolute;
+    bottom: 5px;
+    width: 12px;
+    height: 12px;
+    border: 2px solid var(--gui-border);
+    border-radius: 50%;
+    background: var(--gui-bg-dark);
+}
 #island-shape-section { margin-bottom: 2px; }
 #island-shape-grid { display: grid; grid-template-columns: repeat(16, 22px); column-gap: 8px; row-gap: 5px; margin-top: 6px; justify-content: center; }
 .shape-cell {

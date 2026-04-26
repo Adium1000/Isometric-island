@@ -1196,8 +1196,25 @@ function tryStartBuilding() {
         <div id="qr-popup" class="pixel-corners">
             <h2><img src="./Assets/Icons/qr.png" style="width:26px;height:26px;image-rendering:pixelated;vertical-align:middle;margin-right:6px;"> QR CODE</h2>
             <div id="qr-subtitle" data-t="qr.subtitle">Scan to share your island!</div>
-            <div id="qr-canvas-wrap">
-                <div id="qr-output"></div>
+            <div id="qr-body-row">
+                <div id="qr-canvas-wrap">
+                    <div id="qr-output"></div>
+                </div>
+                <div id="qr-vertical-divider"></div>
+                <div id="qr-phone-preview">
+                    <div id="qr-phone-body">
+                        <div id="qr-phone-screen">
+                            <div id="qr-phone-viewfinder">
+                                <div class="vf-corner tl"></div>
+                                <div class="vf-corner tr"></div>
+                                <div class="vf-corner bl"></div>
+                                <div class="vf-corner br"></div>
+                                <div id="qr-scan-line"></div>
+                            </div>
+                        </div>
+                        <div id="qr-phone-button"></div>
+                    </div>
+                </div>
             </div>
             <div id="qr-hint" data-t="qr.hint">Scan with any QR app to load your island code</div>
         </div>

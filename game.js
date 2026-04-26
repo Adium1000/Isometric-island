@@ -521,22 +521,16 @@ function _syncFloatPopupCards() {
         if (card) card.classList.toggle('active', currentFloatMode === id);
     });
 }
-
-/* ── Float popup preview ───────────────────────────────────── */
 let _floatPrevAnim = null;
 let _floatPrevT = 0;
 
 function _drawFloatPreviewIsland(ctx, W, H, offsetX, offsetY, angle) {
     ctx.clearRect(0, 0, W, H);
-
-    /* sky gradient */
     const grad = ctx.createLinearGradient(0, 0, 0, H);
     grad.addColorStop(0, '#0d1a2a');
     grad.addColorStop(1, '#1a3050');
     ctx.fillStyle = grad;
     ctx.fillRect(0, 0, W, H);
-
-    /* stars */
     ctx.fillStyle = 'rgba(255,255,255,0.5)';
     [[20,10],[50,6],[90,18],[140,8],[175,14],[205,4],[38,25],[110,3]].forEach(([x,y]) => {
         ctx.fillRect(x, y, 1, 1);
@@ -545,15 +539,12 @@ function _drawFloatPreviewIsland(ctx, W, H, offsetX, offsetY, angle) {
     ctx.save();
     ctx.translate(W / 2 + offsetX, H / 2 + offsetY);
     if (angle !== 0) ctx.rotate(angle);
-
-    /* draw a tiny isometric island: 3x3 base + 1 tree */
     const TW = 22, TH = 11;
     function isoX(gx, gy) { return (gx - gy) * (TW / 2); }
     function isoY(gx, gy) { return (gx + gy) * (TH / 2); }
 
     function drawTile(gx, gy, col, topCol) {
         const cx = isoX(gx, gy), cy = isoY(gx, gy);
-        /* top face */
         ctx.beginPath();
         ctx.moveTo(cx,          cy - TH/2);
         ctx.lineTo(cx + TW/2,   cy);
@@ -562,7 +553,6 @@ function _drawFloatPreviewIsland(ctx, W, H, offsetX, offsetY, angle) {
         ctx.closePath();
         ctx.fillStyle = topCol || col;
         ctx.fill();
-        /* left face */
         ctx.beginPath();
         ctx.moveTo(cx - TW/2,   cy);
         ctx.lineTo(cx,          cy + TH/2);
@@ -571,7 +561,6 @@ function _drawFloatPreviewIsland(ctx, W, H, offsetX, offsetY, angle) {
         ctx.closePath();
         ctx.fillStyle = _shadeCol(col, -40);
         ctx.fill();
-        /* right face */
         ctx.beginPath();
         ctx.moveTo(cx + TW/2,   cy);
         ctx.lineTo(cx,          cy + TH/2);
@@ -581,18 +570,13 @@ function _drawFloatPreviewIsland(ctx, W, H, offsetX, offsetY, angle) {
         ctx.fillStyle = _shadeCol(col, -20);
         ctx.fill();
     }
-
-    /* base tiles 3x3 */
     const tiles = [
         [0,0,'#5c3d1e','#6b8c3a'],[1,0,'#5c3d1e','#6b8c3a'],[2,0,'#5c3d1e','#6b8c3a'],
         [0,1,'#5c3d1e','#6b8c3a'],[1,1,'#5c3d1e','#7aaa40'],[2,1,'#5c3d1e','#6b8c3a'],
         [0,2,'#5c3d1e','#6b8c3a'],[1,2,'#5c3d1e','#6b8c3a'],[2,2,'#5c3d1e','#6b8c3a'],
     ];
-    /* sort painter's algo */
     tiles.sort((a,b)=>(a[0]+a[1])-(b[0]+b[1]));
     tiles.forEach(([gx,gy,col,top]) => drawTile(gx, gy, col, top));
-
-    /* tiny tree on [1,1] */
     const tx = isoX(1,1), ty = isoY(1,1) - TH/2;
     ctx.fillStyle = '#5c3d1e';
     ctx.fillRect(tx - 2, ty - 10, 4, 10);
@@ -604,10 +588,7 @@ function _drawFloatPreviewIsland(ctx, W, H, offsetX, offsetY, angle) {
     ctx.arc(tx, ty - 19, 6, 0, Math.PI * 2);
     ctx.fillStyle = '#3a8a28';
     ctx.fill();
-
     ctx.restore();
-
-    /* label */
     ctx.fillStyle = 'rgba(0,0,0,0.45)';
     ctx.fillRect(0, 0, W, 18);
     ctx.fillStyle = '#ffdf80';
@@ -677,8 +658,7 @@ function setFloatMode(mode) {
     const folder = getGUIFolder(currentGUITheme);
     floatBtn.src = isFloating ? folder + 'floaton.png' : folder + 'floatoff.png';
     _syncFloatPopupCards();
-    /* restart preview so label + animation update immediately */
-    if (_floatPrevAnim !== null || document.getElementById('float-popup-overlay')?.style.display !== 'none') {
+     if (_floatPrevAnim !== null || document.getElementById('float-popup-overlay')?.style.display !== 'none') {
         _startFloatPreview();
     }
     hotbarSound.currentTime = 0; hotbarSound.play().catch(e => {});
@@ -5684,13 +5664,7 @@ function deleteSlot(idx) {
     renderSaveSlots();
     showToast(LangManager.t('toast.slot') + ' ' + (idx + 1) + ' ' + LangManager.t('toast.slot_deleted'));
 }
-
-/* ═══════════════════════════════════════════════════════════
-   POINTER SETTINGS — canvas previews
-   (same pattern as the graphics settings previews)
-   ═══════════════════════════════════════════════════════════ */
 (function() {
-    /* ── shared helpers ────────────────────────────────────── */
     function drawIsoBg(ctx, W, H) {
         const g = ctx.createLinearGradient(0, 0, 0, H);
         g.addColorStop(0, '#12200e'); g.addColorStop(1, '#1e3818');
@@ -5735,8 +5709,6 @@ function deleteSlot(idx) {
             isoTile(ctx,cx,cy,tw,th,'#6b8c3a','#3a5c1e','#4a7021');
         });
     }
-
-    /* ── 1. CUSTOM CURSORS preview ─────────────────────────── */
     let _cursorAnim = null, _cursorT = 0;
     function renderCursorPreview(canvasId, on) {
         const cv = document.getElementById(canvasId); if (!cv) return;
@@ -5744,14 +5716,11 @@ function deleteSlot(idx) {
         ctx.clearRect(0,0,W,H);
         drawIsoBg(ctx,W,H);
         tinyIsland(ctx,W,H);
-
-        /* cursor path: figure-8 */
         const t = _cursorT;
         const mx = W*0.5 + Math.sin(t) * W*0.28;
         const my = H*0.45 + Math.sin(t*2) * H*0.18;
 
         if (on) {
-            /* custom pixel cursor (hand shape) */
             const s = 2;
             const pixels = [
                 [1,0],[1,1],[1,2],[1,3],[1,4],[1,5],[1,6],
@@ -5764,15 +5733,12 @@ function deleteSlot(idx) {
             ctx.fillStyle = '#3a2a10';
             [[0,0],[2,0],[0,4],[4,3]].forEach(([px,py])=>ctx.fillRect(mx+px*s, my+py*s, s, s));
         } else {
-            /* plain OS arrow cursor outline */
             ctx.save(); ctx.strokeStyle = '#c8b89a'; ctx.lineWidth = 1.5;
             ctx.beginPath();
             ctx.moveTo(mx, my); ctx.lineTo(mx, my+16); ctx.lineTo(mx+5,my+11);
             ctx.lineTo(mx+9,my+18); ctx.lineTo(mx+11,my+17); ctx.lineTo(mx+7,my+10);
             ctx.lineTo(mx+12,my+10); ctx.closePath(); ctx.stroke(); ctx.restore();
         }
-
-        /* dotted trail hint */
         if (on) {
             for (let i=1; i<=5; i++) {
                 const ti = t - i*0.25;
@@ -5800,8 +5766,6 @@ function deleteSlot(idx) {
         _cursorAnim = requestAnimationFrame(tick);
     }
     function stopCursorAnim() { if(_cursorAnim){cancelAnimationFrame(_cursorAnim);_cursorAnim=null;} }
-
-    /* ── 2. BLOCK TOOLTIPS preview ─────────────────────────── */
     let _tipAnim = null, _tipT = 0;
     function renderTooltipPreview(canvasId, on) {
         const cv = document.getElementById(canvasId); if (!cv) return;
@@ -5809,20 +5773,15 @@ function deleteSlot(idx) {
         ctx.clearRect(0,0,W,H);
         drawIsoBg(ctx,W,H);
         tinyIsland(ctx,W,H);
-
-        /* hovering cursor over center tile */
-        const hx = W*0.5 + (1-1)*(20/2); /* [1,1] tile center */
+        const hx = W*0.5 + (1-1)*(20/2); 
         const hy = H*0.68 + (1+1)*(10/2);
         const cx2=W/2+(1-1)*(20/2), cy2=H*0.68+(1+1)*(10/2);
-
-        /* highlight hovered tile top face */
         ctx.save(); ctx.globalAlpha=0.35; ctx.strokeStyle='#ffdf80'; ctx.lineWidth=1.5;
         ctx.beginPath();
         ctx.moveTo(cx2,cy2-5); ctx.lineTo(cx2+10,cy2); ctx.lineTo(cx2,cy2+5); ctx.lineTo(cx2-10,cy2); ctx.closePath();
         ctx.stroke(); ctx.restore();
 
         if (on) {
-            /* tooltip bubble */
             const pulse = 0.93 + Math.sin(_tipT*3)*0.07;
             const tw2=70, th2=20;
             const tx=cx2-tw2/2, ty=cy2-th2-18;
@@ -5831,12 +5790,10 @@ function deleteSlot(idx) {
             ctx.fillRect(tx,ty,tw2,th2);
             ctx.strokeStyle='#6b4c2a'; ctx.lineWidth=1.5;
             ctx.strokeRect(tx,ty,tw2,th2);
-            /* arrow down */
             ctx.beginPath();
             ctx.moveTo(cx2-4,ty+th2); ctx.lineTo(cx2+4,ty+th2); ctx.lineTo(cx2,ty+th2+5); ctx.closePath();
             ctx.fillStyle='rgba(20,10,4,0.92)'; ctx.fill();
             ctx.strokeStyle='#6b4c2a'; ctx.lineWidth=1.5; ctx.stroke();
-            /* text */
             ctx.fillStyle='#ffdf80'; ctx.font='5px "Press Start 2P",monospace';
             ctx.textAlign='center'; ctx.textBaseline='middle';
             ctx.fillText('Grass Block', cx2, ty+th2/2);
@@ -5858,8 +5815,6 @@ function deleteSlot(idx) {
         _tipAnim = requestAnimationFrame(tick);
     }
     function stopTipAnim() { if(_tipAnim){cancelAnimationFrame(_tipAnim);_tipAnim=null;} }
-
-    /* ── 3. CURSOR TRAIL preview ───────────────────────────── */
     const _trailParticles = [];
     let _trailAnim = null, _trailT = 0, _trailMx = 80, _trailMy = 55;
     function spawnTrailParticle(W, H) {
@@ -5897,8 +5852,6 @@ function deleteSlot(idx) {
                 ctx.restore();
             });
         }
-
-        /* cursor dot */
         ctx.fillStyle = on ? '#ffdf80' : '#c8b89a';
         ctx.beginPath(); ctx.arc(mx, my, 3, 0, Math.PI*2); ctx.fill();
 
@@ -5928,29 +5881,22 @@ function deleteSlot(idx) {
         _trailAnim = requestAnimationFrame(tick);
     }
     function stopTrailAnim() { if(_trailAnim){cancelAnimationFrame(_trailAnim);_trailAnim=null;} _trailParticles.length=0; }
-
-    /* ── Main refresh ──────────────────────────────────────── */
     window._refreshPointerPreviews = function() {
         setTimeout(() => {
             const on = id => !!document.getElementById(id)?.classList.contains('on');
             const cursor   = on('sw-custom-cursor');
             const tooltips = on('sw-block-tooltips');
             const trail    = on('sw-cursor-trail');
-            /* restart all three anim loops (they self-read current switch state) */
             stopCursorAnim(); startCursorAnim('ptr-prev-cursor');
             stopTipAnim();    startTipAnim('ptr-prev-tooltips');
             stopTrailAnim();  startTrailAnim('ptr-prev-trail');
         }, 20);
     };
-
-    /* hook into openPointerSettings */
     const _origOpen = window.openPointerSettings;
     window.openPointerSettings = function() {
         if (_origOpen) _origOpen.apply(this, arguments);
         setTimeout(window._refreshPointerPreviews, 90);
     };
-
-    /* stop anims when popup closes */
     const _origClose = window.closePointerSettings;
     window.closePointerSettings = function() {
         if (_origClose) _origClose.apply(this, arguments);
