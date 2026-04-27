@@ -1409,6 +1409,40 @@ Anyway that is all, what do you think? :cat-heart:
 ![devlog78](<.github/Devlogs (Flavortown)/devlog78.png>)
 
 ---
+# Devlog 79
+Final Devlog :3
+---save
+
+
+# Comit [(7d319ff)](https://github.com/Adium1000/Isometric-island/commit/7d319ff1a5b3f349aef7e011fe4d95b5ddadffd4)
+
+- Fixed [CSS](https://github.com/Adium1000/Isometric-island/commit/7d319ff1a5b3f349aef7e011fe4d95b5ddadffd4#diff-b78be019f1dc6d57753ea900c3805b114cd53ab7c0db836cc081836df1b99b7a) Bug (the game showed some buggy strings of the settings and language popup)
+- Added French Language [(fr.js)](https://github.com/Adium1000/Isometric-island/commit/7d319ff1a5b3f349aef7e011fe4d95b5ddadffd4#diff-f8cfff78da7ae0082fe84f9564005b27212564c66954b7dde158d6da3f065dee)
+
+# Comit [(9b7ea6c)](https://github.com/Adium1000/Isometric-island/commit/9b7ea6c54140074951b9926991052ee5e32caa0f)
+
+- Fixed the french language (added a line in the html file cuze me so silly and forgot to do it)
+- Now the french works :3
+! Warning! AI GENERATED Content, the content was modified by the owner (fr.js)
+
+---
+
+# Comit [(d341724)](https://github.com/Adium1000/Isometric-island/commit/d341724ae9bfb681a04cedce5e06a32214d9f32e)
+
+- Fixed bugs and maked the UI more consistent
+
+1. Added icons in the settings and file menu for some buttons
+2. fixed the fill button
+3. fixed popups glitching
+
+---
+
+-> Anyway that is all what do you think? :cat-heart: 
+-> That is maybe the last masive update this game gets 
+-> Thank you for all the support
+
+
+---
 
 End 
 
@@ -1609,3 +1643,9 @@ The textures are really blury  and look actualy kinda terrible and then drawing 
 Vote #1 · 89s · Opened Demo · Originality 6/9 · Technicality 5/9 · Usability 4/9 · Storytelling 6/9
 
 Amazing world builder! The binary save system and PWA support are impressive.
+
+
+
+
+# I want to thank you all for helping, rating and all the good things :3
+## You are awsome!

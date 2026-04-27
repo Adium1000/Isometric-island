@@ -1,48 +1,5 @@
 ![Banner](.github/Banners/todolist.png)
 # Here is my todo list where I list ideeas to remember them for later, take a look!
-
-ignore the cluter :) no time to sort the most heh
-also placing on the side of a block is not possible rn right?
--a proper way to retrigger it would be nice tuto
-
-- tutorial video
-- MoreBlocks
-- X people building right now" counter live (discarded)
-- build that island replica game mini
-- Notificări stacked - acum toast-ul se suprascrie, poți face o coadă verticală cu mai multe toasts simultane // 
-- Timelapse recorder — înregistrezi fiecare acțiune și poți reda construcția de la zero ca un gif/video
-- Undo/Redo Visual History: O listă cu ultimele acțiuni pe care poți da click. (depricat)
-- Replace Tool (Brush): Înlocuiește blocurile sub brush, dar păstrează înălțimea lor Z.
-
-
-
-edit layer mode
-choose Y layers to edit for exemple if  we choose all we can edit all, but if we chooose Y=2 this layer is focused , the rest of them use a ghoast effect of 50%
-
-Language Update
-Wave 1
-- Multi-language support - RO, EN, ES, FR, DE pentru UI
-Wave 2
-- RTL support - pentru arabă/ebraică
-
-
-Island Comunity update
-- Search icon, Bar
-- Tabs down of the windows 
-- Account Icon in the right Up: when clicked appears another popup with info about : Maps shared , delete button
-
-
-More sounds
-- make an exclamation sound!
-- weird sound
-
-
----
-
-Maybe cookies policy
-
-
-   
 What I added:
 
 Plan B
@@ -136,60 +93,9 @@ advanced brush options
 - add music and music switch on off
 - add a float on off switch
 - minimap 
-
-
-
-
-
-fun dinamite animation
-popup tooltips' popup   : add an question mark animation inside   
-translate the game into french, german | auto translate using claude in russian
-
-----
-Fix bugs
-
-Fill button random teleport
-Save slot save buton read error
-
-add icons to 
-File menu buttons:
-Island analitics
-Fun
-
-Settings
-Language
-KeyBinds
-Add to the island resolutions  buttons the icon on the left  : icon.png of location ./Assets/Icons/
-
-
-
-
----
-
-todo may varryy idk what else it can varry lol
-sooo yea gl
-i hate missspelling
-
-
-Devlog Sketch
-Release
-Release Fin#al
-
-
-# Devlog 79
-
-# Comit [(fcd875d)](https://github.com/Adium1000/Isometric-island/commit/fcd875df7008c7f504da3c9c229e4b89cd9dcf8c)
-
-- Added delete animation in the delete popup
-- it is a simple animation with an island that is moving to the recicle bin
-- I used keyframes :3
-- It is in the left side of the popup and it is endless
-
-[![delete_popup.png](https://i.postimg.cc/3wLjy7WD/image.png)](https://postimg.cc/QBTKP2QX)
-
----
-
-# Comit [(7d319ff)](https://github.com/Adium1000/Isometric-island/commit/7d319ff1a5b3f349aef7e011fe4d95b5ddadffd4)
-
-- Fixed [CSS](https://github.com/Adium1000/Isometric-island/commit/7d319ff1a5b3f349aef7e011fe4d95b5ddadffd4#diff-b78be019f1dc6d57753ea900c3805b114cd53ab7c0db836cc081836df1b99b7a) Bug (the game showed some buggy strings of the settings and language popup)
-- Added French Language [(fr.js)](https://github.com/Adium1000/Isometric-island/commit/7d319ff1a5b3f349aef7e011fe4d95b5ddadffd4#diff-f8cfff78da7ae0082fe84f9564005b27212564c66954b7dde158d6da3f065dee)
+- Fix bugs
+- Fill button random teleport
+- Save slot save buton read error
+- add icons to :File menu buttons:Island analitics:Fun
+- Settings:Language:KeyBinds
+- Add to the island resolutions  buttons the icon on the left  : icon.png of location ./Assets/Icons/
