@@ -1,0 +1,527 @@
+// ____ ____ ____ ____ ____ ____ 
+//||F |||r |||e |||n |||c |||h ||
+//||__|||__|||__|||__|||__|||__||
+//|/__\|/__\|/__\|/__\|/__\|/__\|
+                                   
+
+
+
+window.__LANG_DATA__ = window.__LANG_DATA__ || {};
+window.__LANG_DATA__['fr'] = {
+  _meta: { lang: 'fr', name: 'Français', flag: '🇫🇷' },
+
+  //generic UI
+  ui: {
+    ok: 'OK',
+    cancel: 'ANNULER',
+    delete: 'SUPPRIMER',
+    back: 'Retour',
+    next: 'SUIVANT ▶',
+    close: '✕',
+    loading: 'CHARGEMENT',
+    save: 'SAUVEGARDER',
+  },
+
+  //settings popup
+  settings: {
+    title: 'PARAMÈTRES',
+    section_shaping: 'FORME DE L\'ÎLE :',
+    size_label: 'TAILLE :',
+    grid_resolution: 'RÉSOLUTION DE LA GRILLE',
+    presets: 'PRÉRÉGLAGES :',
+    preset_8circle: 'CERCLE 8x8',
+    preset_16circle: 'CERCLE 16x16',
+    preset_donut: 'DONUT',
+    preset_diamond: 'DIAMANT',
+    preset_cross: 'CROIX',
+    preset_star: 'ÉTOILE',
+    perf_warning: '⚠ Une résolution plus élevée peut affecter les performances',
+    section_climate: 'CLIMAT :',
+    climate_off: 'DÉSACTIVÉ',
+    climate_rain: 'Pluie',
+    climate_snow: 'Enneigé',
+    climate_wind: 'Vent',
+    section_time: 'HEURE DU JOUR :',
+    time_day: 'Jour',
+    time_sunset: 'Coucher de soleil',
+    time_night: 'Nuit',
+    section_visuals: 'Visuels',
+    pointer_settings: 'Paramètres du curseur',
+    gui_label: 'Interface',
+    graphics: 'Graphismes',
+    photo_filters: 'Filtres photo',
+    grid_overlay: 'Grille superposée',
+    fullscreen: 'Plein écran',
+    section_controls: 'Contrôles',
+    slide_to_place: 'Glisser pour placer',
+    fps_counter: 'Compteur FPS',
+    key_bindings: 'Raccourcis clavier',
+    section_scale: 'Échelle',
+    section_language: 'LANGUE',
+  },
+
+  //save
+  save_popup: {
+    title: 'FICHIER',
+    island_code: 'CODE DE L\'ÎLE :',
+    show_qr: 'AFFICHER LE QR CODE',
+    copy_code: 'COPIER LE CODE DE L\'ÎLE',
+    copy_link: 'COPIER LE LIEN DE PARTAGE',
+    embed_code: '</> CODE D\'INTÉGRATION',
+    load_code: 'CHARGER LE CODE DE L\'ÎLE :',
+    paste_placeholder: 'Collez votre code ici... ;)',
+    paste_btn: 'COLLER DEPUIS LE PRESSE-PAPIERS',
+    load_btn: 'CHARGER',
+    save_slots: 'EMPLACEMENTS DE SAUVEGARDE :',
+    manage_slots: 'GÉRER LES EMPLACEMENTS',
+    fun: 'AMUSEMENT :',
+    fun_btn: 'AMUSEMENT',
+    btn_settings: 'PARAMÈTRES',
+    btn_analytics: 'ANALYTIQUES DE L\'ÎLE',
+    btn_achievements: 'Succès',
+    btn_community: 'CARTES COMMUNAUTAIRES',
+    danger_zone: 'ZONE DE DANGER :',
+    btn_delete: 'SUPPRIMER L\'ÎLE',
+  },
+
+  //welcome
+  welcome: {
+    title: 'BIENVENUE ! Lisez ceci avant de jouer !',
+    made_by: 'Fait avec ❤️ par',
+    reduce_zoom: 'RÉDUIRE LE ZOOM DU NAVIGATEUR',
+    reduce_zoom_sub: 'Pour une meilleure expérience, réduisez le niveau de zoom de votre navigateur',
+    zoom_warning: '⚠ Si la barre d\'outils se chevauche, vous devriez réduire le zoom :',
+    zoom_caption: 'Jusqu\'à ce que ça ressemble à ça :',
+    btn_next: 'SUIVANT ▶',
+    btn_start: 'COMMENCER À CONSTRUIRE',
+  },
+  confirm_skip_zoom: {
+    title: 'Êtes-vous sûr(e) ?',
+    msg: 'Si vous quittez maintenant, les options de mise à l\'échelle peuvent ne pas être configurées et certains éléments de l\'interface peuvent se chevaucher en créant des bugs !\n\nÀ l\'étape suivante vous trouverez aussi des Instructions que vous ne lirez pas (README) !',
+    btn_back: 'Retour aux calibrations',
+    btn_exit: 'Quitter :(',
+  },
+
+  confirm_skip_readme: {
+    title: 'Êtes-vous sûr(e) ?',
+    msg: "Si vous quittez maintenant sans lire le readme, vous renoncez à tous vos droits de commenter les bugs, les fonctionnalités manquantes ou quoi que ce soit d'autre documenté ici.\n\nNe dites pas qu'on ne vous avait pas prévenu.",
+    btn_back: 'Retour au guide',
+    btn_exit: 'Quitter :(',
+  },
+
+  //legal agreement
+  agreement: {
+    title: 'Avant de jouer',
+    subtitle: 'Veuillez lire et accepter nos politiques pour continuer',
+    tab_privacy: 'Politique de confidentialité',
+    tab_terms: 'Conditions d\'utilisation',
+    tab_imprint: 'Mentions légales',
+    tab_aup: 'PUA',
+    tab_dmca: 'DMCA',
+    loading: 'Chargement...',
+    open_pdf: '📄 Ouvrir en PDF',
+    check_privacy: 'J\'ai lu et j\'accepte la Politique de confidentialité',
+    check_terms: 'J\'ai lu et j\'accepte les Conditions d\'utilisation',
+    btn_accept: 'ACCEPTER ET CONTINUER ▶',
+  },
+
+  //delete island confirm
+  delete_island: {
+    title: 'SUPPRIMER L\'ÎLE ?',
+    msg: 'Êtes-vous sûr(e) de vouloir supprimer l\'île ? Cette action est irréversible !',
+    btn_cancel: 'ANNULER',
+    btn_delete: 'SUPPRIMER',
+  },
+
+  //fill panel
+  fill_panel: {
+    title: 'Remplir',
+    tiles_selected: '0 tuile(s) sélectionnée(s)',
+    height_label: 'HAUTEUR :',
+    btn_cancel: 'ANNULER',
+  },
+
+  //code bar
+  code_bar: {
+    label: 'VOTRE CODE :',
+    btn_copy: 'COPIER',
+  },
+
+  //QR popup
+  qr: {
+    title: 'QR CODE',
+    subtitle: 'Scannez pour partager votre île !',
+    hint: 'Scannez avec n\'importe quelle application QR pour charger le code de votre île',
+  },
+
+  //block search
+  block_search: {
+    title: 'Rechercher',
+    placeholder: 'RECHERCHER DES BLOCS...',
+    no_results: 'AUCUN BLOC TROUVÉ',
+    categories: {
+      all: 'TOUS',
+      natural: 'NATUREL',
+      decoration: 'DÉCO',
+      nature: 'NATURE',
+      winter: 'HIVER',
+      tools: 'OUTILS',
+    },
+  },
+
+  //fun popup
+  fun_popup: {
+    title: 'AMUSEMENT',
+    random_island_name: 'ÎLE ALÉATOIRE',
+    random_island_desc: 'Générer une île biome aléatoire',
+    random_mountain_name: 'MONTAGNE ALÉATOIRE',
+    random_mountain_desc: 'Générer une île montagne aléatoire',
+    island_as_emoji_name: 'ÎLE EN EMOJI',
+    island_as_emoji_desc: 'Convertir votre île en art emoji',
+  },
+
+  //island biome chooser
+  island_biome: {
+    title: 'CHOISIR LE BIOME DE L\'ÎLE',
+    summer: 'ÉTÉ',
+    summer_desc: 'Herbe, fleurs, arbres et cultures',
+    snowy: 'ENNEIGÉ',
+    snowy_desc: 'Glace, neige, bonhommes de neige et sapins',
+    desert: 'DÉSERT',
+    desert_desc: 'Sable, sable rouge et rochers',
+    ocean: 'OCÉAN',
+    ocean_desc: 'Eau, plages et pierre',
+    stone: 'PIERRE',
+    stone_desc: 'Pierre, mousse et arbres clairsemés',
+    random: 'ALÉATOIRE',
+    random_desc: 'Surprenez-moi !',
+  },
+
+  //mountain biome chooser
+  mountain_biome: {
+    title: 'CHOISIR LE TYPE DE MONTAGNE',
+    alpine: 'ALPIN',
+    alpine_desc: 'Sommet enneigé, pierre et sapins',
+    volcanic: 'VOLCANIQUE',
+    volcanic_desc: 'Roche sombre et sommet de sable rouge',
+    earthy: 'TERREUX',
+    earthy_desc: 'Terre, pierre, arbres et foin',
+    mossy: 'MOUSSU',
+    mossy_desc: 'Roche couverte de mousse et d\'arbres',
+    random: 'ALÉATOIRE',
+    random_desc: 'Surprenez-moi !',
+  },
+
+  //island as emoji popup
+  island_emoji: {
+    title: 'ÎLE EN EMOJI',
+    regenerate: 'REGÉNÉRER',
+    regenerate_desc: 'Relire l\'île actuelle',
+    copy: 'COPIER LES EMOJIS',
+    copy_desc: 'Copier dans le presse-papiers',
+  },
+
+  //pointer settings
+  pointer_settings: {
+    title: 'PARAMÈTRES DU CURSEUR',
+    custom_cursors: 'Curseurs personnalisés',
+    block_tooltips: 'Infobulles des blocs',
+    cursor_trail: '✦ Traînée du curseur',
+  },
+
+  //GUI theme
+  gui_settings: {
+    title: 'THÈME DE L\'INTERFACE',
+    auto: 'AUTO',
+    auto_desc: 'Suit le climat',
+    brown: 'MARRON',
+    brown_desc: 'Thème par défaut',
+    blue: 'BLEU',
+    blue_desc: 'Pluie et neige',
+    green: 'VERT',
+    green_desc: 'Thème vent',
+  },
+
+  //graphics settings
+  graphics_settings: {
+    title: 'PARAMÈTRES GRAPHIQUES',
+    shadows: 'Ombres de l\'île',
+    leaves: 'Feuilles',
+    clouds: 'Nuages',
+    block_particles: 'Particules de blocs',
+    show_air: 'Afficher les blocs d\'air',
+  },
+
+  //photo filters
+  photo_filters: {
+    title: 'FILTRES PHOTO',
+    none: 'AUCUN',
+    gameboy: 'GAME BOY',
+    crt: 'RÉTRO CRT',
+    sepia: 'SÉPIA',
+    high_contrast: 'CONTRASTE ÉLEVÉ',
+  },
+
+  //key bindings popup
+  keybindings: {
+    title: 'RACCOURCIS CLAVIER',
+    subtitle: 'Cliquez sur une touche pour la réassigner',
+    reset: 'RÉINITIALISER PAR DÉFAUT',
+    conflict: '⚠ CONFLIT AVEC',
+    listening: '...',
+    actions: {
+      undo: 'Annuler',
+      redo: 'Rétablir',
+      search: 'Recherche de blocs',
+      grid: 'Grille superposée',
+      eraser: 'Gomme',
+      page: 'Changer de page',
+      music: 'Musique',
+      float: 'Mode flottant',
+    },
+  },
+
+  //mirror mode
+  mirror: {
+    title: 'MODE MIROIR',
+    off: 'Désactivé',
+    x: 'Axe X',
+    y: 'Axe Y',
+    both: 'Les deux',
+    active: 'Actif :',
+  },
+
+  //brush popup
+  brush: {
+    title: 'TAILLE DU PINCEAU',
+  },
+
+  //float popup
+  float_popup: {
+    title: 'MODE FLOTTANT',
+    off: 'Désactivé',
+    updown: 'Haut/Bas',
+    leftright: 'Gauche/Droite',
+    spin: 'Rotation',
+    jiggle: 'Oscillation',
+    speed_label: 'Vitesse',
+  },
+
+  //music popup
+  music_popup: {
+    title: 'MUSIQUE',
+    bg_music: 'Musique de fond',
+    volume_label: 'Volume',
+    spotify_label: 'Playlist Spotify',
+  },
+
+  //legal menu
+  settings_menu: {
+    title: 'Fichiers et documents légaux',
+    legal_docs: 'Documents légaux',
+    tutorial: 'Tutoriel',
+    interactive_tutorial: 'Tutoriel interactif',
+  },
+
+  //radial menu
+  radial: {
+    brush_size: 'TAILLE|PINCEAU',
+    mirror_mode: 'MODE|MIROIR',
+    grid_overlay: 'GRILLE|SUPERPOSÉE',
+    settings: 'PARAMÈTRES',
+    present_mode: 'MODE|PRÉSENTATION',
+    magic_wand: 'BAGUETTE|MAGIQUE',
+    terraform: 'TERRA|FORME',
+    line_tool: 'OUTIL|LIGNE',
+    circle_tool: 'OUTIL|CERCLE',
+  },
+
+  //save slots
+  save_slots: {
+    title: 'EMPLACEMENTS DE SAUVEGARDE',
+    empty: 'Vide',
+    slot: 'Emplacement',
+    load: 'Charger',
+    delete: 'Supprimer',
+  },
+
+  //community
+  community: {
+    title: 'Cartes communautaires',
+    btn_upload: 'Publier mon île',
+    btn_refresh: 'Actualiser',
+    loading: 'Chargement...',
+    empty: 'Aucune carte pour l\'instant. Soyez le premier !',
+    failed_load: 'Échec du chargement.',
+    no_maps_found: 'Aucune carte trouvée.',
+    not_logged_in: 'NON CONNECTÉ',
+    anonymous: 'ANONYME',
+    saving: 'Enregistrement...',
+    enter_name: 'Entrez un nom !',
+    banned: 'Compte banni !',
+    island_empty: 'L\'île est vide !',
+    saved_ok: '+ Enregistré avec succès !',
+    search_placeholder: 'Rechercher des cartes ou des auteurs...',
+    map_name_label: 'NOM DE LA CARTE :',
+    map_name_placeholder: 'ex : Mon île sympa...',
+    share_hint: 'Partagez votre île actuelle avec la communauté',
+    publish_btn: 'PUBLIER DANS LA COMMUNAUTÉ',
+    my_maps_label: 'MES CARTES PARTAGÉES :',
+    maps_count_suffix: 'cartes',
+    delete_account_btn: '🗑 SUPPRIMER LE COMPTE',
+    login_btn: 'SE CONNECTER AVEC GOOGLE',
+    tab_browse: 'PARCOURIR',
+    tab_publish: 'PUBLIER',
+    tab_account: 'COMPTE',
+    content_warning: 'AVERTISSEMENT DE CONTENU',
+    agree_btn: 'J\'ACCEPTE',
+    go_back_btn: 'RETOUR',
+  },
+
+  //analytics
+  analytics: {
+    title: 'Analytiques de l\'île',
+    total_label: 'Total des blocs',
+    types_label: 'Types de blocs',
+    layers_label: 'Couches',
+    no_blocks: 'Aucun bloc placé pour l\'instant !',
+  },
+
+  //achievements
+  achievements: {
+    title: 'Succès',
+    empty: 'Aucun succès pour l\'instant. Commencez à construire !',
+    unlocked_label: 'Succès débloqué !',
+    progress: 'Débloqué',
+    locked_desc: '???',
+    locked_badge: '?',
+    list: {
+      first_tree:       { title: 'Premier arbre',              desc: 'Placez un arbre sur l\'île' },
+      random_island:    { title: 'Peut-être que tu sais cuisiner', desc: 'Générer une île aléatoire' },
+      settings_opened:  { title: 'À la pointe de la technologie', desc: 'Ouvrir les paramètres' },
+      easter_confetti:  { title: 'Cliqueur',                   desc: 'Cliquez sur le titre 10 fois pour des confettis' },
+      easter_flavortown:{ title: 'FLAVORTOWN',                 desc: 'Quelque part, "Flavortown" sera toujours là' },
+      easter_1x1:       { title: 'Pas une île',                desc: 'Vous pensiez vraiment qu\'une grille 1x1 est une île ?' },
+      float_mode:       { title: 'Ça flotte !',                desc: 'Faites flotter votre île' },
+      emoji_tab:        { title: 'Vous êtes fou, arrêtez !',   desc: 'Ouvrir l\'onglet Île en emoji' },
+      share_link:       { title: 'Le partage, c\'est bien',    desc: 'Partagez le lien de votre île' },
+      potato_mode:      { title: 'Mode patate activé',         desc: 'Désactiver tous les paramètres graphiques' },
+    },
+  },
+
+  //tutorial (spotlight)
+  tutorial: {
+    btn_skip: 'PASSER LE TUTORIEL',
+    btn_next: 'Suivant ▶',
+    btn_start: 'Commencer à construire ! ',
+    steps: {
+      hotbar:     { title: 'Barre d\'outils',   text: 'C\'est la barre de blocs ! Cliquez sur un bloc pour le sélectionner, puis cliquez sur l\'île pour le placer. Utilisez les flèches pour plus de blocs.' },
+      zoom:       { title: 'Barre de zoom',      text: 'Utilisez la barre de zoom pour zoomer ou dézoomer sur l\'île. Appuyez sur + ou − ou faites glisser le point.' },
+      music:      { title: 'Menu musique',       text: 'L\'icône musique ouvre le menu Musique ! Vous pouvez écouter une playlist Spotify ou activer la musique de fond. Appuyez sur le bouton ci-dessous !', action: 'Ouvrir la musique' },
+      float:      { title: 'Mode flottant',      text: 'Le bouton Flottant fait flotter et animer l\'île ! Ouvrez-le pour choisir un préréglage et une vitesse.', action: 'Ouvrir le mode flottant' },
+      radial:     { title: 'Menu radial',        text: 'Faites un clic droit (ou appui long sur mobile) n\'importe où sur l\'île pour ouvrir le menu radial — accès rapide au pinceau, miroir, annuler et plus !', action: 'Ouvrir le menu radial' },
+      save:       { title: 'Menu fichier',       text: 'L\'icône de sauvegarde ouvre le menu Fichier complet : sauvegardez votre île, chargez des codes, gérez les emplacements, changez les paramètres et bien plus !', action: 'Ouvrir le fichier' },
+      done:       { title: 'Vous êtes prêt(e) !', text: 'Vous savez maintenant tout ce qu\'il faut ! Construisez votre île, expérimentez avec les blocs et partagez vos créations avec la communauté. Bonne chance ! 🏝️' },
+    },
+  },
+
+  //help info cards (? button)
+  help: {
+    file:         { title: 'Fichier',                    text: 'Sauvegarder, charger, exporter, modifier les paramètres et les options amusantes sont ici' },
+    save:         { title: 'Fichier',                    text: 'Sauvegarder, charger, exporter, modifier les paramètres et les options amusantes sont ici' },
+    settings:     { title: 'Paramètres',                 text: 'Le menu Paramètres vous permet de modifier vos préférences et les paramètres de l\'île.' },
+    legal:        { title: 'Documents légaux et tutoriel', text: 'Vous pouvez consulter ici les documents légaux utilisés par ce jeu.' },
+    graphics:     { title: 'Graphismes',                 text: 'Modifiez les graphismes et rendez le jeu plus fluide si nécessaire.' },
+    pointer:      { title: 'Curseur',                    text: 'Configurez les options du curseur et son comportement à votre guise.' },
+    gui:          { title: 'Thème de l\'interface',      text: 'Changez la couleur d\'accentuation de l\'interface entre marron/bleu/vert ou laissez-la changer automatiquement.' },
+    keybindings:  { title: 'Raccourcis clavier',         text: 'Personnalisez les raccourcis clavier à votre guise via ce menu, vous pouvez toujours revenir aux valeurs par défaut.' },
+    achievements: { title: 'Succès',                     text: 'Explorez le jeu et débloquez des succès loufoques, suivez votre progression sur la barre.' },
+    float:        { title: 'Mode flottant',              text: 'Faites flotter votre île grâce aux préréglages, n\'oubliez pas de modifier la vitesse.' },
+    music:        { title: 'Musique',                    text: 'Écoutez des sons d\'ambiance ou une playlist Spotify spéciale conçue pour les constructeurs d\'îles, tout comme vous !.' },
+    community:    { title: 'Cartes communautaires',      text: 'Explorez ou publiez vos cartes préférées sur le serveur Isometric Island, nécessite un compte Google OAuth.' },
+    save_slots:   { title: 'Emplacements de sauvegarde', text: 'Vous pouvez sauvegarder jusqu\'à 3 îles dans le stockage local de votre navigateur grâce à ce menu, très utile pour les ébauches.' },
+  },
+  toast: {
+    saved: 'Enregistré avec succès !',
+    copied_clipboard: 'Copié avec succès !',
+    pasted: 'Collé avec succès !',
+    loaded: 'Chargé avec succès !',
+    deleted: 'Supprimé avec succès !',
+    invalid_code: 'Code invalide !',
+    no_code: 'Aucun code pour l\'instant !',
+    share_link_copied: 'Lien de partage copié !',
+    island_loaded_link: 'Île chargée depuis le lien !',
+    island_restored: 'Île restaurée depuis la dernière session.',
+    block_not_in_hotbar: 'Bloc absent de la barre d\'outils !',
+    press_ctrl_v: 'Appuyez sur CTRL + V pour coller !',
+    flavortown: 'Flavortown est le meilleur :3',
+    emoji_copied: 'Île en emoji copiée ! 🏝️',
+    lang_changed: 'Langue modifiée !',
+    embed_copied: 'Code d\'intégration copié !',
+    preset_circle: 'Cercle',
+    preset_donut: 'Donut',
+    preset_diamond: 'Diamant',
+    preset_cross: 'Croix',
+    preset_star: 'Étoile',
+    grid_on: 'Grille ACTIVÉE',
+    grid_off: 'Grille DÉSACTIVÉE',
+    tool_disabled: 'Outil désactivé',
+    presentation_on: 'Présentation ACTIVÉE',
+    presentation_off: 'Présentation DÉSACTIVÉE',
+    picked: 'Sélectionné :',
+    selected_tiles: 'Sélectionné :',
+    tiles_suffix: 'tuile(s)',
+    line_point_started: 'Point de ligne démarré',
+    line_placed: 'Ligne placée !',
+    started_circle: 'Cercle démarré',
+    pasted_circle: 'Cercle collé',
+    z_level: 'Z :',
+    saved_to_slot: 'Sauvegardé dans l\'emplacement',
+    loaded_slot: 'Emplacement chargé',
+    slot_empty: 'est vide !',
+    slot_deleted: 'supprimé !',
+    error_loading_slot: 'Erreur lors du chargement de l\'emplacement',
+    deleted_blocks: 'Supprimé',
+    blocks_suffix: 'bloc',
+    blocks_suffix_plural: 'blocs',
+    filled: 'Rempli',
+    island_size: 'Île :',
+    tool_active: 'actif',
+  },
+
+  //embed popup
+  embed: {
+    title: 'INTÉGRER L\'ÎLE',
+    section_label: 'CODE D\'INTÉGRATION DE L\'ÎLE :',
+    copy_btn: 'COPIER LE CODE D\'INTÉGRATION',
+    preview_btn: '▶ APERÇU',
+  },
+
+  //offline indicator
+  offline: '● HORS LIGNE',
+  blocks: {
+    eraser:      'Gomme : Idéale pour façonner et supprimer des blocs',
+    dirt:        'Herbe : Bloc naturel',
+    flovers:     'Fleurs : Décoration naturelle',
+    rock:        'Rocher : Décoration naturelle',
+    dirt2:       'Terre : Bloc naturel',
+    ShovedDirt:  'Terre retournée : Bloc naturel',
+    crops:       'Cultures : Décoration naturelle',
+    stone:       'Pierre : Bloc naturel',
+    mossystone:  'Pierre mousseuse : Décoration naturelle',
+    sand:        'Sable : Bloc naturel',
+    redsand:     'Sable rouge : Bloc naturel',
+    melon:       'Pastèque : Décoration naturelle (multicouche)',
+    Hay:         'Meule de foin : Décoration naturelle (multicouche)',
+    water:       'Eau : Bloc naturel',
+    tree:        'Arbre : Décoration naturelle (multicouche)',
+    pumpkin:     'Citrouille : Décoration naturelle',
+    snow:        'Neige : Bloc naturel',
+    snowrocks:   'Rochers enneigés : Bloc naturel',
+    ice:         'Glace : Bloc naturel',
+    snowman:     'Bonhomme de neige : Décoration faite main (multicouche)',
+    snowed_tree: 'Arbre enneigé : Décoration hivernale (multicouche)',
+    wood:        'Bois : Décoration naturelle',
+    leaf:        'Feuille : Décoration naturelle',
+  },
+};
