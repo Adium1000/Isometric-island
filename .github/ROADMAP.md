@@ -176,4 +176,24 @@ Release
 Release Fin#al
 
 
-# Devlog 7
+# Devlog 78
+## Overall devlog: Added QR Code Scaning Animation
+
+---
+ ## Comit [(f762cdd)](https://github.com/Adium1000/Isometric-island/commit/f762cddfe4f19e96f7536e5e08db1afa6e6cf504)
+
+- Added QR code animation  in the right of the popup
+- It is a phone opened in the QR code reader that scans while the phone is moving
+- it is a kinda tutorial on how to load & scan the code 
+- brown phone
+
+---
+
+## © Adrian's Image Spotlight
+- The image gallery contains photos I took with a macro lens
+- The photos may be edited, which can result in a loss of their natural appearance
+
+
+---
+
+-> Anyway that is all what do you think? :cat-heart: 

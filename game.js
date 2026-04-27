@@ -521,6 +521,7 @@ function _syncFloatPopupCards() {
         if (card) card.classList.toggle('active', currentFloatMode === id);
     });
 }
+
 let _floatPrevAnim = null;
 let _floatPrevT = 0;
 
@@ -658,7 +659,7 @@ function setFloatMode(mode) {
     const folder = getGUIFolder(currentGUITheme);
     floatBtn.src = isFloating ? folder + 'floaton.png' : folder + 'floatoff.png';
     _syncFloatPopupCards();
-     if (_floatPrevAnim !== null || document.getElementById('float-popup-overlay')?.style.display !== 'none') {
+    if (_floatPrevAnim !== null || document.getElementById('float-popup-overlay')?.style.display !== 'none') {
         _startFloatPreview();
     }
     hotbarSound.currentTime = 0; hotbarSound.play().catch(e => {});
@@ -5664,6 +5665,8 @@ function deleteSlot(idx) {
     renderSaveSlots();
     showToast(LangManager.t('toast.slot') + ' ' + (idx + 1) + ' ' + LangManager.t('toast.slot_deleted'));
 }
+
+
 (function() {
     function drawIsoBg(ctx, W, H) {
         const g = ctx.createLinearGradient(0, 0, 0, H);
@@ -5719,7 +5722,6 @@ function deleteSlot(idx) {
         const t = _cursorT;
         const mx = W*0.5 + Math.sin(t) * W*0.28;
         const my = H*0.45 + Math.sin(t*2) * H*0.18;
-
         if (on) {
             const s = 2;
             const pixels = [

@@ -1508,47 +1508,76 @@ body {
     background: var(--gui-bg);
     border: 4px solid var(--gui-border);
     box-shadow: 6px 6px 0 var(--gui-bg-dark);
-    padding: 28px 30px 22px 30px;
+    padding: 0;
     display: flex;
     flex-direction: column;
-    align-items: center;
-    gap: 16px;
-    width: 300px;
+    align-items: stretch;
+    width: 480px;
     font-family: 'Press Start 2P', cursive;
+    overflow: hidden;
 }
-#confirm-delete-icon {
-    font-size: 36px;
-    line-height: 1;
-    filter: drop-shadow(2px 2px 0 #3b1010);
-}
-#confirm-delete-popup h2 {
-    margin: 0;
+
+#confirm-delete-header {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 18px 24px 14px 24px;
     color: #ff6060;
     font-size: 12px;
     text-shadow: 2px 2px #3b1010;
-    text-align: center;
     letter-spacing: 1px;
+}
+#confirm-delete-body {
+    display: flex;
+    flex-direction: row;
+    align-items: stretch;
+    min-height: 140px;
+    padding-bottom: 20px;
+}
+
+#confirm-delete-anim-col {
+    width: 165px;
+    min-width: 165px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 4px 0 4px 4px;
+}
+#del-anim-svg {
+    width: 155px;
+    height: 115px;
+    display: block;
+    overflow: visible;
+}
+
+#confirm-delete-content-col {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: center;
+    gap: 18px;
+    padding: 10px 22px 10px 16px;
 }
 #confirm-delete-msg {
     margin: 0;
     color: #e8d5b0;
     font-size: 7px;
-    text-align: center;
-    line-height: 2;
+    text-align: left;
+    line-height: 2.2;
     letter-spacing: 0.5px;
 }
 #confirm-delete-btns {
     display: flex;
-    gap: 12px;
+    gap: 10px;
     width: 100%;
-    margin-top: 4px;
 }
 .btn-cancel-del {
     flex: 1;
     padding: 10px 8px;
     font-family: 'Press Start 2P', cursive;
     font-size: 8px;
-    
+    cursor: pointer;
     background: var(--gui-border);
     color: var(--gui-accent);
     border: 3px solid var(--gui-bg-dark);
@@ -1562,7 +1591,7 @@ body {
     padding: 10px 8px;
     font-family: 'Press Start 2P', cursive;
     font-size: 8px;
-    
+    cursor: pointer;
     background: #7a2020;
     color: #fff;
     border: 3px solid #3b1010;
@@ -1571,6 +1600,93 @@ body {
 }
 .btn-confirm-del:hover { filter: brightness(1.3); }
 .btn-confirm-del:active { transform: scale(0.93); }
+#del-island-g {
+    animation: delIslandFly 3s ease-in-out infinite;
+    transform-origin: 38px 68px;
+}
+@keyframes delIslandFly {
+    0%   { transform: translate(0px,   0px) rotate(0deg)  scale(1);    opacity: 1; }
+    8%   { transform: translate(0px,  -6px) rotate(0deg)  scale(1);    opacity: 1; }
+    16%  { transform: translate(0px,   0px) rotate(0deg)  scale(1);    opacity: 1; }
+    24%  { transform: translate(0px,  -5px) rotate(0deg)  scale(1);    opacity: 1; }
+    28%  { transform: translate(0px,   0px) rotate(0deg)  scale(1);    opacity: 1; }
+    44%  { transform: translate(28px, -14px) rotate(10deg) scale(0.85); opacity: 1; }
+    62%  { transform: translate(60px,  -8px) rotate(22deg) scale(0.6);  opacity: 1; }
+    70%  { transform: translate(76px,   3px) rotate(30deg) scale(0.3);  opacity: 0.4; }
+    73%  { transform: translate(80px,   6px) rotate(34deg) scale(0.08); opacity: 0; }
+    74%  { transform: translate(0px,   0px) rotate(0deg)  scale(0.08); opacity: 0; }
+    86%  { transform: translate(0px, -10px) rotate(0deg)  scale(1.15); opacity: 1; }
+    93%  { transform: translate(0px,   3px) rotate(0deg)  scale(0.94); opacity: 1; }
+    100% { transform: translate(0px,   0px) rotate(0deg)  scale(1);    opacity: 1; }
+#del-shadow-g {
+    animation: delShadow 3s ease-in-out infinite;
+    transform-origin: 38px 96px;
+}
+@keyframes delShadow {
+    0%   { transform: scaleX(1);    opacity: 0.2; }
+    8%   { transform: scaleX(0.65); opacity: 0.1; }
+    16%  { transform: scaleX(1);    opacity: 0.2; }
+    24%  { transform: scaleX(0.7);  opacity: 0.12; }
+    28%  { transform: scaleX(1);    opacity: 0.2; }
+    55%  { transform: scaleX(0.3);  opacity: 0.05; }
+    72%  { transform: scaleX(0);    opacity: 0; }
+    74%  { transform: scaleX(0);    opacity: 0; }
+    86%  { transform: scaleX(1.15); opacity: 0.25; }
+    100% { transform: scaleX(1);    opacity: 0.2; }
+}
+#del-trail-g {
+    animation: delTrailFade 3s ease-in-out infinite;
+}
+@keyframes delTrailFade {
+    0%   { opacity: 0; }
+    30%  { opacity: 0; }
+    46%  { opacity: 1; }
+    68%  { opacity: 0.5; }
+    74%  { opacity: 0; }
+    100% { opacity: 0; }
+}
+
+#del-stars-g {
+    animation: delStarsBurst 3s ease-out infinite;
+    transform-origin: 90px 38px;
+}
+@keyframes delStarsBurst {
+    0%   { opacity: 0; transform: scale(0.2) rotate(0deg); }
+    71%  { opacity: 0; transform: scale(0.2) rotate(0deg); }
+    74%  { opacity: 1; transform: scale(1.4) rotate(15deg); }
+    80%  { opacity: 0.9; transform: scale(1.1) rotate(8deg); }
+    90%  { opacity: 0; transform: scale(0.8) rotate(0deg); }
+    100% { opacity: 0; transform: scale(0.2) rotate(0deg); }
+}
+
+#del-trash-lid-g {
+    animation: delLidPop 3s ease-in-out infinite;
+    transform-origin: 128px 48px;
+}
+@keyframes delLidPop {
+    0%   { transform: translateY(0px)   rotate(0deg); }
+    70%  { transform: translateY(0px)   rotate(0deg); }
+    74%  { transform: translateY(-16px) rotate(-20deg); }
+    81%  { transform: translateY(-10px) rotate(-13deg); }
+    88%  { transform: translateY(-2px)  rotate(-3deg); }
+    92%  { transform: translateY(0px)   rotate(0deg); }
+    100% { transform: translateY(0px)   rotate(0deg); }
+}
+
+#del-trash-body-g {
+    animation: delTrashShake 3s ease-in-out infinite;
+    transform-origin: 128px 76px;
+}
+@keyframes delTrashShake {
+    0%   { transform: rotate(0deg)  translateX(0); }
+    71%  { transform: rotate(0deg)  translateX(0); }
+    74%  { transform: rotate(-6deg) translateX(-3px); }
+    77%  { transform: rotate(5deg)  translateX(3px); }
+    80%  { transform: rotate(-3deg) translateX(-1px); }
+    83%  { transform: rotate(1deg)  translateX(0); }
+    86%  { transform: rotate(0deg)  translateX(0); }
+    100% { transform: rotate(0deg)  translateX(0); }
+}
 
 @keyframes starTwinkle {
     from { opacity: 0.2; transform: scale(0.8); }

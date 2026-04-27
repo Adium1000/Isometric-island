@@ -1224,11 +1224,80 @@ function tryStartBuilding() {
 <div id="confirm-delete-overlay" onclick="if(event.target===this)closeConfirmDelete()">
     <div id="confirm-delete-wrapper">
         <div id="confirm-delete-popup" class="pixel-corners">
-            <h2><img src="./Assets/Icons/remove.png" style="width:26px;height:26px;image-rendering:pixelated;vertical-align:middle;margin-right:6px;"><span data-t="delete_island.title">DELETE ISLAND?</span></h2>
-            <p id="confirm-delete-msg" data-t="delete_island.msg">Are you sure you want to delete the island? This action cannot be undone!</p>
-            <div id="confirm-delete-btns">
-                <button class="btn-cancel-del" onclick="closeConfirmDelete()" data-t="delete_island.btn_cancel">CANCEL</button>
-                <button class="btn-confirm-del" onclick="confirmDeleteIsland()" data-t="delete_island.btn_delete">DELETE</button>
+            <div id="confirm-delete-header">
+                <img src="./Assets/Icons/remove.png" style="width:20px;height:20px;image-rendering:pixelated;vertical-align:middle;margin-right:8px;">
+                <span data-t="delete_island.title">DELETE ISLAND?</span>
+            </div>
+            <div id="confirm-delete-body">
+                <div id="confirm-delete-anim-col">
+                    <svg id="del-anim-svg" viewBox="0 0 160 120" xmlns="http://www.w3.org/2000/svg" shape-rendering="crispEdges">
+                        <g id="del-shadow-g">
+                            <ellipse cx="38" cy="96" rx="20" ry="4" fill="#000" opacity="0.2"/>
+                        </g>
+                        <g id="del-trash-body-g">
+                            <rect x="112" y="54" width="32" height="44" fill="#636e72"/>
+                            <rect x="114" y="54" width="28" height="42" fill="#7f8c8d"/>
+                            <rect x="114" y="54" width="28" height="5"  fill="#95a5a6"/>
+                            <rect x="114" y="54" width="3"  height="42" fill="#a0b0b1" opacity="0.4"/>
+                            <rect x="114" y="94" width="28" height="4"  fill="#535f60"/>
+                            <rect x="116" y="97" width="24" height="3"  fill="#434f50"/>
+                        </g>
+                        <g id="del-trash-lid-g">
+                            <rect x="109" y="48" width="38" height="8"  fill="#7f8c8d"/>
+                            <rect x="111" y="49" width="34" height="6"  fill="#95a5a6"/>
+                            <rect x="111" y="49" width="34" height="2"  fill="#b0c4c5" opacity="0.5"/>
+                            <rect x="122" y="42" width="12" height="7"  fill="#636e72"/>
+                            <rect x="124" y="43" width="8"  height="5"  fill="#7f8c8d"/>
+                        </g>
+                        <g id="del-trail-g" opacity="0">
+                            <rect x="52" y="59" width="10" height="3" fill="#f39c12"/>
+                            <rect x="65" y="57" width="8"  height="3" fill="#e67e22" opacity="0.7"/>
+                            <rect x="76" y="56" width="6"  height="2" fill="#e67e22" opacity="0.45"/>
+                            <rect x="85" y="55" width="4"  height="2" fill="#e67e22" opacity="0.2"/>
+                        </g>
+                        <g id="del-stars-g" opacity="0">
+                            <rect x="90"  y="34" width="5" height="5" fill="#f1c40f"/>
+                            <rect x="92"  y="31" width="1" height="11" fill="#f1c40f"/>
+                            <rect x="89"  y="37" width="7"  height="1" fill="#f1c40f"/>
+
+                            <rect x="78"  y="42" width="4" height="4" fill="#e74c3c"/>
+                            <rect x="80"  y="40" width="1" height="8"  fill="#e74c3c"/>
+                            <rect x="77"  y="44" width="6"  height="1" fill="#e74c3c"/>
+
+                            <rect x="100" y="40" width="3" height="3" fill="#f39c12"/>
+                            <rect x="101" y="38" width="1" height="7"  fill="#f39c12"/>
+
+                            <rect x="84"  y="28" width="3" height="3" fill="#fff" opacity="0.9"/>
+                            <rect x="98"  y="30" width="4" height="4" fill="#f1c40f" opacity="0.7"/>
+                        </g>
+                        <g id="del-island-g">
+                            <polygon points="14,68 38,52 62,68 38,84" fill="#8B6914"/>
+                            <polygon points="38,84 62,68 62,78 38,94" fill="#6b4f10"/>
+                            <polygon points="14,68 38,84 38,94 14,78" fill="#7a5a12"/>
+                            <polygon points="14,68 20,64 20,74 14,78" fill="#9a7a22" opacity="0.45"/>
+                            <polygon points="16,67 38,52 60,67 38,82" fill="#3d8b3d"/>
+                            <polygon points="20,65 38,54 56,65 38,78" fill="#4CAF50"/>
+                            <polygon points="33,59 38,56 43,59 38,62" fill="#81c784" opacity="0.6"/>
+                            <rect x="36" y="42" width="5" height="12" fill="#5d4037"/>
+                            <rect x="37" y="42" width="2" height="12" fill="#6d4c41"/>
+                            <polygon points="38,28 27,44 49,44" fill="#2e7d32"/>
+                            <polygon points="38,23 29,38 47,38" fill="#388e3c"/>
+                            <polygon points="38,17 31,32 45,32" fill="#43a047"/>
+                            <polygon points="38,12 33,25 43,25" fill="#66bb6a"/>
+                            <rect x="51" y="70" width="8" height="2" fill="#1e88e5" opacity="0.7"/>
+                            <rect x="53" y="72" width="4" height="2" fill="#42a5f5" opacity="0.5"/>
+                        </g>
+
+                    </svg>
+                </div>
+                <div id="confirm-delete-content-col">
+                    <p id="confirm-delete-msg" data-t="delete_island.msg">Are you sure you want to delete the island? This action cannot be undone!</p>
+                    <div id="confirm-delete-btns">
+                        <button class="btn-cancel-del" onclick="closeConfirmDelete()" data-t="delete_island.btn_cancel">CANCEL</button>
+                        <button class="btn-confirm-del" onclick="confirmDeleteIsland()" data-t="delete_island.btn_delete">DELETE</button>
+                    </div>
+                </div>
+
             </div>
         </div>
     </div>
