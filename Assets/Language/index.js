@@ -37,5 +37,5 @@
 window.__LANG_INDEX__ = [
     { code: 'en', name: 'English',  flag: '🇬🇧' },
     { code: 'ro', name: 'Română',   flag: '🇷🇴' },
-    { code: 'fr', name: 'Français', flag: '🇫🇷' }
+    { code: 'fr', name: 'Français', flag: '🇫🇷' },
 ];
