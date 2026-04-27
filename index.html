@@ -1012,14 +1012,14 @@ function tryStartBuilding() {
 
                         <div>
                             <div class="popup-section-title" data-t="save_popup.fun">FUN:</div>
-                            <button class="btn-random" onclick="closeSavePopup();openFunPopup()" data-t="save_popup.fun_btn">FUN</button>
+                            <button class="btn-random" onclick="closeSavePopup();openFunPopup()"><img src="./Assets/Icons/software.png" style="width:16px;height:16px;image-rendering:pixelated;vertical-align:middle;margin-right:6px;"><span data-t="save_popup.fun_btn">FUN</span></button>
                             <div id="random-island-type" style="color:#ffdf80;font-size:7px;text-align:center;margin-top:6px;min-height:12px;letter-spacing:1px;"></div>
                             <div id="mountain-type" style="display:none;"></div>
                         </div>
 
                         <div style="display:flex;flex-direction:column;gap:8px;">
                             <button class="btn-settings" onclick="openSettingsPopup()"><img src="./Assets/Icons/maintenance.png" style="width:16px;height:16px;image-rendering:pixelated;vertical-align:middle;margin-right:6px;"><span data-t="save_popup.btn_settings"> SETTINGS</span></button>
-                            <button class="btn-settings" onclick="openAnalyticsPopup()" style="background:#2a4a2e;border-color:#1a3020;color:#a8ffb8;"><span data-t="save_popup.btn_analytics"> ISLAND ANALYTICS</span></button>
+                            <button class="btn-settings" onclick="openAnalyticsPopup()" style="background:#2a4a2e;border-color:#1a3020;color:#a8ffb8;"><img src="./Assets/Icons/gui.png" style="width:16px;height:16px;image-rendering:pixelated;vertical-align:middle;margin-right:6px;"><span data-t="save_popup.btn_analytics"> ISLAND ANALYTICS</span></button>
                             <button class="btn-settings" onclick="openAchievementsPopup()" style="background:#2a1a4a;border-color:#4a2880;color:#c8a8ff;"><img src="./Assets/Icons/book.png" style="width:16px;height:16px;image-rendering:pixelated;vertical-align:middle;margin-right:6px;"><span data-t="save_popup.btn_achievements">Achievements</span></button>
                             <button class="btn-settings" onclick="closeSavePopup();openCommunityPopup()" style="background:#1a3a5c;border-color:#2a6a9e;color:#a0d4ff;"><img src="./Assets/Icons/Comunitymaps.png" style="width:16px;height:16px;image-rendering:pixelated;vertical-align:middle;margin-right:6px;"><span data-t="save_popup.btn_community">COMMUNITY MAPS</span></button>
                         </div>
@@ -1060,12 +1060,12 @@ function tryStartBuilding() {
                         </div>
                         <div class="popup-section-title" style="margin-top:10px;" data-t="settings.presets">PRESETS:</div>
                         <div id="shape-presets-col">
-                            <button class="shape-preset-btn" onclick="applyCirclePreset(8)" data-t="settings.preset_8circle">8x8 CIRCLE</button>
-                            <button class="shape-preset-btn" onclick="applyCirclePreset(16)" data-t="settings.preset_16circle">16x16 CIRCLE</button>
-                            <button class="shape-preset-btn" onclick="applyDonutPreset(12,3)" data-t="settings.preset_donut">DONUT</button>
-                            <button class="shape-preset-btn" onclick="applyDiamondPreset(12)" data-t="settings.preset_diamond">DIAMOND</button>
-                            <button class="shape-preset-btn" onclick="applyCrossPreset(12)" data-t="settings.preset_cross">CROSS</button>
-                            <button class="shape-preset-btn" onclick="applyStarPreset(14)" data-t="settings.preset_star">STAR</button>
+                            <button class="shape-preset-btn" onclick="applyCirclePreset(8)"><img src="./Assets/Icons/icon.png" style="width:14px;height:14px;image-rendering:pixelated;vertical-align:middle;margin-right:6px;"><span data-t="settings.preset_8circle">8x8 CIRCLE</span></button>
+                            <button class="shape-preset-btn" onclick="applyCirclePreset(16)"><img src="./Assets/Icons/icon.png" style="width:14px;height:14px;image-rendering:pixelated;vertical-align:middle;margin-right:6px;"><span data-t="settings.preset_16circle">16x16 CIRCLE</span></button>
+                            <button class="shape-preset-btn" onclick="applyDonutPreset(12,3)"><img src="./Assets/Icons/icon.png" style="width:14px;height:14px;image-rendering:pixelated;vertical-align:middle;margin-right:6px;"><span data-t="settings.preset_donut">DONUT</span></button>
+                            <button class="shape-preset-btn" onclick="applyDiamondPreset(12)"><img src="./Assets/Icons/icon.png" style="width:14px;height:14px;image-rendering:pixelated;vertical-align:middle;margin-right:6px;"><span data-t="settings.preset_diamond">DIAMOND</span></button>
+                            <button class="shape-preset-btn" onclick="applyCrossPreset(12)"><img src="./Assets/Icons/icon.png" style="width:14px;height:14px;image-rendering:pixelated;vertical-align:middle;margin-right:6px;"><span data-t="settings.preset_cross">CROSS</span></button>
+                            <button class="shape-preset-btn" onclick="applyStarPreset(14)"><img src="./Assets/Icons/icon.png" style="width:14px;height:14px;image-rendering:pixelated;vertical-align:middle;margin-right:6px;"><span data-t="settings.preset_star">STAR</span></button>
                         </div>
                         <div id="shape-perf-disclaimer">
                             <span id="shape-perf-icon">⚠</span> Higher resolution may affect performance
@@ -1138,7 +1138,7 @@ function tryStartBuilding() {
                     </div>
 
                     <div class="visual-option-row" onclick="openLanguagePopup()" style="cursor:pointer;">
-                        <span class="visual-option-label"><span data-t="settings.section_language">LANGUAGE</span></span>
+                        <span class="visual-option-label"><img src="./Assets/Icons/delete.png" style="width:14px;height:14px;image-rendering:pixelated;vertical-align:middle;margin-right:5px;"><span data-t="settings.section_language">LANGUAGE</span></span>
                         <span style="display:flex;align-items:center;gap:6px;">
                             <span id="lang-current-label" style="font-family:'Press Start 2P',monospace;font-size:6px;color:var(--gui-accent,#ffdf80);opacity:0.85;"></span>
                             <button class="btn-pointer-settings" onclick="event.stopPropagation();openLanguagePopup()">&#9654;</button>
@@ -1164,7 +1164,7 @@ function tryStartBuilding() {
                     </div>
 
                     <div class="visual-option-row">
-                        <span class="visual-option-label" data-t="settings.key_bindings">Key Bindings</span>
+                        <span class="visual-option-label"><img src="./Assets/Icons/load.png" style="width:14px;height:14px;image-rendering:pixelated;vertical-align:middle;margin-right:5px;"><span data-t="settings.key_bindings">Key Bindings</span></span>
                         <button class="btn-pointer-settings" onclick="openKeyBindingsPopup()">&#9654;</button>
                     </div>
 
@@ -1270,6 +1270,7 @@ function tryStartBuilding() {
                             <rect x="84"  y="28" width="3" height="3" fill="#fff" opacity="0.9"/>
                             <rect x="98"  y="30" width="4" height="4" fill="#f1c40f" opacity="0.7"/>
                         </g>
+
                         <g id="del-island-g">
                             <polygon points="14,68 38,52 62,68 38,84" fill="#8B6914"/>
                             <polygon points="38,84 62,68 62,78 38,94" fill="#6b4f10"/>
@@ -2789,7 +2790,7 @@ window.closeNotFound = function() {
                     <div class="save-slot-label">SLOT 1</div>
                     <div class="save-slot-meta" id="save-slot-meta-0">—</div>
                     <div class="save-slot-btns">
-                        <button class="save-slot-btn save" onclick="saveToSlot(0)">SAVE</button>
+                        <button class="save-slot-btn save" id="save-slot-save-0" onclick="saveToSlot(0)">SAVE</button>
                         <button class="save-slot-btn load" id="save-slot-load-0" onclick="loadFromSlot(0)" disabled>LOAD</button>
                         <button class="save-slot-btn del" id="save-slot-del-0" onclick="deleteSlot(0)" disabled>DELETE</button>
                     </div>
@@ -2802,7 +2803,7 @@ window.closeNotFound = function() {
                     <div class="save-slot-label">SLOT 2</div>
                     <div class="save-slot-meta" id="save-slot-meta-1">—</div>
                     <div class="save-slot-btns">
-                        <button class="save-slot-btn save" onclick="saveToSlot(1)">SAVE</button>
+                        <button class="save-slot-btn save" id="save-slot-save-1" onclick="saveToSlot(1)">SAVE</button>
                         <button class="save-slot-btn load" id="save-slot-load-1" onclick="loadFromSlot(1)" disabled>LOAD</button>
                         <button class="save-slot-btn del" id="save-slot-del-1" onclick="deleteSlot(1)" disabled>DELETE</button>
                     </div>
@@ -2815,7 +2816,7 @@ window.closeNotFound = function() {
                     <div class="save-slot-label">SLOT 3</div>
                     <div class="save-slot-meta" id="save-slot-meta-2">—</div>
                     <div class="save-slot-btns">
-                        <button class="save-slot-btn save" onclick="saveToSlot(2)">SAVE</button>
+                        <button class="save-slot-btn save" id="save-slot-save-2" onclick="saveToSlot(2)">SAVE</button>
                         <button class="save-slot-btn load" id="save-slot-load-2" onclick="loadFromSlot(2)" disabled>LOAD</button>
                         <button class="save-slot-btn del" id="save-slot-del-2" onclick="deleteSlot(2)" disabled>DELETE</button>
                     </div>

@@ -8,6 +8,10 @@
                                                                                            
 
 
+//==================================================================
+// Warning! Contributions for this file are closed 
+//=================================================================
+
 window.__LANG_DATA__ = window.__LANG_DATA__ || {};
 window.__LANG_DATA__['ro'] = {
   _meta: { lang: 'ro', name: 'Română', flag: '🇷🇴' },

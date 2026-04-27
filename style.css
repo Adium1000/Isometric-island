@@ -136,6 +136,7 @@ body {
     0%, 100% { opacity: 1; }
     50% { opacity: 0.5; }
 }
+.game-title:hover { }
 #minimap-container {
     position: absolute;
     top: 100px;
@@ -888,6 +889,7 @@ body {
     align-items: center;
     gap: 0;
 }
+
 #qr-vertical-divider {
     width: 0;
     border: none;
@@ -895,6 +897,8 @@ body {
     align-self: stretch;
     margin: 0 14px;
 }
+
+
 #qr-phone-preview {
     padding: 10px 53px;
     display: flex;
@@ -1272,7 +1276,7 @@ body {
     letter-spacing: 1px;
 }
 #fill-selected-btn.btn-visible { opacity: 1; transform: translateX(-50%) translateY(0); }
-#fill-selected-btn:hover { filter: brightness(1.4); }
+#fill-selected-btn:hover { filter: brightness(1.4); transform: translateX(-50%) translateY(0); }
 #fill-selected-btn:active { transform: translateX(-50%) scale(0.93); }
 #selection-rect {
     position: fixed;
@@ -1298,6 +1302,10 @@ body {
     to   { filter: brightness(1.6)  saturate(1.4) !important; }
 }
 
+
+.grid-overlay-active .tile.grid-cell {
+    /* It is bugged and i can't find out why*/
+}
 
 #grid-canvas {
     position: absolute;
@@ -1522,6 +1530,7 @@ body {
     text-shadow: 2px 2px #3b1010;
     letter-spacing: 1px;
 }
+
 #confirm-delete-body {
     display: flex;
     flex-direction: row;
@@ -1544,7 +1553,6 @@ body {
     display: block;
     overflow: visible;
 }
-
 #confirm-delete-content-col {
     flex: 1;
     display: flex;
@@ -1595,6 +1603,7 @@ body {
 }
 .btn-confirm-del:hover { filter: brightness(1.3); }
 .btn-confirm-del:active { transform: scale(0.93); }
+
 #del-island-g {
     animation: delIslandFly 3s ease-in-out infinite;
     transform-origin: 38px 68px;
@@ -1614,6 +1623,7 @@ body {
     93%  { transform: translate(0px,   3px) rotate(0deg)  scale(0.94); opacity: 1; }
     100% { transform: translate(0px,   0px) rotate(0deg)  scale(1);    opacity: 1; }
 }
+
 #del-shadow-g {
     animation: delShadow 3s ease-in-out infinite;
     transform-origin: 38px 96px;
@@ -1630,6 +1640,7 @@ body {
     86%  { transform: scaleX(1.15); opacity: 0.25; }
     100% { transform: scaleX(1);    opacity: 0.2; }
 }
+
 #del-trail-g {
     animation: delTrailFade 3s ease-in-out infinite;
 }
@@ -1641,7 +1652,6 @@ body {
     74%  { opacity: 0; }
     100% { opacity: 0; }
 }
-
 #del-stars-g {
     animation: delStarsBurst 3s ease-out infinite;
     transform-origin: 90px 38px;

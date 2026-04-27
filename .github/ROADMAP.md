@@ -176,24 +176,20 @@ Release
 Release Fin#al
 
 
-# Devlog 78
-## Overall devlog: Added QR Code Scaning Animation
+# Devlog 79
 
----
- ## Comit [(f762cdd)](https://github.com/Adium1000/Isometric-island/commit/f762cddfe4f19e96f7536e5e08db1afa6e6cf504)
+# Comit [(fcd875d)](https://github.com/Adium1000/Isometric-island/commit/fcd875df7008c7f504da3c9c229e4b89cd9dcf8c)
 
-- Added QR code animation  in the right of the popup
-- It is a phone opened in the QR code reader that scans while the phone is moving
-- it is a kinda tutorial on how to load & scan the code 
-- brown phone
+- Added delete animation in the delete popup
+- it is a simple animation with an island that is moving to the recicle bin
+- I used keyframes :3
+- It is in the left side of the popup and it is endless
 
----
-
-## © Adrian's Image Spotlight
-- The image gallery contains photos I took with a macro lens
-- The photos may be edited, which can result in a loss of their natural appearance
-
+[![delete_popup.png](https://i.postimg.cc/3wLjy7WD/image.png)](https://postimg.cc/QBTKP2QX)
 
 ---
 
--> Anyway that is all what do you think? :cat-heart: 
+# Comit [(7d319ff)](https://github.com/Adium1000/Isometric-island/commit/7d319ff1a5b3f349aef7e011fe4d95b5ddadffd4)
+
+- Fixed [CSS](https://github.com/Adium1000/Isometric-island/commit/7d319ff1a5b3f349aef7e011fe4d95b5ddadffd4#diff-b78be019f1dc6d57753ea900c3805b114cd53ab7c0db836cc081836df1b99b7a) Bug (the game showed some buggy strings of the settings and language popup)
+- Added French Language [(fr.js)](https://github.com/Adium1000/Isometric-island/commit/7d319ff1a5b3f349aef7e011fe4d95b5ddadffd4#diff-f8cfff78da7ae0082fe84f9564005b27212564c66954b7dde158d6da3f065dee)

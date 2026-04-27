@@ -521,7 +521,6 @@ function _syncFloatPopupCards() {
         if (card) card.classList.toggle('active', currentFloatMode === id);
     });
 }
-
 let _floatPrevAnim = null;
 let _floatPrevT = 0;
 
@@ -5613,13 +5612,20 @@ function _captureMinimap() {
 }
 
 function renderSaveSlots() {
+    const _saveLbl = (window.LangManager && typeof LangManager.t === 'function') ? LangManager.t('save_slots.btn_save') : '';
+    const _loadLbl = (window.LangManager && typeof LangManager.t === 'function') ? LangManager.t('save_slots.btn_load') : '';
+    const _delLbl  = (window.LangManager && typeof LangManager.t === 'function') ? LangManager.t('save_slots.btn_del')  : '';
     for (let i = 0; i < SAVE_SLOT_COUNT; i++) {
         const data = _getSlotData(i);
-        const emptyEl = document.getElementById('save-slot-empty-' + i);
-        const metaEl  = document.getElementById('save-slot-meta-' + i);
-        const loadBtn = document.getElementById('save-slot-load-' + i);
-        const delBtn  = document.getElementById('save-slot-del-' + i);
-        const thumb   = document.getElementById('save-slot-thumb-' + i);
+        const emptyEl   = document.getElementById('save-slot-empty-' + i);
+        const metaEl    = document.getElementById('save-slot-meta-'  + i);
+        const saveBtn   = document.getElementById('save-slot-save-'  + i);
+        const loadBtn   = document.getElementById('save-slot-load-'  + i);
+        const delBtn    = document.getElementById('save-slot-del-'   + i);
+        const thumb     = document.getElementById('save-slot-thumb-' + i);
+        if (saveBtn) saveBtn.textContent = (_saveLbl && !_saveLbl.includes('save_slots.')) ? _saveLbl : 'SAVE';
+        if (loadBtn) loadBtn.textContent = (_loadLbl && !_loadLbl.includes('save_slots.')) ? _loadLbl : 'LOAD';
+        if (delBtn)  delBtn.textContent  = (_delLbl  && !_delLbl.includes('save_slots.'))  ? _delLbl  : 'DELETE';
 
         if (data) {
             if (emptyEl) emptyEl.style.display = 'none';
@@ -5665,7 +5671,6 @@ function deleteSlot(idx) {
     renderSaveSlots();
     showToast(LangManager.t('toast.slot') + ' ' + (idx + 1) + ' ' + LangManager.t('toast.slot_deleted'));
 }
-
 
 (function() {
     function drawIsoBg(ctx, W, H) {
@@ -5722,6 +5727,7 @@ function deleteSlot(idx) {
         const t = _cursorT;
         const mx = W*0.5 + Math.sin(t) * W*0.28;
         const my = H*0.45 + Math.sin(t*2) * H*0.18;
+
         if (on) {
             const s = 2;
             const pixels = [
@@ -5741,6 +5747,7 @@ function deleteSlot(idx) {
             ctx.lineTo(mx+9,my+18); ctx.lineTo(mx+11,my+17); ctx.lineTo(mx+7,my+10);
             ctx.lineTo(mx+12,my+10); ctx.closePath(); ctx.stroke(); ctx.restore();
         }
+
         if (on) {
             for (let i=1; i<=5; i++) {
                 const ti = t - i*0.25;
@@ -5899,6 +5906,7 @@ function deleteSlot(idx) {
         if (_origOpen) _origOpen.apply(this, arguments);
         setTimeout(window._refreshPointerPreviews, 90);
     };
+
     const _origClose = window.closePointerSettings;
     window.closePointerSettings = function() {
         if (_origClose) _origClose.apply(this, arguments);
