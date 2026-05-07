@@ -18,6 +18,7 @@ const PRECACHE_ASSETS = [
     './index.html',
     './style.css',
     './game.js',
+    './lang.js',
     './Assets/Audio/place.wav',
     './Assets/Audio/hotbar.wav',
     './Assets/Audio/eraser.wav',
