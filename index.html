@@ -1,0 +1,559 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Isometric Island</title>
+<link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet"/>
+<style>
+:root {
+  --gui-bg:       #8b5e34;
+  --gui-bg-dark:  #3b2007;
+  --gui-border:   #523519;
+  --gui-accent:   #ffdf80;
+  --gui-text:     #fff8e1;
+  --gui-text-dim: #a07850;
+  --sky:          #aad6ff;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  font-family: 'Press Start 2P', cursive;
+  background: var(--sky);
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  overflow-x: hidden;
+  padding-top: 140px;
+}
+
+@keyframes popIn {
+  from { transform: scale(0.82) translateY(24px); opacity: 0; }
+  to   { transform: scale(1)    translateY(0);    opacity: 1; }
+}
+
+/* ── pixel clouds ── */
+.clouds {
+  position: fixed; inset: 0; pointer-events: none; z-index: 0;
+}
+.cloud {
+  position: absolute;
+  background: #fff;
+  image-rendering: pixelated;
+  opacity: 0.85;
+}
+.cloud::before, .cloud::after {
+  content: '';
+  position: absolute;
+  background: #fff;
+}
+
+/* hand-crafted pixel cloud shapes */
+.c1 { width:48px;height:16px; top:12%; left:-60px; animation: drift 28s linear infinite; }
+.c1::before { width:24px;height:16px; top:-16px; left:8px; }
+.c1::after  { width:16px;height:8px;  top:-8px;  left:24px; }
+
+.c2 { width:64px;height:16px; top:28%; left:-80px; animation: drift 36s linear infinite 6s; }
+.c2::before { width:32px;height:16px; top:-16px; left:12px; }
+.c2::after  { width:20px;height:8px;  top:-8px;  left:32px; }
+
+.c3 { width:40px;height:12px; top:55%; left:-50px; animation: drift 22s linear infinite 12s; }
+.c3::before { width:20px;height:12px; top:-12px; left:6px; }
+
+.c4 { width:56px;height:16px; top:72%; left:-70px; animation: drift 32s linear infinite 3s; }
+.c4::before { width:28px;height:16px; top:-16px; left:10px; }
+.c4::after  { width:16px;height:8px;  top:-8px;  left:28px; }
+
+@keyframes drift {
+  from { transform: translateX(0); }
+  to   { transform: translateX(calc(100vw + 120px)); }
+}
+
+/* ── cards group — centres everything accounting for island overhang ── */
+.cards-group {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+/* ── card wrapper (holds island + card together) ── */
+.card-wrapper {
+  position: relative;
+  z-index: 10;
+  animation: popIn 0.5s cubic-bezier(0.18,0.89,0.32,1.28) both;
+  margin-top: -24px;
+  width: min(700px, calc(92vw - 160px));
+}
+
+/* ── changes card wrapper ── */
+.changes-wrapper {
+  position: relative;
+  z-index: 10;
+  margin-top: 18px;
+  animation: popIn 0.55s 0.1s cubic-bezier(0.18,0.89,0.32,1.28) both;
+  width: min(700px, calc(92vw - 160px));
+}
+
+.changes-island {
+  position: absolute;
+  left: -87px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 184px;
+  height: 192px;
+  image-rendering: pixelated;
+  z-index: 20;
+  pointer-events: none;
+  filter: drop-shadow(4px 8px 0 rgba(0,0,0,0.3));
+  animation: islandFloat 4s 0.8s ease-in-out infinite;
+}
+
+.changes-card {
+  position: relative;
+  background: var(--gui-bg);
+  border: 4px solid var(--gui-border);
+  box-shadow: 8px 8px 0 var(--gui-bg-dark);
+  padding: 28px 44px 28px 180px;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  max-width: 700px;
+  width: 100%;
+  clip-path: polygon(
+    0% 12px, 12px 12px, 12px 0%,
+    calc(100% - 12px) 0%, calc(100% - 12px) 12px, 100% 12px,
+    100% calc(100% - 12px), calc(100% - 12px) calc(100% - 12px), calc(100% - 12px) 100%,
+    12px 100%, 12px calc(100% - 12px), 0% calc(100% - 12px)
+  );
+}
+
+.changes-title {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  color: var(--gui-accent);
+  font-size: clamp(13px, 2.8vw, 22px);
+  text-shadow: 3px 3px 0 var(--gui-bg-dark);
+  letter-spacing: 2px;
+  line-height: 1.7;
+}
+
+.changes-entry {
+  color: #ffffff;
+  font-size: 7px;
+  line-height: 2.2;
+  padding-left: 4px;
+  border-left: 3px solid var(--gui-border);
+}
+
+/* ── main card ── */
+.card {
+  position: relative;
+  background: var(--gui-bg);
+  border: 4px solid var(--gui-border);
+  box-shadow: 8px 8px 0 var(--gui-bg-dark);
+  padding: 36px 44px 36px 180px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 18px;
+  max-width: 700px;
+  width: 100%;
+  clip-path: polygon(
+    0% 12px, 12px 12px, 12px 0%,
+    calc(100% - 12px) 0%, calc(100% - 12px) 12px, 100% 12px,
+    100% calc(100% - 12px), calc(100% - 12px) calc(100% - 12px), calc(100% - 12px) 100%,
+    12px 100%, 12px calc(100% - 12px), 0% calc(100% - 12px)
+  );
+}
+
+/* island peeking from left — relative to wrapper, outside card */
+.card-island {
+  position: absolute;
+  left: -212px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 424px;
+  height: 338px;
+  image-rendering: pixelated;
+  z-index: 20;
+  pointer-events: none;
+  filter: drop-shadow(4px 8px 0 rgba(0,0,0,0.3));
+  animation: islandFloat 3.5s ease-in-out infinite;
+}
+
+@keyframes islandFloat {
+  0%   { transform: translateY(-50%); }
+  50%  { transform: translateY(calc(-50% - 14px)); }
+  100% { transform: translateY(-50%); }
+}
+
+.card-hero-title {
+  color: var(--gui-accent);
+  font-size: clamp(13px, 2.8vw, 22px);
+  text-shadow: 3px 3px 0 var(--gui-bg-dark);
+  letter-spacing: 2px;
+  line-height: 1.7;
+  margin: 0;
+}
+
+.card-tagline {
+  color: #ffffff;
+  font-size: 7px;
+  line-height: 2.2;
+  max-width: 360px;
+  margin: 0;
+}
+
+.card-bottom {
+  display: flex;
+  width: 100%;
+  justify-content: flex-end;
+  margin-top: 8px;
+}
+
+/* ── logo + nav wrapper ── */
+.top-header {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 20;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  padding-top: 16px;
+}
+
+/* ── logo row ── */
+.logo-row {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 14px;
+}
+
+/* ── nav bar ── */
+.nav-bar {
+  display: flex;
+  align-items: center;
+  gap: 0;
+  background: var(--gui-bg);
+  border: 3px solid var(--gui-border);
+  box-shadow: 4px 4px 0 var(--gui-bg-dark);
+  clip-path: polygon(
+    0% 6px, 6px 6px, 6px 0%,
+    calc(100% - 6px) 0%, calc(100% - 6px) 6px, 100% 6px,
+    100% calc(100% - 6px), calc(100% - 6px) calc(100% - 6px), calc(100% - 6px) 100%,
+    6px 100%, 6px calc(100% - 6px), 0% calc(100% - 6px)
+  );
+}
+
+.nav-btn {
+  font-family: 'Press Start 2P', cursive;
+  font-size: 9px;
+  color: var(--gui-text-dim);
+  background: transparent;
+  border: none;
+  border-right: 3px solid var(--gui-border);
+  padding: 14px 22px;
+  cursor: pointer;
+  letter-spacing: 0.5px;
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  transition: background 0.1s, color 0.1s;
+  white-space: nowrap;
+}
+.nav-btn:last-child { border-right: none; }
+.nav-btn:hover {
+  background: var(--gui-bg-dark);
+  color: var(--gui-accent);
+  animation: squish 0.35s forwards;
+}
+.nav-btn:active { transform: translateY(1px); }
+
+.nav-btn-active {
+  background: var(--gui-bg-dark);
+  color: #fff8e1;
+  cursor: default;
+}
+.nav-btn-active:hover { animation: none; }
+
+.nav-icon {
+  width: 18px;
+  height: 18px;
+  image-rendering: pixelated;
+  vertical-align: middle;
+  flex-shrink: 0;
+}
+
+.game-icon {
+  width: 48px;
+  height: 48px;
+  image-rendering: pixelated;
+  flex-shrink: 0;
+}
+
+.btn-icon {
+  width: 14px;
+  height: 14px;
+  image-rendering: pixelated;
+  vertical-align: middle;
+  margin-right: 6px;
+  margin-top: -2px;
+}
+
+/* pixel island art */
+.pixel-art {
+  image-rendering: pixelated;
+  width: 120px;
+  height: 96px;
+}
+
+/* SVG island drawn in pixels */
+
+/* ── title ── */
+.title {
+  color: #523519;
+  font-size: clamp(10px, 3vw, 16px);
+  text-align: left;
+  text-shadow: 2px 2px 0 #fff8e1, 4px 4px 0 rgba(0,0,0,0.18);
+  letter-spacing: 1px;
+  line-height: 2;
+  position: relative;
+}
+
+.splash {
+  position: absolute;
+  top: -18px;
+  right: -32px;
+  color: #ffff00;
+  font-size: 7px;
+  text-shadow: 1px 1px #3f3f00;
+  transform: rotate(-20deg);
+  animation: bounce 0.5s ease-in-out infinite alternate;
+  white-space: nowrap;
+}
+@keyframes bounce {
+  from { transform: rotate(-20deg) scale(1); }
+  to   { transform: rotate(-20deg) scale(1.15); }
+}
+
+/* ── subtitle ── */
+.subtitle {
+  color: #ffffff;
+  font-size: 7px;
+  text-align: center;
+  line-height: 2.2;
+  max-width: 340px;
+}
+
+/* ── divider ── */
+.divider {
+  width: 100%;
+  height: 4px;
+  background: repeating-linear-gradient(
+    90deg,
+    var(--gui-border) 0px, var(--gui-border) 8px,
+    transparent 8px, transparent 16px
+  );
+}
+
+/* ── buttons ── */
+.btns {
+  display: flex;
+  gap: 16px;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.btn {
+  font-family: 'Press Start 2P', cursive;
+  font-size: 9px;
+  padding: 12px 20px;
+  border: 3px solid;
+  cursor: pointer;
+  text-decoration: none;
+  display: inline-block;
+  transition: filter 0.1s;
+  position: relative;
+  clip-path: polygon(
+    0% 4px, 4px 4px, 4px 0%,
+    calc(100% - 4px) 0%, calc(100% - 4px) 4px, 100% 4px,
+    100% calc(100% - 4px), calc(100% - 4px) calc(100% - 4px), calc(100% - 4px) 100%,
+    4px 100%, 4px calc(100% - 4px), 0% calc(100% - 4px)
+  );
+}
+
+.btn:active { transform: translateY(2px) translateX(2px); filter: brightness(0.9); }
+
+.btn-play {
+  background: #1a4a2a;
+  border-color: #2a8a4a;
+  color: #a0ffb8;
+  box-shadow: 4px 4px 0 #0d2714;
+}
+.btn-play:hover { animation: playSquish 0.5s ease-in-out infinite; filter: brightness(1.3); }
+
+@keyframes playSquish {
+  0%   { transform: scaleX(1)    scaleY(1); }
+  15%  { transform: scaleX(1.1)  scaleY(0.9); }
+  35%  { transform: scaleX(0.95) scaleY(1.08); }
+  55%  { transform: scaleX(1.04) scaleY(0.97); }
+  75%  { transform: scaleX(0.98) scaleY(1.02); }
+  100% { transform: scaleX(1)    scaleY(1); }
+}
+
+.btn-wiki {
+  background: var(--gui-bg-dark);
+  border-color: var(--gui-accent);
+  color: var(--gui-accent);
+  box-shadow: 4px 4px 0 #1a0e04;
+}
+.btn-wiki:hover { filter: brightness(1.25); animation: squish 0.35s forwards; }
+
+@keyframes squish {
+  0%   { transform: scaleX(1)    scaleY(1); }
+  18%  { transform: scaleX(1.12) scaleY(0.88); }
+  40%  { transform: scaleX(0.94) scaleY(1.1); }
+  65%  { transform: scaleX(1.04) scaleY(0.97); }
+  100% { transform: scaleX(1)    scaleY(1); }
+}
+
+/* ── footer ── */
+</style>
+</head>
+<body>
+
+<!-- pixel clouds -->
+<div class="clouds">
+  <div class="cloud c1"></div>
+  <div class="cloud c2"></div>
+  <div class="cloud c3"></div>
+  <div class="cloud c4"></div>
+</div>
+
+<!-- logo + nav fixed at top -->
+<div class="top-header">
+  <div class="logo-row">
+    <img src="./game/Assets/Icons/icon.png" class="game-icon" alt="icon"/>
+    <div class="title">
+      ISOMETRIC ISLAND
+      <span class="splash">NEW!</span>
+    </div>
+  </div>
+  <nav class="nav-bar">
+    <button class="nav-btn nav-btn-active"><img src="./game/Assets/Icons/Software.png" class="nav-icon" alt=""/> OVERVIEW</button>
+    <button class="nav-btn"><img src="./game/Assets/Icons/book.png" class="nav-icon" alt=""/> WIKI</button>
+    <button class="nav-btn" onclick="openChangelog()"><img src="./game/Assets/Icons/maintenance.png" class="nav-icon" alt=""/> CHANGELOG</button>
+    <button class="nav-btn" onclick="openLicenses()"><img src="./game/Assets/Icons/Credit.png" class="nav-icon" alt=""/> LICENSES</button>
+    <a class="nav-btn" href="#" onclick="downloadGame(event)"><img src="./game/Assets/Icons/todorm.png" class="nav-icon" alt=""/> DOWNLOAD</a>
+  </nav>
+</div>
+
+<!-- cards group -->
+<div class="cards-group">
+
+<!-- main card -->
+<div class="card-wrapper">
+  <img src="./game/Assets/Icons/island.png" class="card-island" alt="island"/>
+  <div class="card">
+    <h1 class="card-hero-title">BUILD YOUR<br/>OWN WORLD.</h1>
+
+    <p class="card-tagline">
+      Craft islands block by block in a living isometric world.<br/>
+      Shape terrain, control the climate, and share<br/>
+      your creation with anyone — right from the browser.
+    </p>
+
+    <div class="divider" style="width:100%;"></div>
+
+    <div class="card-bottom">
+      <a class="btn btn-play" href="index.html">▶ PLAY NOW</a>
+    </div>
+
+    <p class="footer">v233.26 BUILD 8 &nbsp;•&nbsp; PRESS START 2P</p>
+  </div>
+</div>
+
+<!-- new changes card -->
+<div class="changes-wrapper">
+  <img src="./game/Assets/Icons/maintenance.png" class="changes-island" alt="changes"/>
+  <div class="changes-card">
+    <div class="changes-title">NEW CHANGES</div>
+    <div class="divider" style="width:100%;"></div>
+    <p class="changes-entry">cannot load</p>
+    <p class="changes-entry">cannot load</p>
+    <p class="changes-entry">cannot load</p>
+  </div>
+</div>
+
+</div><!-- end cards-group -->
+
+
+<script>
+function openChangelog() {
+  openGenericOverlay('changelog-overlay');
+}
+function openLicenses() {
+  openGenericOverlay('licenses-overlay');
+}
+function downloadGame(e) {
+  e.preventDefault();
+  alert('No download package configured yet.');
+}
+function openGenericOverlay(id) {
+  const el = document.getElementById(id);
+  el.style.display = 'flex';
+  requestAnimationFrame(() => el.classList.add('open'));
+  document.body.style.overflow = 'hidden';
+}
+function closeGenericOverlay(id) {
+  const el = document.getElementById(id);
+  el.classList.remove('open');
+  el.addEventListener('transitionend', () => {
+    el.style.display = 'none';
+    document.body.style.overflow = '';
+  }, { once: true });
+}
+document.addEventListener('keydown', e => { if (e.key === 'Escape') {
+  ['changelog-overlay','licenses-overlay'].forEach(id => closeGenericOverlay(id));
+}});
+</script>
+<!-- changelog overlay -->
+<div id="changelog-overlay" onclick="if(event.target===this)closeGenericOverlay('changelog-overlay')" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.72);z-index:100;justify-content:center;align-items:center;opacity:0;transition:opacity 0.25s ease;">
+  <div id="wiki-box" style="width:min(560px,94vw);max-height:75vh;display:flex;flex-direction:column;position:relative;animation:popIn 0.3s cubic-bezier(0.18,0.89,0.32,1.28) both;background:var(--gui-bg);border:4px solid var(--gui-border);box-shadow:10px 10px 0 var(--gui-bg-dark);">
+    <div id="wiki-title-bar" style="background:var(--gui-bg-dark);border-bottom:3px solid var(--gui-border);padding:10px 16px;display:flex;align-items:center;justify-content:space-between;flex-shrink:0;">
+      <span style="color:var(--gui-accent);font-size:9px;text-shadow:2px 2px var(--gui-border);letter-spacing:1px;">📋 CHANGELOG</span>
+      <button id="wiki-close" onclick="closeGenericOverlay('changelog-overlay')" style="font-family:'Press Start 2P',cursive;font-size:10px;background:#7a2020;border:3px solid #3b1010;color:#fff;cursor:pointer;width:30px;height:30px;display:flex;align-items:center;justify-content:center;clip-path:polygon(0% 4px,4px 4px,4px 0%,calc(100% - 4px) 0%,calc(100% - 4px) 4px,100% 4px,100% calc(100% - 4px),calc(100% - 4px) calc(100% - 4px),calc(100% - 4px) 100%,4px 100%,4px calc(100% - 4px),0% calc(100% - 4px));">✕</button>
+    </div>
+    <div style="padding:24px 28px;overflow-y:auto;flex:1;color:var(--gui-text);font-size:8px;line-height:2.4;">
+      <p style="color:var(--gui-accent);font-size:10px;margin-bottom:12px;">v233.26 Build 8</p>
+      <p>No changelog file detected. Place a <code style="background:var(--gui-bg-dark);border:2px solid var(--gui-border);padding:1px 6px;font-size:7px;color:#a0ffb8;">CHANGELOG.md</code> next to this file to populate this section.</p>
+    </div>
+  </div>
+</div>
+
+<!-- licenses overlay -->
+<div id="licenses-overlay" onclick="if(event.target===this)closeGenericOverlay('licenses-overlay')" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.72);z-index:100;justify-content:center;align-items:center;opacity:0;transition:opacity 0.25s ease;">
+  <div style="width:min(560px,94vw);max-height:75vh;display:flex;flex-direction:column;position:relative;animation:popIn 0.3s cubic-bezier(0.18,0.89,0.32,1.28) both;background:var(--gui-bg);border:4px solid var(--gui-border);box-shadow:10px 10px 0 var(--gui-bg-dark);">
+    <div style="background:var(--gui-bg-dark);border-bottom:3px solid var(--gui-border);padding:10px 16px;display:flex;align-items:center;justify-content:space-between;flex-shrink:0;">
+      <span style="color:var(--gui-accent);font-size:9px;text-shadow:2px 2px var(--gui-border);letter-spacing:1px;">⚖ LICENSES</span>
+      <button onclick="closeGenericOverlay('licenses-overlay')" style="font-family:'Press Start 2P',cursive;font-size:10px;background:#7a2020;border:3px solid #3b1010;color:#fff;cursor:pointer;width:30px;height:30px;display:flex;align-items:center;justify-content:center;clip-path:polygon(0% 4px,4px 4px,4px 0%,calc(100% - 4px) 0%,calc(100% - 4px) 4px,100% 4px,100% calc(100% - 4px),calc(100% - 4px) calc(100% - 4px),calc(100% - 4px) 100%,4px 100%,4px calc(100% - 4px),0% calc(100% - 4px));">✕</button>
+    </div>
+    <div style="padding:24px 28px;overflow-y:auto;flex:1;color:var(--gui-text);font-size:8px;line-height:2.4;">
+      <p style="color:var(--gui-accent);font-size:9px;margin-bottom:16px;">OPEN SOURCE CREDITS</p>
+      <p style="margin-bottom:10px;"><strong style="color:var(--gui-accent);">Press Start 2P</strong><br/>Font by CodeMan38 — SIL Open Font License 1.1</p>
+      <p style="margin-bottom:10px;"><strong style="color:var(--gui-accent);">Isometric Island</strong><br/>Made with ♥ using vanilla HTML, CSS &amp; JS.<br/>All game assets © their respective authors.</p>
+    </div>
+  </div>
+</div>
+
+</body>
+</html>
