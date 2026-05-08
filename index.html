@@ -427,6 +427,30 @@ body {
 }
 
 /* ── footer ── */
+.footer {
+  width: 100%;
+  color: var(--gui-text-dim);
+  font-size: 7px;
+  letter-spacing: 1px;
+  line-height: 2;
+  padding-top: 10px;
+  border-top: 2px dashed var(--gui-border);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.footer .footer-dot {
+  color: var(--gui-accent);
+  font-size: 10px;
+}
+.footer .footer-version {
+  color: var(--gui-accent);
+  text-shadow: 2px 2px 0 var(--gui-bg-dark);
+}
+.footer .footer-font {
+  color: var(--gui-text-dim);
+  opacity: 0.7;
+}
 </style>
 </head>
 <body>
@@ -475,10 +499,14 @@ body {
     <div class="divider" style="width:100%;"></div>
 
     <div class="card-bottom">
-      <a class="btn btn-play" href="index.html">▶ PLAY NOW</a>
+      <a class="btn btn-play" href="file:///C:/Users/Adi/Desktop/Isometric%20island/game/" style="padding-left:40px;padding-right:40px;">▶ PLAY NOW</a>
     </div>
 
-    <p class="footer">v233.26 BUILD 8 &nbsp;•&nbsp; PRESS START 2P</p>
+    <p class="footer">
+      <span class="footer-version">v233.26 BUILD 8</span>
+      <span class="footer-dot">•</span>
+      <span class="footer-font">PRESS START 2P</span>
+    </p>
   </div>
 </div>
 
@@ -487,15 +515,55 @@ body {
   <img src="./game/Assets/Icons/maintenance.png" class="changes-island" alt="changes"/>
   <div class="changes-card">
     <div class="changes-title">NEW CHANGES</div>
-    <div class="divider" style="width:100%;"></div>
-    <p class="changes-entry">cannot load</p>
-    <p class="changes-entry">cannot load</p>
-    <p class="changes-entry">cannot load</p>
+    <div class="divider" style="width:100%;margin-bottom:4px;"></div>
+    <div id="changes-list" style="color:var(--gui-text-dim);font-size:7px;line-height:2.4;"></div>
   </div>
 </div>
 
 </div><!-- end cards-group -->
 
+
+<script>
+// Fetch new changes from GitHub raw content
+(async function loadNewChanges() {
+  const container = document.getElementById('changes-list');
+  const RAW_URL = 'https://raw.githubusercontent.com/Adium1000/Isometric-island/main/newchanges.md';
+  try {
+    const res = await fetch(RAW_URL);
+    if (!res.ok) throw new Error('HTTP ' + res.status);
+    const text = await res.text();
+
+    // Parse markdown lines: keep non-empty lines, strip leading #/*/- markers
+    const lines = text.split('\n')
+      .map(l => l.trim())
+      .filter(l => l.length > 0);
+
+    if (lines.length === 0) {
+      container.innerHTML = '<span style="color:var(--gui-text-dim);">Nicio modificare găsită.</span>';
+      return;
+    }
+
+    container.innerHTML = '';
+    lines.forEach(line => {
+      // Detect headings
+      if (line.startsWith('#')) {
+        const heading = document.createElement('p');
+        heading.style.cssText = 'color:var(--gui-accent);font-size:8px;margin-top:10px;margin-bottom:4px;text-shadow:2px 2px 0 var(--gui-bg-dark);letter-spacing:1px;';
+        heading.textContent = line.replace(/^#+\s*/, '');
+        container.appendChild(heading);
+      } else {
+        const entry = document.createElement('p');
+        entry.className = 'changes-entry';
+        // strip leading list markers
+        entry.textContent = line.replace(/^[-*+]\s*/, '');
+        container.appendChild(entry);
+      }
+    });
+  } catch (err) {
+    container.innerHTML = '<span style="color:#ff6b6b;font-size:7px;">⚠ Nu s-a putut încărca: ' + err.message + '</span>';
+  }
+})();
+</script>
 
 <script>
 function openChangelog() {
