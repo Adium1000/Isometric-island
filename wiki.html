@@ -1,0 +1,777 @@
+
+
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Isometric Island:Wiki</title>
+<link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet"/>
+<style>
+:root {
+  --gui-bg:       #8b5e34;
+  --gui-bg-dark:  #3b2007;
+  --gui-border:   #523519;
+  --gui-accent:   #ffdf80;
+  --gui-text:     #fff8e1;
+  --gui-text-dim: #a07850;
+  --sky:          #aad6ff;
+  --sidebar-w:    260px;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body {
+  font-family: 'Press Start 2P', cursive;
+  background: var(--sky);
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  overflow-x: hidden;
+}
+.header-fade {
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  z-index: 15;
+  pointer-events: none;
+  height: 220px;
+  background: linear-gradient(
+    to bottom,
+    #aad6ff 0%,
+    #aad6ff 62%,
+    rgba(170, 214, 255, 0) 100%
+  );
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+.header-fade.visible {
+  opacity: 1;
+}
+.clouds { position: fixed; inset: 0; pointer-events: none; z-index: 0; }
+.cloud { position: absolute; background: #fff; image-rendering: pixelated; opacity: 0.85; }
+.cloud::before, .cloud::after { content: ''; position: absolute; background: #fff; }
+.c1 { width:48px;height:16px; top:12%; left:-60px; animation: drift 28s linear infinite; }
+.c1::before { width:24px;height:16px; top:-16px; left:8px; }
+.c1::after  { width:16px;height:8px;  top:-8px;  left:24px; }
+.c2 { width:64px;height:16px; top:28%; left:-80px; animation: drift 36s linear infinite 6s; }
+.c2::before { width:32px;height:16px; top:-16px; left:12px; }
+.c2::after  { width:20px;height:8px;  top:-8px;  left:32px; }
+.c3 { width:40px;height:12px; top:55%; left:-50px; animation: drift 22s linear infinite 12s; }
+.c3::before { width:20px;height:12px; top:-12px; left:6px; }
+.c4 { width:56px;height:16px; top:72%; left:-70px; animation: drift 32s linear infinite 3s; }
+.c4::before { width:28px;height:16px; top:-16px; left:10px; }
+.c4::after  { width:16px;height:8px;  top:-8px;  left:28px; }
+@keyframes drift {
+  from { transform: translateX(0); }
+  to   { transform: translateX(calc(100vw + 120px)); }
+}
+.top-header {
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  z-index: 20;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  padding-top: 16px;
+}
+.logo-row {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 14px;
+}
+.game-icon { width: 48px; height: 48px; image-rendering: pixelated; }
+.title {
+  color: #523519;
+  font-size: clamp(10px, 3vw, 16px);
+  text-shadow: 2px 2px 0 #fff8e1, 4px 4px 0 rgba(0,0,0,0.18);
+  letter-spacing: 1px;
+  line-height: 2;
+}
+.nav-bar {
+  display: flex;
+  align-items: center;
+  background: var(--gui-bg);
+  border: 3px solid var(--gui-border);
+  box-shadow: 4px 4px 0 var(--gui-bg-dark);
+  clip-path: polygon(
+    0% 6px, 6px 6px, 6px 0%,
+    calc(100% - 6px) 0%, calc(100% - 6px) 6px, 100% 6px,
+    100% calc(100% - 6px), calc(100% - 6px) calc(100% - 6px), calc(100% - 6px) 100%,
+    6px 100%, 6px calc(100% - 6px), 0% calc(100% - 6px)
+  );
+}
+.nav-btn {
+  font-family: 'Press Start 2P', cursive;
+  font-size: 9px;
+  padding: 14px 22px;
+  background: transparent;
+  border: none;
+  border-right: 3px solid var(--gui-border);
+  color: var(--gui-text-dim);
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  text-decoration: none;
+  white-space: nowrap;
+  letter-spacing: 0.5px;
+  transition: background 0.1s, color 0.1s;
+}
+.nav-btn:last-child { border-right: none; }
+.nav-btn:hover { background: var(--gui-bg-dark); color: var(--gui-accent); }
+.nav-btn:active { transform: translateY(1px); }
+.nav-btn-active { background: var(--gui-bg-dark); color: #fff8e1; cursor: default; }
+.nav-btn-active:hover { }
+.nav-icon { width: 18px; height: 18px; image-rendering: pixelated; vertical-align: middle; flex-shrink: 0; }
+.wiki-layout {
+  position: relative;
+  z-index: 10;
+  width: min(1120px, 96vw);
+  margin-top: 150px;
+  margin-bottom: 48px;
+  display: flex;
+  gap: 18px;
+  align-items: flex-start;
+  animation: popIn 0.4s cubic-bezier(0.18,0.89,0.32,1.28) both;
+}
+@keyframes popIn {
+  from { transform: scale(0.93) translateY(20px); opacity: 0; }
+  to   { transform: scale(1)    translateY(0);    opacity: 1; }
+}
+.wiki-sidebar {
+  width: var(--sidebar-w);
+  flex-shrink: 0;
+  position: sticky;
+  top: 158px;
+  max-height: calc(100vh - 180px);
+  display: flex;
+  flex-direction: column;
+  background: var(--gui-bg);
+  border: 4px solid var(--gui-border);
+  box-shadow: 6px 6px 0 var(--gui-bg-dark);
+  clip-path: polygon(
+    0% 10px, 10px 10px, 10px 0%,
+    calc(100% - 10px) 0%, calc(100% - 10px) 10px, 100% 10px,
+    100% calc(100% - 10px), calc(100% - 10px) calc(100% - 10px), calc(100% - 10px) 100%,
+    10px 100%, 10px calc(100% - 10px), 0% calc(100% - 10px)
+  );
+  overflow: hidden;
+}
+.sidebar-header {
+  background: var(--gui-bg-dark);
+  border-bottom: 3px solid var(--gui-border);
+  padding: 10px 14px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-shrink: 0;
+}
+.sidebar-header-icon {
+  font-size: 12px;
+  line-height: 1;
+}
+.sidebar-header span {
+  color: var(--gui-accent);
+  font-size: 7px;
+  letter-spacing: 1px;
+  text-shadow: 1px 1px 0 var(--gui-bg-dark);
+}
+.sidebar-search-wrap {
+  padding: 10px 12px 8px;
+  flex-shrink: 0;
+  background: var(--gui-bg);
+  border-bottom: 2px solid var(--gui-border);
+  position: relative;
+}
+.sidebar-search {
+  width: 100%;
+  font-family: 'Press Start 2P', cursive;
+  font-size: 6.5px;
+  padding: 8px 28px 8px 10px;
+  background: var(--gui-bg-dark);
+  border: 2px solid var(--gui-border);
+  color: var(--gui-text);
+  outline: none;
+  letter-spacing: 0.5px;
+  transition: border-color 0.15s;
+  clip-path: polygon(
+    0% 3px, 3px 3px, 3px 0%,
+    calc(100% - 3px) 0%, calc(100% - 3px) 3px, 100% 3px,
+    100% calc(100% - 3px), calc(100% - 3px) calc(100% - 3px), calc(100% - 3px) 100%,
+    3px 100%, 3px calc(100% - 3px), 0% calc(100% - 3px)
+  );
+}
+.sidebar-search:focus { border-color: var(--gui-accent); }
+.sidebar-search::placeholder { color: var(--gui-text-dim); }
+.search-clear {
+  position: absolute;
+  right: 20px;
+  top: 50%;
+  transform: translateY(-50%);
+  background: none;
+  border: none;
+  color: var(--gui-text-dim);
+  font-size: 10px;
+  cursor: pointer;
+  display: none;
+  line-height: 1;
+  padding: 2px;
+  margin-top: 1px;
+}
+.search-clear:hover { color: var(--gui-accent); }
+.search-clear.visible { display: block; }
+.sidebar-toc {
+  overflow-y: auto;
+  flex: 1;
+  padding: 8px 0 12px;
+  scroll-behavior: smooth;
+}
+.sidebar-toc::-webkit-scrollbar { width: 6px; }
+.sidebar-toc::-webkit-scrollbar-track { background: var(--gui-bg-dark); }
+.sidebar-toc::-webkit-scrollbar-thumb { background: var(--gui-border); }
+.sidebar-toc::-webkit-scrollbar-thumb:hover { background: var(--gui-accent); }
+.toc-empty {
+  padding: 16px 14px;
+  color: var(--gui-text-dim);
+  font-size: 6px;
+  line-height: 2;
+  text-align: center;
+}
+.toc-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 0;
+  width: 100%;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+  font-family: 'Press Start 2P', cursive;
+  text-align: left;
+  text-decoration: none;
+  position: relative;
+  transition: background 0.1s;
+}
+.toc-item:hover { background: rgba(0,0,0,0.2); }
+.toc-item:hover .toc-label { color: var(--gui-accent); }
+.toc-item.active { background: var(--gui-bg-dark); }
+.toc-item.active .toc-label { color: var(--gui-accent); }
+.toc-item.active .toc-indicator { opacity: 1; }
+.toc-indicator {
+  width: 3px;
+  align-self: stretch;
+  background: var(--gui-accent);
+  flex-shrink: 0;
+  opacity: 0;
+  transition: opacity 0.15s;
+}
+.toc-label {
+  font-size: 6px;
+  color: var(--gui-text-dim);
+  line-height: 1.8;
+  letter-spacing: 0.3px;
+  transition: color 0.1s;
+  flex: 1;
+}
+.toc-h1 .toc-label {
+  padding: 8px 12px;
+  color: var(--gui-text);
+  font-size: 6.5px;
+}
+.toc-h2 .toc-label {
+  padding: 6px 12px 6px 20px;
+  font-size: 6px;
+}
+.toc-h3 .toc-label {
+  padding: 5px 12px 5px 30px;
+  font-size: 5.5px;
+  color: var(--gui-text-dim);
+  opacity: 0.8;
+}
+.toc-item.hidden { display: none; }
+.sidebar-count {
+  padding: 4px 12px;
+  font-size: 5.5px;
+  color: var(--gui-text-dim);
+  letter-spacing: 0.5px;
+  flex-shrink: 0;
+  border-bottom: 1px solid var(--gui-border);
+  display: none;
+}
+.sidebar-count.visible { display: block; }
+.wiki-page {
+  flex: 1;
+  min-width: 0;
+  background: var(--gui-bg);
+  border: 4px solid var(--gui-border);
+  box-shadow: 10px 10px 0 var(--gui-bg-dark);
+  clip-path: polygon(
+    0% 12px, 12px 12px, 12px 0%,
+    calc(100% - 12px) 0%, calc(100% - 12px) 12px, 100% 12px,
+    100% calc(100% - 12px), calc(100% - 12px) calc(100% - 12px), calc(100% - 12px) 100%,
+    12px 100%, 12px calc(100% - 12px), 0% calc(100% - 12px)
+  );
+}
+.wiki-title-bar {
+  background: var(--gui-bg-dark);
+  border-bottom: 3px solid var(--gui-border);
+  padding: 12px 20px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.wiki-title-bar span {
+  color: var(--gui-accent);
+  font-size: 9px;
+  text-shadow: 2px 2px var(--gui-border);
+  letter-spacing: 1px;
+}
+.wiki-body {
+  padding: 32px 36px;
+  color: var(--gui-text);
+  font-size: 7.5px;
+  line-height: 2.4;
+  overflow-wrap: break-word;
+}
+.wiki-loading {
+  text-align: center;
+  padding: 60px 20px;
+  color: var(--gui-text-dim);
+  font-size: 8px;
+}
+.wiki-loading .spinner {
+  display: inline-block;
+  width: 16px; height: 16px;
+  border: 3px solid var(--gui-border);
+  border-top-color: var(--gui-accent);
+  border-radius: 0;
+  animation: spin 0.7s linear infinite;
+  margin-bottom: 18px;
+  image-rendering: pixelated;
+}
+@keyframes spin { to { transform: rotate(360deg); } }
+.md-content h1 {
+  color: var(--gui-accent);
+  font-size: clamp(10px, 2.5vw, 16px);
+  text-shadow: 2px 2px 0 var(--gui-bg-dark);
+  margin: 0 0 20px 0;
+  padding-bottom: 10px;
+  border-bottom: 4px solid var(--gui-border);
+  letter-spacing: 1px;
+  line-height: 1.8;
+  scroll-margin-top: 170px;
+}
+.md-content h2 {
+  color: var(--gui-accent);
+  font-size: clamp(8px, 1.8vw, 12px);
+  text-shadow: 2px 2px 0 var(--gui-bg-dark);
+  margin: 28px 0 14px 0;
+  padding-bottom: 6px;
+  border-bottom: 3px solid var(--gui-border);
+  letter-spacing: 1px;
+  line-height: 1.8;
+  scroll-margin-top: 170px;
+}
+.md-content h3 {
+  color: #ffb84d;
+  font-size: clamp(7px, 1.4vw, 10px);
+  margin: 20px 0 10px 0;
+  letter-spacing: 1px;
+  line-height: 1.8;
+  scroll-margin-top: 170px;
+}
+.md-content p {
+  margin-bottom: 14px;
+  font-size: 7.5px;
+  line-height: 2.4;
+  color: var(--gui-text);
+}
+.md-content ul, .md-content ol {
+  margin: 10px 0 16px 20px;
+}
+.md-content li {
+  font-size: 7.5px;
+  line-height: 2.4;
+  margin-bottom: 6px;
+  color: var(--gui-text);
+}
+.md-content li::marker { color: var(--gui-accent); }
+.md-content code {
+  background: var(--gui-bg-dark);
+  border: 2px solid var(--gui-border);
+  padding: 1px 6px;
+  font-size: 7px;
+  color: #a0ffb8;
+  font-family: 'Press Start 2P', cursive;
+}
+.md-content pre {
+  background: var(--gui-bg-dark);
+  border: 3px solid var(--gui-border);
+  padding: 16px;
+  overflow-x: auto;
+  margin: 14px 0;
+}
+.md-content pre code {
+  background: none;
+  border: none;
+  padding: 0;
+  font-size: 7px;
+  color: #a0ffb8;
+}
+.md-content blockquote {
+  border-left: 4px solid var(--gui-accent);
+  padding-left: 16px;
+  margin: 12px 0;
+  color: var(--gui-text-dim);
+}
+.md-content a { color: var(--gui-accent); text-decoration: underline; }
+.md-content a:hover { color: #fff; }
+.md-content hr {
+  border: none;
+  height: 4px;
+  background: repeating-linear-gradient(
+    90deg,
+    var(--gui-border) 0px, var(--gui-border) 8px,
+    transparent 8px, transparent 16px
+  );
+  margin: 20px 0;
+}
+.md-content img {
+  max-width: 100%;
+  image-rendering: pixelated;
+  border: 3px solid var(--gui-border);
+}
+.md-content table {
+  border-collapse: collapse;
+  width: 100%;
+  margin: 14px 0;
+  font-size: 7px;
+}
+.md-content th {
+  background: var(--gui-bg-dark);
+  color: var(--gui-accent);
+  padding: 8px 12px;
+  border: 2px solid var(--gui-border);
+  text-align: left;
+}
+.md-content td {
+  padding: 8px 12px;
+  border: 2px solid var(--gui-border);
+  color: var(--gui-text);
+}
+.md-content tr:nth-child(even) td { background: rgba(0,0,0,0.15); }
+.btn-back {
+  font-family: 'Press Start 2P', cursive;
+  font-size: 8px;
+  padding: 10px 16px;
+  background: var(--gui-bg-dark);
+  border: 3px solid var(--gui-accent);
+  color: var(--gui-accent);
+  cursor: pointer;
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  box-shadow: 3px 3px 0 #1a0e04;
+  clip-path: polygon(
+    0% 4px, 4px 4px, 4px 0%,
+    calc(100% - 4px) 0%, calc(100% - 4px) 4px, 100% 4px,
+    100% calc(100% - 4px), calc(100% - 4px) calc(100% - 4px), calc(100% - 4px) 100%,
+    4px 100%, 4px calc(100% - 4px), 0% calc(100% - 4px)
+  );
+  transition: filter 0.1s;
+}
+.btn-back:hover { filter: brightness(1.25); }
+.btn-back:active { transform: translate(2px,2px); }
+.sidebar-toggle {
+  display: none;
+  position: fixed;
+  bottom: 24px;
+  left: 24px;
+  z-index: 50;
+  font-family: 'Press Start 2P', cursive;
+  font-size: 8px;
+  padding: 10px 14px;
+  background: var(--gui-bg-dark);
+  border: 3px solid var(--gui-accent);
+  color: var(--gui-accent);
+  cursor: pointer;
+  box-shadow: 4px 4px 0 #1a0e04;
+}
+@media (max-width: 760px) {
+  .wiki-layout { flex-direction: column; }
+  .wiki-sidebar {
+    width: 100%;
+    position: fixed;
+    top: auto;
+    bottom: 0; left: 0; right: 0;
+    max-height: 55vh;
+    transform: translateY(100%);
+    transition: transform 0.25s ease;
+    z-index: 40;
+    clip-path: none;
+    border-bottom: none;
+    border-radius: 0;
+  }
+  .wiki-sidebar.open { transform: translateY(0); }
+  .sidebar-toggle { display: block; }
+}
+</style>
+</head>
+<body>
+<div class="header-fade"></div>
+<div class="clouds">
+  <div class="cloud c1"></div>
+  <div class="cloud c2"></div>
+  <div class="cloud c3"></div>
+  <div class="cloud c4"></div>
+</div>
+<div class="top-header">
+  <div class="logo-row">
+    <img src="./game/Assets/Icons/icon.png" class="game-icon" alt="icon"/>
+    <div class="title">ISOMETRIC ISLAND</div>
+  </div>
+  <nav class="nav-bar">
+    <a class="nav-btn" href="./index.html"><img src="./game/Assets/Icons/Software.png" class="nav-icon" alt=""/> OVERVIEW</a>
+    <a class="nav-btn nav-btn-active" href="./wiki.html"><img src="./game/Assets/Icons/book.png" class="nav-icon" alt=""/> WIKI</a>
+    <button class="nav-btn" onclick="alert('Go to the overview page for Changelog.')"><img src="./game/Assets/Icons/maintenance.png" class="nav-icon" alt=""/> CHANGELOG</button>
+    <button class="nav-btn" onclick="alert('Go to the overview page for Licenses.')"><img src="./game/Assets/Icons/Credit.png" class="nav-icon" alt=""/> LICENSES</button>
+    <a class="nav-btn" href="#" onclick="alert('No download package configured yet.');return false;"><img src="./game/Assets/Icons/todorm.png" class="nav-icon" alt=""/> DOWNLOAD</a>
+  </nav>
+</div>
+<div class="wiki-layout">
+  <aside class="wiki-sidebar" id="wiki-sidebar">
+    <div class="sidebar-header">
+      <span class="sidebar-header-icon"></span>
+      <span>CONTENTS</span>
+    </div>
+    <div class="sidebar-search-wrap">
+      <input
+        class="sidebar-search"
+        id="toc-search"
+        type="text"
+        placeholder="SEARCH SECTIONS..."
+        autocomplete="off"
+        spellcheck="false"
+      />
+      <button class="search-clear" id="search-clear" title="Clear">✕</button>
+    </div>
+    <div class="sidebar-count" id="sidebar-count"></div>
+    <nav class="sidebar-toc" id="sidebar-toc">
+      <div class="toc-empty">Loading the page, wait a sec!</div>
+    </nav>
+  </aside>
+  <div class="wiki-page">
+    <div class="wiki-title-bar">
+      <span>WIKI</span>
+      <a href="./index.html" class="btn-back">← Back to the Main Page</a>
+    </div>
+    <div class="wiki-body">
+      <div id="wiki-content">
+        <div class="wiki-loading">
+          <div class="spinner"></div>
+          <p>We are searchin' for Adrian's secret files, wait a second... We will be as fast as possible, we promise!</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<button class="sidebar-toggle" id="sidebar-toggle" onclick="toggleSidebar()">☰</button>
+<script>
+let headingIdCounter = {};
+function slugify(text) {
+  return text.toLowerCase()
+    .replace(/[^\w\s-]/g, '')
+    .replace(/\s+/g, '-')
+    .replace(/-+/g, '-')
+    .trim();
+}
+function makeId(text) {
+  const base = slugify(text);
+  headingIdCounter[base] = (headingIdCounter[base] || 0) + 1;
+  return headingIdCounter[base] === 1 ? base : `${base}-${headingIdCounter[base]}`;
+}
+function parseMarkdown(md) {
+  headingIdCounter = {};
+  const escHtml = s => s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+  let lines = md.split('\n');
+  let html = '';
+  let i = 0;
+  while (i < lines.length) {
+    let line = lines[i];
+    if (/^```/.test(line)) {
+      i++;
+      let code = '';
+      while (i < lines.length && !/^```/.test(lines[i])) { code += escHtml(lines[i]) + '\n'; i++; }
+      html += `<pre><code>${code}</code></pre>`;
+      i++; continue;
+    }
+    const headingMatch = line.match(/^(#{1,6})\s+(.*)/);
+    if (headingMatch) {
+      const level = headingMatch[1].length;
+      const text  = inline(headingMatch[2]);
+      const plain = headingMatch[2].replace(/[*_`~\[\]]/g,'');
+      const id    = makeId(plain);
+      const tag   = level <= 2 ? `h${level}` : 'h3';
+      html += `<${tag} id="${id}">${text}</${tag}>`;
+      i++; continue;
+    }
+    if (/^---+$/.test(line.trim()) || /^\*\*\*+$/.test(line.trim())) { html += '<hr/>'; i++; continue; }
+    if (/^>\s?/.test(line)) {
+      let bq = '';
+      while (i < lines.length && /^>\s?/.test(lines[i])) { bq += inline(lines[i].replace(/^>\s?/,'')) + '<br/>'; i++; }
+      html += `<blockquote>${bq}</blockquote>`; continue;
+    }
+    if (/^[\*\-]\s/.test(line)) {
+      html += '<ul>';
+      while (i < lines.length && /^[\*\-]\s/.test(lines[i])) { html += `<li>${inline(lines[i].replace(/^[\*\-]\s/,''))}</li>`; i++; }
+      html += '</ul>'; continue;
+    }
+    if (/^\d+\.\s/.test(line)) {
+      html += '<ol>';
+      while (i < lines.length && /^\d+\.\s/.test(lines[i])) { html += `<li>${inline(lines[i].replace(/^\d+\.\s/,''))}</li>`; i++; }
+      html += '</ol>'; continue;
+    }
+    if (line.trim() === '') { i++; continue; }
+    let para = '';
+    while (i < lines.length && lines[i].trim() !== '' && !/^[#>\-\*]/.test(lines[i]) && !/^\d+\./.test(lines[i]) && !/^```/.test(lines[i])) {
+      para += (para ? ' ' : '') + lines[i]; i++;
+    }
+    if (para) html += `<p>${inline(para)}</p>`;
+  }
+  return html;
+}
+function inline(text) {
+  text = text.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+  text = text.replace(/!\[([^\]]*)\]\(([^)]+)\)/g, '<img src="$2" alt="$1"/>');
+  text = text.replace(/\[([^\]]+)\]\(([^)]+)\)/g, '<a href="$2" target="_blank" rel="noopener">$1</a>');
+  text = text.replace(/\*\*\*(.+?)\*\*\*/g, '<strong><em>$1</em></strong>');
+  text = text.replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>');
+  text = text.replace(/__(.+?)__/g, '<strong>$1</strong>');
+  text = text.replace(/\*(.+?)\*/g, '<em>$1</em>');
+  text = text.replace(/_(.+?)_/g, '<em>$1</em>');
+  text = text.replace(/`([^`]+)`/g, '<code>$1</code>');
+  text = text.replace(/~~(.+?)~~/g, '<del>$1</del>');
+  return text;
+}
+function buildTOC() {
+  const tocEl  = document.getElementById('sidebar-toc');
+  const content = document.getElementById('wiki-content');
+  const headings = content.querySelectorAll('h1, h2, h3');
+
+  if (!headings.length) {
+    tocEl.innerHTML = '<div class="toc-empty">NO SECTIONS FOUND</div>';
+    return;
+  }
+  tocEl.innerHTML = '';
+  headings.forEach(h => {
+    const level = parseInt(h.tagName[1]);
+    const id    = h.id;
+    const label = h.textContent.trim();
+    const btn = document.createElement('button');
+    btn.className = `toc-item toc-h${level}`;
+    btn.dataset.id     = id;
+    btn.dataset.label  = label.toLowerCase();
+    btn.innerHTML = `<div class="toc-indicator"></div><span class="toc-label">${label}</span>`;
+    btn.addEventListener('click', () => {
+      const target = document.getElementById(id);
+      if (target) {
+        target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        setActive(btn);
+        document.getElementById('wiki-sidebar').classList.remove('open');
+      }
+    });
+    tocEl.appendChild(btn);
+  });
+  setupSearch();
+  setupScrollSpy();
+}
+function setupSearch() {
+  const input    = document.getElementById('toc-search');
+  const clearBtn = document.getElementById('search-clear');
+  const countEl  = document.getElementById('sidebar-count');
+  function doFilter() {
+    const q = input.value.trim().toLowerCase();
+    clearBtn.classList.toggle('visible', q.length > 0);
+    const items = document.querySelectorAll('.toc-item');
+    let visible = 0;
+    items.forEach(item => {
+      const match = !q || item.dataset.label.includes(q);
+      item.classList.toggle('hidden', !match);
+      if (match) visible++;
+    });
+    if (q) {
+      countEl.textContent = `${visible} RESULT${visible !== 1 ? 'S' : ''}`;
+      countEl.classList.add('visible');
+    } else {
+      countEl.classList.remove('visible');
+    }
+  }
+  input.addEventListener('input', doFilter);
+  clearBtn.addEventListener('click', () => {
+    input.value = '';
+    clearBtn.classList.remove('visible');
+    countEl.classList.remove('visible');
+    document.querySelectorAll('.toc-item').forEach(i => i.classList.remove('hidden'));
+    input.focus();
+  });
+}
+function setupScrollSpy() {
+  const content  = document.getElementById('wiki-content');
+  const headings = Array.from(content.querySelectorAll('h1, h2, h3'));
+  const observer = new IntersectionObserver(entries => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        const btn = document.querySelector(`.toc-item[data-id="${entry.target.id}"]`);
+        if (btn) setActive(btn);
+      }
+    });
+  }, { rootMargin: '-160px 0px -60% 0px', threshold: 0 });
+  headings.forEach(h => observer.observe(h));
+}
+function setActive(activeBtn) {
+  document.querySelectorAll('.toc-item').forEach(b => b.classList.remove('active'));
+  activeBtn.classList.add('active');
+  activeBtn.scrollIntoView({ block: 'nearest', behavior: 'smooth' });
+}
+function toggleSidebar() {
+  document.getElementById('wiki-sidebar').classList.toggle('open');
+}
+async function loadWiki() {
+  const container = document.getElementById('wiki-content');
+  try {
+    const res = await fetch(
+      'https://raw.githubusercontent.com/Adium1000/Isometric-island/main/readme.md',
+      { cache: 'no-cache' }
+    );
+    if (!res.ok) throw new Error(`HTTP ${res.status}`);
+    const md       = await res.text();
+    const rendered = parseMarkdown(md);
+    container.innerHTML = `<div class="md-content">${rendered}</div>`;
+    buildTOC();
+  } catch (err) {
+    container.innerHTML = `
+      <div class="wiki-loading">
+        <p style="color:#ff8080;margin-bottom:16px;">⚠ Failed to load Wiki, this is your chance! blame Adrian ! </p>
+        <p style="color:var(--gui-text-dim);font-size:6px;line-height:2.5;">${err.message}<br/><br/>Check your connection or visit the<br/><a href="https://github.com/Adium1000/Isometric-island/blob/main/readme.md" target="_blank" style="color:var(--gui-accent);">GitHub page directly</a>.</p>
+      </div>`;
+    document.getElementById('sidebar-toc').innerHTML = '<div class="toc-empty">FAILED TO LOAD</div>';
+  }
+}
+loadWiki();
+(function() {
+  const fade = document.querySelector('.header-fade');
+  window.addEventListener('scroll', function() {
+    if (window.scrollY > 10) {
+      fade.classList.add('visible');
+    } else {
+      fade.classList.remove('visible');
+    }
+  }, { passive: true });
+})();
+</script>
+</body>
+</html>
