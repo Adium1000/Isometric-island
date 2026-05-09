@@ -13,14 +13,6 @@
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 <title>Isometric Island:Wiki</title>
-<script>
-  (function() {
-    var base = document.createElement('base');
-    var path = location.pathname.replace(/\/wiki\.html$/, '/').replace(/\/$/, '');
-    base.href = location.origin + path + '/';
-    document.currentScript.parentNode.insertBefore(base, document.currentScript);
-  })();
-</script>
 <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet"/>
 <style>
 :root {
@@ -283,24 +275,6 @@ function parseMarkdown(md) {
       while (i < lines.length && /^\d+\.\s/.test(lines[i])) { html += '<li>' + inline(lines[i].replace(/^\d+\.\s/,'')) + '</li>'; i++; }
       html += '</ol>'; continue;
     }
-    if (/^\|/.test(line.trim())) {
-      const rows = [];
-      while (i < lines.length && /^\|/.test(lines[i].trim())) {
-        rows.push(lines[i]); i++;
-      }
-      if (rows.length >= 2) {
-        const parseCells = row => row.split('|').slice(1,-1).map(c => c.trim());
-        const headerCells = parseCells(rows[0]);
-        html += '<table><thead><tr>' + headerCells.map(c => '<th>' + inline(c) + '</th>').join('') + '</tr></thead><tbody>';
-        for (let r = 2; r < rows.length; r++) {
-          if (/^[\|\s\-:]+$/.test(rows[r])) continue;
-          const cells = parseCells(rows[r]);
-          html += '<tr>' + cells.map(c => '<td>' + inline(c) + '</td>').join('') + '</tr>';
-        }
-        html += '</tbody></table>';
-      }
-      continue;
-    }
     if (line.trim() === '') { i++; continue; }
     let para = '';
     while (i < lines.length && lines[i].trim() !== '' && !/^[#>\-\*]/.test(lines[i]) && !/^\d+\./.test(lines[i]) && !/^```/.test(lines[i])) {
@@ -311,16 +285,9 @@ function parseMarkdown(md) {
   return html;
 }
 function inline(text) {
-  const saved = [];
-  function save(html) { saved.push(html); return '\x00' + (saved.length-1) + '\x00'; }
-  text = text.replace(/!\[([^\]]*)\]\(([^)]+)\)/g, function(_, alt, src) {
-    const url = /^https?:\/\//.test(src) ? src : 'https://raw.githubusercontent.com/Adium1000/Isometric-island/main/' + src.replace(/^\.?\//,'');
-    return save('<img src="' + url + '" alt="' + alt + '"/>');
-  });
-  text = text.replace(/\[([^\]]+)\]\(([^)]+)\)/g, function(_, label, href) {
-    return save('<a href="' + href + '" target="_blank" rel="noopener">' + label + '</a>');
-  });
   text = text.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+  text = text.replace(/!\[([^\]]*)\]\(([^)]+)\)/g,'<img src="$2" alt="$1"/>');
+  text = text.replace(/\[([^\]]+)\]\(([^)]+)\)/g,'<a href="$2" target="_blank" rel="noopener">$1</a>');
   text = text.replace(/\*\*\*(.+?)\*\*\*/g,'<strong><em>$1</em></strong>');
   text = text.replace(/\*\*(.+?)\*\*/g,'<strong>$1</strong>');
   text = text.replace(/__(.+?)__/g,'<strong>$1</strong>');
@@ -328,7 +295,6 @@ function inline(text) {
   text = text.replace(/_(.+?)_/g,'<em>$1</em>');
   text = text.replace(/`([^`]+)`/g,'<code>$1</code>');
   text = text.replace(/~~(.+?)~~/g,'<del>$1</del>');
-  text = text.replace(/\x00(\d+)\x00/g, function(_, i) { return saved[+i]; });
   return text;
 }
 async function loadWiki() {
