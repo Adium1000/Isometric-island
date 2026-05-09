@@ -166,3 +166,14 @@ Added Lists Render : for the wiki infos
 Added Iframes render for the repo statistics
 Added links render for donations & stuff
 in this comits I was also redoing changes and trying again, I was frustarted because images wont render but it was just cache issue, so now it works :3
+
+## Comit [(afb0ccd)](https://github.com/Adium1000/Isometric-island/commit/afb0ccd22b353ec36d21e3c9b845cf6edadb54e3)
+
+- Removed Changelog, Licenses buttons from the dock because I cant fix a fetch bug
+
+## Comit [(85db9e7)](https://github.com/Adium1000/Isometric-island/commit/85db9e733ba2edfccb366d7db2357acdda60edca)
+
+- Added automatic theme detection, now if you use dark mode the launchpad s theme will be night and if you use light mode, the launch pad theme will be sunny (day)
+
+---
+Now the launchpad is complete, what do you think?
