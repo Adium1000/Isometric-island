@@ -339,26 +339,26 @@ And done!
 
 | Block                                     | Category                       |     
 |:-----------------------------------------:|:------------------------------:|
-| ![dirt](Assets/Blocks/dirt.png)           | Natural                        |      
-| ![dirt2](Assets/Blocks/dirt2.png)         | Natural                        |  
-| ![crops](Assets/Blocks/crops.png)         | Natural Decoration             |  
-| ![flowers](Assets/Blocks/flovers.png)     | Natural Decoration             | 
-| ![hay](Assets/Blocks/Hay.png)             | Natural Decoration             | 
-| ![ice](Assets/Blocks/ice.png)             | Snowy Decoration               | 
-| ![melon](Assets/Blocks/melon.png)         | Natural                        |  
-| ![mossy](Assets/Blocks/mossystone.png)    | Natural                        |  
-| ![pumpkin](Assets/Blocks/pumpkin.png)     | Natural Decoration             | 
-| ![redsand](Assets/Blocks/redsand.png)     | Natural                        |  
-| ![rocks](Assets/Blocks/rock.png)          | Natural                        |   
-| ![sand](Assets/Blocks/sand.png)           | Natural                        |   
-| ![shoved](Assets/Blocks/ShovedDirt.png)   | Natural Decoration             |  
-| ![snow](Assets/Blocks/snow.png)           | Snowy Decoration               | 
-| ![snow2](Assets/Blocks/snow2.png)         | Snowy Decoration               | 
-| ![snowrooks](Assets/Blocks/snowrocks.png) | Snowy Decoration               | 
-| ![stone](Assets/Blocks/stone.png)         | Natural                        |   
-| ![tree](Assets/Blocks/treehb.png)         | Natural Decoration             |  
-| ![water](Assets/Blocks/water.png)         | Natural                        |   
-| ![snowedtree](Assets/Blocks/treehbh.png)  | Snowy Decoration               | 
+| ![dirt](Game/Assets/Blocks/dirt.png)           | Natural                        |      
+| ![dirt2](Game/Assets/Blocks/dirt2.png)         | Natural                        |  
+| ![crops](Game/Assets/Blocks/crops.png)         | Natural Decoration             |  
+| ![flowers](Game/Assets/Blocks/flovers.png)     | Natural Decoration             | 
+| ![hay](Game/Assets/Blocks/Hay.png)             | Natural Decoration             | 
+| ![ice](Game/Assets/Blocks/ice.png)             | Snowy Decoration               | 
+| ![melon](Game/Assets/Blocks/melon.png)         | Natural                        |  
+| ![mossy](Game/Assets/Blocks/mossystone.png)    | Natural                        |  
+| ![pumpkin](Game/Assets/Blocks/pumpkin.png)     | Natural Decoration             | 
+| ![redsand](Game/Assets/Blocks/redsand.png)     | Natural                        |  
+| ![rocks](Game/Assets/Blocks/rock.png)          | Natural                        |   
+| ![sand](Game/Assets/Blocks/sand.png)           | Natural                        |   
+| ![shoved](Game/Assets/Blocks/ShovedDirt.png)   | Natural Decoration             |  
+| ![snow](Game/Assets/Blocks/snow.png)           | Snowy Decoration               | 
+| ![snow2](Game/Assets/Blocks/snow2.png)         | Snowy Decoration               | 
+| ![snowrooks](Game/Assets/Blocks/snowrocks.png) | Snowy Decoration               | 
+| ![stone](Game/Assets/Blocks/stone.png)         | Natural                        |   
+| ![tree](Game/Assets/Blocks/treehb.png)         | Natural Decoration             |  
+| ![water](Game/Assets/Blocks/water.png)         | Natural                        |   
+| ![snowedtree](Game/Assets/Blocks/treehbh.png)  | Snowy Decoration               | 
 
 ![Radial_menu_listing](.github/Guide/r.png)
 
@@ -476,4 +476,3 @@ THE README IS FULLY WRITEN BY ME - a wiki for my game kinda
 3. Star the repo
 4. Suggest something cool (on Flavortown!) see `FlavortownDevlogsHistory.md`
 5. Don't like it? It's okay! Give me some feedback on what I can improve. :)
-
