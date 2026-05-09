@@ -14,6 +14,22 @@
   --gui-text:     #fff8e1;
   --gui-text-dim: #a07850;
   --sky:          #aad6ff;
+  --star-opacity: 0;
+  --moon-opacity: 0;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --gui-bg:       #1e1a2e;
+    --gui-bg-dark:  #0d0b1a;
+    --gui-border:   #3a2d5e;
+    --gui-accent:   #c8aaff;
+    --gui-text:     #e8e0ff;
+    --gui-text-dim: #6a5a8a;
+    --sky:          #07051a;
+    --star-opacity: 1;
+    --moon-opacity: 1;
+  }
 }
 * { box-sizing: border-box; margin: 0; padding: 0; }
 body {
@@ -62,6 +78,97 @@ body {
 @keyframes drift {
   from { transform: translateX(0); }
   to   { transform: translateX(calc(100vw + 120px)); }
+}
+.night-sky {
+  position: fixed; inset: 0; pointer-events: none; z-index: 0;
+  opacity: var(--star-opacity);
+  transition: opacity 0.5s ease;
+}
+.stars-layer {
+  position: absolute; inset: 0;
+  background-image:
+    radial-gradient(1px 1px at 10% 15%, #fff 100%, transparent),
+    radial-gradient(1px 1px at 25% 8%,  #fff 100%, transparent),
+    radial-gradient(1.5px 1.5px at 38% 22%, #c8aaff 100%, transparent),
+    radial-gradient(1px 1px at 52% 5%,  #fff 100%, transparent),
+    radial-gradient(1px 1px at 63% 18%, #fff 100%, transparent),
+    radial-gradient(1.5px 1.5px at 74% 10%, #fff 100%, transparent),
+    radial-gradient(1px 1px at 85% 25%, #c8aaff 100%, transparent),
+    radial-gradient(1px 1px at 91% 7%,  #fff 100%, transparent),
+    radial-gradient(1px 1px at 17% 35%, #fff 100%, transparent),
+    radial-gradient(1.5px 1.5px at 44% 42%, #fff 100%, transparent),
+    radial-gradient(1px 1px at 69% 38%, #c8aaff 100%, transparent),
+    radial-gradient(1px 1px at 80% 45%, #fff 100%, transparent),
+    radial-gradient(1px 1px at 5%  50%, #fff 100%, transparent),
+    radial-gradient(1.5px 1.5px at 30% 55%, #fff 100%, transparent),
+    radial-gradient(1px 1px at 57% 60%, #c8aaff 100%, transparent),
+    radial-gradient(1px 1px at 92% 52%, #fff 100%, transparent),
+    radial-gradient(1px 1px at 15% 70%, #fff 100%, transparent),
+    radial-gradient(1.5px 1.5px at 48% 72%, #fff 100%, transparent),
+    radial-gradient(1px 1px at 76% 68%, #c8aaff 100%, transparent),
+    radial-gradient(1px 1px at 6%  82%, #fff 100%, transparent),
+    radial-gradient(1px 1px at 33% 88%, #fff 100%, transparent),
+    radial-gradient(1.5px 1.5px at 60% 85%, #c8aaff 100%, transparent),
+    radial-gradient(1px 1px at 88% 80%, #fff 100%, transparent);
+}
+.star-twinkle {
+  position: absolute; inset: 0;
+  background-image:
+    radial-gradient(1.5px 1.5px at 20% 12%, #fff 100%, transparent),
+    radial-gradient(1px 1px at 45% 30%, #c8aaff 100%, transparent),
+    radial-gradient(2px 2px at 70% 20%, #fff 100%, transparent),
+    radial-gradient(1px 1px at 88% 35%, #c8aaff 100%, transparent),
+    radial-gradient(1.5px 1.5px at 12% 60%, #fff 100%, transparent),
+    radial-gradient(1px 1px at 55% 75%, #fff 100%, transparent),
+    radial-gradient(2px 2px at 82% 65%, #c8aaff 100%, transparent);
+  animation: twinkle 3s ease-in-out infinite alternate;
+}
+@keyframes twinkle {
+  from { opacity: 0.3; }
+  to   { opacity: 1; }
+}
+.moon {
+  position: absolute;
+  top: 5%;
+  right: 8%;
+  width: 48px;
+  height: 48px;
+  background: #e8e0ff;
+  border-radius: 50%;
+  box-shadow: 0 0 24px 8px rgba(200,170,255,0.35), 0 0 0 4px rgba(200,170,255,0.15);
+  image-rendering: pixelated;
+}
+.moon::after {
+  content: '';
+  position: absolute;
+  top: 8px; left: 14px;
+  width: 20px; height: 20px;
+  background: #0d0b1a;
+  border-radius: 50%;
+  opacity: 0.22;
+}
+@media (prefers-color-scheme: dark) {
+  .cloud, .cloud::before, .cloud::after {
+    background: #2a2545;
+    opacity: 0.45;
+  }
+  .header-fade {
+    background: linear-gradient(to bottom, #07051a 0%, #07051a 55%, rgba(7,5,26,0) 100%) !important;
+  }
+  .title {
+    color: #c8aaff !important;
+    text-shadow: 2px 2px 0 #0d0b1a, 4px 4px 0 rgba(0,0,0,0.4) !important;
+  }
+  .splash {
+    color: #c8aaff !important;
+    text-shadow: 1px 1px #3a2d5e !important;
+  }
+  .btn-play {
+    background: #0d2030;
+    border-color: #4a8aff;
+    color: #a0d0ff;
+    box-shadow: 4px 4px 0 #06101a;
+  }
 }
 .cards-group {
   display: flex;
@@ -129,7 +236,6 @@ body {
   padding-left: 4px;
   border-left: 3px solid var(--gui-border);
 }
-
 .card {
   position: relative;
   background: var(--gui-bg);
@@ -439,6 +545,11 @@ body {
   <div class="cloud c3"></div>
   <div class="cloud c4"></div>
 </div>
+<div class="night-sky">
+  <div class="stars-layer"></div>
+  <div class="star-twinkle"></div>
+  <div class="moon"></div>
+</div>
 <div class="top-header">
   <div class="logo-row">
     <img src="./game/Assets/Icons/icon.png" class="game-icon" alt="icon"/>
@@ -450,7 +561,6 @@ body {
   <nav class="nav-bar">
     <button class="nav-btn nav-btn-active"><img src="./game/Assets/Icons/Software.png" class="nav-icon" alt=""/> <span class="nav-label">OVERVIEW</span></button>
     <a class="nav-btn" href="./wiki.html"><img src="./game/Assets/Icons/book.png" class="nav-icon" alt=""/> <span class="nav-label">WIKI</span></a>
-
     <a class="nav-btn" href="https://github.com/Adium1000/Isometric-island/releases" target="_blank"><img src="./game/Assets/Icons/todorm.png" class="nav-icon" alt=""/> <span class="nav-label">DOWNLOAD</span></a>
   </nav>
 </div>
@@ -459,7 +569,6 @@ body {
   <img src="./game/Assets/Icons/island.png" class="card-island" alt="island"/>
   <div class="card">
     <h1 class="card-hero-title">BUILD YOUR<br/>OWN WORLD.</h1>
-
     <p class="card-tagline">
       Craft islands block by block in a living isometric world.<br/>
       Shape terrain, control the climate, and share<br/>
@@ -485,7 +594,6 @@ body {
   </div>
 </div>
 </div>
-
 <script>
 (async function loadNewChanges() {
   const container = document.getElementById('changes-list');
@@ -528,6 +636,5 @@ body {
   }, { passive: true });
 })();
 </script>
-
 </body>
 </html>
