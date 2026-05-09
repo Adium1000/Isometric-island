@@ -275,6 +275,24 @@ function parseMarkdown(md) {
       while (i < lines.length && /^\d+\.\s/.test(lines[i])) { html += '<li>' + inline(lines[i].replace(/^\d+\.\s/,'')) + '</li>'; i++; }
       html += '</ol>'; continue;
     }
+    if (/^\|/.test(line.trim())) {
+      const rows = [];
+      while (i < lines.length && /^\|/.test(lines[i].trim())) {
+        rows.push(lines[i]); i++;
+      }
+      if (rows.length >= 2) {
+        const parseCells = row => row.split('|').slice(1,-1).map(c => c.trim());
+        const headerCells = parseCells(rows[0]);
+        html += '<table><thead><tr>' + headerCells.map(c => '<th>' + inline(c) + '</th>').join('') + '</tr></thead><tbody>';
+        for (let r = 2; r < rows.length; r++) {
+          if (/^[\|\s\-:]+$/.test(rows[r])) continue;
+          const cells = parseCells(rows[r]);
+          html += '<tr>' + cells.map(c => '<td>' + inline(c) + '</td>').join('') + '</tr>';
+        }
+        html += '</tbody></table>';
+      }
+      continue;
+    }
     if (line.trim() === '') { i++; continue; }
     let para = '';
     while (i < lines.length && lines[i].trim() !== '' && !/^[#>\-\*]/.test(lines[i]) && !/^\d+\./.test(lines[i]) && !/^```/.test(lines[i])) {
