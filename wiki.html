@@ -14,6 +14,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 <title>Isometric Island:Wiki</title>
 <script>
+  // Fix base path for GitHub Pages
   (function() {
     var base = document.createElement('base');
     var path = location.pathname.replace(/\/wiki\.html$/, '/').replace(/\/$/, '');
@@ -312,7 +313,10 @@ function parseMarkdown(md) {
 }
 function inline(text) {
   text = text.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
-  text = text.replace(/!\[([^\]]*)\]\(([^)]+)\)/g,'<img src="$2" alt="$1"/>');
+  text = text.replace(/!\[([^\]]*)\]\(([^)]+)\)/g, function(_, alt, src) {
+    if (/^https?:\/\//.test(src)) return '<img src="' + src + '" alt="' + alt + '"/>';
+    return '<img src="https://raw.githubusercontent.com/Adium1000/Isometric-island/main/' + src.replace(/^\.?\//,'') + '" alt="' + alt + '"/>';
+  });
   text = text.replace(/\[([^\]]+)\]\(([^)]+)\)/g,'<a href="$2" target="_blank" rel="noopener">$1</a>');
   text = text.replace(/\*\*\*(.+?)\*\*\*/g,'<strong><em>$1</em></strong>');
   text = text.replace(/\*\*(.+?)\*\*/g,'<strong>$1</strong>');
