@@ -339,26 +339,26 @@ And done!
 
 | Block                                     | Category                       |     
 |:-----------------------------------------:|:------------------------------:|
-| ![dirt](Game/Assets/Blocks/dirt.png)           | Natural                        |      
-| ![dirt2](Game/Assets/Blocks/dirt2.png)         | Natural                        |  
-| ![crops](Game/Assets/Blocks/crops.png)         | Natural Decoration             |  
-| ![flowers](Game/Assets/Blocks/flovers.png)     | Natural Decoration             | 
-| ![hay](Game/Assets/Blocks/Hay.png)             | Natural Decoration             | 
-| ![ice](Game/Assets/Blocks/ice.png)             | Snowy Decoration               | 
-| ![melon](Game/Assets/Blocks/melon.png)         | Natural                        |  
-| ![mossy](Game/Assets/Blocks/mossystone.png)    | Natural                        |  
-| ![pumpkin](Game/Assets/Blocks/pumpkin.png)     | Natural Decoration             | 
-| ![redsand](Game/Assets/Blocks/redsand.png)     | Natural                        |  
-| ![rocks](Game/Assets/Blocks/rock.png)          | Natural                        |   
-| ![sand](Game/Assets/Blocks/sand.png)           | Natural                        |   
-| ![shoved](Game/Assets/Blocks/ShovedDirt.png)   | Natural Decoration             |  
-| ![snow](Game/Assets/Blocks/snow.png)           | Snowy Decoration               | 
-| ![snow2](Game/Assets/Blocks/snow2.png)         | Snowy Decoration               | 
-| ![snowrooks](Game/Assets/Blocks/snowrocks.png) | Snowy Decoration               | 
-| ![stone](Game/Assets/Blocks/stone.png)         | Natural                        |   
-| ![tree](Game/Assets/Blocks/treehb.png)         | Natural Decoration             |  
-| ![water](Game/Assets/Blocks/water.png)         | Natural                        |   
-| ![snowedtree](Game/Assets/Blocks/treehbh.png)  | Snowy Decoration               | 
+| ![dirt](game/Assets/Blocks/dirt.png)           | Natural                        |      
+| ![dirt2](game/Assets/Blocks/dirt2.png)         | Natural                        |  
+| ![crops](game/Assets/Blocks/crops.png)         | Natural Decoration             |  
+| ![flowers](game/Assets/Blocks/flovers.png)     | Natural Decoration             | 
+| ![hay](game/Assets/Blocks/Hay.png)             | Natural Decoration             | 
+| ![ice](game/Assets/Blocks/ice.png)             | Snowy Decoration               | 
+| ![melon](game/Assets/Blocks/melon.png)         | Natural                        |  
+| ![mossy](game/Assets/Blocks/mossystone.png)    | Natural                        |  
+| ![pumpkin](game/Assets/Blocks/pumpkin.png)     | Natural Decoration             | 
+| ![redsand](game/Assets/Blocks/redsand.png)     | Natural                        |  
+| ![rocks](game/Assets/Blocks/rock.png)          | Natural                        |   
+| ![sand](game/Assets/Blocks/sand.png)           | Natural                        |   
+| ![shoved](game/Assets/Blocks/ShovedDirt.png)   | Natural Decoration             |  
+| ![snow](game/Assets/Blocks/snow.png)           | Snowy Decoration               | 
+| ![snow2](game/Assets/Blocks/snow2.png)         | Snowy Decoration               | 
+| ![snowrooks](game/Assets/Blocks/snowrocks.png) | Snowy Decoration               | 
+| ![stone](game/Assets/Blocks/stone.png)         | Natural                        |   
+| ![tree](game/Assets/Blocks/treehb.png)         | Natural Decoration             |  
+| ![water](game/Assets/Blocks/water.png)         | Natural                        |   
+| ![snowedtree](game/Assets/Blocks/treehbh.png)  | Snowy Decoration               | 
 
 ![Radial_menu_listing](.github/Guide/r.png)
 
