@@ -15,9 +15,7 @@
   --gui-text-dim: #a07850;
   --sky:          #aad6ff;
 }
-
 * { box-sizing: border-box; margin: 0; padding: 0; }
-
 body {
   font-family: 'Press Start 2P', cursive;
   background: var(--sky);
@@ -25,17 +23,13 @@ body {
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center;
   overflow-x: hidden;
-  padding-top: 140px;
+  padding-top: 180px;
 }
-
 @keyframes popIn {
-  from { transform: scale(0.82) translateY(24px); opacity: 0; }
-  to   { transform: scale(1)    translateY(0);    opacity: 1; }
+  from { transform: scale(0.82) translateY(-40px); opacity: 0; }
+  to   { transform: scale(1)    translateY(0);     opacity: 1; }
 }
-
-/* ── pixel clouds ── */
 .clouds {
   position: fixed; inset: 0; pointer-events: none; z-index: 0;
 }
@@ -50,8 +44,6 @@ body {
   position: absolute;
   background: #fff;
 }
-
-/* hand-crafted pixel cloud shapes */
 .c1 { width:48px;height:16px; top:12%; left:-60px; animation: drift 28s linear infinite; }
 .c1::before { width:24px;height:16px; top:-16px; left:8px; }
 .c1::after  { width:16px;height:8px;  top:-8px;  left:24px; }
@@ -71,15 +63,11 @@ body {
   from { transform: translateX(0); }
   to   { transform: translateX(calc(100vw + 120px)); }
 }
-
-/* ── cards group — centres everything accounting for island overhang ── */
 .cards-group {
   display: flex;
   flex-direction: column;
   align-items: center;
 }
-
-/* ── card wrapper (holds island + card together) ── */
 .card-wrapper {
   position: relative;
   z-index: 10;
@@ -87,30 +75,25 @@ body {
   margin-top: -24px;
   width: min(700px, calc(92vw - 160px));
 }
-
-/* ── changes card wrapper ── */
 .changes-wrapper {
   position: relative;
   z-index: 10;
-  margin-top: 18px;
+  margin-top: 40px;
   animation: popIn 0.55s 0.1s cubic-bezier(0.18,0.89,0.32,1.28) both;
   width: min(700px, calc(92vw - 160px));
 }
-
 .changes-island {
   position: absolute;
-  left: -87px;
-  top: 50%;
-  transform: translateY(-50%);
+  left: -70px;
+  top: 60px;
   width: 184px;
   height: 192px;
   image-rendering: pixelated;
   z-index: 20;
   pointer-events: none;
   filter: drop-shadow(4px 8px 0 rgba(0,0,0,0.3));
-  animation: islandFloat 4s 0.8s ease-in-out infinite;
+  animation: changesFloat 4s ease-in-out infinite;
 }
-
 .changes-card {
   position: relative;
   background: var(--gui-bg);
@@ -129,7 +112,6 @@ body {
     12px 100%, 12px calc(100% - 12px), 0% calc(100% - 12px)
   );
 }
-
 .changes-title {
   display: flex;
   align-items: center;
@@ -140,7 +122,6 @@ body {
   letter-spacing: 2px;
   line-height: 1.7;
 }
-
 .changes-entry {
   color: #ffffff;
   font-size: 7px;
@@ -149,7 +130,6 @@ body {
   border-left: 3px solid var(--gui-border);
 }
 
-/* ── main card ── */
 .card {
   position: relative;
   background: var(--gui-bg);
@@ -169,8 +149,6 @@ body {
     12px 100%, 12px calc(100% - 12px), 0% calc(100% - 12px)
   );
 }
-
-/* island peeking from left — relative to wrapper, outside card */
 .card-island {
   position: absolute;
   left: -212px;
@@ -184,13 +162,16 @@ body {
   filter: drop-shadow(4px 8px 0 rgba(0,0,0,0.3));
   animation: islandFloat 3.5s ease-in-out infinite;
 }
-
 @keyframes islandFloat {
   0%   { transform: translateY(-50%); }
   50%  { transform: translateY(calc(-50% - 14px)); }
   100% { transform: translateY(-50%); }
 }
-
+@keyframes changesFloat {
+  0%   { transform: translateY(0px); }
+  50%  { transform: translateY(-14px); }
+  100% { transform: translateY(0px); }
+}
 .card-hero-title {
   color: var(--gui-accent);
   font-size: clamp(13px, 2.8vw, 22px);
@@ -199,7 +180,6 @@ body {
   line-height: 1.7;
   margin: 0;
 }
-
 .card-tagline {
   color: #ffffff;
   font-size: 7px;
@@ -207,15 +187,12 @@ body {
   max-width: 360px;
   margin: 0;
 }
-
 .card-bottom {
   display: flex;
   width: 100%;
   justify-content: flex-end;
   margin-top: 8px;
 }
-
-/* ── logo + nav wrapper ── */
 .top-header {
   position: fixed;
   top: 0;
@@ -228,16 +205,12 @@ body {
   gap: 10px;
   padding-top: 16px;
 }
-
-/* ── logo row ── */
 .logo-row {
   display: flex;
   align-items: center;
   justify-content: center;
   gap: 14px;
 }
-
-/* ── nav bar ── */
 .nav-bar {
   display: flex;
   align-items: center;
@@ -252,7 +225,6 @@ body {
     6px 100%, 6px calc(100% - 6px), 0% calc(100% - 6px)
   );
 }
-
 .nav-btn {
   font-family: 'Press Start 2P', cursive;
   font-size: 9px;
@@ -277,14 +249,12 @@ body {
   animation: squish 0.35s forwards;
 }
 .nav-btn:active { transform: translateY(1px); }
-
 .nav-btn-active {
   background: var(--gui-bg-dark);
   color: #fff8e1;
   cursor: default;
 }
 .nav-btn-active:hover { animation: none; }
-
 .nav-icon {
   width: 18px;
   height: 18px;
@@ -292,14 +262,12 @@ body {
   vertical-align: middle;
   flex-shrink: 0;
 }
-
 .game-icon {
   width: 48px;
   height: 48px;
   image-rendering: pixelated;
   flex-shrink: 0;
 }
-
 .btn-icon {
   width: 14px;
   height: 14px;
@@ -308,17 +276,11 @@ body {
   margin-right: 6px;
   margin-top: -2px;
 }
-
-/* pixel island art */
 .pixel-art {
   image-rendering: pixelated;
   width: 120px;
   height: 96px;
 }
-
-/* SVG island drawn in pixels */
-
-/* ── title ── */
 .title {
   color: #523519;
   font-size: clamp(10px, 3vw, 16px);
@@ -328,7 +290,6 @@ body {
   line-height: 2;
   position: relative;
 }
-
 .splash {
   position: absolute;
   top: -18px;
@@ -344,8 +305,6 @@ body {
   from { transform: rotate(-20deg) scale(1); }
   to   { transform: rotate(-20deg) scale(1.15); }
 }
-
-/* ── subtitle ── */
 .subtitle {
   color: #ffffff;
   font-size: 7px;
@@ -353,8 +312,6 @@ body {
   line-height: 2.2;
   max-width: 340px;
 }
-
-/* ── divider ── */
 .divider {
   width: 100%;
   height: 4px;
@@ -364,15 +321,12 @@ body {
     transparent 8px, transparent 16px
   );
 }
-
-/* ── buttons ── */
 .btns {
   display: flex;
   gap: 16px;
   flex-wrap: wrap;
   justify-content: center;
 }
-
 .btn {
   font-family: 'Press Start 2P', cursive;
   font-size: 9px;
@@ -390,9 +344,7 @@ body {
     4px 100%, 4px calc(100% - 4px), 0% calc(100% - 4px)
   );
 }
-
 .btn:active { transform: translateY(2px) translateX(2px); filter: brightness(0.9); }
-
 .btn-play {
   background: #1a4a2a;
   border-color: #2a8a4a;
@@ -400,7 +352,6 @@ body {
   box-shadow: 4px 4px 0 #0d2714;
 }
 .btn-play:hover { animation: playSquish 0.5s ease-in-out infinite; filter: brightness(1.3); }
-
 @keyframes playSquish {
   0%   { transform: scaleX(1)    scaleY(1); }
   15%  { transform: scaleX(1.1)  scaleY(0.9); }
@@ -409,7 +360,6 @@ body {
   75%  { transform: scaleX(0.98) scaleY(1.02); }
   100% { transform: scaleX(1)    scaleY(1); }
 }
-
 .btn-wiki {
   background: var(--gui-bg-dark);
   border-color: var(--gui-accent);
@@ -417,7 +367,6 @@ body {
   box-shadow: 4px 4px 0 #1a0e04;
 }
 .btn-wiki:hover { filter: brightness(1.25); animation: squish 0.35s forwards; }
-
 @keyframes squish {
   0%   { transform: scaleX(1)    scaleY(1); }
   18%  { transform: scaleX(1.12) scaleY(0.88); }
@@ -425,8 +374,6 @@ body {
   65%  { transform: scaleX(1.04) scaleY(0.97); }
   100% { transform: scaleX(1)    scaleY(1); }
 }
-
-/* ── footer ── */
 .footer {
   width: 100%;
   color: var(--gui-text-dim);
@@ -451,8 +398,6 @@ body {
   color: var(--gui-text-dim);
   opacity: 0.7;
 }
-
-/* ── header fade on scroll ── */
 .header-fade {
   position: fixed;
   top: 0; left: 0; right: 0;
@@ -464,55 +409,36 @@ body {
   transition: opacity 0.3s ease;
 }
 .header-fade.visible { opacity: 1; }
-
-/* iconitele din header pe mobile — ascunse pe desktop */
 .mobile-header-islands {
   display: none;
 }
-
-/* ── MOBILE ── */
 @media (max-width: 700px) {
-  body { padding-top: 120px; }
-
-  /* nav compact — icoane doar, fara text */
+  body { padding-top: 160px; }
   .nav-btn { padding: 11px 8px; gap: 0; }
   .nav-label { display: none; }
   .nav-icon { width: 20px; height: 20px; }
-
-  /* logo mai mare */
   .game-icon { width: 44px; height: 44px; }
   .title { font-size: clamp(11px, 3.5vw, 15px); }
   .top-header { gap: 6px; padding-top: 10px; }
-
-  /* carduri full width, fara padding stanga */
   .card-wrapper, .changes-wrapper { width: 92vw; margin-top: 0; }
   .cards-group { gap: 16px; }
-  .changes-wrapper { margin-top: 16px; }
-
-  /* ascunde iconitele flotante */
+  .changes-wrapper { margin-top: 32px; }
   .card-island, .changes-island { display: none; }
-
   .card { padding: 20px 18px; }
   .changes-card { padding: 20px 18px; }
-
   .card-hero-title { font-size: 13px; }
   .card-tagline { font-size: 6.5px; max-width: 100%; }
 }
 </style>
 </head>
 <body>
-
 <div class="header-fade"></div>
-
-<!-- pixel clouds -->
 <div class="clouds">
   <div class="cloud c1"></div>
   <div class="cloud c2"></div>
   <div class="cloud c3"></div>
   <div class="cloud c4"></div>
 </div>
-
-<!-- logo + nav fixed at top -->
 <div class="top-header">
   <div class="logo-row">
     <img src="./game/Assets/Icons/icon.png" class="game-icon" alt="icon"/>
@@ -524,16 +450,11 @@ body {
   <nav class="nav-bar">
     <button class="nav-btn nav-btn-active"><img src="./game/Assets/Icons/Software.png" class="nav-icon" alt=""/> <span class="nav-label">OVERVIEW</span></button>
     <a class="nav-btn" href="./wiki.html"><img src="./game/Assets/Icons/book.png" class="nav-icon" alt=""/> <span class="nav-label">WIKI</span></a>
-    <a class="nav-btn" href="./changelog.html"><img src="./game/Assets/Icons/maintenance.png" class="nav-icon" alt=""/> <span class="nav-label">CHANGELOG</span></a>
-    <button class="nav-btn" onclick="openLicenses()"><img src="./game/Assets/Icons/Credit.png" class="nav-icon" alt=""/> <span class="nav-label">LICENSES</span></button>
-    <a class="nav-btn" href="#" onclick="downloadGame(event)"><img src="./game/Assets/Icons/todorm.png" class="nav-icon" alt=""/> <span class="nav-label">DOWNLOAD</span></a>
+
+    <a class="nav-btn" href="https://github.com/Adium1000/Isometric-island/releases" target="_blank"><img src="./game/Assets/Icons/todorm.png" class="nav-icon" alt=""/> <span class="nav-label">DOWNLOAD</span></a>
   </nav>
 </div>
-
-<!-- cards group -->
 <div class="cards-group">
-
-<!-- main card -->
 <div class="card-wrapper">
   <img src="./game/Assets/Icons/island.png" class="card-island" alt="island"/>
   <div class="card">
@@ -544,13 +465,10 @@ body {
       Shape terrain, control the climate, and share<br/>
       your creation with anyone — right from the browser.
     </p>
-
     <div class="divider" style="width:100%;"></div>
-
     <div class="card-bottom">
       <a class="btn btn-play" href="https://adium1000.github.io/Isometric-island/game/" style="padding-left:40px;padding-right:40px;">▶ PLAY NOW</a>
     </div>
-
     <p class="footer">
       <span class="footer-version">v233.26 BUILD 8</span>
       <span class="footer-dot">•</span>
@@ -558,8 +476,6 @@ body {
     </p>
   </div>
 </div>
-
-<!-- new changes card -->
 <div class="changes-wrapper">
   <img src="./game/Assets/Icons/maintenance.png" class="changes-island" alt="changes"/>
   <div class="changes-card">
@@ -568,12 +484,9 @@ body {
     <div id="changes-list" style="color:var(--gui-text-dim);font-size:7px;line-height:2.4;"></div>
   </div>
 </div>
-
-</div><!-- end cards-group -->
-
+</div>
 
 <script>
-// Fetch new changes from GitHub raw content
 (async function loadNewChanges() {
   const container = document.getElementById('changes-list');
   const RAW_URL = 'https://raw.githubusercontent.com/Adium1000/Isometric-island/main/newchanges.md';
@@ -581,20 +494,15 @@ body {
     const res = await fetch(RAW_URL);
     if (!res.ok) throw new Error('HTTP ' + res.status);
     const text = await res.text();
-
-    // Parse markdown lines: keep non-empty lines, strip leading #/*/- markers
     const lines = text.split('\n')
       .map(l => l.trim())
       .filter(l => l.length > 0);
-
     if (lines.length === 0) {
       container.innerHTML = '<span style="color:var(--gui-text-dim);">Nicio modificare găsită.</span>';
       return;
     }
-
     container.innerHTML = '';
     lines.forEach(line => {
-      // Detect headings
       if (line.startsWith('#')) {
         const heading = document.createElement('p');
         heading.style.cssText = 'color:var(--gui-accent);font-size:8px;margin-top:10px;margin-bottom:4px;text-shadow:2px 2px 0 var(--gui-bg-dark);letter-spacing:1px;';
@@ -603,75 +511,15 @@ body {
       } else {
         const entry = document.createElement('p');
         entry.className = 'changes-entry';
-        // strip leading list markers
         entry.textContent = line.replace(/^[-*+]\s*/, '');
         container.appendChild(entry);
       }
     });
   } catch (err) {
-    container.innerHTML = '<span style="color:#ff6b6b;font-size:7px;">⚠ Nu s-a putut încărca: ' + err.message + '</span>';
+    container.innerHTML = '<span style="color:#ff6b6b;font-size:7px;">⚠ Error While Load, Plis stop hunting bugs get a job: ' + err.message + '</span>';
   }
 })();
 </script>
-
-<script>
-function openChangelog() {
-  openGenericOverlay('changelog-overlay');
-}
-function openLicenses() {
-  openGenericOverlay('licenses-overlay');
-}
-function downloadGame(e) {
-  e.preventDefault();
-  alert('No download package configured yet.');
-}
-function openGenericOverlay(id) {
-  const el = document.getElementById(id);
-  el.style.display = 'flex';
-  requestAnimationFrame(() => el.classList.add('open'));
-  document.body.style.overflow = 'hidden';
-}
-function closeGenericOverlay(id) {
-  const el = document.getElementById(id);
-  el.classList.remove('open');
-  el.addEventListener('transitionend', () => {
-    el.style.display = 'none';
-    document.body.style.overflow = '';
-  }, { once: true });
-}
-document.addEventListener('keydown', e => { if (e.key === 'Escape') {
-  ['changelog-overlay','licenses-overlay'].forEach(id => closeGenericOverlay(id));
-}});
-</script>
-<!-- changelog overlay -->
-<div id="changelog-overlay" onclick="if(event.target===this)closeGenericOverlay('changelog-overlay')" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.72);z-index:100;justify-content:center;align-items:center;opacity:0;transition:opacity 0.25s ease;">
-  <div id="wiki-box" style="width:min(560px,94vw);max-height:75vh;display:flex;flex-direction:column;position:relative;animation:popIn 0.3s cubic-bezier(0.18,0.89,0.32,1.28) both;background:var(--gui-bg);border:4px solid var(--gui-border);box-shadow:10px 10px 0 var(--gui-bg-dark);">
-    <div id="wiki-title-bar" style="background:var(--gui-bg-dark);border-bottom:3px solid var(--gui-border);padding:10px 16px;display:flex;align-items:center;justify-content:space-between;flex-shrink:0;">
-      <span style="color:var(--gui-accent);font-size:9px;text-shadow:2px 2px var(--gui-border);letter-spacing:1px;">📋 CHANGELOG</span>
-      <button id="wiki-close" onclick="closeGenericOverlay('changelog-overlay')" style="font-family:'Press Start 2P',cursive;font-size:10px;background:#7a2020;border:3px solid #3b1010;color:#fff;cursor:pointer;width:30px;height:30px;display:flex;align-items:center;justify-content:center;clip-path:polygon(0% 4px,4px 4px,4px 0%,calc(100% - 4px) 0%,calc(100% - 4px) 4px,100% 4px,100% calc(100% - 4px),calc(100% - 4px) calc(100% - 4px),calc(100% - 4px) 100%,4px 100%,4px calc(100% - 4px),0% calc(100% - 4px));">✕</button>
-    </div>
-    <div style="padding:24px 28px;overflow-y:auto;flex:1;color:var(--gui-text);font-size:8px;line-height:2.4;">
-      <p style="color:var(--gui-accent);font-size:10px;margin-bottom:12px;">v233.26 Build 8</p>
-      <p>No changelog file detected. Place a <code style="background:var(--gui-bg-dark);border:2px solid var(--gui-border);padding:1px 6px;font-size:7px;color:#a0ffb8;">CHANGELOG.md</code> next to this file to populate this section.</p>
-    </div>
-  </div>
-</div>
-
-<!-- licenses overlay -->
-<div id="licenses-overlay" onclick="if(event.target===this)closeGenericOverlay('licenses-overlay')" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.72);z-index:100;justify-content:center;align-items:center;opacity:0;transition:opacity 0.25s ease;">
-  <div style="width:min(560px,94vw);max-height:75vh;display:flex;flex-direction:column;position:relative;animation:popIn 0.3s cubic-bezier(0.18,0.89,0.32,1.28) both;background:var(--gui-bg);border:4px solid var(--gui-border);box-shadow:10px 10px 0 var(--gui-bg-dark);">
-    <div style="background:var(--gui-bg-dark);border-bottom:3px solid var(--gui-border);padding:10px 16px;display:flex;align-items:center;justify-content:space-between;flex-shrink:0;">
-      <span style="color:var(--gui-accent);font-size:9px;text-shadow:2px 2px var(--gui-border);letter-spacing:1px;">⚖ LICENSES</span>
-      <button onclick="closeGenericOverlay('licenses-overlay')" style="font-family:'Press Start 2P',cursive;font-size:10px;background:#7a2020;border:3px solid #3b1010;color:#fff;cursor:pointer;width:30px;height:30px;display:flex;align-items:center;justify-content:center;clip-path:polygon(0% 4px,4px 4px,4px 0%,calc(100% - 4px) 0%,calc(100% - 4px) 4px,100% 4px,100% calc(100% - 4px),calc(100% - 4px) calc(100% - 4px),calc(100% - 4px) 100%,4px 100%,4px calc(100% - 4px),0% calc(100% - 4px));">✕</button>
-    </div>
-    <div style="padding:24px 28px;overflow-y:auto;flex:1;color:var(--gui-text);font-size:8px;line-height:2.4;">
-      <p style="color:var(--gui-accent);font-size:9px;margin-bottom:16px;">OPEN SOURCE CREDITS</p>
-      <p style="margin-bottom:10px;"><strong style="color:var(--gui-accent);">Press Start 2P</strong><br/>Font by CodeMan38 — SIL Open Font License 1.1</p>
-      <p style="margin-bottom:10px;"><strong style="color:var(--gui-accent);">Isometric Island</strong><br/>Made with ♥ using vanilla HTML, CSS &amp; JS.<br/>All game assets © their respective authors.</p>
-    </div>
-  </div>
-</div>
-
 <script>
 (function() {
   const fade = document.querySelector('.header-fade');
