@@ -4,9 +4,8 @@
         __ |/ |/ / _  / _  ,<  _  /     _  ____// /_/ /_  /_/ //  __/
         ____/|__/  /_/  /_/|_| /_/      /_/     \__,_/ _\__, / \___/ 
                                                       /____/        
-
 -->
-
+                                                      
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -247,6 +246,11 @@ function parseMarkdown(md) {
   let lines = md.split('\n'), html = '', i = 0;
   while (i < lines.length) {
     let line = lines[i];
+    if (/^\s*<[a-zA-Z]/.test(line)) {
+      let block = '';
+      while (i < lines.length && lines[i].trim() !== '') { block += lines[i] + '\n'; i++; }
+      html += block; continue;
+    }
     if (/^```/.test(line)) {
       i++; let code = '';
       while (i < lines.length && !/^```/.test(lines[i])) { code += escHtml(lines[i]) + '\n'; i++; }
@@ -265,6 +269,18 @@ function parseMarkdown(md) {
       while (i < lines.length && /^>\s?/.test(lines[i])) { bq += inline(lines[i].replace(/^>\s?/,'')) + '<br/>'; i++; }
       html += '<blockquote>' + bq + '</blockquote>'; continue;
     }
+    if (/\|/.test(line) && i + 1 < lines.length && /^\s*\|?[\s\-:]+\|/.test(lines[i+1])) {
+      const parseRow = r => r.replace(/^\||\|$/g,'').split('|').map(c => c.trim());
+      const headers = parseRow(line);
+      i += 2;
+      let thtml = '<table><thead><tr>' + headers.map(h => '<th>' + inline(h) + '</th>').join('') + '</tr></thead><tbody>';
+      while (i < lines.length && /\|/.test(lines[i]) && lines[i].trim() !== '') {
+        const cells = parseRow(lines[i]);
+        thtml += '<tr>' + cells.map(c => '<td>' + inline(c) + '</td>').join('') + '</tr>'; i++;
+      }
+      thtml += '</tbody></table>';
+      html += thtml; continue;
+    }
     if (/^[\*\-]\s/.test(line)) {
       html += '<ul>';
       while (i < lines.length && /^[\*\-]\s/.test(lines[i])) { html += '<li>' + inline(lines[i].replace(/^[\*\-]\s/,'')) + '</li>'; i++; }
@@ -277,7 +293,7 @@ function parseMarkdown(md) {
     }
     if (line.trim() === '') { i++; continue; }
     let para = '';
-    while (i < lines.length && lines[i].trim() !== '' && !/^[#>\-\*]/.test(lines[i]) && !/^\d+\./.test(lines[i]) && !/^```/.test(lines[i])) {
+    while (i < lines.length && lines[i].trim() !== '' && !/^[#>\-\*]/.test(lines[i]) && !/^\d+\./.test(lines[i]) && !/^```/.test(lines[i]) && !/\|/.test(lines[i]) && !/^\s*<[a-zA-Z]/.test(lines[i])) {
       para += (para ? ' ' : '') + lines[i]; i++;
     }
     if (para) html += '<p>' + inline(para) + '</p>';
@@ -285,7 +301,11 @@ function parseMarkdown(md) {
   return html;
 }
 function inline(text) {
-  text = text.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+  const parts = text.split(/(<[^>]+>)/);
+  text = parts.map((p, idx) => {
+    if (idx % 2 === 1) return p; 
+    return p.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+  }).join('');
   text = text.replace(/!\[([^\]]*)\]\(([^)]+)\)/g, function(_, alt, src) {
     if (/^https?:\/\//i.test(src)) return '<img src="' + src + '" alt="' + alt + '"/>';
     const base = 'https://raw.githubusercontent.com/Adium1000/Isometric-island/main/';
