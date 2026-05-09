@@ -451,9 +451,58 @@ body {
   color: var(--gui-text-dim);
   opacity: 0.7;
 }
+
+/* ── header fade on scroll ── */
+.header-fade {
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  z-index: 15;
+  pointer-events: none;
+  height: 200px;
+  background: linear-gradient(to bottom, #aad6ff 0%, #aad6ff 55%, rgba(170,214,255,0) 100%);
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+.header-fade.visible { opacity: 1; }
+
+/* iconitele din header pe mobile — ascunse pe desktop */
+.mobile-header-islands {
+  display: none;
+}
+
+/* ── MOBILE ── */
+@media (max-width: 700px) {
+  body { padding-top: 120px; }
+
+  /* nav compact — icoane doar, fara text */
+  .nav-btn { padding: 11px 8px; gap: 0; }
+  .nav-label { display: none; }
+  .nav-icon { width: 20px; height: 20px; }
+
+  /* logo mai mare */
+  .game-icon { width: 44px; height: 44px; }
+  .title { font-size: clamp(11px, 3.5vw, 15px); }
+  .top-header { gap: 6px; padding-top: 10px; }
+
+  /* carduri full width, fara padding stanga */
+  .card-wrapper, .changes-wrapper { width: 92vw; margin-top: 0; }
+  .cards-group { gap: 16px; }
+  .changes-wrapper { margin-top: 16px; }
+
+  /* ascunde iconitele flotante */
+  .card-island, .changes-island { display: none; }
+
+  .card { padding: 20px 18px; }
+  .changes-card { padding: 20px 18px; }
+
+  .card-hero-title { font-size: 13px; }
+  .card-tagline { font-size: 6.5px; max-width: 100%; }
+}
 </style>
 </head>
 <body>
+
+<div class="header-fade"></div>
 
 <!-- pixel clouds -->
 <div class="clouds">
@@ -473,11 +522,11 @@ body {
     </div>
   </div>
   <nav class="nav-bar">
-    <button class="nav-btn nav-btn-active"><img src="./game/Assets/Icons/Software.png" class="nav-icon" alt=""/> OVERVIEW</button>
-    <a class="nav-btn" href="./wiki.html"><img src="./game/Assets/Icons/book.png" class="nav-icon" alt=""/> WIKI</a>
-    <button class="nav-btn" onclick="openChangelog()"><img src="./game/Assets/Icons/maintenance.png" class="nav-icon" alt=""/> CHANGELOG</button>
-    <button class="nav-btn" onclick="openLicenses()"><img src="./game/Assets/Icons/Credit.png" class="nav-icon" alt=""/> LICENSES</button>
-    <a class="nav-btn" href="#" onclick="downloadGame(event)"><img src="./game/Assets/Icons/todorm.png" class="nav-icon" alt=""/> DOWNLOAD</a>
+    <button class="nav-btn nav-btn-active"><img src="./game/Assets/Icons/Software.png" class="nav-icon" alt=""/> <span class="nav-label">OVERVIEW</span></button>
+    <a class="nav-btn" href="./wiki.html"><img src="./game/Assets/Icons/book.png" class="nav-icon" alt=""/> <span class="nav-label">WIKI</span></a>
+    <button class="nav-btn" onclick="openChangelog()"><img src="./game/Assets/Icons/maintenance.png" class="nav-icon" alt=""/> <span class="nav-label">CHANGELOG</span></button>
+    <button class="nav-btn" onclick="openLicenses()"><img src="./game/Assets/Icons/Credit.png" class="nav-icon" alt=""/> <span class="nav-label">LICENSES</span></button>
+    <a class="nav-btn" href="#" onclick="downloadGame(event)"><img src="./game/Assets/Icons/todorm.png" class="nav-icon" alt=""/> <span class="nav-label">DOWNLOAD</span></a>
   </nav>
 </div>
 
@@ -622,6 +671,15 @@ document.addEventListener('keydown', e => { if (e.key === 'Escape') {
     </div>
   </div>
 </div>
+
+<script>
+(function() {
+  const fade = document.querySelector('.header-fade');
+  window.addEventListener('scroll', function() {
+    fade.classList.toggle('visible', window.scrollY > 10);
+  }, { passive: true });
+})();
+</script>
 
 </body>
 </html>
