@@ -13,6 +13,14 @@
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 <title>Isometric Island:Wiki</title>
+<script>
+  (function() {
+    var base = document.createElement('base');
+    var path = location.pathname.replace(/\/wiki\.html$/, '/').replace(/\/$/, '');
+    base.href = location.origin + path + '/';
+    document.currentScript.parentNode.insertBefore(base, document.currentScript);
+  })();
+</script>
 <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet"/>
 <style>
 :root {
