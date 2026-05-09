@@ -841,23 +841,11 @@
                         </div>
                     </div>
                     <div id="welcome-footer" style="margin-top: 14px;">
-                        <button class="btn-welcome-ok" onclick="welcomeNextStep()">NEXT &#9654;</button>
+                        <button class="btn-welcome-ok" onclick="welcomeNextStep()">START BUILDING &#9654;</button>
                     </div>
                 </div>
 
-                <div id="welcome-step-2">
-                    <div id="welcome-readme-wrap">
-                        <div id="readme-titlebar">
-                            <span class="rdot"></span>
-                            &#128196; readme.md &mdash; Adium1000/Isometric-island
-                        </div>
-                        <div id="readme-loading">Loading...</div>
-                        <div id="welcome-readme" style="display:none;"></div>
-                    </div>
-                    <div id="welcome-footer" style="margin-top: 14px;">
-                        <button class="btn-welcome-ok" id="start-building-btn" onclick="tryStartBuilding()" disabled style="opacity:0.45;cursor:not-allowed;">START BUILDING <span id="start-countdown">(15)</span></button>
-                    </div>
-                </div>
+
 
             </div>
 
@@ -1922,7 +1910,6 @@ function openTutorialFromMenu() {
         ov.style.display = 'flex';
         requestAnimationFrame(() => requestAnimationFrame(() => ov.classList.add('popup-visible')));
     }
-    if (typeof fetchReadme === 'function') fetchReadme();
 }
 (function() {
     var _origCloseWelcome = window.closeWelcome;
@@ -1933,23 +1920,12 @@ function openTutorialFromMenu() {
     };
 })();
 </script>
-    <script src="../Assets/Language/index.js"></script>
-    <script src="../Assets/Language/en.js"></script>
-    <script src="../Assets/Language/ro.js"></script>
-    <script src="../Assets/Language/fr.js"></script>
+    <script src="./Assets/Language/index.js"></script>
+    <script src="./Assets/Language/en.js"></script>
+    <script src="./Assets/Language/ro.js"></script>
+    <script src="./Assets/Language/fr.js"></script>
     <script src="lang.js"></script>
     <script src="game.js" defer></script>
-<script>
-window.addEventListener('load', function() {
-    var _origNext = window.welcomeNextStep;
-    if (typeof _origNext === 'function') {
-        window.welcomeNextStep = function() {
-            _origNext.apply(this, arguments);
-            setTimeout(startBuildingCountdown, 400);
-        };
-    }
-});
-</script>
 <div id="explicit-warning-overlay">
     <div id="explicit-warning-wrapper" onclick="event.stopPropagation()">
         <button id="explicit-warning-close-btn" onclick="explicitDecline()">&#10005;</button>
@@ -2769,7 +2745,6 @@ window.closeNotFound = function() {
     if (ov) {
         ov.style.display = 'flex';
         requestAnimationFrame(() => requestAnimationFrame(() => ov.classList.add('popup-visible')));
-        if (typeof fetchReadme === 'function') fetchReadme();
     }
 };
 </script>

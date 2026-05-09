@@ -2974,7 +2974,6 @@ window.onload = () => {
         const ov = document.getElementById('welcome-overlay');
         ov.style.display = 'flex';
         requestAnimationFrame(() => requestAnimationFrame(() => ov.classList.add('popup-visible')));
-        fetchReadme();
     }
     _showWelcome();
     }
@@ -3625,14 +3624,7 @@ function closeWelcome() {
 })();
 
 function welcomeNextStep() {
-    const step1 = document.getElementById('welcome-step-1');
-    const step2 = document.getElementById('welcome-step-2');
-    step1.classList.add('slide-out');
-    step1.addEventListener('animationend', function handler() {
-        step1.removeEventListener('animationend', handler);
-        step1.style.display = 'none';
-        step2.classList.add('slide-in');
-    });
+    closeWelcome();
 }
 
 const BLOCK_SEARCH_LIST = [
