@@ -286,7 +286,11 @@ function parseMarkdown(md) {
 }
 function inline(text) {
   text = text.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
-  text = text.replace(/!\[([^\]]*)\]\(([^)]+)\)/g,'<img src="$2" alt="$1"/>');
+  text = text.replace(/!\[([^\]]*)\]\(([^)]+)\)/g, function(_, alt, src) {
+    if (/^https?:\/\//i.test(src)) return '<img src="' + src + '" alt="' + alt + '"/>';
+    const base = 'https://raw.githubusercontent.com/Adium1000/Isometric-island/main/';
+    return '<img src="' + base + src.replace(/^\.?\//,'') + '" alt="' + alt + '"/>';
+  });
   text = text.replace(/\[([^\]]+)\]\(([^)]+)\)/g,'<a href="$2" target="_blank" rel="noopener">$1</a>');
   text = text.replace(/\*\*\*(.+?)\*\*\*/g,'<strong><em>$1</em></strong>');
   text = text.replace(/\*\*(.+?)\*\*/g,'<strong>$1</strong>');
