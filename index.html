@@ -473,6 +473,13 @@ body {
   box-shadow: 4px 4px 0 #1a0e04;
 }
 .btn-wiki:hover { filter: brightness(1.25); animation: squish 0.35s forwards; }
+.btn-donate {
+  background: #2a0d1a;
+  border-color: #ff6b9d;
+  color: #ffb3cf;
+  box-shadow: 4px 4px 0 #150710;
+}
+.btn-donate:hover { filter: brightness(1.3); animation: squish 0.35s forwards; }
 @keyframes squish {
   0%   { transform: scaleX(1)    scaleY(1); }
   18%  { transform: scaleX(1.12) scaleY(0.88); }
@@ -604,12 +611,36 @@ body {
     </p>
   </div>
 </div>
+<div class="card-wrapper" style="animation-delay:0.16s;margin-top:40px;">
+  <img src="./game/Assets/Icons/donate.png" class="card-island" alt="donate" style="width:140px;height:134px;left:-80px;top:50%;transform:translateY(-50%);filter:drop-shadow(4px 8px 0 rgba(0,0,0,0.3));"/>
+  <div class="card">
+    <h1 class="card-hero-title">Support<br/>the Dev!</h1>
+    <p class="card-tagline">
+      If you enjoy Isometric Island,<br/>
+      consider buying me a coffee<br/>
+      Every donation helps keep the island growing!
+    </p>
+    <div class="divider" style="width:100%;"></div>
+    <div class="card-bottom">
+      <a class="btn btn-donate" href="https://revolut.me/adrianu8cv" target="_blank" style="padding-left:40px;padding-right:40px;">♥ DONATE NOW</a>
+    </div>
+    <p class="footer">
+      <span class="footer-version">REVOLUT</span>
+      <span class="footer-dot">•</span>
+      <span class="footer-font">THANK YOU ♥</span>
+    </p>
+  </div>
+</div>
 <div class="changes-wrapper">
   <img src="./game/Assets/Icons/maintenance.png" class="changes-island" alt="changes"/>
   <div class="changes-card">
     <div class="changes-title">NEW CHANGES</div>
     <div class="divider" style="width:100%;margin-bottom:4px;"></div>
     <div id="changes-list" style="color:var(--gui-text-dim);font-size:7px;line-height:2.4;"></div>
+    <div class="divider" style="width:100%;margin-top:12px;"></div>
+    <div style="display:flex;justify-content:flex-end;margin-top:12px;">
+      <a class="btn btn-wiki" href="https://github.com/Adium1000/Isometric-island" target="_blank">⧉ OPEN REPO</a>
+    </div>
   </div>
 </div>
 </div>
