@@ -1,7 +1,7 @@
 {
-    "id": "/Isometric-island/game/",
-    "short_name": "Isometric Island",
-    "name": "Isometric Island",
+    "id": "/mine/",
+    "short_name": "Isometric Sweeper",
+    "name": "Isometric Sweeper",
     "icons": [
         {
             "src": "./Assets/Icons/icon-192.png",
@@ -14,9 +14,10 @@
             "sizes": "512x512"
         }
     ],
-    "start_url": "/Isometric-island/game/",
-    "scope": "/Isometric-island/game/",
+    "start_url": "/mine/",
+    "scope": "/mine/",
     "display": "standalone",
-    "theme_color": "#484A52",
-    "background_color": "#484A52"
+    "orientation": "landscape",
+    "theme_color": "#aad6ff",
+    "background_color": "#aad6ff"
 }

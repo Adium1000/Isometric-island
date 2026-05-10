@@ -1,0 +1,73 @@
+<!--   __  ____                __   __        __
+      /  |/  (_)__  ___ ___   / /  / /___ _  / /
+     / /|_/ / / _ \/ -_|_-<_ / _ \/ __/  ' \/ / 
+    /_/  /_/_/_//_/\__/___(_)_//_/\__/_/_/_/_/  
+-->
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Isometric Sweeper</title>
+<link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="mines.css">
+<link rel="manifest" href="manifest.json">
+<meta name="theme-color" content="#aad6ff">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="apple-mobile-web-app-title" content="Isometric Island">
+<link rel="apple-touch-icon" href="./Assets/Icons/icon-192.png">
+</head>
+<body>
+<div class="game-title-container">
+    <h1 class="game-title">Isometric Sweeper</h1>
+</div>
+<div id="map-wrap">
+    <div id="map-shaker">
+        <div id="map"></div>
+    </div>
+</div>
+<div id="win-particles"></div>
+<div id="hud">
+    <div class="hud-pill">
+        <img src="./Assets/Blocks/rock.png" onerror="this.style.display='none'">
+        MINE <span class="hud-val" id="mines-left">0</span>
+    </div>
+    <div class="hud-pill" id="hud-time">
+        ⏱ <span class="hud-val" id="timer-val">0</span>s
+    </div>
+    <div class="hud-divider"></div>
+    <div id="diff-row">
+        <button class="diff-btn active" data-diff="easy">EASY</button>
+        <button class="diff-btn" data-diff="medium">MED</button>
+        <button class="diff-btn" data-diff="hard">HARD</button>
+    </div>
+    <div class="hud-divider"></div>
+    <button id="btn-restart">&#8635; RESET</button>
+</div>
+<div id="toast"></div>
+<div id="msg-overlay">
+    <div id="msg-wrapper">
+        <div id="msg-box">
+            <div id="msg-icon"></div>
+            <div id="msg-title"></div>
+            <div id="msg-sub"></div>
+            <button class="popup-btn" id="msg-btn">Play Again</button>
+        </div>
+    </div>
+</div>
+<script src="mines.js"></script>
+<script>
+if ('serviceWorker' in navigator) {
+    window.addEventListener('load', () => {
+        navigator.serviceWorker.register('./sw.js')
+            .then(r => console.log('SW registered:', r.scope))
+            .catch(e => console.warn('SW failed:', e));
+    });
+}
+</script>
+</body>
+</html>
