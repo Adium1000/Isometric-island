@@ -49,7 +49,7 @@ function initGame(diff) {
     document.getElementById('mines-left').textContent = cfg.mines;
     hideMsg();
     clearWinParticles();
-    buildTiles();
+    buildTiles(false);
 }
 function placeMines(safeR, safeC) {
     const safe = new Set();
@@ -68,7 +68,7 @@ function placeMines(safeR, safeC) {
         G.cells[idxOf(r,c)]=n;
     }
 }
-function buildTiles() {
+function buildTiles(isIntro) {
     mapEl.innerHTML = ''; TILES=[];
     const gridW = (G.cols+G.rows)*(TILE_W/2);
     const gridH = (G.cols+G.rows)*(TILE_H/2)+TILE_H;
@@ -86,6 +86,11 @@ function buildTiles() {
         img.setAttribute('data-r',r); img.setAttribute('data-c',c);
         const left=offX+isoLeft(c,r), top=offY+isoTop(c,r);
         img.style.left=left+'px'; img.style.top=top+'px'; img.style.zIndex=c+r;
+        if(isIntro){
+            const delay = (r+c)*22;
+            img.classList.add('tile-intro');
+            img.style.animationDelay = delay+'ms';
+        }
         const num=document.createElement('div');
         num.className='tile-num';
         num.style.left=(left+TILE_W/2)+'px';
@@ -279,13 +284,31 @@ function hideMsg(){
         mapEl.style.transform = `translate(${tx}px,${ty}px) scale(${s})`;
     }
     const _origInit = initGame;
-    initGame = function(diff){
+    initGame = function(diff, _intro){
         panX=0; panY=0; viewZoom=1.0;
-        _origInit(diff);
+        const cfg = DIFFICULTIES[diff];
+        G = {
+            cols:cfg.cols,rows:cfg.rows,mines:cfg.mines,
+            cells:new Array(cfg.rows*cfg.cols).fill(0),
+            revealed:new Array(cfg.rows*cfg.cols).fill(false),
+            flags:new Array(cfg.rows*cfg.cols).fill(false),
+            explodedIdx:-1,started:false,over:false,won:false,
+            timerVal:0,timerID:null,hovIdx:-1,diff,
+        };
+        clearInterval(G.timerID);
+        document.getElementById('timer-val').textContent = '0';
+        document.getElementById('mines-left').textContent = cfg.mines;
+        hideMsg();
+        clearWinParticles();
+        buildTiles(!!_intro);
         applyView();
     };
     window.addEventListener('resize',()=>initGame(G.diff));
-    initGame('easy');
+    initGame('easy', true);
+    setTimeout(()=>{
+        document.querySelector('.game-title-container').classList.add('intro-done');
+        document.getElementById('hud').classList.add('intro-done');
+    }, 80);
     document.getElementById('btn-restart').onclick = ()=>{ playClick(); initGame(G.diff); };
     document.getElementById('msg-btn').onclick     = ()=>{ playClick(); initGame(G.diff); };
     document.querySelectorAll('.diff-btn').forEach(btn=>{

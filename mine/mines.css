@@ -18,6 +18,26 @@
     --gui-divider:   #523519;
     --gui-input-bg:  #3b2007;
 }
+@keyframes introFadeDown {
+    0%   { opacity:0; transform:translateX(-50%) translateY(-24px); }
+    60%  { opacity:1; transform:translateX(-50%) translateY(4px); }
+    100% { opacity:1; transform:translateX(-50%) translateY(0); }
+}
+@keyframes introFadeUp {
+    0%   { opacity:0; transform:translateX(-50%) translateY(32px); }
+    60%  { opacity:1; transform:translateX(-50%) translateY(-6px); }
+    100% { opacity:1; transform:translateX(-50%) translateY(0); }
+}
+@keyframes introMapDrop {
+    0%   { opacity:0; transform:translate(var(--tx,0),var(--ty,0)) scale(var(--ts,1)) translateY(-40px); }
+    55%  { opacity:1; transform:translate(var(--tx,0),var(--ty,0)) scale(var(--ts,1)) translateY(8px); }
+    100% { opacity:1; transform:translate(var(--tx,0),var(--ty,0)) scale(var(--ts,1)) translateY(0); }
+}
+@keyframes introTileDrop {
+    0%   { opacity:0; transform:translateY(-18px) scale(0.82); filter:brightness(2) drop-shadow(0 0 6px #ffdf80); }
+    55%  { opacity:1; transform:translateY(4px) scale(1.06); filter:brightness(1.3) drop-shadow(2px 3px 2px rgba(0,0,0,0.3)); }
+    100% { opacity:1; transform:translateY(0) scale(1); filter:drop-shadow(2px 3px 1px rgba(0,0,0,0.25)); }
+}
 * { margin:0; padding:0; box-sizing:border-box; }
 body {
     background: #aad6ff;
@@ -35,11 +55,15 @@ body {
     position: fixed;
     top: 0;
     left: 50%;
-    transform: translateX(-50%);
+    transform: translateX(-50%) translateY(-24px);
     z-index: 300;
     text-align: center;
     pointer-events: none;
     padding-top: 32px;
+    opacity: 0;
+}
+.game-title-container.intro-done {
+    animation: introFadeDown 0.55s cubic-bezier(0.25,0.46,0.45,0.94) 0.1s forwards;
 }
 .game-title {
     margin: 0;
@@ -101,7 +125,7 @@ body {
 #hud {
     position: fixed;
     bottom: 16px; left: 50%;
-    transform: translateX(-50%);
+    transform: translateX(-50%) translateY(32px);
     display: flex;
     align-items: center;
     gap: 6px;
@@ -111,6 +135,10 @@ body {
     padding: 10px 14px;
     clip-path: polygon(0% 8px,8px 8px,8px 0%,calc(100% - 8px) 0%,calc(100% - 8px) 8px,100% 8px,100% calc(100% - 8px),calc(100% - 8px) calc(100% - 8px),calc(100% - 8px) 100%,8px 100%,8px calc(100% - 8px),0% calc(100% - 8px));
     box-shadow: 4px 4px 0 var(--gui-bg-dark), 0 0 0 3px var(--gui-accent), 0 0 16px 4px rgba(255,223,128,0.5), 0 0 36px 8px rgba(255,223,128,0.2);
+    opacity: 0;
+}
+#hud.intro-done {
+    animation: introFadeUp 0.55s cubic-bezier(0.25,0.46,0.45,0.94) 0.2s forwards;
 }
 .hud-divider {
     width: 2px; height: 24px;
@@ -178,6 +206,10 @@ body {
     transition: filter 0.08s;
     cursor: pointer;
     -webkit-user-drag: none;
+}
+.tile.tile-intro {
+    opacity: 0;
+    animation: introTileDrop 0.38s cubic-bezier(0.25,0.46,0.45,0.94) forwards;
 }
 .tile:hover { filter: brightness(1.25) drop-shadow(3px 4px 2px rgba(0,0,0,0.35)); }
 .tile.revealed { cursor: default; }
