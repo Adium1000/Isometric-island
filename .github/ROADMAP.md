@@ -104,3 +104,28 @@ advanced brush options
 
 ----
 
+Devlog 3: Added Download Page, Optimized Banner, Icons to Launchpad, SW
+
+---
+
+# Devlog 82
+
+## Date 14.05.26
+
+## Comit [(ef7367e)](https://github.com/Adium1000/Isometric-island/commit/ef7367e4e3a68bf1a5f38d178fcc4a03010b4f40)
+
+- Added Download menu page 
+- Now when you click on the download button on the tab it will redirect you to the `./download.html page`
+
+## Date 16.05.26
+
+## Comit [(fdae5fb)](https://github.com/Adium1000/Isometric-island/commit/fdae5fb98f47f2360ed12cc655a14c5df806b184)
+
+- Added icons to the launchpad INDEXES: (Index, Wiki, Download)
+- Added Service Worker and Manifest for root ./ index file to be used as an PWA
+- Maked another banner for HackClub Maccondo (perfcect fit)
+- Fixed 404 Download button issue (it redirected to github)
+
+--- 
+(0.1 Journal Hours are because I forgot to use leapse for the banner redesign, it toke 10 mins or so)
+Anyway that is all what do you think?
