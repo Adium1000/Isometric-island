@@ -1,0 +1,25 @@
+{
+    "name": "Isometric Launcher",
+    "short_name": "Isometric Launcher",
+    "description": "Isometric Island Game Launcher",
+    "icons": [
+        {
+            "src": "./game/Assets/Icons/icon-192.png",
+            "type": "image/png",
+            "sizes": "192x192",
+            "purpose": "any maskable"
+        },
+        {
+            "src": "./game/Assets/Icons/icon-512.png",
+            "type": "image/png",
+            "sizes": "512x512",
+            "purpose": "any maskable"
+        }
+    ],
+    "start_url": "./",
+    "scope": "./",
+    "display": "standalone",
+    "orientation": "landscape",
+    "theme_color": "#aad6ff",
+    "background_color": "#aad6ff"
+}

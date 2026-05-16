@@ -104,28 +104,3 @@ advanced brush options
 
 ----
 
-Devlog 2: Released Isometric Sweeper + Manifest Fixes + 404
-
-# [Devlog 81 ](https://github.com/Adium1000/Isometric-island/blob/main/changelog.md)
-
-## Comit [(58e1f66)](https://github.com/Adium1000/Isometric-island/commit/58e1f6691209f55769fa2a27b0e375c8574babd5)
-
-- Added the first verson of Isometric Sweeper (a modified version of isometric island)to the repo,
-Here is how to play
-Click - Dig 
-Right Click - Flag
-The island will shake if you touch the bomb
-It is like a cursed version of isometric island idk that is my opinion
-
-## Comit [(e4700f4)](https://github.com/Adium1000/Isometric-island/commit/e4700f4ad9899d7c3c25f81cbddd954953e07fb3)
-
-- Chnged the Mines.html -> index.html
-
-## Comit [(4857453)](https://github.com/Adium1000/Isometric-island/commit/485745385cbaec92ec0994ae250f094b778d7d81)
-
-- Added more animations to the isometric sweeper game
-- Added isometric sweeper to the landing page
-
-## Comit [(52a050b)](https://github.com/Adium1000/Isometric-island/commit/52a050bbafbbca0d900ee49d5cbf1fe7e543867c)
-
-- Added 404 to the launch pad, now if you tipe an invalid url in the adium1000.github.io/Isometric-island/ domain an 404 will appear!

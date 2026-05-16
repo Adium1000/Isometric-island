@@ -15,8 +15,16 @@
 <head>
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<title>Isometric Island</title>
+<title>Isometric Launcher</title>
+<link rel="icon" type="image" href="./game/Assets/Icons/favicon-96x96.png">
 <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet"/>
+<link rel="manifest" href="manifest.json">
+<meta name="theme-color" content="#aad6ff"/>
+<meta name="mobile-web-app-capable" content="yes"/>
+<meta name="apple-mobile-web-app-capable" content="yes"/>
+<meta name="apple-mobile-web-app-status-bar-style" content="default"/>
+<meta name="apple-mobile-web-app-title" content="Isometric"/>
+<link rel="apple-touch-icon" href="./game/Assets/Icons/icon-192.png"/>
 <style>
 :root {
   --gui-bg:       #8b5e34;
@@ -574,7 +582,7 @@ body {
     <img src="./game/Assets/Icons/icon.png" class="game-icon" alt="icon"/>
     <div class="title">
       ISOMETRIC ISLAND
-      <span class="splash">NEW!</span>
+      <span class="splash">Meow!</span>
     </div>
   </div>
   <nav class="nav-bar">
@@ -637,7 +645,7 @@ body {
       <a class="btn btn-donate" href="https://revolut.me/adrianu8cv" target="_blank" style="padding-left:40px;padding-right:40px;">♥ DONATE NOW</a>
     </div>
     <p class="footer">
-      <span class="footer-version">REVOLUT</span>
+      <span class="footer-version">"DO YOU HAVE REVOLUT?"</span>
       <span class="footer-dot">•</span>
       <span class="footer-font">THANK YOU ♥</span>
     </p>
@@ -697,6 +705,11 @@ body {
     fade.classList.toggle('visible', window.scrollY > 10);
   }, { passive: true });
 })();
+</script>
+<script>
+  if ("serviceWorker" in navigator) {
+    navigator.serviceWorker.register("./sw.js");
+  }
 </script>
 </body>
 </html>
