@@ -1,0 +1,22 @@
+{
+    "id": "/Isometric-island/game/",
+    "short_name": "Isometric Island",
+    "name": "Isometric Island",
+    "icons": [
+        {
+            "src": "./Assets/Icons/icon-192.png",
+            "type": "image/png",
+            "sizes": "192x192"
+        },
+        {
+            "src": "./Assets/Icons/icon-512.png",
+            "type": "image/png",
+            "sizes": "512x512"
+        }
+    ],
+    "start_url": "/Isometric-island/game/",
+    "scope": "/Isometric-island/game/",
+    "display": "standalone",
+    "theme_color": "#484A52",
+    "background_color": "#484A52"
+}

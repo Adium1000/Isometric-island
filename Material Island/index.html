@@ -1404,7 +1404,8 @@ function switchSettingsCategory(panelName, btnEl){
 }
 
 (function(){
-    
+    // Decorative slider fill/handle sync for the Settings zoom control (visual only;
+    // the existing stepZoom(...) buttons remain the source of truth for zoom).
     function initZoomSlider(){
         var valEl = document.getElementById('settings-zoom-value');
         var trackEl = document.getElementById('settings-zoom-track');
@@ -1421,7 +1422,7 @@ function switchSettingsCategory(panelName, btnEl){
         }
     }
 
-
+    // Lightweight Material ripple effect for every button inside the Settings popup.
     function initRipple(){
         var root = document.getElementById('settings-popup');
         if (!root) return;
