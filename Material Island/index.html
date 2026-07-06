@@ -959,69 +959,311 @@ function tryStartBuilding() {
 
 <div id="save-popup-overlay" onclick="if(event.target===this)closeSavePopup()">
     <div id="save-popup-wrapper">
-        <button class="popup-help-btn" onclick="showHelpInfo('file')">?</button>
-        <button id="popup-close-btn" onclick="closeSavePopup()">&#10005;</button>
-        <div id="save-popup" class="pixel-corners">
-            <h2><img src="./Assets/Icons/todorm.png" style="width:48px;height:48px;image-rendering:pixelated;vertical-align:middle;margin-right:10px;"><span data-t="save_popup.title">FILE</span></h2>
+        <div id="save-popup">
+
+            <div id="save-titlebar">
+                <div id="save-titlebar-heading">
+                    <span class="material-symbols-rounded" id="save-title-icon">folder</span>
+                    <h2><span data-t="save_popup.title">Files</span></h2>
+                </div>
+                <div id="save-titlebar-actions">
+                    <button class="popup-help-btn md3-icon-btn" onclick="showHelpInfo('file')" aria-label="Help" title="Help"><span class="material-symbols-rounded">help</span></button>
+                    <button id="popup-close-btn" class="md3-icon-btn" onclick="closeSavePopup()" aria-label="Close" title="Close"><span class="material-symbols-rounded">close</span></button>
+                </div>
+            </div>
+
             <div id="save-popup-body">
-                <div id="save-popup-left">
 
-                    <div>
-                        <div class="popup-section-title" data-t="save_popup.island_code">ISLAND CODE:</div>
-                        <textarea id="popup-code-output" readonly onclick="this.select()"></textarea>
-                        <div class="popup-row" style="flex-direction:column;gap:6px;margin-top:8px;">
-                            <button class="btn-qr" onclick="showQRCode()" style="width:100%;box-sizing:border-box;"><img src="./Assets/Icons/qr.png" style="width:16px;height:16px;image-rendering:pixelated;vertical-align:middle;margin-right:6px;"><span data-t="save_popup.show_qr">SHOW QR CODE</span></button>
-                            <button class="btn-copy" onclick="navigator.clipboard.writeText(document.getElementById('popup-code-output').value).then(()=>showToast(LangManager.t('toast.copied_clipboard')))" style="width:100%;box-sizing:border-box;"><img src="./Assets/Icons/todorm.png" style="width:16px;height:16px;image-rendering:pixelated;vertical-align:middle;margin-right:6px;"><span data-t="save_popup.copy_code">COPY ISLAND CODE</span></button>
-                            <button class="btn-share-url" onclick="generateShareURL()" style="width:100%;box-sizing:border-box;background:#1a3a5c;border-color:#2a6a9e;color:#a0d4ff;"><img src="./Assets/Icons/todorm.png" style="width:16px;height:16px;image-rendering:pixelated;vertical-align:middle;margin-right:6px;"><span data-t="save_popup.copy_link">COPY SHARE LINK</span></button>
-                            <button class="btn-embed" onclick="openEmbedPopup()" style="width:100%;box-sizing:border-box;"><img src="./Assets/Icons/todorm.png" style="width:16px;height:16px;image-rendering:pixelated;vertical-align:middle;margin-right:6px;"><span data-t="save_popup.embed_code">&#60;/&#62; EMBED CODE</span></button>
-                        </div>
-                    </div>
-
-                    <hr class="popup-divider">
-
-                    <div>
-                        <div class="popup-section-title" data-t="save_popup.load_code">LOAD ISLAND CODE:</div>
-                        <input type="text" id="popup-code-input" data-t-placeholder="save_popup.paste_placeholder" placeholder="Paste your code here... ;)">
-                        <div class="popup-row" style="flex-direction:column;gap:6px;">
-                            <button class="btn-paste" onclick="pasteFromClipboard()" style="width:100%;box-sizing:border-box;"><img src="./Assets/Icons/todorm.png" style="width:16px;height:16px;image-rendering:pixelated;vertical-align:middle;margin-right:6px;"><span data-t="save_popup.paste_btn">PASTE FROM CLIPBOARD</span></button>
-                            <button class="btn-load" onclick="openLoadPopup()" style="width:100%;box-sizing:border-box;"><img src="./Assets/Icons/load.png" style="width:16px;height:16px;image-rendering:pixelated;vertical-align:middle;margin-right:6px;"><span data-t="save_popup.load_btn">LOAD</span></button>
-                        </div>
-                    </div>
-
+                <div id="save-nav">
+                    <button class="settings-nav-item active" data-panel="export" onclick="switchFilesCategory('export', this)">
+                        <span class="material-symbols-rounded">ios_share</span><span>Export</span>
+                    </button>
+                    <button class="settings-nav-item" data-panel="load" onclick="switchFilesCategory('load', this)">
+                        <span class="material-symbols-rounded">download</span><span>Load</span>
+                    </button>
+                    <button class="settings-nav-item" data-panel="analytics" onclick="switchFilesCategory('analytics', this)">
+                        <span class="material-symbols-rounded">monitoring</span><span data-t="save_popup.btn_analytics">Island Analytics</span>
+                    </button>
+                    <button class="settings-nav-item" data-panel="achievements" onclick="switchFilesCategory('achievements', this)">
+                        <span class="material-symbols-rounded">emoji_events</span><span data-t="save_popup.btn_achievements">Achievements</span>
+                    </button>
+                    <button class="settings-nav-item" data-panel="other" onclick="switchFilesCategory('other', this)">
+                        <span class="material-symbols-rounded">more_horiz</span><span>Other</span>
+                    </button>
                 </div>
 
-                <div id="save-popup-divider"></div>
-
-                <div id="save-popup-right">
-
-                    <div style="display:flex;flex-direction:column;gap:14px;flex:1;">
-                        <div>
-                            <div class="popup-section-title" data-t="save_popup.save_slots">SAVE SLOTS:</div>
-                            <button class="btn-save-slots" onclick="openSaveSlotsPopup()" style="width:100%;box-sizing:border-box;"><img src="./Assets/Icons/load.png" style="width:16px;height:16px;image-rendering:pixelated;vertical-align:middle;margin-right:6px;"><span data-t="save_popup.manage_slots">MANAGE SAVE SLOTS</span></button>
+                <div id="save-content">
+                    <div class="settings-category-panel active" data-panel="export">
+                        <div class="md3-card">
+                            <div class="popup-section-title"><span class="material-symbols-rounded">tag</span><span data-t="save_popup.island_code">Island Code</span></div>
+                            <textarea id="popup-code-output" readonly onclick="this.select()"></textarea>
+                            <div style="display:flex;flex-direction:column;gap:8px;margin-top:2px;">
+                                <button class="shape-preset-btn" onclick="navigator.clipboard.writeText(document.getElementById('popup-code-output').value).then(()=>showToast(LangManager.t('toast.copied_clipboard')))"><span class="material-symbols-rounded">content_copy</span><span data-t="save_popup.copy_code">Copy Island Code</span></button>
+                                <button class="shape-preset-btn" onclick="generateShareURL()"><span class="material-symbols-rounded">link</span><span data-t="save_popup.copy_link">Copy Share Link</span></button>
+                            </div>
                         </div>
-
-                        <div>
-                            <div class="popup-section-title" data-t="save_popup.fun">FUN:</div>
-                            <button class="btn-random" onclick="closeSavePopup();openFunPopup()"><img src="./Assets/Icons/software.png" style="width:16px;height:16px;image-rendering:pixelated;vertical-align:middle;margin-right:6px;"><span data-t="save_popup.fun_btn">FUN</span></button>
-                            <div id="random-island-type" style="color:#ffdf80;font-size:7px;text-align:center;margin-top:6px;min-height:12px;letter-spacing:1px;"></div>
-                            <div id="mountain-type" style="display:none;"></div>
+                        <div class="md3-card">
+                            <div class="popup-section-title"><span class="material-symbols-rounded">qr_code_2</span><span data-t="save_popup.show_qr">QR Code</span></div>
+                            <div id="qr-canvas-wrap">
+                                <div id="qr-output"></div>
+                            </div>
+                            <div id="qr-hint" data-t="qr.hint">Scan with any QR app to load your island code</div>
                         </div>
-
-                        <div style="display:flex;flex-direction:column;gap:8px;">
-                            <button class="btn-settings" onclick="openSettingsPopup()"><img src="./Assets/Icons/maintenance.png" style="width:16px;height:16px;image-rendering:pixelated;vertical-align:middle;margin-right:6px;"><span data-t="save_popup.btn_settings"> SETTINGS</span></button>
-                            <button class="btn-settings" onclick="openAnalyticsPopup()" style="background:#2a4a2e;border-color:#1a3020;color:#a8ffb8;"><img src="./Assets/Icons/gui.png" style="width:16px;height:16px;image-rendering:pixelated;vertical-align:middle;margin-right:6px;"><span data-t="save_popup.btn_analytics"> ISLAND ANALYTICS</span></button>
-                            <button class="btn-settings" onclick="openAchievementsPopup()" style="background:#2a1a4a;border-color:#4a2880;color:#c8a8ff;"><img src="./Assets/Icons/book.png" style="width:16px;height:16px;image-rendering:pixelated;vertical-align:middle;margin-right:6px;"><span data-t="save_popup.btn_achievements">Achievements</span></button>
-                            <button class="btn-settings" onclick="closeSavePopup();openCommunityPopup()" style="background:#1a3a5c;border-color:#2a6a9e;color:#a0d4ff;"><img src="./Assets/Icons/Comunitymaps.png" style="width:16px;height:16px;image-rendering:pixelated;vertical-align:middle;margin-right:6px;"><span data-t="save_popup.btn_community">COMMUNITY MAPS</span></button>
-                        </div>
-
-                        <div class="danger-zone">
-                            <div class="popup-section-title" data-t="save_popup.danger_zone">DANGER ZONE:</div>
-                            <button class="btn-danger" onclick="openConfirmDelete()"><img src="./Assets/Icons/remove.png" style="width:16px;height:16px;image-rendering:pixelated;vertical-align:middle;margin-right:6px;"><span data-t="save_popup.btn_delete">DELETE ISLAND</span></button>
+                        <div class="md3-card">
+                            <div class="popup-section-title"><span class="material-symbols-rounded">code</span><span data-t="save_popup.embed_code">Embed Code</span></div>
+                            <textarea id="embed-code-output" readonly onclick="this.select()"></textarea>
+                            <div style="display:flex;flex-direction:column;gap:8px;margin-top:2px;">
+                                <button class="shape-preset-btn" onclick="navigator.clipboard.writeText(document.getElementById('embed-code-output').value).then(()=>showToast(LangManager.t('toast.embed_copied')))">
+                                    <span class="material-symbols-rounded">content_copy</span><span data-t="embed.copy_btn">COPY EMBED CODE</span>
+                                </button>
+                                <button class="shape-preset-btn" onclick="showEmbedPreview()">
+                                    <span class="material-symbols-rounded">play_arrow</span><span data-t="embed.preview_btn">PREVIEW</span>
+                                </button>
+                            </div>
+                            <div class="popup-section-title" style="margin-top:10px;">PREVIEW:</div>
+                            <div id="embed-preview-wrap">
+                                <span id="embed-preview-hint">Press PREVIEW &#9654; to test</span>
+                            </div>
                         </div>
                     </div>
+                    <div class="settings-category-panel" data-panel="load">
+                        <div class="md3-card">
+                            <div class="popup-section-title"><span class="material-symbols-rounded">input</span><span data-t="save_popup.load_code">Insert Island Code</span></div>
+                            <input type="text" id="popup-code-input" data-t-placeholder="save_popup.paste_placeholder" placeholder="Paste your code here... ;)">
+                            <div style="display:flex;flex-direction:column;gap:8px;margin-top:2px;">
+                                <button class="shape-preset-btn" onclick="pasteFromClipboard()"><span class="material-symbols-rounded">content_paste</span><span data-t="save_popup.paste_btn">Paste From Clipboard</span></button>
+                                <button class="shape-preset-btn" onclick="openLoadPopup()"><span class="material-symbols-rounded">file_open</span><span data-t="save_popup.load_btn">Load</span></button>
+                            </div>
+                        </div>
+                        <div class="md3-card">
+                            <div class="popup-section-title"><span class="material-symbols-rounded">save</span><span data-t="save_popup.save_slots">Save Slots</span></div>
+                            <div class="md3-save-slots-grid" id="save-slots-grid">
+                                <div class="md3-save-slot-card" id="save-slot-0">
+                                    <div class="md3-save-slot-thumb-wrap">
+                                        <canvas class="md3-save-slot-thumb" id="save-slot-thumb-0" width="120" height="80"></canvas>
+                                        <div class="md3-save-slot-empty" id="save-slot-empty-0">
+                                            <span class="material-symbols-rounded">image_not_supported</span>
+                                            <span>EMPTY SLOT</span>
+                                        </div>
+                                    </div>
+                                    <div class="md3-save-slot-title">SLOT 1</div>
+                                    <div class="md3-save-slot-meta" id="save-slot-meta-0">—</div>
+                                    <div class="md3-save-slot-actions">
+                                        <button class="md3-slot-btn md3-slot-btn-save" id="save-slot-save-0" onclick="saveToSlot(0)"><span class="material-symbols-rounded">save</span><span class="md3-slot-btn-label" id="save-slot-save-label-0">SAVE</span></button>
+                                        <button class="md3-slot-btn md3-slot-btn-load" id="save-slot-load-0" onclick="loadFromSlot(0)" disabled><span class="material-symbols-rounded">file_open</span><span class="md3-slot-btn-label" id="save-slot-load-label-0">LOAD</span></button>
+                                        <button class="md3-slot-btn-icon" id="save-slot-del-0" onclick="deleteSlot(0)" disabled aria-label="Delete" title="Delete"><span class="material-symbols-rounded">delete</span></button>
+                                    </div>
+                                </div>
+                                <div class="md3-save-slot-card" id="save-slot-1">
+                                    <div class="md3-save-slot-thumb-wrap">
+                                        <canvas class="md3-save-slot-thumb" id="save-slot-thumb-1" width="120" height="80"></canvas>
+                                        <div class="md3-save-slot-empty" id="save-slot-empty-1">
+                                            <span class="material-symbols-rounded">image_not_supported</span>
+                                            <span>EMPTY SLOT</span>
+                                        </div>
+                                    </div>
+                                    <div class="md3-save-slot-title">SLOT 2</div>
+                                    <div class="md3-save-slot-meta" id="save-slot-meta-1">—</div>
+                                    <div class="md3-save-slot-actions">
+                                        <button class="md3-slot-btn md3-slot-btn-save" id="save-slot-save-1" onclick="saveToSlot(1)"><span class="material-symbols-rounded">save</span><span class="md3-slot-btn-label" id="save-slot-save-label-1">SAVE</span></button>
+                                        <button class="md3-slot-btn md3-slot-btn-load" id="save-slot-load-1" onclick="loadFromSlot(1)" disabled><span class="material-symbols-rounded">file_open</span><span class="md3-slot-btn-label" id="save-slot-load-label-1">LOAD</span></button>
+                                        <button class="md3-slot-btn-icon" id="save-slot-del-1" onclick="deleteSlot(1)" disabled aria-label="Delete" title="Delete"><span class="material-symbols-rounded">delete</span></button>
+                                    </div>
+                                </div>
+                                <div class="md3-save-slot-card" id="save-slot-2">
+                                    <div class="md3-save-slot-thumb-wrap">
+                                        <canvas class="md3-save-slot-thumb" id="save-slot-thumb-2" width="120" height="80"></canvas>
+                                        <div class="md3-save-slot-empty" id="save-slot-empty-2">
+                                            <span class="material-symbols-rounded">image_not_supported</span>
+                                            <span>EMPTY SLOT</span>
+                                        </div>
+                                    </div>
+                                    <div class="md3-save-slot-title">SLOT 3</div>
+                                    <div class="md3-save-slot-meta" id="save-slot-meta-2">—</div>
+                                    <div class="md3-save-slot-actions">
+                                        <button class="md3-slot-btn md3-slot-btn-save" id="save-slot-save-2" onclick="saveToSlot(2)"><span class="material-symbols-rounded">save</span><span class="md3-slot-btn-label" id="save-slot-save-label-2">SAVE</span></button>
+                                        <button class="md3-slot-btn md3-slot-btn-load" id="save-slot-load-2" onclick="loadFromSlot(2)" disabled><span class="material-symbols-rounded">file_open</span><span class="md3-slot-btn-label" id="save-slot-load-label-2">LOAD</span></button>
+                                        <button class="md3-slot-btn-icon" id="save-slot-del-2" onclick="deleteSlot(2)" disabled aria-label="Delete" title="Delete"><span class="material-symbols-rounded">delete</span></button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="md3-card">
+                            <div class="popup-section-title"><span class="material-symbols-rounded">casino</span><span data-t="save_popup.fun">Fun</span></div>
 
-                    <div style="display:flex;justify-content:flex-end;margin-top:auto;padding-top:10px;">
-                        <button class="btn-ok" onclick="confirmSavePopup()">OK</button>
+                            <div class="fun-subview active" id="fun-view-main">
+                                <div class="md3-fun-list" id="fun-popup-grid">
+                                    <div class="md3-fun-item" onclick="showFunView('biome')">
+                                        <div class="md3-fun-item-icon"><span class="material-symbols-rounded">terrain</span></div>
+                                        <div class="md3-fun-item-text">
+                                            <div class="md3-fun-item-title" data-t="fun_popup.random_island_name">Random Island Generator</div>
+                                            <div class="md3-fun-item-desc" data-t="fun_popup.random_island_desc">Generate a random biome island</div>
+                                        </div>
+                                        <span class="material-symbols-rounded md3-fun-item-chevron">chevron_right</span>
+                                    </div>
+                                    <div class="md3-fun-item" onclick="showFunView('mountain')">
+                                        <div class="md3-fun-item-icon"><span class="material-symbols-rounded">landscape</span></div>
+                                        <div class="md3-fun-item-text">
+                                            <div class="md3-fun-item-title" data-t="fun_popup.random_mountain_name">Random Mountain Generator</div>
+                                            <div class="md3-fun-item-desc" data-t="fun_popup.random_mountain_desc">Generate a random mountain island</div>
+                                        </div>
+                                        <span class="material-symbols-rounded md3-fun-item-chevron">chevron_right</span>
+                                    </div>
+                                    <div class="md3-fun-item" onclick="showFunView('emoji')">
+                                        <div class="md3-fun-item-icon"><span class="material-symbols-rounded">mood</span></div>
+                                        <div class="md3-fun-item-text">
+                                            <div class="md3-fun-item-title">Island as an Emoji</div>
+                                            <div class="md3-fun-item-desc">Convert your island to emoji art</div>
+                                        </div>
+                                        <span class="material-symbols-rounded md3-fun-item-chevron">chevron_right</span>
+                                    </div>
+                                </div>
+                                <div id="random-island-type" style="color:var(--md-on-surface-variant, #6F5D4E);font-family:'Roboto',sans-serif;font-size:11px;text-align:center;margin-top:2px;min-height:14px;letter-spacing:0.3px;"></div>
+                                <div id="mountain-type" style="display:none;"></div>
+                            </div>
+
+                            <div class="fun-subview" id="fun-view-biome">
+                                <button class="fun-back-btn" onclick="showFunView('main')"><span class="material-symbols-rounded">arrow_back</span><span>Back</span></button>
+                                <div class="biome-grid" id="island-biome-grid">
+                                    <div class="biome-card" onclick="selectIslandBiome(0)">
+                                        <div class="biome-icon"></div>
+                                        <div class="biome-name">SUMMER</div>
+                                        <div class="biome-desc">Grass, flowers,<br>trees &amp; crops</div>
+                                    </div>
+                                    <div class="biome-card" onclick="selectIslandBiome(1)">
+                                        <div class="biome-icon"></div>
+                                        <div class="biome-name">SNOWY</div>
+                                        <div class="biome-desc">Ice, snow,<br>snowmen &amp; pines</div>
+                                    </div>
+                                    <div class="biome-card" onclick="selectIslandBiome(2)">
+                                        <div class="biome-icon"></div>
+                                        <div class="biome-name">DESERT</div>
+                                        <div class="biome-desc">Sand, red sand<br>&amp; rocks</div>
+                                    </div>
+                                    <div class="biome-card" onclick="selectIslandBiome(3)">
+                                        <div class="biome-icon"></div>
+                                        <div class="biome-name">OCEAN</div>
+                                        <div class="biome-desc">Water, beaches<br>&amp; stone</div>
+                                    </div>
+                                    <div class="biome-card" onclick="selectIslandBiome(4)">
+                                        <div class="biome-icon"></div>
+                                        <div class="biome-name">STONE</div>
+                                        <div class="biome-desc">Stone, moss<br>&amp; sparse trees</div>
+                                    </div>
+                                    <div class="biome-card biome-card-random" onclick="selectIslandBiome(-1)">
+                                        <div class="biome-icon"></div>
+                                        <div class="biome-name">RANDOM</div>
+                                        <div class="biome-desc">Surprise me!</div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="fun-subview" id="fun-view-mountain">
+                                <button class="fun-back-btn" onclick="showFunView('main')"><span class="material-symbols-rounded">arrow_back</span><span>Back</span></button>
+                                <div class="biome-grid" id="mountain-biome-grid">
+                                    <div class="biome-card" onclick="selectMountainBiome(0)">
+                                        <div class="biome-icon"></div>
+                                        <div class="biome-name">ALPINE</div>
+                                        <div class="biome-desc">Snow peak,<br>stone &amp; pines</div>
+                                    </div>
+                                    <div class="biome-card" onclick="selectMountainBiome(1)">
+                                        <div class="biome-icon"></div>
+                                        <div class="biome-name">VOLCANIC</div>
+                                        <div class="biome-desc">Dark rock &amp;<br>red sand summit</div>
+                                    </div>
+                                    <div class="biome-card" onclick="selectMountainBiome(2)">
+                                        <div class="biome-icon"></div>
+                                        <div class="biome-name">EARTHY</div>
+                                        <div class="biome-desc">Dirt, stone,<br>trees &amp; hay</div>
+                                    </div>
+                                    <div class="biome-card" onclick="selectMountainBiome(3)">
+                                        <div class="biome-icon"></div>
+                                        <div class="biome-name">MOSSY</div>
+                                        <div class="biome-desc">Mossy rock<br>covered in trees</div>
+                                    </div>
+                                    <div class="biome-card biome-card-random" onclick="selectMountainBiome(-1)">
+                                        <div class="biome-icon"></div>
+                                        <div class="biome-name">RANDOM</div>
+                                        <div class="biome-desc">Surprise me!</div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="fun-subview" id="fun-view-emoji">
+                                <button class="fun-back-btn" onclick="showFunView('main')"><span class="material-symbols-rounded">arrow_back</span><span>Back</span></button>
+                                <div id="island-emoji-body">
+                                    <div id="island-emoji-grid"></div>
+                                    <div class="biome-grid" id="island-emoji-actions">
+                                        <div class="biome-card" onclick="generateIslandEmoji()">
+                                            <div class="biome-icon"></div>
+                                            <div class="biome-name">REGENERATE</div>
+                                            <div class="biome-desc">Re-read the<br>current island</div>
+                                        </div>
+                                        <div class="biome-card biome-card-copy" onclick="copyIslandEmoji()">
+                                            <div class="biome-icon"></div>
+                                            <div class="biome-name">COPY EMOJI</div>
+                                            <div class="biome-desc">Copy to<br>clipboard</div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="settings-category-panel" data-panel="analytics">
+                        <div class="md3-card">
+                            <div id="analytics-summary-row">
+                                <div class="analytics-stat-box">
+                                    <div class="analytics-stat-num" id="analytics-total">0</div>
+                                    <div class="analytics-stat-label">Total Blocks</div>
+                                </div>
+                                <div class="analytics-stat-box">
+                                    <div class="analytics-stat-num" id="analytics-types">0</div>
+                                    <div class="analytics-stat-label">Unique Types</div>
+                                </div>
+                                <div class="analytics-stat-box">
+                                    <div class="analytics-stat-num" id="analytics-layers">0</div>
+                                    <div class="analytics-stat-label">Max Height</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="md3-card">
+                            <div id="analytics-chart-section">
+                                <canvas id="analytics-chart" width="180" height="180"></canvas>
+                                <div id="analytics-chart-legend"></div>
+                            </div>
+                        </div>
+                        <div class="md3-card">
+                            <div class="popup-section-title"><span class="material-symbols-rounded">list</span><span>Blocks Placed</span></div>
+                            <div id="analytics-list"></div>
+                        </div>
+                    </div>
+                    <div class="settings-category-panel" data-panel="achievements">
+                        <div class="md3-card">
+                            <div id="ach-progress-bar-wrap">
+                                <div id="ach-progress-bar-fill"></div>
+                                <div id="ach-progress-label"></div>
+                            </div>
+                        </div>
+                        <div class="md3-card">
+                            <div id="ach-list"></div>
+                        </div>
+                    </div>
+                    <div class="settings-category-panel" data-panel="other">
+                        <div class="md3-card">
+                            <div class="visual-option-row" onclick="openSettingsPopup()" style="cursor:pointer;">
+                                <span class="visual-option-label"><span class="material-symbols-rounded">settings</span><span data-t="save_popup.btn_settings">Settings</span></span>
+                                <button class="btn-pointer-settings" onclick="event.stopPropagation();openSettingsPopup()" aria-label="Open settings"><span class="material-symbols-rounded">chevron_right</span></button>
+                            </div>
+                            <div class="visual-option-row" onclick="closeSavePopup();openCommunityPopup()" style="cursor:pointer;">
+                                <span class="visual-option-label"><span class="material-symbols-rounded">public</span><span data-t="save_popup.btn_community">Community Maps</span></span>
+                                <button class="btn-pointer-settings" onclick="event.stopPropagation();closeSavePopup();openCommunityPopup()" aria-label="Open community maps"><span class="material-symbols-rounded">chevron_right</span></button>
+                            </div>
+                        </div>
+
+                        <div class="md3-card md3-card-danger">
+                            <div class="popup-section-title"><span class="material-symbols-rounded">warning</span><span data-t="save_popup.danger_zone">Danger Zone</span></div>
+                            <button class="shape-preset-btn md3-danger-btn" onclick="openConfirmDelete()"><span class="material-symbols-rounded">delete_forever</span><span data-t="save_popup.btn_delete">Delete Island</span></button>
+                        </div>
                     </div>
 
                 </div>
@@ -1366,10 +1608,10 @@ function tryStartBuilding() {
 </div>
 
 <script>
-function switchSettingsCategory(panelName, btnEl){
-    var nav = document.getElementById('settings-nav');
-    var content = document.getElementById('settings-content');
-    if (!nav || !content) return;
+function _switchCategoryPanel(navId, contentId, panelName, btnEl){
+    var nav = document.getElementById(navId);
+    var content = document.getElementById(contentId);
+    if (!nav || !content) return null;
     var navItems = nav.querySelectorAll('.settings-nav-item');
     for (var i = 0; i < navItems.length; i++) navItems[i].classList.remove('active');
     if (btnEl) btnEl.classList.add('active');
@@ -1381,6 +1623,12 @@ function switchSettingsCategory(panelName, btnEl){
         panels[j].classList.toggle('active', panels[j].getAttribute('data-panel') === panelName);
     }
     content.scrollTop = 0;
+    return prevPanel;
+}
+
+function switchSettingsCategory(panelName, btnEl){
+    var prevPanel = _switchCategoryPanel('settings-nav', 'settings-content', panelName, btnEl);
+    if (prevPanel === null) return;
 
     if (prevPanel === 'controls' && panelName !== 'controls') {
         if (typeof window.cancelListeningKey === 'function') window.cancelListeningKey();
@@ -1402,10 +1650,26 @@ function switchSettingsCategory(panelName, btnEl){
         if (typeof window.renderLangButtons === 'function') window.renderLangButtons();
     }
 }
+function switchFilesCategory(panelName, btnEl){
+    var prevPanel = _switchCategoryPanel('save-nav', 'save-content', panelName, btnEl);
+    if (prevPanel === null) return;
+
+    if (panelName === 'analytics') {
+        if (typeof window.refreshIslandAnalytics === 'function') window.refreshIslandAnalytics();
+    } else if (panelName === 'achievements') {
+        if (typeof window.renderAchievementsPopup === 'function') window.renderAchievementsPopup();
+    } else if (panelName === 'export') {
+        var out = document.getElementById('popup-code-output');
+        if (out && typeof generateIslandCode === 'function') out.value = generateIslandCode();
+        if (typeof window.drawQR === 'function' && out) window.drawQR(out.value);
+        if (typeof window.refreshEmbedCode === 'function') window.refreshEmbedCode();
+    } else if (panelName === 'load') {
+        if (typeof window.renderSaveSlots === 'function') window.renderSaveSlots();
+        if (typeof window.showFunView === 'function') window.showFunView('main');
+    }
+}
 
 (function(){
-    // Decorative slider fill/handle sync for the Settings zoom control (visual only;
-    // the existing stepZoom(...) buttons remain the source of truth for zoom).
     function initZoomSlider(){
         var valEl = document.getElementById('settings-zoom-value');
         var trackEl = document.getElementById('settings-zoom-track');
@@ -1421,10 +1685,8 @@ function switchSettingsCategory(panelName, btnEl){
             new MutationObserver(sync).observe(valEl, { childList: true, characterData: true, subtree: true });
         }
     }
-
-    // Lightweight Material ripple effect for every button inside the Settings popup.
-    function initRipple(){
-        var root = document.getElementById('settings-popup');
+    function initRipple(rootId){
+        var root = document.getElementById(rootId);
         if (!root) return;
         root.addEventListener('pointerdown', function(e){
             var btn = e.target.closest('button');
@@ -1442,42 +1704,10 @@ function switchSettingsCategory(panelName, btnEl){
     }
 
     initZoomSlider();
-    initRipple();
+    initRipple('settings-popup');
+    initRipple('save-popup');
 })();
 </script>
-
-
-<div id="qr-popup-overlay" onclick="if(event.target===this)closeQRPopup()">
-    <div id="qr-popup-wrapper">
-        <button id="qr-close-btn" onclick="closeQRPopup()">&#10005;</button>
-        <div id="qr-popup" class="pixel-corners">
-            <h2><img src="./Assets/Icons/qr.png" style="width:26px;height:26px;image-rendering:pixelated;vertical-align:middle;margin-right:6px;"> QR CODE</h2>
-            <div id="qr-subtitle" data-t="qr.subtitle">Scan to share your island!</div>
-            <div id="qr-body-row">
-                <div id="qr-canvas-wrap">
-                    <div id="qr-output"></div>
-                </div>
-                <div id="qr-vertical-divider"></div>
-                <div id="qr-phone-preview">
-                    <div id="qr-phone-body">
-                        <div id="qr-phone-screen">
-                            <div id="qr-phone-viewfinder">
-                                <div class="vf-corner tl"></div>
-                                <div class="vf-corner tr"></div>
-                                <div class="vf-corner bl"></div>
-                                <div class="vf-corner br"></div>
-                                <div id="qr-scan-line"></div>
-                            </div>
-                        </div>
-                        <div id="qr-phone-button"></div>
-                    </div>
-                </div>
-            </div>
-            <div id="qr-hint" data-t="qr.hint">Scan with any QR app to load your island code</div>
-        </div>
-    </div>
-</div>
-
 <div id="confirm-delete-overlay" onclick="if(event.target===this)closeConfirmDelete()">
     <div id="confirm-delete-wrapper">
         <div id="confirm-delete-popup" class="pixel-corners">
@@ -1653,130 +1883,6 @@ function switchSettingsCategory(panelName, btnEl){
             <div id="block-search-grid"></div>
         </div>
     </div>
-<div id="fun-popup-overlay" onclick="if(event.target===this)closeFunPopup()">
-    <div id="fun-popup-wrapper">
-        <button id="fun-popup-close-btn" onclick="closeFunPopup()">&#10005;</button>
-        <div id="fun-popup" class="pixel-corners">
-            <h2 data-t="fun_popup.title">FUN</h2>
-            <div class="biome-grid" id="fun-popup-grid">
-                <div class="biome-card" onclick="closeFunPopup();openIslandBiomePopup()">
-                    <div class="biome-icon"></div>
-                    <div class="biome-name" data-t="fun_popup.random_island_name">RANDOM ISLAND</div>
-                    <div class="biome-desc" data-t="fun_popup.random_island_desc">Generate a random<br>biome island</div>
-                </div>
-                <div class="biome-card" onclick="closeFunPopup();openMountainBiomePopup()">
-                    <div class="biome-icon"></div>
-                    <div class="biome-name" data-t="fun_popup.random_mountain_name">RANDOM MOUNTAIN</div>
-                    <div class="biome-desc" data-t="fun_popup.random_mountain_desc">Generate a random<br>mountain island</div>
-                </div>
-                <div class="biome-card fun-emoji-card" onclick="closeFunPopup();openIslandEmojiPopup()">
-                    <div class="biome-icon"></div>
-                    <div class="biome-name">ISLAND AS EMOJI</div>
-                    <div class="biome-desc">Convert your island<br>to emoji art</div>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
-<div id="island-emoji-overlay" onclick="if(event.target===this)closeIslandEmojiPopup()">
-    <div id="island-emoji-wrapper">
-        <button id="island-emoji-close-btn" onclick="closeIslandEmojiPopup()">&#10005;</button>
-        <div id="island-emoji-popup" class="pixel-corners">
-            <h2>ISLAND AS EMOJI</h2>
-            <div id="island-emoji-body">
-                <div id="island-emoji-grid"></div>
-                <div class="biome-grid" id="island-emoji-actions">
-                    <div class="biome-card" onclick="generateIslandEmoji()">
-                        <div class="biome-icon"></div>
-                        <div class="biome-name">REGENERATE</div>
-                        <div class="biome-desc">Re-read the<br>current island</div>
-                    </div>
-                    <div class="biome-card biome-card-copy" onclick="copyIslandEmoji()">
-                        <div class="biome-icon"></div>
-                        <div class="biome-name">COPY EMOJI</div>
-                        <div class="biome-desc">Copy to<br>clipboard</div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
-
-<div id="island-biome-overlay" onclick="if(event.target===this)closeIslandBiomePopup()">
-    <div id="island-biome-wrapper">
-        <button id="island-biome-close-btn" onclick="closeIslandBiomePopup()">&#10005;</button>
-        <div id="island-biome-popup" class="pixel-corners">
-            <h2><img src="./Assets/Icons/delete.png" style="width:26px;height:26px;image-rendering:pixelated;vertical-align:middle;margin-right:6px;">CHOOSE ISLAND BIOME</h2>
-            <div class="biome-grid" id="island-biome-grid">
-                <div class="biome-card" onclick="selectIslandBiome(0)">
-                    <div class="biome-icon"></div>
-                    <div class="biome-name">SUMMER</div>
-                    <div class="biome-desc">Grass, flowers,<br>trees &amp; crops</div>
-                </div>
-                <div class="biome-card" onclick="selectIslandBiome(1)">
-                    <div class="biome-icon"></div>
-                    <div class="biome-name">SNOWY</div>
-                    <div class="biome-desc">Ice, snow,<br>snowmen &amp; pines</div>
-                </div>
-                <div class="biome-card" onclick="selectIslandBiome(2)">
-                    <div class="biome-icon"></div>
-                    <div class="biome-name">DESERT</div>
-                    <div class="biome-desc">Sand, red sand<br>&amp; rocks</div>
-                </div>
-                <div class="biome-card" onclick="selectIslandBiome(3)">
-                    <div class="biome-icon"></div>
-                    <div class="biome-name">OCEAN</div>
-                    <div class="biome-desc">Water, beaches<br>&amp; stone</div>
-                </div>
-                <div class="biome-card" onclick="selectIslandBiome(4)">
-                    <div class="biome-icon"></div>
-                    <div class="biome-name">STONE</div>
-                    <div class="biome-desc">Stone, moss<br>&amp; sparse trees</div>
-                </div>
-                <div class="biome-card biome-card-random" onclick="selectIslandBiome(-1)">
-                    <div class="biome-icon"></div>
-                    <div class="biome-name">RANDOM</div>
-                    <div class="biome-desc">Surprise me!</div>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
-<div id="mountain-biome-overlay" onclick="if(event.target===this)closeMountainBiomePopup()">
-    <div id="mountain-biome-wrapper">
-        <button id="mountain-biome-close-btn" onclick="closeMountainBiomePopup()">&#10005</button>
-        <div id="mountain-biome-popup" class="pixel-corners">
-            <h2><img src="./Assets/Icons/delete.png" style="width:26px;height:26px;image-rendering:pixelated;vertical-align:middle;margin-right:6px;"> CHOOSE MOUNTAIN TYPE</h2>
-            <div class="biome-grid" id="mountain-biome-grid">
-                <div class="biome-card" onclick="selectMountainBiome(0)">
-                    <div class="biome-icon"></div>
-                    <div class="biome-name">ALPINE</div>
-                    <div class="biome-desc">Snow peak,<br>stone &amp; pines</div>
-                </div>
-                <div class="biome-card" onclick="selectMountainBiome(1)">
-                    <div class="biome-icon"></div>
-                    <div class="biome-name">VOLCANIC</div>
-                    <div class="biome-desc">Dark rock &amp;<br>red sand summit</div>
-                </div>
-                <div class="biome-card" onclick="selectMountainBiome(2)">
-                    <div class="biome-icon"></div>
-                    <div class="biome-name">EARTHY</div>
-                    <div class="biome-desc">Dirt, stone,<br>trees &amp; hay</div>
-                </div>
-                <div class="biome-card" onclick="selectMountainBiome(3)">
-                    <div class="biome-icon"></div>
-                    <div class="biome-name">MOSSY</div>
-                    <div class="biome-desc">Mossy rock<br>covered in trees</div>
-                </div>
-                <div class="biome-card biome-card-random" onclick="selectMountainBiome(-1)">
-                    <div class="biome-icon"></div>
-                    <div class="biome-name">RANDOM</div>
-                    <div class="biome-desc">Surprise me!</div>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
 <div id="language-popup-overlay" onclick="if(event.target===this)closeLanguagePopup()">
     <div id="language-popup-wrapper">
         <button id="language-popup-close-btn" onclick="closeLanguagePopup()">&#10005;</button>
@@ -2629,10 +2735,10 @@ function shadeColor(hex, amount) {
     return '#' + [r,g,b].map(v=>v.toString(16).padStart(2,'0')).join('');
 }
 
-window.openEmbedPopup = () => {
-    if (typeof hotbarSound !== 'undefined') { hotbarSound.currentTime = 0; hotbarSound.play().catch(e => {}); }
-    const overlay = document.getElementById('embed-popup-overlay');
-    if (!overlay) return;
+// Embed Code now lives inline in the Export category (no popup). This
+// recomputes the <iframe> snippet and resets any live preview; it's called
+// whenever the Export category is (re)shown, mirroring the old openEmbedPopup.
+window.refreshEmbedCode = () => {
     const code = document.getElementById('popup-code-output')?.value || '';
     const baseUrl = window.location.href.split('?')[0].split('#')[0];
     const params = new URLSearchParams();
@@ -2660,17 +2766,6 @@ window.openEmbedPopup = () => {
         if (hint) hint.style.display = 'block';
         prev.classList.remove('has-preview');
     }
-
-    overlay.style.display = 'flex';
-    requestAnimationFrame(() => requestAnimationFrame(() => overlay.classList.add('popup-visible')));
-};
-
-window.closeEmbedPopup = () => {
-    const overlay = document.getElementById('embed-popup-overlay');
-    if (!overlay) return;
-    overlay.classList.remove('popup-visible');
-    if (typeof pclsSound !== 'undefined') { pclsSound.currentTime = 0; pclsSound.play().catch(e => {}); }
-    setTimeout(() => { overlay.style.display = 'none'; }, 280);
 };
 
 window.showEmbedPreview = () => {
@@ -2693,66 +2788,6 @@ window.showEmbedPreview = () => {
     prev.classList.add('has-preview');
 };
 </script>
-
-<div id="analytics-popup-overlay" onclick="if(event.target===this)closeAnalyticsPopup()">
-    <div id="analytics-popup-wrapper">
-        <button id="analytics-close-btn" onclick="closeAnalyticsPopup()">&#10005;</button>
-        <div id="analytics-popup" class="pixel-corners">
-            <h2>ISLAND ANALYTICS</h2>
-            <hr class="popup-divider">
-            <div id="analytics-summary-row">
-                <div class="analytics-stat-box">
-                    <div class="analytics-stat-num" id="analytics-total">0</div>
-                    <div class="analytics-stat-label">TOTAL BLOCKS</div>
-                </div>
-                <div class="analytics-stat-box">
-                    <div class="analytics-stat-num" id="analytics-types">0</div>
-                    <div class="analytics-stat-label">UNIQUE TYPES</div>
-                </div>
-                <div class="analytics-stat-box">
-                    <div class="analytics-stat-num" id="analytics-layers">0</div>
-                    <div class="analytics-stat-label">MAX HEIGHT</div>
-                </div>
-            </div>
-            <hr class="popup-divider">
-            <div id="analytics-chart-section">
-                <canvas id="analytics-chart" width="260" height="180"></canvas>
-                <div id="analytics-chart-legend"></div>
-            </div>
-            <hr class="popup-divider">
-            <div class="popup-section-title">BLOCKS PLACED:</div>
-            <div id="analytics-list"></div>
-        </div>
-    </div>
-</div>
-
-<div id="embed-popup-overlay" onclick="if(event.target===this)closeEmbedPopup()">
-    <div id="embed-popup-wrapper">
-        <button id="embed-popup-close-btn" onclick="closeEmbedPopup()">&#10005;</button>
-        <div id="embed-popup" class="pixel-corners">
-            <h2><img src="./Assets/Icons/todorm.png" style="width:32px;height:32px;image-rendering:pixelated;vertical-align:middle;margin-right:10px;"><span data-t="embed.title">EMBED ISLAND</span></h2>
-            <hr class="popup-divider">
-
-            <div class="popup-section-title" data-t="embed.section_label">ISLAND EMBED CODE:</div>
-            <textarea id="embed-code-output" readonly onclick="this.select()"></textarea>
-
-            <div class="embed-btn-col">
-                <button class="btn-copy" onclick="navigator.clipboard.writeText(document.getElementById('embed-code-output').value).then(()=>showToast(LangManager.t('toast.embed_copied')))">
-                    <img src="./Assets/Icons/todorm.png" style="width:14px;height:14px;image-rendering:pixelated;vertical-align:middle;margin-right:6px;"><span data-t="embed.copy_btn">COPY EMBED CODE</span>
-                </button>
-                <button class="btn-qr" onclick="showEmbedPreview()" data-t="embed.preview_btn">
-                    &#9654; PREVIEW
-                </button>
-            </div>
-
-            <hr class="popup-divider">
-            <div class="popup-section-title">PREVIEW:</div>
-            <div id="embed-preview-wrap">
-                <span id="embed-preview-hint">Press PREVIEW &#9654; to test</span>
-            </div>
-        </div>
-    </div>
-</div>
 <div id="grid-res-overlay" onclick="if(event.target===this)closeGridResPopup()">
     <div id="grid-res-wrapper" onclick="event.stopPropagation()">
         <button id="grid-res-close-btn" onclick="closeGridResPopup()">&#10005;</button>
@@ -2763,7 +2798,6 @@ window.showEmbedPreview = () => {
         </div>
     </div>
 </div>
-
 <div id="notfound-overlay">
     <div id="notfound-wrapper">
         <div id="notfound-popup" class="pixel-corners">
@@ -2780,7 +2814,6 @@ window.showEmbedPreview = () => {
         </div>
     </div>
 </div>
-
 <script>
 window.showNotFound = function(badHash) {
     const overlay = document.getElementById('notfound-overlay');
@@ -2807,75 +2840,6 @@ window.closeNotFound = function() {
     }
 };
 </script>
-
-<div id="save-slots-overlay" onclick="if(event.target===this)closeSaveSlotsPopup()">
-    <div id="save-slots-wrapper">
-        <button class="popup-help-btn" onclick="showHelpInfo('save-slots')">?</button>
-        <button id="save-slots-close-btn" onclick="closeSaveSlotsPopup()">&#10005;</button>
-        <div id="save-slots-popup" class="pixel-corners">
-            <h2><img src="./Assets/Icons/load.png" style="width:22px;height:22px;image-rendering:pixelated;vertical-align:middle;margin-right:8px;">SAVE SLOTS</h2>
-            <hr class="popup-divider">
-            <div id="save-slots-grid">
-                <div class="save-slot-card" id="save-slot-0">
-                    <div class="save-slot-thumb-wrap">
-                        <canvas class="save-slot-thumb" id="save-slot-thumb-0" width="120" height="80"></canvas>
-                        <div class="save-slot-empty-label" id="save-slot-empty-0">EMPTY SLOT</div>
-                    </div>
-                    <div class="save-slot-label">SLOT 1</div>
-                    <div class="save-slot-meta" id="save-slot-meta-0">—</div>
-                    <div class="save-slot-btns">
-                        <button class="save-slot-btn save" id="save-slot-save-0" onclick="saveToSlot(0)">SAVE</button>
-                        <button class="save-slot-btn load" id="save-slot-load-0" onclick="loadFromSlot(0)" disabled>LOAD</button>
-                        <button class="save-slot-btn del" id="save-slot-del-0" onclick="deleteSlot(0)" disabled>DELETE</button>
-                    </div>
-                </div>
-                <div class="save-slot-card" id="save-slot-1">
-                    <div class="save-slot-thumb-wrap">
-                        <canvas class="save-slot-thumb" id="save-slot-thumb-1" width="120" height="80"></canvas>
-                        <div class="save-slot-empty-label" id="save-slot-empty-1">EMPTY SLOT</div>
-                    </div>
-                    <div class="save-slot-label">SLOT 2</div>
-                    <div class="save-slot-meta" id="save-slot-meta-1">—</div>
-                    <div class="save-slot-btns">
-                        <button class="save-slot-btn save" id="save-slot-save-1" onclick="saveToSlot(1)">SAVE</button>
-                        <button class="save-slot-btn load" id="save-slot-load-1" onclick="loadFromSlot(1)" disabled>LOAD</button>
-                        <button class="save-slot-btn del" id="save-slot-del-1" onclick="deleteSlot(1)" disabled>DELETE</button>
-                    </div>
-                </div>
-                <div class="save-slot-card" id="save-slot-2">
-                    <div class="save-slot-thumb-wrap">
-                        <canvas class="save-slot-thumb" id="save-slot-thumb-2" width="120" height="80"></canvas>
-                        <div class="save-slot-empty-label" id="save-slot-empty-2">EMPTY SLOT</div>
-                    </div>
-                    <div class="save-slot-label">SLOT 3</div>
-                    <div class="save-slot-meta" id="save-slot-meta-2">—</div>
-                    <div class="save-slot-btns">
-                        <button class="save-slot-btn save" id="save-slot-save-2" onclick="saveToSlot(2)">SAVE</button>
-                        <button class="save-slot-btn load" id="save-slot-load-2" onclick="loadFromSlot(2)" disabled>LOAD</button>
-                        <button class="save-slot-btn del" id="save-slot-del-2" onclick="deleteSlot(2)" disabled>DELETE</button>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
-
-<div id="achievements-popup-overlay" onclick="if(event.target===this)closeAchievementsPopup()">
-    <div id="achievements-popup-wrapper">
-        <button class="popup-help-btn" onclick="showHelpInfo('achievements')">?</button>
-        <button id="achievements-close-btn" onclick="closeAchievementsPopup()">&#10005;</button>
-        <div id="achievements-popup" class="pixel-corners">
-            <h2><img src="./Assets/Icons/book.png" style="width:22px;height:22px;image-rendering:pixelated;vertical-align:middle;margin-right:8px;">Achievements</h2>
-            <hr class="popup-divider">
-            <div id="ach-progress-bar-wrap">
-                <div id="ach-progress-bar-fill"></div>
-                <div id="ach-progress-label"></div>
-            </div>
-            <hr class="popup-divider">
-            <div id="ach-list"></div>
-        </div>
-    </div>
-</div>
 </body>
 </html>
 <div id="float-popup-overlay" onclick="if(event.target===this)closeFloatPopup()">

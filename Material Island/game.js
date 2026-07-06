@@ -1541,12 +1541,23 @@ function openSavePopup() {
     const overlay = document.getElementById('save-popup-overlay');
     overlay.style.display = 'flex';
     requestAnimationFrame(() => requestAnimationFrame(() => overlay.classList.add('popup-visible')));
-    document.getElementById('popup-code-output').value = generateIslandCode();
+    const code = generateIslandCode();
+    document.getElementById('popup-code-output').value = code;
+    if (typeof drawQR === 'function') drawQR(code);
+    if (typeof window.refreshEmbedCode === 'function') window.refreshEmbedCode();
     refreshShapeGrid();
     hotbarSound.currentTime = 0; hotbarSound.play().catch(e => {});
     const wrapper = document.getElementById('save-popup-wrapper');
     wrapper.addEventListener('mouseenter', () => { document.body.style.cursor = 'default'; });
     wrapper.addEventListener('mouseleave', () => { document.body.style.cursor = 'crosshair'; });
+    const activePanel = document.querySelector('#save-content .settings-category-panel.active');
+    const activeName = activePanel && activePanel.getAttribute('data-panel');
+    if (activeName === 'analytics' && typeof window.refreshIslandAnalytics === 'function') window.refreshIslandAnalytics();
+    else if (activeName === 'achievements' && typeof window.renderAchievementsPopup === 'function') window.renderAchievementsPopup();
+    else if (activeName === 'load') {
+        if (typeof renderSaveSlots === 'function') renderSaveSlots();
+        if (typeof showFunView === 'function') showFunView('main');
+    }
 }
 
 function closeSavePopup() {
@@ -1663,7 +1674,6 @@ function updateOGTags(islandCode) {
         const twImg = document.getElementById('tw-image');
         if (ogImg) ogImg.setAttribute('content', dataUrl);
         if (twImg) twImg.setAttribute('content', dataUrl);
-
         const shareUrl = window.location.href;
         const ogUrl = document.getElementById('og-url');
         const ogTitle = document.getElementById('og-title');
@@ -3490,12 +3500,8 @@ function renderLangButtons() {
     const list   = window.LangManager.getLangList();
     const active = window.LangManager.getLang();
     if (!list.length) return;
-
-    // Legacy popup picker
     const container = document.getElementById('lang-btn-group');
     if (container) _buildLangButtons(container, list, active);
-
-    // Inline settings panel picker
     const inlinePicker = document.getElementById('settings-lang-picker');
     if (inlinePicker) _buildLangButtons(inlinePicker, list, active);
 
@@ -3609,6 +3615,7 @@ function hideStars() {
 
 function drawQR(text) {
     const output = document.getElementById('qr-output');
+    if (!output) return;
     output.innerHTML = '';
     function buildQR() {
         output.innerHTML = '';
@@ -3644,25 +3651,6 @@ function drawQR(text) {
         script.onerror = () => { output.innerHTML = '<div style="color:#ff6060;font-size:8px;padding:10px;font-family:\'Press Start 2P\',cursive;">Nu se poate incarca QR</div>'; };
         document.head.appendChild(script);
     }
-}
-
-function showQRCode() {
-    const code = document.getElementById('popup-code-output').value;
-    if (!code) { showToast(LangManager.t('toast.no_code')); return; }
-    const overlay = document.getElementById('qr-popup-overlay');
-    overlay.style.display = 'flex';
-    requestAnimationFrame(() => requestAnimationFrame(() => {
-        overlay.classList.add('popup-visible');
-        drawQR(code);
-    }));
-    hotbarSound.currentTime = 0; hotbarSound.play().catch(e => {});
-}
-
-function closeQRPopup() {
-    const overlay = document.getElementById('qr-popup-overlay');
-    overlay.classList.remove('popup-visible');
-    pclsSound.currentTime = 0; pclsSound.play().catch(e => {});
-    setTimeout(() => { overlay.style.display = 'none'; }, 260);
 }
 
 function closeWelcome() {
@@ -3847,19 +3835,22 @@ function toggleBlockSearch() {
 document.addEventListener('keydown', (e) => {
     if (e.key === 'Escape' && bsearchOpen) { e.preventDefault(); closeBlockSearch(); }
 });
-
-function openFunPopup() {
-    const ov = document.getElementById('fun-popup-overlay');
-    if (!ov) return;
-    ov.style.display = 'flex';
-    requestAnimationFrame(() => requestAnimationFrame(() => ov.classList.add('popup-visible')));
+const FUN_VIEWS = ['main', 'biome', 'mountain', 'emoji'];
+function showFunView(name) {
+    if (FUN_VIEWS.indexOf(name) === -1) name = 'main';
+    let anyFound = false;
+    FUN_VIEWS.forEach(v => {
+        const el = document.getElementById('fun-view-' + v);
+        if (!el) return;
+        anyFound = true;
+        el.classList.toggle('active', v === name);
+    });
+    if (!anyFound) return;
+    hotbarSound.currentTime = 0; hotbarSound.play().catch(e => {});
+    if (name === 'emoji') generateIslandEmoji();
 }
-function closeFunPopup() {
-    const ov = document.getElementById('fun-popup-overlay');
-    if (!ov) return;
-    ov.classList.remove('popup-visible');
-    setTimeout(() => { ov.style.display = 'none'; }, 320);
-}
+function openFunPopup() { showFunView('main'); }
+function closeFunPopup() { showFunView('main'); }
 
 const _EMOJI_BASE = {
     dirt:'🟫', dirt2:'🟫', ShovedDirt:'🟫',
@@ -3877,19 +3868,8 @@ const _EMOJI_OBJ = {
     rock:'🪨', mossystone:'🟩',
 };
 
-function openIslandEmojiPopup() {
-    const ov = document.getElementById('island-emoji-overlay');
-    if (!ov) return;
-    generateIslandEmoji();
-    ov.style.display = 'flex';
-    requestAnimationFrame(() => requestAnimationFrame(() => ov.classList.add('popup-visible')));
-}
-function closeIslandEmojiPopup() {
-    const ov = document.getElementById('island-emoji-overlay');
-    if (!ov) return;
-    ov.classList.remove('popup-visible');
-    setTimeout(() => { ov.style.display = 'none'; }, 320);
-}
+function openIslandEmojiPopup() { showFunView('emoji'); }
+function closeIslandEmojiPopup() { showFunView('main'); }
 function generateIslandEmoji() {
     const tiles = mapContainer.querySelectorAll('.tile[data-x][data-y][data-z]');
     const gridEl = document.getElementById('island-emoji-grid');
@@ -3936,42 +3916,18 @@ function copyIslandEmoji() {
     navigator.clipboard.writeText(text).then(() => showToast(LangManager.t('toast.emoji_copied')));
 }
 
-function openIslandBiomePopup() {
-    const overlay = document.getElementById('island-biome-overlay');
-    if (!overlay) return;
-    overlay.style.display = 'flex';
-    requestAnimationFrame(() => overlay.classList.add('popup-visible'));
-    hotbarSound.currentTime = 0; hotbarSound.play().catch(e => {});
-}
-function closeIslandBiomePopup() {
-    const overlay = document.getElementById('island-biome-overlay');
-    if (!overlay) return;
-    overlay.classList.remove('popup-visible');
-    pclsSound.currentTime = 0; pclsSound.play().catch(e => {});
-    setTimeout(() => { overlay.style.display = 'none'; }, 260);
-}
+function openIslandBiomePopup() { showFunView('biome'); }
+function closeIslandBiomePopup() { showFunView('main'); }
 function selectIslandBiome(idx) {
-    closeIslandBiomePopup();
+    pclsSound.currentTime = 0; pclsSound.play().catch(e => {});
     closeSavePopup();
     setTimeout(() => { generateRandomIsland(idx < 0 ? undefined : idx); }, 270);
 }
 
-function openMountainBiomePopup() {
-    const overlay = document.getElementById('mountain-biome-overlay');
-    if (!overlay) return;
-    overlay.style.display = 'flex';
-    requestAnimationFrame(() => overlay.classList.add('popup-visible'));
-    hotbarSound.currentTime = 0; hotbarSound.play().catch(e => {});
-}
-function closeMountainBiomePopup() {
-    const overlay = document.getElementById('mountain-biome-overlay');
-    if (!overlay) return;
-    overlay.classList.remove('popup-visible');
-    pclsSound.currentTime = 0; pclsSound.play().catch(e => {});
-    setTimeout(() => { overlay.style.display = 'none'; }, 260);
-}
+function openMountainBiomePopup() { showFunView('mountain'); }
+function closeMountainBiomePopup() { showFunView('main'); }
 function selectMountainBiome(idx) {
-    closeMountainBiomePopup();
+    pclsSound.currentTime = 0; pclsSound.play().catch(e => {});
     closeSavePopup();
     setTimeout(() => { generateMountain(idx < 0 ? undefined : idx); }, 270);
 }
@@ -4271,10 +4227,9 @@ function getBlockNameRo(src) {
     }
     return raw.charAt(0).toUpperCase() + raw.slice(1);
 }
-
-function openAnalyticsPopup() {
-    const overlay = document.getElementById('analytics-popup-overlay');
-    if (!overlay) return;
+function refreshIslandAnalytics() {
+    const totalEl = document.getElementById('analytics-total');
+    if (!totalEl) return;
 
     const tiles = mapContainer.getElementsByClassName('tile');
     const counts = {};
@@ -4297,18 +4252,14 @@ function openAnalyticsPopup() {
         counts[raw] = (counts[raw] || 0) + 1;
         total++;
     }
-
     const sorted = Object.entries(counts).sort((a, b) => b[1] - a[1]);
-
-    document.getElementById('analytics-total').textContent = total;
+    totalEl.textContent = total;
     document.getElementById('analytics-types').textContent = sorted.length;
     document.getElementById('analytics-layers').textContent = maxZ + 1;
-
     const list = document.getElementById('analytics-list');
     list.innerHTML = '';
-
     if (sorted.length === 0) {
-        list.innerHTML = '<div style="color:var(--gui-text-dim);font-size:7px;text-align:center;padding:16px;">' + (window.LangManager ? LangManager.t('analytics.no_blocks') : 'No blocks placed yet!') + '</div>';
+        list.innerHTML = '<div style="color:var(--md-on-surface-variant);font-size:12px;text-align:center;padding:16px;">' + (window.LangManager ? LangManager.t('analytics.no_blocks') : 'No blocks placed yet!') + '</div>';
     } else {
         const maxCount = sorted[0][1];
         sorted.forEach(([raw, count]) => {
@@ -4332,19 +4283,17 @@ function openAnalyticsPopup() {
     }
 
     _renderAnalyticsChart(sorted, total);
-
-    if (typeof closeSavePopup === 'function') closeSavePopup();
-    overlay.style.display = 'flex';
-    requestAnimationFrame(() => requestAnimationFrame(() => overlay.classList.add('popup-visible')));
-    hotbarSound.currentTime = 0; hotbarSound.play().catch(e => {});
+}
+window.refreshIslandAnalytics = refreshIslandAnalytics;
+function openAnalyticsPopup() {
+    refreshIslandAnalytics();
+    if (typeof openSavePopup === 'function') openSavePopup();
+    const btn = document.querySelector('#save-nav .settings-nav-item[data-panel="analytics"]');
+    if (typeof switchFilesCategory === 'function') switchFilesCategory('analytics', btn);
 }
 
 function closeAnalyticsPopup() {
-    const overlay = document.getElementById('analytics-popup-overlay');
-    if (!overlay) return;
-    overlay.classList.remove('popup-visible');
-    pclsSound.currentTime = 0; pclsSound.play().catch(e => {});
-    setTimeout(() => { overlay.style.display = 'none'; }, 350);
+    if (typeof closeSavePopup === 'function') closeSavePopup();
 }
 
 
@@ -4352,19 +4301,21 @@ function _renderAnalyticsChart(sorted, total) {
     const canvas = document.getElementById('analytics-chart');
     const legendEl = document.getElementById('analytics-chart-legend');
     if (!canvas || !legendEl) return;
-
     const PALETTE = [
-        '#e6a817','#5db85c','#5b9bd5','#d95f5f','#9b6fd4',
-        '#4ecdc4','#f7a35c','#90ed7d','#8085e9','#f15c80',
-        '#e4d354','#2b908f','#f45b5b','#91e8e1','#d4a76a',
-        '#7cb5ec','#434348','#a6b8c7','#c9a96e','#70a288',
+        '#C6551D', '#E8A33D', '#8A9A5B', '#B3866B', '#4A7A8C',
+        '#D97E5F', '#A8763E', '#6E8F71', '#C99A4A', '#7A5C8A',
+        '#B5563F', '#5F8A6E', '#D4A76A', '#8C6F4A', '#6B8CAE',
+        '#A65C3D', '#7C9A6B', '#C77E8E', '#9A7A4A', '#5A7A5A',
     ];
+    const rootStyle = getComputedStyle(document.documentElement);
+    const onSurface = (rootStyle.getPropertyValue('--md-on-surface') || '').trim() || '#241A10';
+    const onSurfaceVariant = (rootStyle.getPropertyValue('--md-on-surface-variant') || '').trim() || '#6F5D4E';
 
     const ctx = canvas.getContext('2d');
     const W = canvas.width, H = canvas.height;
     const cx = W / 2, cy = H / 2;
     const R = Math.min(W, H) / 2 - 10;
-    const r = R * 0.52; 
+    const r = R * 0.52;
 
     ctx.clearRect(0, 0, W, H);
 
@@ -4377,66 +4328,85 @@ function _renderAnalyticsChart(sorted, total) {
     }));
     if (sorted.length > TOP) {
         const otherCount = sorted.slice(TOP).reduce((s, [, c]) => s + c, 0);
-        slices.push({ raw: '__other__', count: otherCount, color: '#666655', name: 'Other' });
+        slices.push({ raw: '__other__', count: otherCount, color: onSurfaceVariant, name: 'Other' });
     }
 
     let hovered = -1;
+    const GAP = 0.018;
+    const expandCurrent = slices.map(() => 0);
+    let rafId = null;
 
-    function draw(hov) {
+    function drawFrame() {
         ctx.clearRect(0, 0, W, H);
         let startAngle = -Math.PI / 2;
+        let settled = true;
         slices.forEach((sl, i) => {
             const sweep = (sl.count / total) * 2 * Math.PI;
-            const isHov = i === hov;
-            const expand = isHov ? 7 : 0;
-            const midAngle = startAngle + sweep / 2;
+            const target = i === hovered ? 8 : 0;
+            expandCurrent[i] += (target - expandCurrent[i]) * 0.25;
+            if (Math.abs(target - expandCurrent[i]) > 0.05) settled = false;
+            const expand = expandCurrent[i];
+
+            const a0 = startAngle + (sweep > GAP ? GAP / 2 : 0);
+            const a1 = startAngle + sweep - (sweep > GAP ? GAP / 2 : 0);
+            const midAngle = (a0 + a1) / 2;
             const ox = Math.cos(midAngle) * expand;
             const oy = Math.sin(midAngle) * expand;
 
-            ctx.beginPath();
-            ctx.moveTo(cx + ox, cy + oy);
-            ctx.arc(cx + ox, cy + oy, R, startAngle, startAngle + sweep);
-            ctx.arc(cx + ox, cy + oy, r, startAngle + sweep, startAngle, true);
-            ctx.closePath();
-            ctx.fillStyle = sl.color;
-            ctx.fill();
-            ctx.strokeStyle = 'rgba(0,0,0,0.25)';
-            ctx.lineWidth = isHov ? 2 : 1;
-            ctx.stroke();
+            if (a1 > a0) {
+                ctx.beginPath();
+                ctx.arc(cx + ox, cy + oy, R, a0, a1);
+                ctx.arc(cx + ox, cy + oy, r, a1, a0, true);
+                ctx.closePath();
+                ctx.fillStyle = sl.color;
+                ctx.fill();
+                if (i === hovered) {
+                    ctx.strokeStyle = 'rgba(0,0,0,0.18)';
+                    ctx.lineWidth = 1.5;
+                    ctx.stroke();
+                }
+            }
 
             startAngle += sweep;
         });
-        if (hov >= 0 && slices[hov]) {
-            const sl = slices[hov];
+
+        if (hovered >= 0 && slices[hovered]) {
+            const sl = slices[hovered];
             const pct = Math.round((sl.count / total) * 100);
-            ctx.fillStyle = '#fff8e1';
-            ctx.font = 'bold 11px monospace';
+            ctx.fillStyle = onSurface;
+            ctx.font = '600 15px Roboto, sans-serif';
             ctx.textAlign = 'center';
             ctx.textBaseline = 'middle';
             ctx.fillText(pct + '%', cx, cy - 7);
-            ctx.font = '8px monospace';
-            ctx.fillStyle = '#ffdf80';
-            ctx.fillText(sl.count + ' blk', cx, cy + 8);
+            ctx.font = '10px Roboto, sans-serif';
+            ctx.fillStyle = onSurfaceVariant;
+            ctx.fillText(sl.count + ' blk', cx, cy + 10);
         } else {
-            ctx.fillStyle = '#ffdf80';
-            ctx.font = 'bold 10px monospace';
+            ctx.fillStyle = onSurface;
+            ctx.font = '600 15px Roboto, sans-serif';
             ctx.textAlign = 'center';
             ctx.textBaseline = 'middle';
             ctx.fillText(total, cx, cy - 6);
-            ctx.font = '7px monospace';
-            ctx.fillStyle = '#a07850';
-            ctx.fillText('blocks', cx, cy + 7);
+            ctx.font = '9px Roboto, sans-serif';
+            ctx.fillStyle = onSurfaceVariant;
+            ctx.fillText('blocks', cx, cy + 9);
         }
+
+        rafId = settled ? null : requestAnimationFrame(drawFrame);
     }
 
-    draw(-1);
+    function requestDraw() {
+        if (rafId === null) rafId = requestAnimationFrame(drawFrame);
+    }
+
+    drawFrame();
     canvas.onmousemove = function(e) {
         const rect = canvas.getBoundingClientRect();
         const mx = e.clientX - rect.left, my = e.clientY - rect.top;
         const dx = mx - cx, dy = my - cy;
         const dist = Math.sqrt(dx*dx + dy*dy);
         if (dist < r || dist > R + 8) {
-            if (hovered !== -1) { hovered = -1; draw(-1); updateLegendHighlight(-1); }
+            if (hovered !== -1) { hovered = -1; requestDraw(); updateLegendHighlight(-1); }
             return;
         }
         let angle = Math.atan2(dy, dx) + Math.PI / 2;
@@ -4447,10 +4417,10 @@ function _renderAnalyticsChart(sorted, total) {
             if (angle >= start && angle < start + sweep) found = i;
             start += sweep;
         });
-        if (found !== hovered) { hovered = found; draw(hovered); updateLegendHighlight(hovered); }
+        if (found !== hovered) { hovered = found; requestDraw(); updateLegendHighlight(hovered); }
     };
     canvas.onmouseleave = function() {
-        hovered = -1; draw(-1); updateLegendHighlight(-1);
+        hovered = -1; requestDraw(); updateLegendHighlight(-1);
     };
     legendEl.innerHTML = '';
     slices.forEach((sl, i) => {
@@ -4460,8 +4430,8 @@ function _renderAnalyticsChart(sorted, total) {
         item.innerHTML = `<div class="analytics-legend-dot" style="background:${sl.color}"></div>
             <div class="analytics-legend-name">${sl.name}</div>
             <div class="analytics-legend-pct">${pct}%</div>`;
-        item.onmouseenter = () => { hovered = i; draw(i); updateLegendHighlight(i); };
-        item.onmouseleave = () => { hovered = -1; draw(-1); updateLegendHighlight(-1); };
+        item.onmouseenter = () => { hovered = i; requestDraw(); updateLegendHighlight(i); };
+        item.onmouseleave = () => { hovered = -1; requestDraw(); updateLegendHighlight(-1); };
         legendEl.appendChild(item);
     });
 
@@ -5418,8 +5388,9 @@ function handleInteractionBrushed(tile, x, y, z) {
         ach.unlocked = true;
         saveAchievements();
         showAchievementToast(ach);
-        const ovl = document.getElementById('achievements-popup-overlay');
-        if (ovl && ovl.style.display !== 'none') renderAchievementsPopup();
+        const ovl = document.getElementById('save-popup-overlay');
+        const achPanel = document.querySelector('#save-content .settings-category-panel[data-panel="achievements"]');
+        if (ovl && ovl.style.display !== 'none' && achPanel && achPanel.classList.contains('active')) renderAchievementsPopup();
     }
     let _toastQueue = [];
     let _toastActive = false;
@@ -5485,19 +5456,13 @@ function handleInteractionBrushed(tile, x, y, z) {
     }
     function openAchievementsPopup() {
         renderAchievementsPopup();
-        const overlay = document.getElementById('achievements-popup-overlay');
-        if (!overlay) return;
-        overlay.style.display = 'flex';
-        requestAnimationFrame(() => requestAnimationFrame(() => overlay.classList.add('popup-visible')));
-        if (typeof hotbarSound !== 'undefined') { hotbarSound.currentTime = 0; hotbarSound.play().catch(() => {}); }
+        if (typeof openSavePopup === 'function') openSavePopup();
+        const btn = document.querySelector('#save-nav .settings-nav-item[data-panel="achievements"]');
+        if (typeof switchFilesCategory === 'function') switchFilesCategory('achievements', btn);
     }
 
     function closeAchievementsPopup() {
-        const overlay = document.getElementById('achievements-popup-overlay');
-        if (!overlay) return;
-        overlay.classList.remove('popup-visible');
-        if (typeof pclsSound !== 'undefined') { pclsSound.currentTime = 0; pclsSound.play().catch(() => {}); }
-        setTimeout(() => { overlay.style.display = 'none'; }, 300);
+        if (typeof closeSavePopup === 'function') closeSavePopup();
     }
 
     function renderAchievementsPopup() {
@@ -5516,7 +5481,7 @@ function handleInteractionBrushed(tile, x, y, z) {
         list.innerHTML = '';
         const addSection = (label, items) => {
             const sec = document.createElement('div');
-            sec.style.cssText = 'font-family:"Press Start 2P",monospace;font-size:6px;color:var(--gui-text-dim,#a07850);letter-spacing:1.5px;margin:6px 0 4px;';
+            sec.style.cssText = 'font-family:"Roboto",sans-serif;font-size:10.5px;font-weight:700;color:var(--md-on-surface-variant,#6F5D4E);letter-spacing:0.6px;text-transform:uppercase;margin:6px 0 2px;';
             sec.textContent = label;
             list.appendChild(sec);
 
@@ -5534,7 +5499,6 @@ function handleInteractionBrushed(tile, x, y, z) {
                     const lockSpan = document.createElement('span');
                     lockSpan.className = 'ach-lock-icon';
                     lockSpan.textContent = '?';
-                    lockSpan.style.cssText = 'font-family:"Press Start 2P",monospace;font-size:14px;color:var(--gui-border,#523519);';
                     iconWrap.appendChild(lockSpan);
                 }
                 const info = document.createElement('div');
@@ -5568,6 +5532,7 @@ function handleInteractionBrushed(tile, x, y, z) {
     }
     window.openAchievementsPopup  = openAchievementsPopup;
     window.closeAchievementsPopup = closeAchievementsPopup;
+    window.renderAchievementsPopup = renderAchievementsPopup;
     window._unlockAchievement     = unlockAchievement;
     const _origHandleInteraction = handleInteraction;
     window.handleInteraction = function(tile, x, y, z) {
@@ -5631,22 +5596,8 @@ function handleInteractionBrushed(tile, x, y, z) {
 })();
 const SAVE_SLOT_KEY = 'islandSaveSlot_';
 const SAVE_SLOT_COUNT = 3;
-
-function openSaveSlotsPopup() {
-    const overlay = document.getElementById('save-slots-overlay');
-    if (!overlay) return;
-    overlay.style.display = 'flex';
-    requestAnimationFrame(() => requestAnimationFrame(() => overlay.classList.add('popup-visible')));
-    renderSaveSlots();
-}
-
-function closeSaveSlotsPopup() {
-    const overlay = document.getElementById('save-slots-overlay');
-    if (!overlay) return;
-    overlay.classList.remove('popup-visible');
-    setTimeout(() => { overlay.style.display = 'none'; }, 270);
-}
-
+function openSaveSlotsPopup() { renderSaveSlots(); }
+function closeSaveSlotsPopup() { /* no-op: no popup to close anymore */ }
 function _getSlotData(idx) {
     try {
         const raw = localStorage.getItem(SAVE_SLOT_KEY + idx);
@@ -5683,16 +5634,20 @@ function renderSaveSlots() {
     const _delLbl  = (window.LangManager && typeof LangManager.t === 'function') ? LangManager.t('save_slots.btn_del')  : '';
     for (let i = 0; i < SAVE_SLOT_COUNT; i++) {
         const data = _getSlotData(i);
-        const emptyEl   = document.getElementById('save-slot-empty-' + i);
-        const metaEl    = document.getElementById('save-slot-meta-'  + i);
-        const saveBtn   = document.getElementById('save-slot-save-'  + i);
-        const loadBtn   = document.getElementById('save-slot-load-'  + i);
-        const delBtn    = document.getElementById('save-slot-del-'   + i);
-        const thumb     = document.getElementById('save-slot-thumb-' + i);
-        if (saveBtn) saveBtn.textContent = (_saveLbl && !_saveLbl.includes('save_slots.')) ? _saveLbl : 'SAVE';
-        if (loadBtn) loadBtn.textContent = (_loadLbl && !_loadLbl.includes('save_slots.')) ? _loadLbl : 'LOAD';
-        if (delBtn)  delBtn.textContent  = (_delLbl  && !_delLbl.includes('save_slots.'))  ? _delLbl  : 'DELETE';
-
+        const emptyEl    = document.getElementById('save-slot-empty-' + i);
+        const metaEl     = document.getElementById('save-slot-meta-'  + i);
+        const saveBtn    = document.getElementById('save-slot-save-'  + i);
+        const loadBtn    = document.getElementById('save-slot-load-'  + i);
+        const delBtn     = document.getElementById('save-slot-del-'   + i);
+        const thumb      = document.getElementById('save-slot-thumb-' + i);
+        const saveLabelEl = document.getElementById('save-slot-save-label-' + i);
+        const loadLabelEl = document.getElementById('save-slot-load-label-' + i);
+        const saveText = (_saveLbl && !_saveLbl.includes('save_slots.')) ? _saveLbl : 'SAVE';
+        const loadText = (_loadLbl && !_loadLbl.includes('save_slots.')) ? _loadLbl : 'LOAD';
+        const delText  = (_delLbl  && !_delLbl.includes('save_slots.'))  ? _delLbl  : 'DELETE';
+        if (saveLabelEl) saveLabelEl.textContent = saveText; else if (saveBtn) saveBtn.textContent = saveText;
+        if (loadLabelEl) loadLabelEl.textContent = loadText; else if (loadBtn) loadBtn.textContent = loadText;
+        if (delBtn) { delBtn.setAttribute('aria-label', delText); delBtn.setAttribute('title', delText); }
         if (data) {
             if (emptyEl) emptyEl.style.display = 'none';
             if (metaEl)  metaEl.textContent = data.date || '—';
