@@ -1559,7 +1559,6 @@ function openSavePopup() {
         if (typeof showFunView === 'function') showFunView('main');
     }
 }
-
 function closeSavePopup() {
     const overlay = document.getElementById('save-popup-overlay');
     overlay.classList.remove('popup-visible');
@@ -1674,6 +1673,7 @@ function updateOGTags(islandCode) {
         const twImg = document.getElementById('tw-image');
         if (ogImg) ogImg.setAttribute('content', dataUrl);
         if (twImg) twImg.setAttribute('content', dataUrl);
+
         const shareUrl = window.location.href;
         const ogUrl = document.getElementById('og-url');
         const ogTitle = document.getElementById('og-title');
@@ -3500,8 +3500,12 @@ function renderLangButtons() {
     const list   = window.LangManager.getLangList();
     const active = window.LangManager.getLang();
     if (!list.length) return;
+
+    // Legacy popup picker
     const container = document.getElementById('lang-btn-group');
     if (container) _buildLangButtons(container, list, active);
+
+    // Inline settings panel picker
     const inlinePicker = document.getElementById('settings-lang-picker');
     if (inlinePicker) _buildLangButtons(inlinePicker, list, active);
 
@@ -3835,20 +3839,14 @@ function toggleBlockSearch() {
 document.addEventListener('keydown', (e) => {
     if (e.key === 'Escape' && bsearchOpen) { e.preventDefault(); closeBlockSearch(); }
 });
-const FUN_VIEWS = ['main', 'biome', 'mountain', 'emoji'];
+
 function showFunView(name) {
-    if (FUN_VIEWS.indexOf(name) === -1) name = 'main';
-    let anyFound = false;
-    FUN_VIEWS.forEach(v => {
-        const el = document.getElementById('fun-view-' + v);
-        if (!el) return;
-        anyFound = true;
-        el.classList.toggle('active', v === name);
-    });
-    if (!anyFound) return;
+    const overlay = document.getElementById('save-popup-overlay');
+    if (!overlay || overlay.style.display === 'none' || overlay.style.display === '') return;
+    if (typeof generateIslandEmoji === 'function') generateIslandEmoji();
     hotbarSound.currentTime = 0; hotbarSound.play().catch(e => {});
-    if (name === 'emoji') generateIslandEmoji();
 }
+
 function openFunPopup() { showFunView('main'); }
 function closeFunPopup() { showFunView('main'); }
 
@@ -4252,12 +4250,16 @@ function refreshIslandAnalytics() {
         counts[raw] = (counts[raw] || 0) + 1;
         total++;
     }
+
     const sorted = Object.entries(counts).sort((a, b) => b[1] - a[1]);
+
     totalEl.textContent = total;
     document.getElementById('analytics-types').textContent = sorted.length;
     document.getElementById('analytics-layers').textContent = maxZ + 1;
+
     const list = document.getElementById('analytics-list');
     list.innerHTML = '';
+
     if (sorted.length === 0) {
         list.innerHTML = '<div style="color:var(--md-on-surface-variant);font-size:12px;text-align:center;padding:16px;">' + (window.LangManager ? LangManager.t('analytics.no_blocks') : 'No blocks placed yet!') + '</div>';
     } else {
@@ -4310,7 +4312,6 @@ function _renderAnalyticsChart(sorted, total) {
     const rootStyle = getComputedStyle(document.documentElement);
     const onSurface = (rootStyle.getPropertyValue('--md-on-surface') || '').trim() || '#241A10';
     const onSurfaceVariant = (rootStyle.getPropertyValue('--md-on-surface-variant') || '').trim() || '#6F5D4E';
-
     const ctx = canvas.getContext('2d');
     const W = canvas.width, H = canvas.height;
     const cx = W / 2, cy = H / 2;
@@ -5598,6 +5599,7 @@ const SAVE_SLOT_KEY = 'islandSaveSlot_';
 const SAVE_SLOT_COUNT = 3;
 function openSaveSlotsPopup() { renderSaveSlots(); }
 function closeSaveSlotsPopup() { /* no-op: no popup to close anymore */ }
+
 function _getSlotData(idx) {
     try {
         const raw = localStorage.getItem(SAVE_SLOT_KEY + idx);
@@ -5648,6 +5650,7 @@ function renderSaveSlots() {
         if (saveLabelEl) saveLabelEl.textContent = saveText; else if (saveBtn) saveBtn.textContent = saveText;
         if (loadLabelEl) loadLabelEl.textContent = loadText; else if (loadBtn) loadBtn.textContent = loadText;
         if (delBtn) { delBtn.setAttribute('aria-label', delText); delBtn.setAttribute('title', delText); }
+
         if (data) {
             if (emptyEl) emptyEl.style.display = 'none';
             if (metaEl)  metaEl.textContent = data.date || '—';

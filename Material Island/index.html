@@ -1051,7 +1051,7 @@ function tryStartBuilding() {
                                     <div class="md3-save-slot-actions">
                                         <button class="md3-slot-btn md3-slot-btn-save" id="save-slot-save-0" onclick="saveToSlot(0)"><span class="material-symbols-rounded">save</span><span class="md3-slot-btn-label" id="save-slot-save-label-0">SAVE</span></button>
                                         <button class="md3-slot-btn md3-slot-btn-load" id="save-slot-load-0" onclick="loadFromSlot(0)" disabled><span class="material-symbols-rounded">file_open</span><span class="md3-slot-btn-label" id="save-slot-load-label-0">LOAD</span></button>
-                                        <button class="md3-slot-btn-icon" id="save-slot-del-0" onclick="deleteSlot(0)" disabled aria-label="Delete" title="Delete"><span class="material-symbols-rounded">delete</span></button>
+                                        <button class="md3-slot-btn-icon" id="save-slot-del-0" onclick="deleteSlot(0)" disabled aria-label="Delete" title="Delete"><svg class="md3-trash-icon" viewBox="0 0 24 24" width="16" height="16" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><path fill="currentColor" d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"/></svg></button>
                                     </div>
                                 </div>
                                 <div class="md3-save-slot-card" id="save-slot-1">
@@ -1067,7 +1067,7 @@ function tryStartBuilding() {
                                     <div class="md3-save-slot-actions">
                                         <button class="md3-slot-btn md3-slot-btn-save" id="save-slot-save-1" onclick="saveToSlot(1)"><span class="material-symbols-rounded">save</span><span class="md3-slot-btn-label" id="save-slot-save-label-1">SAVE</span></button>
                                         <button class="md3-slot-btn md3-slot-btn-load" id="save-slot-load-1" onclick="loadFromSlot(1)" disabled><span class="material-symbols-rounded">file_open</span><span class="md3-slot-btn-label" id="save-slot-load-label-1">LOAD</span></button>
-                                        <button class="md3-slot-btn-icon" id="save-slot-del-1" onclick="deleteSlot(1)" disabled aria-label="Delete" title="Delete"><span class="material-symbols-rounded">delete</span></button>
+                                        <button class="md3-slot-btn-icon" id="save-slot-del-1" onclick="deleteSlot(1)" disabled aria-label="Delete" title="Delete"><svg class="md3-trash-icon" viewBox="0 0 24 24" width="16" height="16" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><path fill="currentColor" d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"/></svg></button>
                                     </div>
                                 </div>
                                 <div class="md3-save-slot-card" id="save-slot-2">
@@ -1083,7 +1083,7 @@ function tryStartBuilding() {
                                     <div class="md3-save-slot-actions">
                                         <button class="md3-slot-btn md3-slot-btn-save" id="save-slot-save-2" onclick="saveToSlot(2)"><span class="material-symbols-rounded">save</span><span class="md3-slot-btn-label" id="save-slot-save-label-2">SAVE</span></button>
                                         <button class="md3-slot-btn md3-slot-btn-load" id="save-slot-load-2" onclick="loadFromSlot(2)" disabled><span class="material-symbols-rounded">file_open</span><span class="md3-slot-btn-label" id="save-slot-load-label-2">LOAD</span></button>
-                                        <button class="md3-slot-btn-icon" id="save-slot-del-2" onclick="deleteSlot(2)" disabled aria-label="Delete" title="Delete"><span class="material-symbols-rounded">delete</span></button>
+                                        <button class="md3-slot-btn-icon" id="save-slot-del-2" onclick="deleteSlot(2)" disabled aria-label="Delete" title="Delete"><svg class="md3-trash-icon" viewBox="0 0 24 24" width="16" height="16" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><path fill="currentColor" d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"/></svg></button>
                                     </div>
                                 </div>
                             </div>
@@ -1091,118 +1091,102 @@ function tryStartBuilding() {
                         <div class="md3-card">
                             <div class="popup-section-title"><span class="material-symbols-rounded">casino</span><span data-t="save_popup.fun">Fun</span></div>
 
-                            <div class="fun-subview active" id="fun-view-main">
-                                <div class="md3-fun-list" id="fun-popup-grid">
-                                    <div class="md3-fun-item" onclick="showFunView('biome')">
-                                        <div class="md3-fun-item-icon"><span class="material-symbols-rounded">terrain</span></div>
-                                        <div class="md3-fun-item-text">
-                                            <div class="md3-fun-item-title" data-t="fun_popup.random_island_name">Random Island Generator</div>
-                                            <div class="md3-fun-item-desc" data-t="fun_popup.random_island_desc">Generate a random biome island</div>
-                                        </div>
-                                        <span class="material-symbols-rounded md3-fun-item-chevron">chevron_right</span>
+                            <div class="fun-group">
+                                <div class="fun-group-title">
+                                    <span class="material-symbols-rounded">terrain</span>
+                                    <span data-t="fun_popup.random_island_name">Random Island Generator</span>
+                                </div>
+                                <div class="biome-grid" id="island-biome-grid">
+                                    <div class="biome-card" onclick="selectIslandBiome(0)">
+                                        <div class="biome-icon"><span class="material-symbols-rounded">wb_sunny</span></div>
+                                        <div class="biome-name">Summer</div>
+                                        <div class="biome-desc">Grass, flowers, trees &amp; crops</div>
                                     </div>
-                                    <div class="md3-fun-item" onclick="showFunView('mountain')">
-                                        <div class="md3-fun-item-icon"><span class="material-symbols-rounded">landscape</span></div>
-                                        <div class="md3-fun-item-text">
-                                            <div class="md3-fun-item-title" data-t="fun_popup.random_mountain_name">Random Mountain Generator</div>
-                                            <div class="md3-fun-item-desc" data-t="fun_popup.random_mountain_desc">Generate a random mountain island</div>
-                                        </div>
-                                        <span class="material-symbols-rounded md3-fun-item-chevron">chevron_right</span>
+                                    <div class="biome-card" onclick="selectIslandBiome(1)">
+                                        <div class="biome-icon"><span class="material-symbols-rounded">ac_unit</span></div>
+                                        <div class="biome-name">Snowy</div>
+                                        <div class="biome-desc">Ice, snow, snowmen &amp; pines</div>
                                     </div>
-                                    <div class="md3-fun-item" onclick="showFunView('emoji')">
-                                        <div class="md3-fun-item-icon"><span class="material-symbols-rounded">mood</span></div>
-                                        <div class="md3-fun-item-text">
-                                            <div class="md3-fun-item-title">Island as an Emoji</div>
-                                            <div class="md3-fun-item-desc">Convert your island to emoji art</div>
-                                        </div>
-                                        <span class="material-symbols-rounded md3-fun-item-chevron">chevron_right</span>
+                                    <div class="biome-card" onclick="selectIslandBiome(2)">
+                                        <div class="biome-icon"><span class="material-symbols-rounded">landscape</span></div>
+                                        <div class="biome-name">Desert</div>
+                                        <div class="biome-desc">Sand, red sand &amp; rocks</div>
+                                    </div>
+                                    <div class="biome-card" onclick="selectIslandBiome(3)">
+                                        <div class="biome-icon"><span class="material-symbols-rounded">water</span></div>
+                                        <div class="biome-name">Ocean</div>
+                                        <div class="biome-desc">Water, beaches &amp; stone</div>
+                                    </div>
+                                    <div class="biome-card" onclick="selectIslandBiome(4)">
+                                        <div class="biome-icon"><span class="material-symbols-rounded">terrain</span></div>
+                                        <div class="biome-name">Stone</div>
+                                        <div class="biome-desc">Stone, moss &amp; sparse trees</div>
+                                    </div>
+                                    <div class="biome-card biome-card-random" onclick="selectIslandBiome(-1)">
+                                        <div class="biome-icon"><span class="material-symbols-rounded">casino</span></div>
+                                        <div class="biome-name">Random</div>
+                                        <div class="biome-desc">Surprise me!</div>
                                     </div>
                                 </div>
                                 <div id="random-island-type" style="color:var(--md-on-surface-variant, #6F5D4E);font-family:'Roboto',sans-serif;font-size:11px;text-align:center;margin-top:2px;min-height:14px;letter-spacing:0.3px;"></div>
-                                <div id="mountain-type" style="display:none;"></div>
                             </div>
 
-                            <div class="fun-subview" id="fun-view-biome">
-                                <button class="fun-back-btn" onclick="showFunView('main')"><span class="material-symbols-rounded">arrow_back</span><span>Back</span></button>
-                                <div class="biome-grid" id="island-biome-grid">
-                                    <div class="biome-card" onclick="selectIslandBiome(0)">
-                                        <div class="biome-icon"></div>
-                                        <div class="biome-name">SUMMER</div>
-                                        <div class="biome-desc">Grass, flowers,<br>trees &amp; crops</div>
-                                    </div>
-                                    <div class="biome-card" onclick="selectIslandBiome(1)">
-                                        <div class="biome-icon"></div>
-                                        <div class="biome-name">SNOWY</div>
-                                        <div class="biome-desc">Ice, snow,<br>snowmen &amp; pines</div>
-                                    </div>
-                                    <div class="biome-card" onclick="selectIslandBiome(2)">
-                                        <div class="biome-icon"></div>
-                                        <div class="biome-name">DESERT</div>
-                                        <div class="biome-desc">Sand, red sand<br>&amp; rocks</div>
-                                    </div>
-                                    <div class="biome-card" onclick="selectIslandBiome(3)">
-                                        <div class="biome-icon"></div>
-                                        <div class="biome-name">OCEAN</div>
-                                        <div class="biome-desc">Water, beaches<br>&amp; stone</div>
-                                    </div>
-                                    <div class="biome-card" onclick="selectIslandBiome(4)">
-                                        <div class="biome-icon"></div>
-                                        <div class="biome-name">STONE</div>
-                                        <div class="biome-desc">Stone, moss<br>&amp; sparse trees</div>
-                                    </div>
-                                    <div class="biome-card biome-card-random" onclick="selectIslandBiome(-1)">
-                                        <div class="biome-icon"></div>
-                                        <div class="biome-name">RANDOM</div>
-                                        <div class="biome-desc">Surprise me!</div>
-                                    </div>
+                            <div class="fun-divider"></div>
+
+                            <div class="fun-group">
+                                <div class="fun-group-title">
+                                    <span class="material-symbols-rounded">landscape</span>
+                                    <span data-t="fun_popup.random_mountain_name">Random Mountain Generator</span>
                                 </div>
-                            </div>
-
-                            <div class="fun-subview" id="fun-view-mountain">
-                                <button class="fun-back-btn" onclick="showFunView('main')"><span class="material-symbols-rounded">arrow_back</span><span>Back</span></button>
                                 <div class="biome-grid" id="mountain-biome-grid">
                                     <div class="biome-card" onclick="selectMountainBiome(0)">
-                                        <div class="biome-icon"></div>
-                                        <div class="biome-name">ALPINE</div>
-                                        <div class="biome-desc">Snow peak,<br>stone &amp; pines</div>
+                                        <div class="biome-icon"><span class="material-symbols-rounded">filter_hdr</span></div>
+                                        <div class="biome-name">Alpine</div>
+                                        <div class="biome-desc">Snow peak, stone &amp; pines</div>
                                     </div>
                                     <div class="biome-card" onclick="selectMountainBiome(1)">
-                                        <div class="biome-icon"></div>
-                                        <div class="biome-name">VOLCANIC</div>
-                                        <div class="biome-desc">Dark rock &amp;<br>red sand summit</div>
+                                        <div class="biome-icon"><span class="material-symbols-rounded">volcano</span></div>
+                                        <div class="biome-name">Volcanic</div>
+                                        <div class="biome-desc">Dark rock &amp; red sand summit</div>
                                     </div>
                                     <div class="biome-card" onclick="selectMountainBiome(2)">
-                                        <div class="biome-icon"></div>
-                                        <div class="biome-name">EARTHY</div>
-                                        <div class="biome-desc">Dirt, stone,<br>trees &amp; hay</div>
+                                        <div class="biome-icon"><span class="material-symbols-rounded">park</span></div>
+                                        <div class="biome-name">Earthy</div>
+                                        <div class="biome-desc">Dirt, stone, trees &amp; hay</div>
                                     </div>
                                     <div class="biome-card" onclick="selectMountainBiome(3)">
-                                        <div class="biome-icon"></div>
-                                        <div class="biome-name">MOSSY</div>
-                                        <div class="biome-desc">Mossy rock<br>covered in trees</div>
+                                        <div class="biome-icon"><span class="material-symbols-rounded">forest</span></div>
+                                        <div class="biome-name">Mossy</div>
+                                        <div class="biome-desc">Mossy rock covered in trees</div>
                                     </div>
                                     <div class="biome-card biome-card-random" onclick="selectMountainBiome(-1)">
-                                        <div class="biome-icon"></div>
-                                        <div class="biome-name">RANDOM</div>
+                                        <div class="biome-icon"><span class="material-symbols-rounded">casino</span></div>
+                                        <div class="biome-name">Random</div>
                                         <div class="biome-desc">Surprise me!</div>
                                     </div>
                                 </div>
+                                <div id="mountain-type" style="color:var(--md-on-surface-variant, #6F5D4E);font-family:'Roboto',sans-serif;font-size:11px;text-align:center;margin-top:2px;min-height:14px;letter-spacing:0.3px;"></div>
                             </div>
 
-                            <div class="fun-subview" id="fun-view-emoji">
-                                <button class="fun-back-btn" onclick="showFunView('main')"><span class="material-symbols-rounded">arrow_back</span><span>Back</span></button>
+                            <div class="fun-divider"></div>
+
+                            <div class="fun-group">
+                                <div class="fun-group-title">
+                                    <span class="material-symbols-rounded">mood</span>
+                                    <span>Island as an Emoji</span>
+                                </div>
                                 <div id="island-emoji-body">
                                     <div id="island-emoji-grid"></div>
                                     <div class="biome-grid" id="island-emoji-actions">
                                         <div class="biome-card" onclick="generateIslandEmoji()">
-                                            <div class="biome-icon"></div>
-                                            <div class="biome-name">REGENERATE</div>
-                                            <div class="biome-desc">Re-read the<br>current island</div>
+                                            <div class="biome-icon"><span class="material-symbols-rounded">refresh</span></div>
+                                            <div class="biome-name">Regenerate</div>
+                                            <div class="biome-desc">Re-read the current island</div>
                                         </div>
                                         <div class="biome-card biome-card-copy" onclick="copyIslandEmoji()">
-                                            <div class="biome-icon"></div>
-                                            <div class="biome-name">COPY EMOJI</div>
-                                            <div class="biome-desc">Copy to<br>clipboard</div>
+                                            <div class="biome-icon"><span class="material-symbols-rounded">content_copy</span></div>
+                                            <div class="biome-name">Copy Emoji</div>
+                                            <div class="biome-desc">Copy to clipboard</div>
                                         </div>
                                     </div>
                                 </div>
@@ -1608,6 +1592,10 @@ function tryStartBuilding() {
 </div>
 
 <script>
+// Shared MD3 nav/panel toggle logic used by both the Settings window and the
+// Files window, so the two dialogs' category switching stays in sync and
+// isn't duplicated. Returns the name of the panel that was active before the
+// switch (or null if the nav/content elements weren't found).
 function _switchCategoryPanel(navId, contentId, panelName, btnEl){
     var nav = document.getElementById(navId);
     var content = document.getElementById(contentId);
@@ -1650,6 +1638,10 @@ function switchSettingsCategory(panelName, btnEl){
         if (typeof window.renderLangButtons === 'function') window.renderLangButtons();
     }
 }
+
+// Files window category switching (Export / Load / Island Analytics /
+// Achievements / Other) — mirrors switchSettingsCategory's pattern via the
+// shared helper above, with its own per-category refresh side effects.
 function switchFilesCategory(panelName, btnEl){
     var prevPanel = _switchCategoryPanel('save-nav', 'save-content', panelName, btnEl);
     if (prevPanel === null) return;
@@ -1670,6 +1662,8 @@ function switchFilesCategory(panelName, btnEl){
 }
 
 (function(){
+    // Decorative slider fill/handle sync for the Settings zoom control (visual only;
+    // the existing stepZoom(...) buttons remain the source of truth for zoom).
     function initZoomSlider(){
         var valEl = document.getElementById('settings-zoom-value');
         var trackEl = document.getElementById('settings-zoom-track');
@@ -1685,6 +1679,9 @@ function switchFilesCategory(panelName, btnEl){
             new MutationObserver(sync).observe(valEl, { childList: true, characterData: true, subtree: true });
         }
     }
+
+    // Lightweight Material ripple effect for every button inside the Settings
+    // and Files popups (shared MD3 dialogs).
     function initRipple(rootId){
         var root = document.getElementById(rootId);
         if (!root) return;
@@ -1706,8 +1703,11 @@ function switchFilesCategory(panelName, btnEl){
     initZoomSlider();
     initRipple('settings-popup');
     initRipple('save-popup');
+    initRipple('community-popup');
 })();
 </script>
+
+
 <div id="confirm-delete-overlay" onclick="if(event.target===this)closeConfirmDelete()">
     <div id="confirm-delete-wrapper">
         <div id="confirm-delete-popup" class="pixel-corners">
@@ -2132,73 +2132,91 @@ function openTutorialFromMenu() {
 </div>
 <div id="community-overlay" onclick="if(event.target===this)closeCommunityPopup()">
     <div id="community-wrapper" onclick="event.stopPropagation()">
-        <button class="popup-help-btn" onclick="showHelpInfo('community')">?</button>
-        <button id="community-close-btn" onclick="closeCommunityPopup()">&#10005;</button>
-        <div id="community-popup" class="pixel-corners">
-            <div id="cm-topbar">
-                <h2 id="cm-title" data-t="community.title">COMMUNITY MAPS</h2>
-            </div>
-            <div id="cm-search-bar">
-                <div id="cm-search-icon">
-                    <img src="./Assets/Icons/zoom.png" style="width:14px;height:14px;image-rendering:pixelated;display:block;">
+        <div id="community-popup">
+
+            <div id="community-titlebar">
+                <div id="community-titlebar-heading">
+                    <span class="material-symbols-rounded" id="community-title-icon">public</span>
+                    <h2><span id="cm-title" data-t="community.title">Community Maps</span></h2>
                 </div>
-                <input id="cm-search-input" type="text" data-t-placeholder="community.search_placeholder" placeholder="Search maps or authors..." oninput="cmFilterMaps(this.value)" autocomplete="off">
-                <button id="cm-search-clear" onclick="cmClearSearch()" style="display:none;">&#10005;</button>
-            </div>
-            <div id="cm-content-area">
-                <div id="cm-tab-browse" class="cm-tab-content">
-                    <div id="cm-maps-list">
-                        <div class="cm-loading" data-t="community.loading">LOADING...</div>
-                    </div>
+                <div id="community-titlebar-actions">
+                    <button class="popup-help-btn md3-icon-btn" onclick="showHelpInfo('community')" aria-label="Help" title="Help">
+                        <span class="material-symbols-rounded">help</span>
+                    </button>
+                    <button id="community-close-btn" class="md3-icon-btn" onclick="closeCommunityPopup()" aria-label="Close" title="Close">
+                        <span class="material-symbols-rounded">close</span>
+                    </button>
                 </div>
-                <div id="cm-tab-upload" class="cm-tab-content" style="display:none;">
-                    <div class="popup-section-title" data-t="community.map_name_label">MAP NAME:</div>
-                    <input id="cm-map-name" type="text" maxlength="40" data-t-placeholder="community.map_name_placeholder" placeholder="ex: My cool island...">
-                    <div class="cm-hint" data-t="community.share_hint">Share your current island with the community</div>
-                    <button class="btn-qr" onclick="cmSaveMap()" data-t="community.publish_btn">PUBLISH TO COMMUNITY</button>
-                    <div id="cm-save-status"></div>
-                </div>
-                <div id="cm-tab-account" class="cm-tab-content" style="display:none;">
-                    <div id="cm-acct-tab-inner">
-                        <div id="cm-acct-tab-header">
-                            <div id="cm-acct-tab-avatar-wrap">
-                                <img id="cm-acct-photo" src="" alt="" style="display:none;width:64px;height:64px;border-radius:50%;border:3px solid #ffb347;object-fit:cover;image-rendering:auto;">
-                                <div id="cm-acct-tab-avatar-placeholder">
-                                    <img src="./Assets/Icons/account.png" style="width:32px;height:32px;image-rendering:pixelated;opacity:0.6;">
-                                </div>
-                            </div>
-                            <div id="cm-acct-name" data-t="community.not_logged_in">NOT LOGGED IN</div>
-                        </div>
-                        <div class="cm-acct-dash-divider"></div>
-                        <div id="cm-acct-tab-maps-row">
-                            <span id="cm-acct-tab-maps-label" data-t="community.my_maps_label">MY MAPS SHARED:</span>
-                            <span id="cm-acct-maps-count">—</span>
-                        </div>
-                        <div class="cm-acct-dash-divider"></div>
-                        <div id="cm-acct-tab-actions">
-                            <button id="cm-delete-account-btn" onclick="cmDeleteAccount()" style="display:none;" data-t="community.delete_account_btn">🗑 DELETE ACCOUNT</button>
-                            <button id="cm-auth-btn" onclick="cmLogin()">
-                                <img src="./Assets/Icons/google.png" style="width:12px;height:12px;image-rendering:pixelated;vertical-align:middle;margin-right:5px;"><span data-t="community.login_btn">LOGIN WITH GOOGLE</span>
-                            </button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div id="cm-tabs">
-                <button id="cm-tab-browse-btn" class="cm-tab cm-tab-active" onclick="cmSwitchTab('browse')">
-                    <img src="./Assets/Icons/Comunitymaps.png" class="cm-tab-icon" style="image-rendering:pixelated;">
-                    <span data-t="community.tab_browse">BROWSE</span>
-                </button>
-                <button id="cm-tab-upload-btn" class="cm-tab" onclick="cmSwitchTab('upload')">
-                    <img src="./Assets/Icons/Software.png" class="cm-tab-icon" style="image-rendering:pixelated;">
-                    <span data-t="community.tab_publish">PUBLISH</span>
-                </button>
-                <button id="cm-tab-account-btn" class="cm-tab" onclick="cmSwitchTab('account')">
-                    <img src="./Assets/Icons/account.png" class="cm-tab-icon" style="image-rendering:pixelated;">
-                    <span data-t="community.tab_account">ACCOUNT</span>
-                </button>
             </div>
 
+            <div id="community-popup-body">
+
+                <div id="community-nav">
+                    <button id="cm-tab-browse-btn" class="settings-nav-item cm-tab-active" onclick="cmSwitchTab('browse')">
+                        <span class="material-symbols-rounded">travel_explore</span><span data-t="community.tab_browse">Browse</span>
+                    </button>
+                    <button id="cm-tab-upload-btn" class="settings-nav-item" onclick="cmSwitchTab('upload')">
+                        <span class="material-symbols-rounded">cloud_upload</span><span data-t="community.tab_publish">Publish</span>
+                    </button>
+                    <button id="cm-tab-account-btn" class="settings-nav-item" onclick="cmSwitchTab('account')">
+                        <span class="material-symbols-rounded">account_circle</span><span data-t="community.tab_account">Account</span>
+                    </button>
+                </div>
+
+                <div id="community-content">
+
+                    <div id="cm-search-bar">
+                        <span class="material-symbols-rounded" id="cm-search-icon-md">search</span>
+                        <input id="cm-search-input" type="text" data-t-placeholder="community.search_placeholder" placeholder="Search maps or authors..." oninput="cmFilterMaps(this.value)" autocomplete="off">
+                        <button id="cm-search-clear" class="md3-icon-btn" onclick="cmClearSearch()" style="display:none;" aria-label="Clear search"><span class="material-symbols-rounded">close</span></button>
+                    </div>
+
+                    <div id="cm-content-area">
+                        <div id="cm-tab-browse" class="cm-tab-content">
+                            <div id="cm-maps-list">
+                                <div class="cm-loading" data-t="community.loading">LOADING...</div>
+                            </div>
+                        </div>
+                        <div id="cm-tab-upload" class="cm-tab-content" style="display:none;">
+                            <div class="md3-card">
+                                <div class="popup-section-title"><span class="material-symbols-rounded">edit</span><span data-t="community.map_name_label">Map name:</span></div>
+                                <input id="cm-map-name" type="text" maxlength="40" data-t-placeholder="community.map_name_placeholder" placeholder="ex: My cool island...">
+                                <div class="cm-hint" data-t="community.share_hint">Share your current island with the community</div>
+                                <button class="btn-qr" onclick="cmSaveMap()" data-t="community.publish_btn">Publish to community</button>
+                                <div id="cm-save-status"></div>
+                            </div>
+                        </div>
+                        <div id="cm-tab-account" class="cm-tab-content" style="display:none;">
+                            <div class="md3-card" id="cm-acct-card">
+                                <div id="cm-acct-tab-inner">
+                                    <div id="cm-acct-tab-header">
+                                        <div id="cm-acct-tab-avatar-wrap">
+                                            <img id="cm-acct-photo" src="" alt="" style="display:none;width:64px;height:64px;border-radius:50%;border:3px solid #FFDBC2;object-fit:cover;">
+                                            <div id="cm-acct-tab-avatar-placeholder">
+                                                <span class="material-symbols-rounded" style="font-size:32px;opacity:0.6;">account_circle</span>
+                                            </div>
+                                        </div>
+                                        <div id="cm-acct-name" data-t="community.not_logged_in">NOT LOGGED IN</div>
+                                    </div>
+                                    <div class="cm-acct-dash-divider"></div>
+                                    <div id="cm-acct-tab-maps-row">
+                                        <span id="cm-acct-tab-maps-label" data-t="community.my_maps_label">MY MAPS SHARED:</span>
+                                        <span id="cm-acct-maps-count">—</span>
+                                    </div>
+                                    <div class="cm-acct-dash-divider"></div>
+                                    <div id="cm-acct-tab-actions">
+                                        <button id="cm-delete-account-btn" onclick="cmDeleteAccount()" style="display:none;" data-t="community.delete_account_btn">🗑 DELETE ACCOUNT</button>
+                                        <button id="cm-auth-btn" onclick="cmLogin()">
+                                            <img src="./Assets/Icons/google.png" style="width:14px;height:14px;vertical-align:middle;margin-right:6px;"><span data-t="community.login_btn">LOGIN WITH GOOGLE</span>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
         </div>
     </div>
 </div>
@@ -2397,7 +2415,7 @@ async function cmLoadMaps() {
         }
         list.innerHTML = maps.map(m => `
             <div class="cm-map-card" data-author-uid="${esc(m.authorUID || '')}">
-                <canvas class="cm-map-thumb" width="80" height="60" data-mapcode="${esc(m.data)}"></canvas>
+                <canvas class="cm-map-thumb" width="128" height="96" data-mapcode="${esc(m.data)}"></canvas>
                 <div class="cm-map-body">
                     <div class="cm-map-name">${esc(m.name)}</div>
                     <div class="cm-map-author">by ${esc(m.authorName)}</div>
@@ -2526,53 +2544,24 @@ window.cmSwitchTab = (tab) => {
     const tabEls = { browse, upload, account };
     const btnEls = { browse: btnB, upload: btnU, account: btnA };
 
-    const oldIdx = _cmTabOrder.indexOf(_cmCurrentTab);
-    const newIdx = _cmTabOrder.indexOf(tab);
-    const dir = newIdx > oldIdx ? 1 : -1;
     const outgoing = tabEls[_cmCurrentTab];
     const incoming = tabEls[tab];
-
     if (!outgoing || !incoming) return;
+
     [btnB, btnU, btnA].forEach(b => b && b.classList.remove('cm-tab-active'));
     if (btnEls[tab]) btnEls[tab].classList.add('cm-tab-active');
     if (searchBar) searchBar.style.display = tab === 'browse' ? 'flex' : 'none';
     if (tab === 'account') cmLoadAccountMapsCount();
-    incoming.style.display = outgoing.style.display || 'flex';
-    incoming.style.position = 'absolute';
-    incoming.style.top = outgoing.offsetTop + 'px';
-    incoming.style.left = outgoing.offsetLeft + 'px';
-    incoming.style.width = outgoing.offsetWidth + 'px';
-    incoming.style.transform = `translateX(${dir * 100}%)`;
-    incoming.style.opacity = '0';
-    incoming.style.transition = 'none';
-    incoming.style.pointerEvents = 'none';
-    outgoing.style.position = 'relative';
-    outgoing.style.transition = 'none';
 
-    requestAnimationFrame(() => requestAnimationFrame(() => {
-        outgoing.style.transition = 'transform 220ms cubic-bezier(.4,0,.2,1), opacity 180ms ease';
-        outgoing.style.transform = `translateX(${-dir * 100}%)`;
-        outgoing.style.opacity = '0';
+    // Same fade-in pattern as the Settings/Files category panels
+    // (settings-panel-fade-in), instead of a custom slide transition.
+    outgoing.style.display = 'none';
+    outgoing.classList.remove('cm-tab-content-active');
 
-        incoming.style.transition = 'transform 220ms cubic-bezier(.4,0,.2,1), opacity 180ms ease';
-        incoming.style.transform = 'translateX(0)';
-        incoming.style.opacity = '1';
-
-        setTimeout(() => {
-            outgoing.style.display = 'none';
-            outgoing.style.transform = '';
-            outgoing.style.opacity = '';
-            outgoing.style.transition = '';
-            outgoing.style.position = '';
-
-            incoming.style.position = '';
-            incoming.style.top = '';
-            incoming.style.left = '';
-            incoming.style.width = '';
-            incoming.style.transition = '';
-            incoming.style.pointerEvents = '';
-        }, 230);
-    }));
+    incoming.style.display = 'flex';
+    incoming.classList.remove('cm-tab-content-active');
+    void incoming.offsetWidth; // reflow so the animation restarts
+    incoming.classList.add('cm-tab-content-active');
 
     _cmCurrentTab = tab;
 };
@@ -2674,27 +2663,45 @@ function cmDrawThumb(canvas, b64) {
     const ctx = canvas.getContext('2d');
     const W = canvas.width, H = canvas.height;
     ctx.clearRect(0, 0, W, H);
-    ctx.fillStyle = '#1a1208';
+    ctx.fillStyle = '#aad6ff';
     ctx.fillRect(0, 0, W, H);
 
-    const tileW = Math.max(6, Math.floor(W / (cols + rows) * 1.6));
-    const tileH = Math.max(3, Math.floor(tileW / 2));
-    const cX = W / 2;
-    const cY = H * 0.35;
     const allKeys = new Set([...Object.keys(baseGrid), ...Object.keys(topOverlay)]);
-    const sorted = [...allKeys].map(k => {
+    const tiles = [...allKeys].map(k => {
         const [x, y] = k.split(',').map(Number);
-        return { x, y };
-    }).sort((a, b) => (a.x + a.y) - (b.x + b.y));
-
-    sorted.forEach(({ x, y }) => {
-        const key = x + ',' + y;
-        const overlay = topOverlay[key];
-        const base    = baseGrid[key];
+        const overlay  = topOverlay[k];
+        const base     = baseGrid[k];
         const assetIdx = overlay ? overlay.assetIdx : base;
-        if (!assetIdx) return;
+        if (!assetIdx) return null;
+        return { x, y, z: overlay ? overlay.z : 0, assetIdx };
+    }).filter(Boolean).sort((a, b) => (a.x + a.y) - (b.x + b.y));
+
+    if (!tiles.length) return;
+
+    // Work out the exact bounding box the island occupies (in units of
+    // tileW horizontally and tileH vertically), then solve tileW and tileH
+    // independently so the render stretches to fill the whole canvas with
+    // no leftover space, instead of guessing a fixed scale from cols/rows.
+    let minLeftX = Infinity, maxRightX = -Infinity, minTopY = Infinity, maxBottomY = -Infinity;
+    tiles.forEach(({ x, y, z }) => {
+        const x0 = x - y;
+        const y0 = (x + y) * 0.5 - z * 0.9;
+        minLeftX   = Math.min(minLeftX, x0 - 1);
+        maxRightX  = Math.max(maxRightX, x0 + 1);
+        minTopY    = Math.min(minTopY, y0 - 1);
+        maxBottomY = Math.max(maxBottomY, y0 + 1);
+    });
+
+    const margin = 2;
+    const widthCoeff  = maxRightX - minLeftX;
+    const heightCoeff = maxBottomY - minTopY;
+    const tileW = Math.max(1, (W - margin * 2) / widthCoeff);
+    const tileH = Math.max(1, (H - margin * 2) / heightCoeff);
+    const cX = W / 2 - (minLeftX + maxRightX) / 2 * tileW;
+    const cY = H / 2 - (minTopY + maxBottomY) / 2 * tileH;
+
+    tiles.forEach(({ x, y, z, assetIdx }) => {
         const color = CM_BLOCK_COLORS[assetIdx] || '#888';
-        const z = overlay ? overlay.z : 0;
 
         const isoX = cX + (x - y) * tileW;
         const isoY = cY + (x + y) * tileH * 0.5 - z * tileH * 0.9;
@@ -2798,6 +2805,7 @@ window.showEmbedPreview = () => {
         </div>
     </div>
 </div>
+
 <div id="notfound-overlay">
     <div id="notfound-wrapper">
         <div id="notfound-popup" class="pixel-corners">
@@ -2814,6 +2822,7 @@ window.showEmbedPreview = () => {
         </div>
     </div>
 </div>
+
 <script>
 window.showNotFound = function(badHash) {
     const overlay = document.getElementById('notfound-overlay');
